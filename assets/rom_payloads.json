@@ -258,14 +258,6 @@
       }
     },
     {
-      "path": "other/data_EndingMusic81Overlay.bin",
-      "size": 954,
-      "sha1": "c6afcbf06c856122f88a5ab2be26aa2c30f35103",
-      "sources": {
-        "ue": 79336
-      }
-    },
-    {
       "path": "other/data_SegaPalette.bin",
       "size": 20,
       "sha1": "81de098fa7d1d41a7569ec4bc5430a8dde9a7678",

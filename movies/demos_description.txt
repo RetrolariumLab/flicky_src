@@ -1,0 +1,26 @@
+Frames, Scene
+20-300, Sega screen
+320-1380, Title screen
+1400-3380, Demo play Round 1
+3400-3620, Sega screen
+3640-4700, Title screen
+4720-6480, Demo play Round 10
+6500-6700, Sega screen
+6720-7780, Title screen
+7800-9920, Demo play Round 20
+9940-10180, Sega screen
+10200-11240, Title screen
+11260-13180, Demo play Round 24
+13200-13420, Sega screen
+13440-14480, Title screen
+14500-15020, Demo play Round 1 (interrupted)
+15040-15360, Title screen
+15380-15960, Guide screen
+15980-17020, Round 1
+17040-17800, Round 2
+17820-18000, Player death
+18020-19300, Round 2
+19320-20460, Round 3 (bonus)
+20480-22720, Round 4
+22740-23040, Game over
+23060-23200, Sega screen

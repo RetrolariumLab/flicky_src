@@ -1,0 +1,56 @@
+Frames, Scene
+20-300, Sega screen
+320-440, Title screen
+460-680, Guide screen
+700-1380, Round 1
+1400-1440, Chickens counting
+1460-1700, Score screen
+1720-3160, Round 2
+3180-4240, Round 3 (bonus)
+4260-5580, Round 4
+5600-6760, Round 5
+6780-7920, Round 6
+7940-9020, Round 7 (bonus)
+9040-10380, Round 8
+10400-11840, Round 9
+11860-13440, Round 10
+13460-14460, Round 11 (bonus)
+14480-15800, Round 12
+15820-17020, Round 13
+17040-17980, Round 14
+18000-19060, Round 15 (bonus)
+19080-20460, Round 16
+20480-21760, Round 17
+21780-23300, Round 18
+23320-24340, Round 19 (bonus)
+24360-25740, Round 20
+25760-27020, Round 21
+27040-28200, Round 22
+28220-29240, Round 23 (bonus)
+29260-30680, Round 24
+30700-32100, Round 25
+32120-33240, Round 26
+33260-33600, Girl in window appeared
+33620-34620, Round 27 (bonus)
+34640-36160, Round 28
+36180-37640, Round 29
+37660-39180, Round 30
+39200-40220, Round 31 (bonus)
+40240-41680, Round 32
+41700-43160, Round 33
+43180-44660, Round 34
+44680-45700, Round 35
+45720-47180, Round 36
+47200-48540, Round 37
+48560-49980, Round 38
+50000-51000, Round 39 (bonus)
+51020-52440, Round 40
+52460-53720, Round 41
+53740-55360, Round 42
+55380-56380, Round 43 (bonus)
+56400-57860, Round 44
+57880-59020, Round 45
+59040-60580, Round 46
+60600-61580, Round 47 (bonus)
+61600-62780, Round 48
+62800-66980, Credits

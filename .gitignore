@@ -1,3 +1,178 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+.idea/
+tmp/
+reports/
+tmpclaude*
+
+# Links to utils
+*.lnk
+
+# Build artifacts
+fbuilt.bin
+flicky.asm
+flicky.map
+flicky.lst
+flicky.p
+asbuilt.bin
+rom.bin
+temp.asm
+
+# IDA files (keep .idb for reference)
+*.id0
+*.id1
+*.nam
+*.til
+
+# Gens emulator and analysis
+gens-rerecording/
+Gens.cfg
+language.dat
+test_screenshots/
+reference/
+diffs/
+logs/
+analysis_report*
+unnamed_procedures.txt
+tmp/
+
+# Documentation workflow
+workflow/
+rename_log.txt
+flicky_backup_*.s
+analysis_results.csv
+batch_extract.txt
+batch_analysis.csv
+batch_renames.csv
+
+# Uncompressed tile data
+data/uncompressed/
+
+# PowerShell scripts (obsolete - using Makefile now)
+build.ps1
+asm_fixer.ps1
 
 # Payloads generated locally from the reference ROM
 /assets/generated/
