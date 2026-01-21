@@ -445,7 +445,7 @@ def main():
     parser.add_argument('--movie', default='movies/flicky_longplay.gmv', help='TAS movie file')
     parser.add_argument('--reference', default='reference', help='Reference screenshots directory')
     parser.add_argument('--diffs', default='diffs', help='Diffs output directory')
-    parser.add_argument('--gens', default='gens-rerecording/Gens-rr/Output/Gens.exe', help='Gens emulator path')
+    parser.add_argument('--gens', default='gens_automation/Output/Gens.exe', help='Gens emulator path')
     parser.add_argument('--output', default='analysis_results.csv', help='Output CSV file')
     parser.add_argument('--interval', type=int, default=20, help='Screenshot interval')
     parser.add_argument('--max-frames', type=int, default=0, help='Max frames to analyze (0 = no limit, play until movie ends)')

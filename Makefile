@@ -13,7 +13,8 @@ export AS_MSGPATH = bin
 SRC = flicky.s
 OBJ = flicky.p
 ROM = fbuilt.bin
-ORIG_ROM = flicky.bin
+ORIG_ROM = Flicky (UE) [!].bin
+REF_ROM = flicky.bin
 
 # Directories
 DATA_DIR = data
@@ -27,6 +28,21 @@ DATA_ADDRS = $(DATA_DIR)/data_addrs.txt
 # Default target
 .PHONY: all
 all: build
+
+# Initialize project from original ROM
+# Usage: make init
+.PHONY: init
+init:
+	@python $(SCRIPTS_DIR)/init_project.py \
+		--orig-rom "$(ORIG_ROM)" \
+		--ref-rom "$(REF_ROM)" \
+		--data-dir $(DATA_DIR) \
+		--data-addrs $(DATA_ADDRS) \
+		--source $(SRC) \
+		--output $(ROM) \
+		--as-bin $(AS_BIN) \
+		--p2bin $(P2BIN) \
+		--as-args "$(AS_ARGS)"
 
 # Build ROM from assembly source
 .PHONY: build
@@ -44,13 +60,10 @@ build:
 # Split original ROM into data files
 .PHONY: split
 split:
-	@echo "Splitting ROM data..."
 	@python $(SCRIPTS_DIR)/split_data_from_rom.py \
-		--rom-file $(ORIG_ROM) \
+		--rom-file "$(ORIG_ROM)" \
 		--output $(DATA_DIR) \
 		--addrs $(DATA_ADDRS)
-	@echo ""
-	@echo "Split complete!"
 
 # Clean build artifacts and temp files
 .PHONY: clean
@@ -174,12 +187,12 @@ else
 	@echo "Report saved: $(WORKFLOW_DIR)/analysis_report_$(MOVIE).txt / .csv"
 endif
 
-# Compare built ROM with original
+# Compare built ROM with reference
 .PHONY: compare
 compare:
 	@python $(SCRIPTS_DIR)/compare_roms.py \
 		--built $(ROM) \
-		--original $(ORIG_ROM) \
+		--original $(REF_ROM) \
 		--project-dir .
 
 # ============================================================================
@@ -267,6 +280,11 @@ rename:
 	@echo "  2. Build and test: make build"
 	@echo "  3. Commit: git add $(SRC) && git commit"
 
+# Gens emulator paths
+GENS_DIR = gens_automation
+GENS_EXE = $(GENS_DIR)/Output/Gens.exe
+GENS_REPO = https://github.com/oranguthang/gens_automation.git
+
 # Stop all running emulators and analysis
 .PHONY: stop
 stop:
@@ -275,26 +293,15 @@ stop:
 	-taskkill /F /IM python.exe 2>nul
 	@echo "Done"
 
-# Build Gens emulator
+# Build Gens emulator (clone if not present)
 .PHONY: build-gens
 build-gens:
+	@python -c "import os, subprocess; os.path.isdir('$(GENS_DIR)') or (print('Cloning gens_automation...'), subprocess.run(['git', 'clone', '$(GENS_REPO)', '$(GENS_DIR)']))"
 	@echo "Building Gens emulator..."
-	"$(MSBUILD)" "$(GENS_SLN)" -p:Configuration=Release -p:Platform=Win32 -p:PlatformToolset=v143 -t:Build -v:minimal
+	$(MAKE) -C $(GENS_DIR)
 	@echo "Build complete: $(GENS_EXE)"
 
-# Default symbol file
-SYMBOLS_FILE = logs/symbols.txt
-
-# Generate symbol file from assembly listing
-# Usage: make symbols [SYMBOLS=<output.txt>]
-.PHONY: symbols
-symbols: flicky.lst
-	@python -c "import os; os.makedirs('logs', exist_ok=True)"
-	@echo "Extracting symbols from flicky.lst..."
-	python $(SCRIPTS_DIR)/extract_symbols.py flicky.lst \
-		--stats --rom-only -o $(if $(SYMBOLS),$(SYMBOLS),$(SYMBOLS_FILE))
-
-# Generate listing file (prerequisite for symbols)
+# Generate listing file
 flicky.lst: flicky.s src/macros.inc src/ports.inc src/equals.inc src/ram_addrs.inc
 	@echo "Building listing file..."
 	$(AS_BIN) -L $(AS_ARGS) flicky.s
