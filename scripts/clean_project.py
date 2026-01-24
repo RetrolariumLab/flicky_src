@@ -10,9 +10,13 @@ import shutil
 import glob
 
 
-# Files/folders in project root
-ROOT_TARGETS = [
-    'data/uncompressed',
+# Files/folders to remove
+TARGETS = [
+    'data/artnem',
+    'data/arteni',
+    'data/artunc',
+    'data/other',
+    'data/sound',
     'language.dat',
     'Gens.cfg',
     'flicky.p',
@@ -20,9 +24,10 @@ ROOT_TARGETS = [
     'rename_log.txt',
 ]
 
-# Glob patterns in project root
-ROOT_GLOBS = [
+# Glob patterns
+GLOBS = [
     'flicky_backup_*.s',
+    'tools/*.exe',
 ]
 
 # Patterns to find recursively in all directories
@@ -50,15 +55,15 @@ def main():
     print("Cleaning project...")
     removed = 0
 
-    # Remove fixed targets in root
-    for target in ROOT_TARGETS:
+    # Remove fixed targets
+    for target in TARGETS:
         if os.path.exists(target):
             if remove_path(target):
                 removed += 1
 
-    # Remove glob patterns in root
-    for pattern in ROOT_GLOBS:
-        for path in glob.glob(pattern):
+    # Remove glob patterns
+    for pattern in GLOBS:
+        for path in glob.glob(pattern, recursive=True):
             if remove_path(path):
                 removed += 1
 

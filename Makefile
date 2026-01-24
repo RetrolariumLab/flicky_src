@@ -65,6 +65,17 @@ split:
 		--output $(DATA_DIR) \
 		--addrs $(DATA_ADDRS)
 
+# Build decompressor tools (C executables)
+.PHONY: tools
+tools:
+	@echo "Building decompressor tools..."
+	@$(MAKE) -C tools all
+
+# Decompress Nemesis and Enigma data
+.PHONY: unpack-data
+unpack-data:
+	@python $(SCRIPTS_DIR)/unpack_data.py --data-dir $(DATA_DIR) -v
+
 # Clean build artifacts and temp files
 .PHONY: clean
 clean:

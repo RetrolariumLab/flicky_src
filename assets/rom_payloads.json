@@ -248,22 +248,6 @@
       "sources": {
         "ue": 73996
       }
-    },
-    {
-      "path": "arteni/data_SegaEnigma.bin",
-      "size": 10,
-      "sha1": "c293e2260e158f285da440b44099fee222566d67",
-      "sources": {
-        "ue": 1296
-      }
-    },
-    {
-      "path": "other/data_SegaPalette.bin",
-      "size": 20,
-      "sha1": "81de098fa7d1d41a7569ec4bc5430a8dde9a7678",
-      "sources": {
-        "ue": 1270
-      }
     }
   ]
 }

@@ -378,12 +378,19 @@ loc_4EC:
 loc_4F2:
                 bra.w Sound_QueueSFX
 
-word_4F6:       binclude "data/other/data_SegaPalette.bin",$0,$12  ; rom-asset dc.w
-                binclude "data/other/data_SegaPalette.bin",$12,$2  ; rom-asset dc.b
-                dc.b $E3, $16, $00, $01, $0C, $04
-                binclude "data/arteni/data_SegaEnigma.bin"
-sega_tiles:	binclude	"data/data_sega_tiles.bin"	
-sega_tiles_End:
+word_4F6:
+SegaPalette:	binclude	"data/other/data_SegaPalette.bin"
+SegaPalette_End:
+; Tilemap header for SEGA screen (read by Gfx_ReadTilemapHeader)
+SegaTilemapHeader:
+		dc.w	$E316		; position X
+		dc.w	$0001		; position Y
+		dc.b	$0C		; width adjustment
+		dc.b	$04		; height adjustment
+SegaEnigma:	binclude	"data/arteni/data_SegaEnigma.bin"
+SegaEnigma_End:
+SegaTiles:	binclude	"data/artnem/data_SegaTiles.bin"	
+SegaTiles_End:
 ; Unused interrupt handler (RTE)
 Int_UnusedHandler:
                 rte  ; was: nullsub_1
@@ -1756,7 +1763,7 @@ loc_130C:
                 movem.l (sp)+,a0/a5
                 rts
 
-z80_part1:	binclude	"data/data_z80_part1.bin"	
+z80_part1:	binclude	"data/sound/data_z80_part1.bin"	
 z80_part1_End:
 func_table:     dc.w $39
                 dc.w Int_UnusedHandler
@@ -1817,7 +1824,7 @@ func_table:     dc.w $39
                 dc.w Gfx_LoadPaletteCompact
                 dc.w Gfx_DecompEnigmaTilemap
                 dc.w Gfx_LoadFullTilemap
-Jap1BPPTiles:	binclude	"data/data_Jap1BPPTiles.bin"	
+Jap1BPPTiles:	binclude	"data/artunc/data_Jap1BPPTiles.bin"	
 Jap1BPPTiles_End:
 empty_block_1:  ;dc.b [$D6F6]$FF
                 org $10000
@@ -1955,7 +1962,7 @@ LoadLogoAndExitToVRAM:
                 rts
 
                 ;org $81D4
-z80_part2:	binclude	"data/data_z80_part2.bin"	
+z80_part2:	binclude	"data/sound/data_z80_part2.bin"	
 z80_part2_End:
 ; Clears CRAM to black and initializes VDP state
 Gfx_InitCRAMAndClearVDP:
@@ -5727,7 +5734,7 @@ byte_135AC:     dc.b 0, 3, 0, 3, 0, 4, 0, 2, 0, 4
                 dc.b 0, 4, 0, 2, 0, 4, 0, 2, 0, 4
                 dc.b 0, 2, 0, 3, 0, 3, 0, 4, 0, 2
 word_135D4:     dc.w $E132, $E4B2, $E642, $E64C, $E656, $E660, $E66A, $E674, $E446, $E146
-word_135E8:	binclude	"data/data_word_135E8.bin"	
+word_135E8:	binclude	"data/other/data_word_135E8.bin"	
 word_135E8_End:
 ; Demo/attract mode initialization
 Demo_Init:
@@ -5802,7 +5809,7 @@ Demo_ReadInput:
 locret_13A80:
                 rts
 
-word_13A82:	binclude	"data/data_word_13A82.bin"	
+word_13A82:	binclude	"data/other/data_word_13A82.bin"	
 word_13A82_End:
 word_13B82:     dc.w $12, $801, $A09, $4A11, $A17, $14, $4004, $4A0B
                 dc.w $A5A, $1C, $A0C, 9, $403, $502, $409, $1E
@@ -5817,9 +5824,9 @@ word_13B82:     dc.w $12, $801, $A09, $4A11, $A17, $14, $4004, $4A0B
                 dc.w $4201, $4407, $4502, $4403, $4001, $19, $801, $A07
                 dc.w $201, $406, $4405, $4003, 8, $A1E, $10, $A13
                 dc.w $801, $1A, $414, $1F, $403, $504, $40C, $43
-word_13C52:	binclude	"data/data_word_13C52.bin"	
+word_13C52:	binclude	"data/other/data_word_13C52.bin"	
 word_13C52_End:
-word_13D70:	binclude	"data/data_word_13D70.bin"	
+word_13D70:	binclude	"data/other/data_word_13D70.bin"	
 word_13D70_End:
 ; Player main object: states and collision
 Obj_Player:
@@ -8233,7 +8240,7 @@ word_15B52:     dc.w $702, $1305, $C06, $1A09, $160C, $F0D, $1A1F, $1A06, $1A, $
                 dc.w $1616, $191A, $1A0C, $1D13, 0
 word_15B70:     dc.w $40F, $C13, $1A18, $131F, $C04, $10C, $813, $D1A, $110C, $802
                 dc.w $1203, $100B, $B0F, $120F, $1911, $1011, $1616, $900
-dword_15B94:	binclude	"data/data_dword_15B94.bin"	
+dword_15B94:	binclude	"data/other/data_dword_15B94.bin"	
 dword_15B94_End:
 dword_15D14:    dc.l $10000
                 dc.l $14000
@@ -9523,16 +9530,17 @@ locret_16DE6:
                 rts
 
 word_16DE8:     binclude "data/palettes/shared-compact.bin"
-LevelTiles:	binclude	"data/data_LevelTiles.bin"	
+LevelTiles:	binclude	"data/artnem/data_LevelTiles.bin"	
 LevelTiles_End:
-Latin1BPPTiles:	binclude	"data/data_Latin1BPPTiles.bin"	
+Latin1BPPTiles:	binclude	"data/artunc/data_Latin1BPPTiles.bin"	
 Latin1BPPTiles_End:
-ExitTiles:      binclude "data/artnem/data_ExitTiles.bin",$0,$80
-SpritesTiles:	binclude	"data/data_SpritesTiles.bin"	
+ExitTiles:	binclude	"data/artnem/data_ExitTiles.bin"
+ExitTiles_End:
+SpritesTiles:	binclude	"data/artnem/data_SpritesTiles.bin"	
 SpritesTiles_End:
-ScoresTiles:	binclude	"data/data_ScoresTiles.bin"	
+ScoresTiles:	binclude	"data/artnem/data_ScoresTiles.bin"	
 ScoresTiles_End:
-FlickyLogoTiles:	binclude	"data/data_FlickyLogoTiles.bin"	
+FlickyLogoTiles:	binclude	"data/artnem/data_FlickyLogoTiles.bin"	
 FlickyLogoTiles_End:
 byte_1A196:     dc.b $22, 0
 byte_1A198:     dc.b $22, 1
