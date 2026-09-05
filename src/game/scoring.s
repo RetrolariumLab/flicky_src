@@ -13,24 +13,24 @@ Math_GridToScreen:
 ; Adds BCD score and updates high score if exceeded
 Score_AddAndCheck:
                 tst.b   (byte_FFD2A5).w  ; was: sub_1168A
-                bne.s   locret_116BC
+                bne.s   Score_AddAndCheck_Return
                 lea     (byte_FFD266).w,a2
                 lea     (byte_FFD882).w,a1
                 moveq   #3,d0
                 move    #4,ccr
 
-loc_1169E:
+Score_AddAndCheck_AddLoop:  ; was: loc_1169E
                 abcd    -(a2),-(a1)
-                dbf     d0,loc_1169E
+                dbf     d0,Score_AddAndCheck_AddLoop
                 bsr.w   UI_DrawScore
                 move.l  (dword_FFD87E).w,d0
                 move.l  (dword_FFCC00).w,d1
                 cmp.l   d0,d1
-                bge.s   locret_116BC
+                bge.s   Score_AddAndCheck_Return
                 move.l  d0,(dword_FFCC00).w
                 bsr.w   UI_DrawHighScore
 
-locret_116BC:
+Score_AddAndCheck_Return:  ; was: locret_116BC
                 rts
 
 ; Increments game time BCD counter with overflow
@@ -41,21 +41,21 @@ Timer_IncrementTime:
                 abcd    d1,d0
                 move.b  d0,(dword_FFD888+2).w
                 cmpi.b  #$60,d0
-                bcs.s   locret_116FE
+                bcs.s   Timer_IncrementTime_Return
                 clr.b   (dword_FFD888+2).w
                 move.b  (dword_FFD888+1).w,d0
                 addi.b  #0,d0
                 abcd    d1,d0
                 move.b  d0,(dword_FFD888+1).w
                 cmpi.b  #$60,d0
-                bcs.s   locret_116FE
+                bcs.s   Timer_IncrementTime_Return
                 clr.b   (dword_FFD888+1).w
                 move.b  (dword_FFD888).w,d0
                 addi.b  #0,d0
                 abcd    d1,d0
                 move.b  d0,(dword_FFD888).w
 
-locret_116FE:
+Timer_IncrementTime_Return:  ; was: locret_116FE
                 rts
 
 ; Copies cat spawn positions to object slots
@@ -74,19 +74,19 @@ Level_SetCatPositions:
 Enemy_BackupToBuffer:
                 lea     (unk_FFC480).w,a3  ; was: sub_11722
                 lea     (unk_FFDE00).w,a4
-                bra.s   loc_11734
+                bra.s   Enemy_CopyBuffer
 
 ; Restores enemy data from FFDE00 to FFC480
 Enemy_RestoreFromBuffer:
                 lea     (unk_FFDE00).w,a3  ; was: sub_1172C
                 lea     (unk_FFC480).w,a4
 
-loc_11734:
+Enemy_CopyBuffer:  ; was: loc_11734
                 move.w  #$7F,d0
 
-loc_11738:
+Enemy_CopyBuffer_Loop:  ; was: loc_11738
                 move.l  (a3)+,(a4)+
-                dbf     d0,loc_11738
+                dbf     d0,Enemy_CopyBuffer_Loop
                 rts
 
 ; Cycles tile base offset for text blink effect
@@ -98,22 +98,24 @@ Text_CycleBlink:
                 move.b  d0,(byte_FFD280).w
                 lsr.w   #2,d0
                 lsl.w   #1,d0
-                move.w  word_1175C(pc,d0.w),(word_FFD884).w
+                move.w  Text_BlinkTileBases(pc,d0.w),(word_FFD884).w
                 rts
 
-word_1175C:     dc.w    $8100, $8000, $FFFF, $8000
+Text_BlinkTileBases: dc.w    $8100, $8000, $FFFF, $8000  ; was: word_1175C
 ; Calculates (word_FFD82C+1) mod d7 with bcs
 Math_ModuloLower:
                 moveq   #0,d0  ; was: sub_11764
                 move.b  (word_FFD82C+1).w,d0
 
-loc_1176A:
+; Alternate entry: reduce d0 modulo d7 without reloading d0 from the round
+; counter. Game_StateBonusCheck and Game_CheckSkipBonus call in here.
+Math_ModuloFromD0:  ; was: loc_1176A
                 cmp.b   d7,d0
-                bcs.s   locret_11772
+                bcs.s   Math_ModuloLower_Return
                 sub.b   d7,d0
-                bra.s   loc_1176A
+                bra.s   Math_ModuloFromD0
 
-locret_11772:
+Math_ModuloLower_Return:  ; was: locret_11772
                 rts
 
 ; Calculates (word_FFD82C+1) mod d7 with bls
@@ -121,13 +123,13 @@ Math_ModuloUpper:
                 moveq   #0,d0  ; was: sub_11774
                 move.b  (word_FFD82C+1).w,d0
 
-loc_1177A:
+Math_ModuloUpper_Loop:  ; was: loc_1177A
                 cmp.b   d7,d0
-                bls.s   locret_11782
+                bls.s   Math_ModuloUpper_Return
                 sub.b   d7,d0
-                bra.s   loc_1177A
+                bra.s   Math_ModuloUpper_Loop
 
-locret_11782:
+Math_ModuloUpper_Return:  ; was: locret_11782
                 rts
 
 ; Copies palette to buffer and fades in
@@ -136,28 +138,28 @@ Gfx_FadeInPalette:
                 lea     (unk_FFF860).w,a1
                 moveq   #$1F,d0
 
-loc_1178E:
+Gfx_FadeInPalette_CopyLoop:  ; was: loc_1178E
                 move.l  (a0)+,(a1)+
-                dbf     d0,loc_1178E
+                dbf     d0,Gfx_FadeInPalette_CopyLoop
                 move.w  #$FFC0,(word_FFFFAC).w
 
-loc_1179A:
+Gfx_FadeInPalette_StepLoop:  ; was: loc_1179A
                 move.w  (word_FFFFAC).w,d2
                 addq.w  #2,d2
-                beq.s   locret_117BE
+                beq.s   Gfx_FadeInPalette_Return
                 cmpi.w  #$40,d2
-                ble.s   loc_117AA
+                ble.s   Gfx_FadeInPalette_ApplyStep
                 subq.w  #2,d2
 
-loc_117AA:
+Gfx_FadeInPalette_ApplyStep:  ; was: loc_117AA
                 move.w  d2,(word_FFFFAC).w
                 moveq   #$FFFFFFC0,d3
                 jsr     unk_FFFBA8
                 jsr     unk_FFFB0C
                 jsr     unk_FFFB6C
-                bra.s   loc_1179A
+                bra.s   Gfx_FadeInPalette_StepLoop
 
-locret_117BE:
+Gfx_FadeInPalette_Return:  ; was: locret_117BE
                 rts
 
 ; AABB collision test between objects a0 and a1

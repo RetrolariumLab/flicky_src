@@ -5,9 +5,9 @@ Gfx_InitCRAMAndClearVDP:
                 move.l  #$C0000000,(VDP_CTRL).l  ; was: sub_10CD4
                 moveq   #$3F,d0
 
-loc_10CE0:
+Gfx_InitCRAMAndClearVDP_ClearLoop:  ; was: loc_10CE0
                 move.w  #0,(VDP_DATA).l
-                dbf     d0,loc_10CE0
+                dbf     d0,Gfx_InitCRAMAndClearVDP_ClearLoop
                 moveq   #0,d2
                 move.w  #$A800,d0
                 jmp     unk_FFFAD6
@@ -21,12 +21,12 @@ Sound_InitDriver:
                 moveq   #8,d0
                 move.w  #$1C00,d1
                 moveq   #1,d2
-                lea     byte_10D1A(pc),a0
+                lea     Sound_InitCommandData(pc),a0
                 jsr     unk_FFFB54
                 clr.w   (word_FFFFA2).w
                 rts
 
-byte_10D1A:     dc.b    0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0
+Sound_InitCommandData: dc.b    0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0  ; was: byte_10D1A
 ; Loads Z80 data using table pointer in a1
 Sound_LoadZ80Table:
                 moveq   #2,d2  ; was: sub_10D24
@@ -46,23 +46,23 @@ Sound_PlayNote:
 ; Plays note only if sound channel is active
 Sound_PlayNoteIfActive:
                 tst.b   (byte_FFD2A4).w  ; was: sub_10D48
-                bne.s   locret_10D50
+                bne.s   Sound_PlayNoteIfActive_Return
                 bsr.s   Sound_PlayNote
 
-locret_10D50:
+Sound_PlayNoteIfActive_Return:  ; was: locret_10D50
                 rts
 
 ; Counts down sound channel cooldown timer
 Sound_ChannelCooldown:
                 tst.b   (byte_FFD2A4).w  ; was: sub_10D52
-                beq.s   locret_10D6C
+                beq.s   Sound_ChannelCooldown_Return
                 addq.w  #1,(word_FFD2A2).w
                 cmpi.w  #$1E,(word_FFD2A2).w
-                bcs.s   locret_10D6C
+                bcs.s   Sound_ChannelCooldown_Return
                 clr.w   (word_FFD2A2).w
                 clr.b   (byte_FFD2A4).w
 
-locret_10D6C:
+Sound_ChannelCooldown_Return:  ; was: locret_10D6C
                 rts
 
 ; Converts offset d0 to VDP VRAM write command format

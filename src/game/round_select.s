@@ -3,16 +3,16 @@
 
 RoundSelect_Init:
                 bsr.w   Sys_InitTitleScreen  ; was: sub_125BE
-                lea     (word_16DE8).l,a5
+                lea     (Gfx_ScreenInitData).l,a5
                 jsr     unk_FFFBBA
-                lea     byte_125E8(pc),a6
+                lea     RoundSelect_RoundLabel(pc),a6
                 bsr.w   Text_DrawString
                 move.b  #3,(byte_FFD882).w
                 move.b  #1,(byte_FFD29A).w
                 jsr     unk_FFFB6C
                 jmp     unk_FFFB6C
 
-byte_125E8:     dc.b    $C3, $54
+RoundSelect_RoundLabel: dc.b    $C3, $54  ; was: byte_125E8
 aRound:         dc.b    "ROUND ",0
                 dc.b    0
 ; Round select: handles up/down input
@@ -21,32 +21,32 @@ RoundSelect_Update:
                 move.b  #1,d2
                 move.b  (word_FFFF8E+1).w,d0
                 btst    #0,d0
-                beq.s   loc_1261A
+                beq.s   RoundSelect_Update_CheckDown
                 cmpi.b  #$36,d1
-                beq.s   loc_12642
+                beq.s   RoundSelect_Update_DrawNumber
                 addi.b  #0,d0
                 abcd    d2,d1
                 addq.b  #1,(word_FFD82C+1).w
                 move.b  d1,(word_FFD82C).w
-                bra.s   loc_12642
+                bra.s   RoundSelect_Update_DrawNumber
 
-loc_1261A:
+RoundSelect_Update_CheckDown:  ; was: loc_1261A
                 btst    #1,d0
-                beq.s   loc_12636
+                beq.s   RoundSelect_Update_CheckStart
                 cmpi.b  #1,d1
-                beq.s   loc_12642
+                beq.s   RoundSelect_Update_DrawNumber
                 addi.b  #0,d0
                 sbcd    d2,d1
                 subq.b  #1,(word_FFD82C+1).w
                 move.b  d1,(word_FFD82C).w
-                bra.s   loc_12642
+                bra.s   RoundSelect_Update_DrawNumber
 
-loc_12636:
+RoundSelect_Update_CheckStart:  ; was: loc_12636
                 btst    #7,d0
-                beq.s   loc_12642
+                beq.s   RoundSelect_Update_DrawNumber
                 move.w  #$18,(word_FFFFC0).w
 
-loc_12642:
+RoundSelect_Update_DrawNumber:  ; was: loc_12642
                 lea     (word_FFD82C).w,a6
                 moveq   #0,d5
                 move.w  #$C360,d5

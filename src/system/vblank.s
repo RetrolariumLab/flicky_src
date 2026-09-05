@@ -7,17 +7,17 @@ Int_VBlankHandler:
                 lea     (VDP_CTRL).l,a6
                 move.w  (word_FFFF96).w,d0
                 andi.w  #$C,d0
-                jsr     loc_10EAC(pc,d0.w)
+                jsr     Int_VBlankModeTable(pc,d0.w)
                 clr.w   (word_FFFF96).w
                 movem.l (sp)+,d0-d7/a0-a6
                 rte
 
-loc_10EAC:
-                bra.w   locret_10EB8
+Int_VBlankModeTable:  ; was: loc_10EAC
+                bra.w   Int_VBlank_Return
                 bra.w   Int_VBlankMain
                 bra.w   Int_VBlankMain
 
-locret_10EB8:
+Int_VBlank_Return:  ; was: locret_10EB8
                 rts
 
 ; VBlank main processing: scroll DMA and palette update
@@ -32,32 +32,32 @@ Int_VBlankMain:
                 lea     (word_FFF7E0).w,a0
                 lea     (unk_FFF860).w,a1
 
-loc_10EDC:
+Int_VBlankMain_ComparePaletteLoop:  ; was: loc_10EDC
                 cmpm.l  (a0)+,(a1)+
-                bne.s   loc_10EEE
-                dbf     d7,loc_10EDC
+                bne.s   Int_VBlankMain_PaletteChanged
+                dbf     d7,Int_VBlankMain_ComparePaletteLoop
                 bclr    #0,(byte_FFD00C).w
-                bne.s   loc_10EF4
-                bra.s   loc_10F14
+                bne.s   Int_VBlankMain_TransferPalette
+                bra.s   Int_VBlankMain_EnableDisplay
 
-loc_10EEE:
+Int_VBlankMain_PaletteChanged:  ; was: loc_10EEE
                 move.b  #1,(byte_FFD00C).w
 
-loc_10EF4:
+Int_VBlankMain_TransferPalette:  ; was: loc_10EF4
                 btst    #6,(IO_PCBVER+1).l
-                beq.s   loc_10F06
+                beq.s   Int_VBlankMain_QueuePaletteDMA
                 move.w  #$100,d0
 
-loc_10F02:
-                dbf     d0,loc_10F02
+Int_VBlankMain_DelayLoop:  ; was: loc_10F02
+                dbf     d0,Int_VBlankMain_DelayLoop
 
-loc_10F06:
+Int_VBlankMain_QueuePaletteDMA:  ; was: loc_10F06
                 move.w  #$F7E0,d1
                 moveq   #0,d2
                 move.w  #$80,d0
                 jsr     unk_FFFAC4
 
-loc_10F14:
+Int_VBlankMain_EnableDisplay:  ; was: loc_10F14
                 move.w  #$8100,d0
                 move.b  (byte_FFFF71).w,d0
                 ori.b   #$40,d0

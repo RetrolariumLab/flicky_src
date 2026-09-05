@@ -15,10 +15,10 @@ Nem_Decomp_Main:
                 lea     (word_FFE630).w,a1
                 move.w  (a0)+,d2
                 lsl.w   #1,d2
-                bcc.s   loc_AFE
+                bcc.s   Nem_Decomp_Main_Setup
                 adda.w  #(Nem_PCD_WriteRowToRAM-2-Nem_PCD_WriteRowToVDP_XOR),a3
 
-loc_AFE:
+Nem_Decomp_Main_Setup:  ; was: loc_AFE
                 lsl.w   #2,d2
                 movea.w d2,a5
                 moveq   #8,d3
@@ -31,7 +31,7 @@ Nem_Process_Compressed_Data:
                 moveq   #8,d0
                 bsr.w   Nem_GetBits
                 cmpi.w  #$FC,d1
-                bcc.s   loc_B4C
+                bcc.s   Nem_Process_Compressed_Data_Inline
                 add.w   d1,d1
                 move.b  (a1,d1.w),d0
                 ext.w   d0
@@ -59,7 +59,7 @@ Nem_PCD_WritePixel_Loop:
                 dbf     d0,Nem_PCD_WritePixel
                 bra.s   Nem_Process_Compressed_Data
 
-loc_B4C:
+Nem_Process_Compressed_Data_Inline:  ; was: loc_B4C
                 moveq   #6,d0
                 bsr.w   Nem_PCD_InlineData
                 moveq   #7,d0
@@ -71,7 +71,7 @@ Nem_PCD_WriteRowToVDP:
                 subq.w  #1,a5
                 move.w  a5,d4
                 bne.s   Nem_PCD_NewRow
-                bra.s   loc_B84
+                bra.s   Nem_Decomp_Done
 
 Nem_PCD_WriteRowToVDP_XOR:
                 eor.l   d4,d2
@@ -80,22 +80,22 @@ Nem_PCD_WriteRowToVDP_XOR:
                 move.w  a5,d4
                 bne.s   Nem_PCD_NewRow
 
-loc_B6E:
-                bra.s   loc_B84
+Nem_PCD_WriteRowToVDP_XOR_Done:  ; was: loc_B6E
+                bra.s   Nem_Decomp_Done
 
 Nem_PCD_WriteRowToRAM:
                 move.l  d4,(a4)+
                 subq.w  #1,a5
                 move.w  a5,d4
                 bne.s   Nem_PCD_NewRow
-                bra.s   loc_B84
+                bra.s   Nem_Decomp_Done
                 eor.l   d4,d2
                 move.l  d2,(a4)+
                 subq.w  #1,a5
                 move.w  a5,d4
                 bne.s   Nem_PCD_NewRow
 
-loc_B84:
+Nem_Decomp_Done:  ; was: loc_B84
                 movem.l (sp)+,d0-d7/a0-a1/a3-a5
                 rts
 
@@ -149,34 +149,34 @@ Nem_BitShift:
                 lsl.w   d0,d5  ; was: sub_BDC
                 add.w   d0,d6
                 add.w   d0,d0
-                and.w   locret_C38(pc,d0.w),d1
+                and.w   Nem_PCD_InlineData_Return(pc,d0.w),d1
                 add.w   d1,d5
                 move.w  d6,d0
                 subq.w  #8,d0
-                bcs.s   locret_BFE
-                bne.s   loc_BF6
+                bcs.s   Nem_BitShift_Return
+                bne.s   Nem_BitShift_EmitPartial
                 clr.w   d6
                 move.b  d5,(a0)+
                 rts
 
-loc_BF6:
+Nem_BitShift_EmitPartial:  ; was: loc_BF6
                 move.w  d5,d6
                 lsr.w   d0,d6
                 move.b  d6,(a0)+
                 move.w  d0,d6
 
-locret_BFE:
+Nem_BitShift_Return:  ; was: locret_BFE
                 rts
 
 ; Nemesis flush remaining bits to output
 Nem_FlushBits:
                 neg.w   d6  ; was: sub_C00
-                beq.s   locret_C0A
+                beq.s   Nem_FlushBits_Return
                 addq.w  #8,d6
                 lsl.w   d6,d5
                 move.b  d5,(a0)+
 
-locret_C0A:
+Nem_FlushBits_Return:  ; was: locret_C0A
                 rts
 
 ; Reads 2 bytes from (a0)+ into d5, sets d6=16 (Nemesis decompressor)
@@ -194,7 +194,7 @@ Nem_GetBits:
                 move.w  d5,d1
                 lsr.w   d7,d1
                 add.w   d0,d0
-                and.w   word_C3A-2(pc,d0.w),d1
+                and.w   Nem_BitMaskTable-2(pc,d0.w),d1
                 rts
 
 ; Gets bits and shifts for inline data (Nemesis decompressor)
@@ -205,15 +205,19 @@ Nem_GetBitsShift:
 Nem_PCD_InlineData:
                 sub.w   d0,d6
                 cmpi.w  #9,d6
-                bcc.s   locret_C38
+                bcc.s   Nem_PCD_InlineData_Return
                 addq.w  #8,d6
                 asl.w   #8,d5
                 move.b  (a0)+,d5
 
-locret_C38:
+; Shared return for the bit reader. It doubles as the base of the mask table
+; that starts two bytes later, which is why several routines index it
+; pc-relative as Nem_PCD_InlineData_Return(pc,dN.w).
+Nem_PCD_InlineData_Return:  ; was: locret_C38
                 rts
 
-word_C3A:       dc.w    1
+; Masks of the low 1..16 bits, indexed by (bit count * 2).
+Nem_BitMaskTable: dc.w    1  ; was: word_C3A
                 dc.w    3
                 dc.w    7
                 dc.w    $F
@@ -233,25 +237,25 @@ word_C3A:       dc.w    1
 Eni_DecodeTile:
                 move.w  a3,d3  ; was: sub_C5A
                 swap    d4
-                bpl.s   loc_C6A
+                bpl.s   Eni_DecodeTile_CheckHFlip
                 subq.w  #1,d6
                 btst    d6,d5
-                beq.s   loc_C6A
+                beq.s   Eni_DecodeTile_CheckHFlip
                 ori.w   #$1000,d3
 
-loc_C6A:
+Eni_DecodeTile_CheckHFlip:  ; was: loc_C6A
                 swap    d4
-                bpl.s   loc_C78
+                bpl.s   Eni_DecodeTile_ReadIndex
                 subq.w  #1,d6
                 btst    d6,d5
-                beq.s   loc_C78
+                beq.s   Eni_DecodeTile_ReadIndex
                 ori.w   #$800,d3
 
-loc_C78:
+Eni_DecodeTile_ReadIndex:  ; was: loc_C78
                 move.w  d5,d1
                 move.w  d6,d7
                 sub.w   a5,d7
-                bcc.s   loc_CA8
+                bcc.s   Eni_DecodeTile_HaveEnoughBits
                 move.w  d7,d6
                 addi.w  #$10,d6
                 neg.w   d7
@@ -259,46 +263,46 @@ loc_C78:
                 move.b  (a0),d5
                 rol.b   d7,d5
                 add.w   d7,d7
-                and.w   locret_C38(pc,d7.w),d5
+                and.w   Nem_PCD_InlineData_Return(pc,d7.w),d5
                 add.w   d5,d1
 
-loc_C96:
+Eni_DecodeTile_MaskAndCombine:  ; was: loc_C96
                 move.w  a5,d0
                 add.w   d0,d0
-                and.w   locret_C38(pc,d0.w),d1
+                and.w   Nem_PCD_InlineData_Return(pc,d0.w),d1
                 add.w   d3,d1
                 move.b  (a0)+,d5
                 lsl.w   #8,d5
                 move.b  (a0)+,d5
                 rts
 
-loc_CA8:
-                beq.s   loc_CBC
+Eni_DecodeTile_HaveEnoughBits:  ; was: loc_CA8
+                beq.s   Eni_DecodeTile_RefillWord
                 lsr.w   d7,d1
                 move.w  a5,d0
                 add.w   d0,d0
-                and.w   locret_C38(pc,d0.w),d1
+                and.w   Nem_PCD_InlineData_Return(pc,d0.w),d1
                 add.w   d3,d1
                 move.w  a5,d0
                 bra.w   Nem_PCD_InlineData
 
-loc_CBC:
+Eni_DecodeTile_RefillWord:  ; was: loc_CBC
                 moveq   #$10,d6
-                bra.s   loc_C96
+                bra.s   Eni_DecodeTile_MaskAndCombine
 
 ; Sets up Nemesis decompression to VDP_DATA
 Nem_DecompSetup:
                 movem.l d0-d6/a0/a4,-(sp)  ; was: sub_CC0
                 moveq   #0,d4
                 lea     (VDP_DATA).l,a4
-                bra.s   loc_CD4
+                bra.s   Nem_Decomp1bpp_Begin
 
 ; Nemesis decompress to RAM buffer
 Nem_DecompToRAM:
                 movem.l d0-d6/a0/a4,-(sp)  ; was: sub_CCE
                 moveq   #4,d4
 
-loc_CD4:
+Nem_Decomp1bpp_Begin:  ; was: loc_CD4
                 asl.w   #3,d1
                 subq.w  #1,d1
                 move.b  d0,d2
@@ -306,25 +310,25 @@ loc_CD4:
                 lsr.b   #4,d2
                 andi.b  #$F,d3
 
-loc_CE2:
+Nem_Decomp1bpp_RowLoop:  ; was: loc_CE2
                 moveq   #7,d6
                 move.b  (a0)+,d0
 
-loc_CE6:
+Nem_Decomp1bpp_PixelLoop:  ; was: loc_CE6
                 lsl.l   #4,d5
                 btst    d6,d0
-                beq.s   loc_CF0
+                beq.s   Nem_Decomp1bpp_PixelLow
                 or.b    d2,d5
-                bra.s   loc_CF2
+                bra.s   Nem_Decomp1bpp_PixelNext
 
-loc_CF0:
+Nem_Decomp1bpp_PixelLow:  ; was: loc_CF0
                 or.b    d3,d5
 
-loc_CF2:
-                dbf     d6,loc_CE6
+Nem_Decomp1bpp_PixelNext:  ; was: loc_CF2
+                dbf     d6,Nem_Decomp1bpp_PixelLoop
                 move.l  d5,(a4)
                 adda.l  d4,a4
-                dbf     d1,loc_CE2
+                dbf     d1,Nem_Decomp1bpp_RowLoop
                 movem.l (sp)+,d0-d6/a0/a4
                 rts
 
@@ -347,77 +351,78 @@ Eni_Decompress:
                 adda.w  a3,a4
                 bsr.w   Nem_GetCodeWord
 
-loc_D28:
+Eni_Decompress_NextOpcode:  ; was: loc_D28
                 moveq   #7,d0
                 bsr.w   Nem_GetBits
                 move.w  d1,d2
                 moveq   #7,d0
                 cmpi.w  #$40,d1
-                bcc.s   loc_D3C
+                bcc.s   Eni_Decompress_Dispatch
                 moveq   #6,d0
                 lsr.w   #1,d2
 
-loc_D3C:
+Eni_Decompress_Dispatch:  ; was: loc_D3C
                 bsr.w   Nem_PCD_InlineData
                 andi.w  #$F,d2
                 lsr.w   #4,d1
                 add.w   d1,d1
-                jmp     loc_D98(pc,d1.w)
+                jmp     Eni_OpcodeJumpTable(pc,d1.w)
 
 ; Writes incrementing tile pattern (Enigma decompressor)
 Eni_WriteTileInc:
                 move.w  a2,(a1)+  ; was: sub_D4C
                 addq.w  #1,a2
                 dbf     d2,Eni_WriteTileInc
-                bra.s   loc_D28
+                bra.s   Eni_Decompress_NextOpcode
 
 ; Enigma write repeated tile pattern
 Eni_WriteRepeat:
                 move.w  a4,(a1)+  ; was: sub_D56
                 dbf     d2,Eni_WriteRepeat
-                bra.s   loc_D28
+                bra.s   Eni_Decompress_NextOpcode
 
 ; Enigma write static tile value
 Eni_WriteStatic:
                 bsr.w   Eni_DecodeTile  ; was: sub_D5E
 
-loc_D62:
+Eni_WriteStatic_Loop:  ; was: loc_D62
                 move.w  d1,(a1)+
-                dbf     d2,loc_D62
-                bra.s   loc_D28
+                dbf     d2,Eni_WriteStatic_Loop
+                bra.s   Eni_Decompress_NextOpcode
 
 ; Enigma write incrementing tile values
 Eni_WriteIncrement:
                 bsr.w   Eni_DecodeTile  ; was: sub_D6A
 
-loc_D6E:
+Eni_WriteIncrement_Loop:  ; was: loc_D6E
                 move.w  d1,(a1)+
                 addq.w  #1,d1
-                dbf     d2,loc_D6E
-                bra.s   loc_D28
+                dbf     d2,Eni_WriteIncrement_Loop
+                bra.s   Eni_Decompress_NextOpcode
 
 ; Enigma write decrementing tile values
 Eni_WriteDecrement:
                 bsr.w   Eni_DecodeTile  ; was: sub_D78
 
-loc_D7C:
+Eni_WriteDecrement_Loop:  ; was: loc_D7C
                 move.w  d1,(a1)+
                 subq.w  #1,d1
-                dbf     d2,loc_D7C
-                bra.s   loc_D28
+                dbf     d2,Eni_WriteDecrement_Loop
+                bra.s   Eni_Decompress_NextOpcode
 
 ; Decodes inline tile data (Enigma decompressor)
 Eni_DecodeInline:
                 cmpi.w  #$F,d2  ; was: sub_D86
-                beq.s   loc_DA8
+                beq.s   Eni_DecodeInline_Finish
 
-loc_D8C:
+Eni_DecodeInline_Loop:  ; was: loc_D8C
                 bsr.w   Eni_DecodeTile
                 move.w  d1,(a1)+
-                dbf     d2,loc_D8C
-                bra.s   loc_D28
+                dbf     d2,Eni_DecodeInline_Loop
+                bra.s   Eni_Decompress_NextOpcode
 
-loc_D98:
+; Enigma opcode dispatch: the decoded opcode indexes this table of branches.
+Eni_OpcodeJumpTable:  ; was: loc_D98
                 bra.s   Eni_WriteTileInc
                 bra.s   Eni_WriteTileInc
                 bra.s   Eni_WriteRepeat
@@ -427,19 +432,19 @@ loc_D98:
                 bra.s   Eni_WriteDecrement
                 bra.s   Eni_DecodeInline
 
-loc_DA8:
+Eni_DecodeInline_Finish:  ; was: loc_DA8
                 subq.w  #1,a0
                 cmpi.w  #$10,d6
-                bne.s   loc_DB2
+                bne.s   Eni_DecodeInline_AlignCheck
                 subq.w  #1,a0
 
-loc_DB2:
+Eni_DecodeInline_AlignCheck:  ; was: loc_DB2
                 move.w  a0,d0
                 lsr.w   #1,d0
-                bcc.s   loc_DBA
+                bcc.s   Eni_Decompress_Done
                 addq.w  #1,a0
 
-loc_DBA:
+Eni_Decompress_Done:  ; was: loc_DBA
                 movem.l (sp)+,d0-d7/a1-a5
                 rts
 

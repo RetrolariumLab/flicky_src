@@ -15,9 +15,9 @@ Sys_GameEntryPoint:
                 moveq   #0,d7
                 move.w  #$1FF,d6
 
-loc_10034:
+Sys_GameEntryPoint_ClearObjectsLoop:  ; was: loc_10034
                 move.l  d7,(a6)+
-                dbf     d6,loc_10034
+                dbf     d6,Sys_GameEntryPoint_ClearObjectsLoop
                 move.l  #$40000010,(VDP_CTRL).l
                 move.w  #0,(VDP_DATA).l
                 move.l  #$40020010,(VDP_CTRL).l
@@ -26,15 +26,15 @@ loc_10034:
                 move.w  #$101,(word_FFD82C).w
                 move    #$2500,sr
 
-loc_1006C:
-                movea.w (off_0+2).w,sp
+Sys_MainLoop:  ; was: loc_1006C
+                movea.w (Sys_VectorTable+2).w,sp
                 move.w  (word_FFFFC0).w,d0
                 andi.l  #$7C,d0
-                jsr     loc_10084(pc,d0.w)
+                jsr     Sys_GameModeTable(pc,d0.w)
                 addq.w  #1,(word_FFFF92).w
-                bra.s   loc_1006C
+                bra.s   Sys_MainLoop
 
-loc_10084:
+Sys_GameModeTable:  ; was: loc_10084
                 bra.w   Title_Init
                 bra.w   Title_Update
                 bra.w   Guide_Init
@@ -51,13 +51,13 @@ loc_10084:
                 bra.w   Ending_MainLoop
                 bra.w   Demo_Init
                 bra.w   Demo_Update
-                bra.w   loc_100CC
-                bra.w   loc_100D0
+                bra.w   Sys_ModeLoadSegaScreen
+                bra.w   Sys_ModeSegaScreen
 
-loc_100CC:
+Sys_ModeLoadSegaScreen:  ; was: loc_100CC
                 jmp     LoadSegaScreen
 
-loc_100D0:
+Sys_ModeSegaScreen:  ; was: loc_100D0
                 jmp     SegaScreen
 
 ; Initializes title screen objects and loads logo tiles
@@ -67,9 +67,9 @@ Sys_InitTitleScreen:
                 moveq   #0,d7
                 move.w  #$1FF,d6
 
-loc_100E2:
+Sys_InitTitleScreen_ClearLoop:  ; was: loc_100E2
                 move.l  d7,(a6)+
-                dbf     d6,loc_100E2
+                dbf     d6,Sys_InitTitleScreen_ClearLoop
                 bsr.w   Camera_ClearScroll
                 bsr.w   Object_ClearAllSlots
                 move.w  #$8000,(word_FFD884).w
@@ -86,7 +86,7 @@ LoadTilesToVRAM:
                 jsr     j_Nem_Decomp
                 move.b  #1,(byte_FFD88E).w
 
-loc_10126:
+LoadTilesToVRAM_LoadFont:  ; was: loc_10126
                 moveq   #$20,d0
                 lea     (VDP_CTRL).l,a6
                 jsr     unk_FFFB8A

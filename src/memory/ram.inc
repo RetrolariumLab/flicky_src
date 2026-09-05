@@ -156,7 +156,7 @@ unk_FFFACA:     equ     $FFFACA
 unk_FFFAD6:     equ     $FFFAD6
 unk_FFFB0C:     equ     $FFFB0C
 unk_FFFB12:     equ     $FFFB12
-j_LoadZ80Driver:equ     $FFFB30
+j_LoadZ80Driver: equ     $FFFB30
 unk_FFFB36:     equ     $FFFB36
 unk_FFFB3C:     equ     $FFFB3C
 unk_FFFB54:     equ     $FFFB54

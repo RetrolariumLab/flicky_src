@@ -11,5 +11,5 @@ SpritesTiles:   binclude "data/artnem/data_SpritesTiles.bin"
 SpritesTiles_End:
 ScoresTiles:    binclude "data/artnem/data_ScoresTiles.bin"
 ScoresTiles_End:
-FlickyLogoTiles:binclude "data/artnem/data_FlickyLogoTiles.bin"
+FlickyLogoTiles: binclude "data/artnem/data_FlickyLogoTiles.bin"
 FlickyLogoTiles_End:

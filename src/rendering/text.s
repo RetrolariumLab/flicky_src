@@ -19,13 +19,13 @@ Gfx_MakeVDPWriteCmd:
 ; Writes tile d4 at tilemap coordinates
 Gfx_WriteTileAtCoord:
                 bsr.s   Gfx_TilemapCoordToAddr  ; was: sub_10F3A
-                bra.s   loc_10F40
+                bra.s   Gfx_WriteTile_Emit
 
 ; Writes tile d4 at VRAM offset d5
 Gfx_WriteTileAtOffset:
                 bsr.s   Gfx_MakeVDPWriteCmd  ; was: sub_10F3E
 
-loc_10F40:
+Gfx_WriteTile_Emit:  ; was: loc_10F40
                 move.l  d5,(VDP_CTRL).l
                 move.w  d4,(VDP_DATA).l
                 rts
@@ -40,9 +40,9 @@ Gfx_CopyTilesToVRAM:
                 swap    d5
                 move.l  d5,(a4)
 
-loc_10F66:
+Gfx_CopyTilesToVRAM_Loop:  ; was: loc_10F66
                 move.w  (a6)+,(a3)
-                dbf     d4,loc_10F66
+                dbf     d4,Gfx_CopyTilesToVRAM_Loop
                 rts
 
 ; Prepares VDP command and calls DrawTilemapRows
@@ -55,28 +55,28 @@ Gfx_DrawTilemapRect:
                 lea     (VDP_DATA).l,a3
                 move.l  #$400000,d0
 
-loc_10F82:
+Gfx_DrawTilemapRect_RowLoop:  ; was: loc_10F82
                 move.l  d5,(a4)
                 move.w  d7,d1
 
-loc_10F86:
+Gfx_DrawTilemapRect_ColumnLoop:  ; was: loc_10F86
                 move.w  (a6)+,(a3)
-                dbf     d1,loc_10F86
+                dbf     d1,Gfx_DrawTilemapRect_ColumnLoop
                 add.l   d0,d5
-                dbf     d6,loc_10F82
+                dbf     d6,Gfx_DrawTilemapRect_RowLoop
                 rts
 
 ; Writes single character tile with base offset
 Text_WriteCharTile:
                 cmpi.w  #$FFFF,(word_FFD884).w  ; was: sub_10F94
-                bne.s   loc_10FA2
+                bne.s   Text_WriteCharTile_AddBase
                 move.w  #$8020,d4
-                bra.s   loc_10FA6
+                bra.s   Text_WriteCharTile_Emit
 
-loc_10FA2:
+Text_WriteCharTile_AddBase:  ; was: loc_10FA2
                 add.w   (word_FFD884).w,d4
 
-loc_10FA6:
+Text_WriteCharTile_Emit:  ; was: loc_10FA6
                 bsr.s   Gfx_WriteTileAtOffset
                 rts
 
@@ -85,17 +85,17 @@ Text_DrawString:
                 moveq   #0,d6  ; was: sub_10FAA
                 move.w  (a6)+,d6
 
-loc_10FAE:
+Text_DrawString_Loop:  ; was: loc_10FAE
                 moveq   #0,d4
                 moveq   #0,d5
                 move.w  d6,d5
                 move.b  (a6)+,d4
-                beq.s   locret_10FBE
+                beq.s   Text_DrawString_Return
                 bsr.s   Text_WriteCharTile
                 addq.w  #2,d6
-                bra.s   loc_10FAE
+                bra.s   Text_DrawString_Loop
 
-locret_10FBE:
+Text_DrawString_Return:  ; was: locret_10FBE
                 rts
 
 ; Draws double-height text with upper/lower tiles
@@ -103,11 +103,11 @@ Text_DrawDoubleHeight:
                 moveq   #0,d6  ; was: sub_10FC0
                 move.w  (a6)+,d6
 
-loc_10FC4:
+Text_DrawDoubleHeight_Loop:  ; was: loc_10FC4
                 moveq   #0,d4
                 moveq   #0,d5
                 move.b  (a6)+,d4
-                beq.s   locret_10FF2
+                beq.s   Text_DrawDoubleHeight_Return
                 bsr.w   Text_CharToTileIndex
                 move.w  d5,d3
                 move.w  d6,d5
@@ -120,9 +120,9 @@ loc_10FC4:
                 subi.w  #$20,d4
                 bsr.w   Gfx_WriteTileAtOffset
                 addq.w  #2,d6
-                bra.s   loc_10FC4
+                bra.s   Text_DrawDoubleHeight_Loop
 
-locret_10FF2:
+Text_DrawDoubleHeight_Return:  ; was: locret_10FF2
                 rts
 
 ; Draws BCD number from (a6) with leading zero handling
@@ -130,7 +130,7 @@ Text_DrawBCDNumber:
                 clr.b   (byte_FFD00D).w  ; was: sub_10FF4
                 subq.w  #2,d5
 
-loc_10FFA:
+Text_DrawBCDNumber_Loop:  ; was: loc_10FFA
                 moveq   #0,d1
                 move.b  (a6)+,d1
                 move.w  d1,d4
@@ -145,32 +145,32 @@ loc_10FFA:
                 movem.l d0-d1/d5,-(sp)
                 bsr.w   Text_DrawDigit
                 movem.l (sp)+,d0-d1/d5
-                dbf     d0,loc_10FFA
+                dbf     d0,Text_DrawBCDNumber_Loop
                 tst.b   (byte_FFD00D).w
-                bne.s   locret_11034
+                bne.s   Text_DrawBCDNumber_Return
                 moveq   #$30,d4
                 bsr.w   Text_WriteCharTile
 
-locret_11034:
+Text_DrawBCDNumber_Return:  ; was: locret_11034
                 rts
 
 ; Draws single digit with leading zero suppression
 Text_DrawDigit:
                 tst.b   d4  ; was: sub_11036
-                bne.s   loc_1104C
+                bne.s   Text_DrawDigit_SeenNonZero
                 tst.b   (byte_FFD00D).w
-                bne.s   loc_11052
+                bne.s   Text_DrawDigit_Emit
                 tst.b   (byte_FFD29A).w
-                beq.s   locret_1104A
+                beq.s   Text_DrawDigit_Return
                 bsr.w   Text_WriteCharTile
 
-locret_1104A:
+Text_DrawDigit_Return:  ; was: locret_1104A
                 rts
 
-loc_1104C:
+Text_DrawDigit_SeenNonZero:  ; was: loc_1104C
                 move.b  #1,(byte_FFD00D).w
 
-loc_11052:
+Text_DrawDigit_Emit:  ; was: loc_11052
                 addi.w  #$30,d4
                 bsr.w   Text_WriteCharTile
                 rts

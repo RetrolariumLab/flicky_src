@@ -5,7 +5,7 @@ Gfx_LoadPaletteCompact:
                 movem.l d0-d2/a0,-(sp)  ; was: sub_1196
                 lea     (word_FFF7E0).w,a0
 
-loc_119E:
+Gfx_LoadPaletteCompact_Loop:  ; was: loc_119E
                 move.w  (a5),d0
                 andi.w  #$10,d0
                 move.w  (a5),d1
@@ -22,7 +22,7 @@ loc_119E:
                 andi.w  #$EEE,d1
                 move.w  d1,(a0,d0.w)
                 lsr.w   #1,d2
-                bcc.s   loc_119E
+                bcc.s   Gfx_LoadPaletteCompact_Loop
                 movem.l (sp)+,d0-d2/a0
                 rts
 
@@ -52,14 +52,14 @@ Gfx_InitTilemapGradient:
                 lsl.w   #5,d3
                 clr.b   d4
 
-loc_1218:
+Gfx_InitTilemapGradient_RowLoop:  ; was: loc_1218
                 move.w  d3,d2
                 move.w  d4,d1
                 moveq   #$20,d0
                 add.w   d0,d3
                 bsr.w   Gfx_FillVRAMValue
                 addi.b  #$11,d4
-                bcc.s   loc_1218
+                bcc.s   Gfx_InitTilemapGradient_RowLoop
                 rts
 
 ; Decompresses Enigma tilemap and draws to VRAM
@@ -93,11 +93,11 @@ Gfx_DrawTilemapRows:
                 bsr.w   Gfx_SetVRAMWriteAddr
                 move.w  d4,d0
 
-loc_1268:
+Gfx_DrawTilemapRows_ColumnLoop:  ; was: loc_1268
                 move.w  (a0)+,d1
                 add.w   d3,d1
                 move.w  d1,-4(a6)
-                dbf     d0,loc_1268
+                dbf     d0,Gfx_DrawTilemapRows_ColumnLoop
                 add.w   (word_FFFFE2).w,d2
                 dbf     d5,Gfx_DrawTilemapRows
                 move.w  d3,d0
@@ -126,7 +126,7 @@ Gfx_CopyToCRAM:
                 ori.w   #$C000,d1
                 swap    d1
                 move.l  d1,(a6)
-                bra.s   loc_12E6
+                bra.s   Gfx_CopyToVRAM_Begin
 
 ; Copies tile data from ROM to VRAM
 Gfx_CopyToVRAM:
@@ -144,14 +144,14 @@ Gfx_CopyToVRAM:
                 swap    d1
                 move.l  d1,(a6)
 
-loc_12E6:
+Gfx_CopyToVRAM_Begin:  ; was: loc_12E6
                 addq.w  #3,d0
                 lsr.w   #2,d0
                 move.w  d0,d1
                 lsr.w   #3,d1
-                bra.s   loc_1300
+                bra.s   Gfx_CopyToVRAM_BlockCheck
 
-loc_12F0:
+Gfx_CopyToVRAM_Block8Loop:  ; was: loc_12F0
                 move.l  (a0)+,(a5)
                 move.l  (a0)+,(a5)
                 move.l  (a0)+,(a5)
@@ -161,15 +161,15 @@ loc_12F0:
                 move.l  (a0)+,(a5)
                 move.l  (a0)+,(a5)
 
-loc_1300:
-                dbf     d1,loc_12F0
+Gfx_CopyToVRAM_BlockCheck:  ; was: loc_1300
+                dbf     d1,Gfx_CopyToVRAM_Block8Loop
                 andi.w  #7,d0
-                bra.s   loc_130C
+                bra.s   Gfx_CopyToVRAM_TailCheck
 
-loc_130A:
+Gfx_CopyToVRAM_TailLoop:  ; was: loc_130A
                 move.l  (a0)+,(a5)
 
-loc_130C:
-                dbf     d0,loc_130A
+Gfx_CopyToVRAM_TailCheck:  ; was: loc_130C
+                dbf     d0,Gfx_CopyToVRAM_TailLoop
                 movem.l (sp)+,a0/a5
                 rts

@@ -129,36 +129,36 @@ checksum_loop:
 
 CheckSumOk:
                 btst    #6,(IO_EXT_CTRL+1).l
-                bne.s   loc_3AA
+                bne.s   Boot_CheckInitFlag
                 move    #$2700,sr
                 lea     ((IO_CT1_DATA+1)).l,a0
                 bsr.w   Gfx_InitVDPRegister
                 cmpi.b  #0,d0
-                beq.s   loc_374
+                beq.s   Boot_SetupControllerPorts
                 nop
                 nop
                 nop
 
-loc_374:
+Boot_SetupControllerPorts:  ; was: loc_374
                 moveq   #$40,d0
                 move.b  d0,(IO_CT1_CTRL+1).l
                 move.b  d0,(IO_CT2_CTRL+1).l
                 move.b  d0,(IO_EXT_CTRL+1).l
 
-loc_388:
+Boot_ClearWorkRAM:  ; was: loc_388
                 lea     (M68K_RAM).l,a6
                 moveq   #0,d7
                 move.w  #$3FFF,d6
 
-loc_394:
+Boot_ClearWorkRAM_Loop:  ; was: loc_394
                 move.l  d7,(a6)+
-                dbf     d6,loc_394
+                dbf     d6,Boot_ClearWorkRAM_Loop
                 move.l  #'init',(dword_FFFFFC).w
                 move.l  #$100000,(dword_FFCC00).w
 
-loc_3AA:
+Boot_CheckInitFlag:  ; was: loc_3AA
                 cmpi.l  #'init',(dword_FFFFFC).w
-                bne.s   loc_388
+                bne.s   Boot_ClearWorkRAM
                 bsr.w   LoadFuncTable
                 bsr.w   SetInitialVDPRegs
                 bsr.w   Gfx_WriteVDPRegs
@@ -168,9 +168,9 @@ loc_3AA:
                 lea     (M68K_RAM).l,a1
                 move.w  #$2FFF,d0
 
-loc_3D8:
+Boot_CopyGameToRAM_Loop:  ; was: loc_3D8
                 move.l  (a0)+,(a1)+
-                dbf     d0,loc_3D8
+                dbf     d0,Boot_CopyGameToRAM_Loop
                 jmp     M68K_RAM
 
 CheckSumError:

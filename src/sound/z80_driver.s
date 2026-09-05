@@ -13,16 +13,16 @@ LoadZ80Driver:
                 moveq   #8,d0
                 move.w  #$1C00,d1
                 moveq   #1,d2
-                lea     byte_1046(pc),a0
+                lea     Sound_ChannelInitData(pc),a0
                 bsr.w   Sound_CopyToZ80RAM
                 clr.w   (word_FFFFA2).w
                 rts
 
-byte_1046:      dc.b    0, $80, 0, $80, 0, 0, 0, 0, $20, 0
+Sound_ChannelInitData: dc.b    0, $80, 0, $80, 0, 0, 0, 0, $20, 0  ; was: byte_1046
 RequestZ80Bus:
                 btst    #0,(IO_Z80BUS).l
                 sne     (byte_FFFFC8).w
-                beq.s   locret_107C
+                beq.s   Sound_RequestZ80Bus_Return
 
 ; Requests Z80 bus access with busy wait
 Sound_RequestZ80Bus:
@@ -30,23 +30,23 @@ Sound_RequestZ80Bus:
                 move.w  #$100,(IO_Z80BUS).l
                 moveq   #$F,d0
 
-loc_106C:
+Sound_RequestZ80Bus_WaitLoop:  ; was: loc_106C
                 btst    #0,(IO_Z80BUS).l
-                dbeq    d0,loc_106C
+                dbeq    d0,Sound_RequestZ80Bus_WaitLoop
                 movem.w (sp)+,d0
 
-locret_107C:
+Sound_RequestZ80Bus_Return:  ; was: locret_107C
                 rts
 
 ; Release Z80 bus if flag set
 Sound_ReleaseZ80Check:
                 tst.b   (byte_FFFFC8).w  ; was: sub_107E
-                beq.s   locret_108C
+                beq.s   Sound_ReleaseZ80Check_Return
 
 ReleaseZ80Bus:
                 move.w  #0,(IO_Z80BUS).l
 
-locret_108C:
+Sound_ReleaseZ80Check_Return:  ; was: locret_108C
                 rts
 
 ; Resets Z80 processor via IO_Z80RES
@@ -68,32 +68,32 @@ Sound_CopyToZ80RAM:
                 lea     (Z80_RAM).l,a1
                 adda.w  d1,a1
 
-loc_10B4:
+Sound_CopyToZ80RAM_ByteLoop:  ; was: loc_10B4
                 move.b  (a0)+,d1
                 moveq   #$F,d3
 
-loc_10B8:
+Sound_CopyToZ80RAM_RetryLoop:  ; was: loc_10B8
                 move.b  d1,(a1)
                 cmp.b   (a1),d1
-                beq.s   loc_10C4
-                dbf     d3,loc_10B8
-                bra.s   loc_10D4
+                beq.s   Sound_CopyToZ80RAM_NextByte
+                dbf     d3,Sound_CopyToZ80RAM_RetryLoop
+                bra.s   Sound_CopyToZ80RAM_Release
 
-loc_10C4:
+Sound_CopyToZ80RAM_NextByte:  ; was: loc_10C4
                 addq.w  #1,a1
-                dbf     d0,loc_10B4
+                dbf     d0,Sound_CopyToZ80RAM_ByteLoop
                 lsr.w   #1,d2
-                bcc.s   loc_10D0
+                bcc.s   Sound_CopyToZ80RAM_CheckHold
                 bsr.s   Sound_ResetZ80
 
-loc_10D0:
+Sound_CopyToZ80RAM_CheckHold:  ; was: loc_10D0
                 lsr.w   #1,d2
-                bcs.s   loc_10D6
+                bcs.s   Sound_CopyToZ80RAM_Done
 
-loc_10D4:
+Sound_CopyToZ80RAM_Release:  ; was: loc_10D4
                 bsr.s   ReleaseZ80Bus
 
-loc_10D6:
+Sound_CopyToZ80RAM_Done:  ; was: loc_10D6
                 movem.l (sp)+,d0-d3/a0-a1
                 rts
 
@@ -117,41 +117,41 @@ Sound_SendZ80Command:
 Sound_QueueToBuffer:
                 movea.w (word_FFFFA2).w,a0  ; was: sub_1100
                 cmpa.w  #8,a0
-                bcc.s   locret_1112
+                bcc.s   Sound_QueueToBuffer_Return
                 move.b  d0,-$66(a0)
                 addq.w  #1,(word_FFFFA2).w
 
-locret_1112:
+Sound_QueueToBuffer_Return:  ; was: locret_1112
                 rts
 
 ; Queues sound effect from object to Z80 sound driver
 Sound_QueueSFX:
                 movea.w (word_FFFFA2).w,a0  ; was: sub_1114
                 move.w  a0,d0
-                beq.s   loc_115A
+                beq.s   Sound_QueueSFX_Wait
                 move.b  -$67(a0),d0
                 subq.w  #1,(word_FFFFA2).w
                 bsr.w   Sound_RequestZ80Bus
                 tst.b   (byte_A01C0A).l
-                bne.s   loc_1138
+                bne.s   Sound_QueueSFX_TrySlot2
                 move.b  d0,(byte_A01C0A).l
-                bra.s   loc_1156
+                bra.s   Sound_QueueSFX_Release
 
-loc_1138:
+Sound_QueueSFX_TrySlot2:  ; was: loc_1138
                 tst.b   (byte_A01C0B).l
-                bne.s   loc_1148
+                bne.s   Sound_QueueSFX_TrySlot3
                 move.b  d0,(byte_A01C0B).l
-                bra.s   loc_1156
+                bra.s   Sound_QueueSFX_Release
 
-loc_1148:
+Sound_QueueSFX_TrySlot3:  ; was: loc_1148
                 tst.b   (byte_A01C0C).l
-                bne.s   loc_1156
+                bne.s   Sound_QueueSFX_Release
                 move.b  d0,(byte_A01C0C).l
 
-loc_1156:
+Sound_QueueSFX_Release:  ; was: loc_1156
                 bsr.w   ReleaseZ80Bus
 
-loc_115A:
+Sound_QueueSFX_Wait:  ; was: loc_115A
                 bra.w   Sys_WaitVBlank
 
 ; Clears entire Z80 RAM (8KB)
@@ -159,15 +159,15 @@ Sound_ClearZ80RAM:
                 move.w  #$1FFF,d0  ; was: sub_115E
                 lea     (Z80_RAM).l,a0
 
-loc_1168:
+Sound_ClearZ80RAM_ByteLoop:  ; was: loc_1168
                 moveq   #$F,d1
 
-loc_116A:
+Sound_ClearZ80RAM_RetryLoop:  ; was: loc_116A
                 move.b  #0,(a0)
                 tst.b   (a0)
-                dbeq    d1,loc_116A
+                dbeq    d1,Sound_ClearZ80RAM_RetryLoop
                 addq.l  #1,a0
-                dbf     d0,loc_1168
+                dbf     d0,Sound_ClearZ80RAM_ByteLoop
                 rts
 
 ; Checks if specific sound is playing

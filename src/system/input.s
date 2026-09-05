@@ -8,26 +8,26 @@ Input_ProcessJoypads:
                 moveq   #$E,d1
                 moveq   #6,d2
 
-loc_DD0:
+Input_ProcessJoypads_UpperBitLoop:  ; was: loc_DD0
                 btst    d1,d0
                 sne     (a0)+
                 subq.b  #1,d1
-                dbf     d2,loc_DD0
+                dbf     d2,Input_ProcessJoypads_UpperBitLoop
                 moveq   #6,d1
                 moveq   #2,d2
 
-loc_DDE:
+Input_ProcessJoypads_LowerBitLoop:  ; was: loc_DDE
                 btst    d1,d0
                 sne     (a0)+
                 subq.b  #1,d1
-                dbf     d2,loc_DDE
+                dbf     d2,Input_ProcessJoypads_LowerBitLoop
                 andi.b  #$70,d0
                 sne     (a0)+
                 tst.b   (byte_FFFF87).w
-                beq.s   locret_DF8
+                beq.s   Input_ProcessJoypads_Return
                 clr.b   (byte_FFFF86).w
 
-locret_DF8:
+Input_ProcessJoypads_Return:  ; was: locret_DF8
                 rts
 
 InitJoypads:

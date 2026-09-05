@@ -69,7 +69,7 @@ def normalize_line(line: str, depth: int) -> str:
         # reads like a mnemonic.
         name, rest = field_match.group(1), field_match.group(2)
         rest_code, rest_comment = split_comment(rest)
-        head = name.ljust(indent) + collapse_operand_spacing(rest_code.strip())
+        head = pad_label(name, indent) + collapse_operand_spacing(rest_code.strip())
         if rest_comment:
             head = f"{head.rstrip()}  {rest_comment.strip()}"
         return head.rstrip()
@@ -81,7 +81,7 @@ def normalize_line(line: str, depth: int) -> str:
         body = collapse_operand_spacing(rest_code.strip())
         head = f"{name}:"
         if body:
-            head = head.ljust(indent) + body
+            head = pad_label(head, indent) + body
         if rest_comment:
             head = f"{head}  {rest_comment.strip()}"
         return head.rstrip()
@@ -91,6 +91,15 @@ def normalize_line(line: str, depth: int) -> str:
     if comment:
         result = f"{result}  {comment.strip()}"
     return result.rstrip()
+
+
+def pad_label(head: str, indent: int) -> str:
+    """Pad a label so the operand field starts at `indent`.
+
+    A label that already reaches the column still needs one separating space,
+    otherwise it runs straight into the directive that follows it.
+    """
+    return head.ljust(indent) if len(head) < indent else head + " "
 
 
 def collapse_operand_spacing(code: str) -> str:

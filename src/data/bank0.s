@@ -25,7 +25,7 @@ func_table:     dc.w    $39
                 dc.w    Gfx_FillVRAMValue
                 dc.w    DMA_WaitComplete
                 dc.w    DMA_FillVRAMSetup
-                dc.w    loc_900
+                dc.w    DMA_FillVRAM_CheckSize
                 dc.w    DMA_CopyCheck
                 dc.w    DMA_ToCRAM
                 dc.w    DMA_ToVRAMCheck
@@ -54,7 +54,7 @@ func_table:     dc.w    $39
                 dc.w    Gfx_SetTileWriteAddr
                 dc.w    Gfx_SetVRAMWriteAddr
                 dc.w    Gfx_TileToVDPCmd
-                dc.w    loc_F2A
+                dc.w    Gfx_TileToVDPCmd_FromAddress
                 dc.w    Sound_CheckPlaying
                 dc.w    Gfx_FadePalette
                 dc.w    Gfx_BackupPalette

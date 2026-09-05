@@ -22,15 +22,15 @@ Gfx_UpdateScrollRegs:
                 move.l  #$78400002,(VDP_CTRL).l
                 moveq   #$17,d0
 
-loc_1134C:
+Gfx_UpdateScrollRegs_HScrollLoop:  ; was: loc_1134C
                 move.w  d7,(a5)
-                dbf     d0,loc_1134C
+                dbf     d0,Gfx_UpdateScrollRegs_HScrollLoop
                 move.l  #$78020002,(VDP_CTRL).l
                 moveq   #$1B,d0
 
-loc_1135E:
+Gfx_UpdateScrollRegs_VScrollLoop:  ; was: loc_1135E
                 move.w  d7,(a5)
-                dbf     d0,loc_1135E
+                dbf     d0,Gfx_UpdateScrollRegs_VScrollLoop
                 move.w  #$8F02,(a6)
                 move.w  (dword_FFFFA4).w,d7
                 move.l  #$40000010,(VDP_CTRL).l
@@ -40,20 +40,20 @@ loc_1135E:
 ; Animation timer countdown with frame advance and wrap
 Anim_ProcessTimer:
                 subq.b  #1,1(a0)  ; was: sub_1137A
-                bpl.s   loc_1138A
+                bpl.s   Anim_ProcessTimer_CheckWrap
                 move.b  1(a1),1(a0)
                 addq.b  #1,0.w(a0)
 
-loc_1138A:
+Anim_ProcessTimer_CheckWrap:  ; was: loc_1138A
                 moveq   #0,d0
                 move.b  0.w(a0),d0
                 cmp.b   (a1),d0
-                bcs.s   loc_113A0
+                bcs.s   Anim_ProcessTimer_DrawFrame
                 clr.b   0.w(a0)
                 moveq   #0,d0
                 move.b  #1,2(a0)
 
-loc_113A0:
+Anim_ProcessTimer_DrawFrame:  ; was: loc_113A0
                 asl.w   #2,d0
                 movea.l 2(a1,d0.w),a6
                 bsr.w   Gfx_DrawTilemapRect
@@ -64,9 +64,9 @@ Collision_ClearMap:
                 lea     (unk_FFC800).w,a0  ; was: sub_113AC
                 move.w  #$DF,d0
 
-loc_113B4:
+Collision_ClearMap_Loop:  ; was: loc_113B4
                 clr.l   (a0)+
-                dbf     d0,loc_113B4
+                dbf     d0,Collision_ClearMap_Loop
                 rts
 
 ; Clears camera position and velocity variables
@@ -92,37 +92,37 @@ Collision_LoadMap:
                 bsr.s   Collision_ClearMap  ; was: sub_113E4
                 lea     (unk_FFC840).w,a0
 
-loc_113EA:
+Collision_LoadMap_NextRun:  ; was: loc_113EA
                 moveq   #0,d7
                 move.b  (a6)+,d7
-                beq.s   locret_113FA
+                beq.s   Collision_LoadMap_Return
                 bclr    #7,d7
-                bne.s   loc_113FC
+                bne.s   Collision_LoadMap_CheckOrientation
                 adda.l  d7,a0
-                bra.s   loc_113EA
+                bra.s   Collision_LoadMap_NextRun
 
-locret_113FA:
+Collision_LoadMap_Return:  ; was: locret_113FA
                 rts
 
-loc_113FC:
+Collision_LoadMap_CheckOrientation:  ; was: loc_113FC
                 bclr    #6,d7
-                bne.s   loc_1140E
+                bne.s   Collision_LoadMap_VerticalSetup
                 subq.b  #1,d7
 
-loc_11404:
+Collision_LoadMap_HorizontalLoop:  ; was: loc_11404
                 move.b  #1,(a0)+
-                dbf     d7,loc_11404
-                bra.s   loc_113EA
+                dbf     d7,Collision_LoadMap_HorizontalLoop
+                bra.s   Collision_LoadMap_NextRun
 
-loc_1140E:
+Collision_LoadMap_VerticalSetup:  ; was: loc_1140E
                 movea.w a0,a1
                 subq.b  #1,d7
 
-loc_11412:
+Collision_LoadMap_VerticalLoop:  ; was: loc_11412
                 move.b  #1,(a1)
                 lea     $20(a1),a1
-                dbf     d7,loc_11412
+                dbf     d7,Collision_LoadMap_VerticalLoop
                 addq.l  #1,a0
-                bra.s   loc_113EA
+                bra.s   Collision_LoadMap_NextRun
 
 ; Master level init: collision, objects, player, enemies

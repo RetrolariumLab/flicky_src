@@ -3,7 +3,7 @@
 
 Obj_ExitDoor:
                 bset    #7,(a0)  ; was: sub_144DC
-                bne.s   loc_14504
+                bne.s   Obj_ExitDoor_Dispatch
                 move.b  (byte_FFD834).w,d7
                 move.b  (byte_FFD835).w,d6
                 bsr.w   Math_GridToScreen
@@ -11,16 +11,16 @@ Obj_ExitDoor:
                 addi.w  #$18,d6
                 move.w  d7,$30(a0)
                 move.w  d6,$24(a0)
-                move.l  #off_14524,8(a0)
+                move.l  #ExitDoor_AnimPointers,8(a0)
 
-loc_14504:
+Obj_ExitDoor_Dispatch:  ; was: loc_14504
                 move.w  $3C(a0),d0
                 andi.w  #$7FFC,d0
-                jsr     loc_14516(pc,d0.w)
+                jsr     ExitDoor_StateTable(pc,d0.w)
                 bsr.w   Object_UpdatePosition
                 rts
 
-loc_14516:
+ExitDoor_StateTable:  ; was: loc_14516
                 bra.w   Obj_ExitDoorAnim
                 bra.w   Obj_ExitDoorIdle
 
@@ -32,14 +32,14 @@ Obj_ExitDoorAnim:
 Obj_ExitDoorIdle:
                 rts  ; was: nullsub_3
 
-off_14524:      dc.l    byte_14528
-byte_14528:     dc.b    2, 8
-                dc.w    word_1AD82-Sys_GameEntryPoint
-                dc.w    word_1AD8A-Sys_GameEntryPoint
+ExitDoor_AnimPointers: dc.l    ExitDoor_AnimOpen  ; was: off_14524
+ExitDoor_AnimOpen: dc.b    2, 8  ; was: byte_14528
+                dc.w    ExitDoor_OpenFrame0-Sys_GameEntryPoint
+                dc.w    ExitDoor_OpenFrame1-Sys_GameEntryPoint
 ; Chick main object: collectable that follows player
 Obj_Chick:
                 bset    #7,(a0)  ; was: sub_1452E
-                bne.s   loc_1455E
+                bne.s   Obj_Chick_Dispatch
                 move.l  (dword_FFD828).w,d0
                 move.l  d0,$C(a0)
                 move.b  #$60,$13(a0)
@@ -53,21 +53,21 @@ Obj_Chick:
                 move.w  d7,$30(a0)
                 move.w  d6,$24(a0)
 
-loc_1455E:
+Obj_Chick_Dispatch:  ; was: loc_1455E
                 tst.b   (byte_FFD27B).w
-                bne.s   locret_1457A
+                bne.s   Obj_Chick_Return
                 tst.b   (byte_FFD24F).w
-                bne.s   locret_1457A
+                bne.s   Obj_Chick_Return
                 tst.b   (byte_FFD26D).w
-                bne.s   locret_1457A
+                bne.s   Obj_Chick_Return
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
-                jsr     loc_1457C(pc,d0.w)
+                jsr     Chick_StateTable(pc,d0.w)
 
-locret_1457A:
+Obj_Chick_Return:  ; was: locret_1457A
                 rts
 
-loc_1457C:
+Chick_StateTable:  ; was: loc_1457C
                 bra.w   Chick_StateIdle
                 bra.w   Chick_StateFollowing
                 bra.w   Chick_StateThrown
@@ -77,49 +77,49 @@ Chick_StateIdle:
                 move.b  #1,5(a0)  ; was: sub_14588
                 lea     (word_FFC440).w,a1
                 tst.l   dword_FFC46C-word_FFC440(a1)
-                bmi.s   loc_145B6
+                bmi.s   Chick_StateIdle_Move
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
-                beq.s   loc_145B6
+                beq.s   Chick_StateIdle_Move
                 tst.b   $3B(a1)
-                bne.s   loc_145B6
+                bne.s   Chick_StateIdle_Move
                 move.w  #4,$3C(a0)
                 move.b  #1,$3B(a1)
                 move.l  a0,(dword_FFD250).w
 
-loc_145B6:
+Chick_StateIdle_Move:  ; was: loc_145B6
                 bsr.w   Object_UpdatePosition
                 rts
 
 ; Chick state: following player after pickup
 Chick_StateFollowing:
                 bset    #7,$3C(a0)  ; was: sub_145BC
-                bne.s   loc_145D0
+                bne.s   Chick_StateFollowing_Track
                 move.l  a0,-(sp)
                 move.b  #$92,d0
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
 
-loc_145D0:
+Chick_StateFollowing_Track:  ; was: loc_145D0
                 clr.b   5(a0)
                 lea     (word_FFC440).w,a1
                 move.l  dword_FFC470-word_FFC440(a1),d7
                 move.l  $24(a1),d6
                 tst.b   $38(a1)
-                beq.s   loc_145EE
+                beq.s   Chick_StateFollowing_OnGround
                 addi.l  #$60000,d6
-                bra.s   loc_14602
+                bra.s   Chick_StateFollowing_Store
 
-loc_145EE:
+Chick_StateFollowing_OnGround:  ; was: loc_145EE
                 tst.b   $39(a1)
-                bne.s   loc_145FC
+                bne.s   Chick_StateFollowing_FacingLeft
                 addi.l  #$80000,d7
-                bra.s   loc_14602
+                bra.s   Chick_StateFollowing_Store
 
-loc_145FC:
+Chick_StateFollowing_FacingLeft:  ; was: loc_145FC
                 subi.l  #$80000,d7
 
-loc_14602:
+Chick_StateFollowing_Store:  ; was: loc_14602
                 move.l  d7,$30(a0)
                 move.l  d6,$24(a0)
                 bsr.w   Object_UpdatePosition
@@ -128,35 +128,35 @@ loc_14602:
 ; Chick state: thrown and bouncing
 Chick_StateThrown:
                 bset    #7,$3C(a0)  ; was: sub_14610
-                bne.s   loc_14650
+                bne.s   Chick_StateThrown_Move
                 move.l  a0,-(sp)
                 move.b  #$96,d0
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.b  #$18,5(a0)
-                move.l  #off_14730,8(a0)
+                move.l  #Chick_ThrownAnimPointers,8(a0)
                 clr.b   $3B(a0)
                 moveq   #0,d0
                 move.b  (word_FFD82C+1).w,d0
 
-loc_1463C:
+Chick_StateThrown_ReduceRound:  ; was: loc_1463C
                 cmpi.b  #$F,d0
-                bls.s   loc_14648
+                bls.s   Chick_StateThrown_SelectAnim
                 subi.b  #$F,d0
-                bra.s   loc_1463C
+                bra.s   Chick_StateThrown_ReduceRound
 
-loc_14648:
+Chick_StateThrown_SelectAnim:  ; was: loc_14648
                 subq.b  #1,d0
                 lsl.w   #2,d0
                 move.w  d0,6(a0)
 
-loc_14650:
+Chick_StateThrown_Move:  ; was: loc_14650
                 bsr.w   Chick_UpdatePhysics
                 tst.l   $34(a0)
-                bne.s   loc_1465C
+                bne.s   Chick_StateThrown_CheckRange
                 clr.w   (a0)
 
-loc_1465C:
+Chick_StateThrown_CheckRange:  ; was: loc_1465C
                 bsr.w   Chick_CheckOffscreen
                 rts
 
@@ -169,16 +169,16 @@ Chick_CheckOffscreen:
                 move.w  d5,d4
                 sub.w   d7,d5
                 cmpi.w  #$7C,d5
-                bge.s   loc_14684
+                bge.s   Chick_CheckOffscreen_Despawn
                 sub.w   d4,d6
                 cmpi.w  #$7C,d6
-                bge.s   loc_14684
-                bra.s   locret_14686
+                bge.s   Chick_CheckOffscreen_Despawn
+                bra.s   Chick_CheckOffscreen_Return
 
-loc_14684:
+Chick_CheckOffscreen_Despawn:  ; was: loc_14684
                 clr.w   (a0)
 
-locret_14686:
+Chick_CheckOffscreen_Return:  ; was: locret_14686
                 rts
 
 ; Chick physics: movement and collision
@@ -187,28 +187,28 @@ Chick_UpdatePhysics:
                 move.l  $2C(a0),d6
                 bclr    #7,2(a0)
                 tst.l   d7
-                bpl.s   loc_146A0
+                bpl.s   Chick_UpdatePhysics_Animate
                 bset    #7,2(a0)
 
-loc_146A0:
+Chick_UpdatePhysics_Animate:  ; was: loc_146A0
                 bsr.w   Anim_UpdateFrame
                 tst.b   $38(a0)
-                bne.s   loc_146BE
+                bne.s   Chick_UpdatePhysics_ApplyGravity
                 tst.l   d7
-                bpl.s   loc_146B6
+                bpl.s   Chick_UpdatePhysics_DecelerateRight
                 addi.l  #$800,d7
-                bra.s   loc_146BC
+                bra.s   Chick_UpdatePhysics_Decelerated
 
-loc_146B6:
+Chick_UpdatePhysics_DecelerateRight:  ; was: loc_146B6
                 subi.l  #$800,d7
 
-loc_146BC:
-                bra.s   loc_146C4
+Chick_UpdatePhysics_Decelerated:  ; was: loc_146BC
+                bra.s   Chick_UpdatePhysics_Move
 
-loc_146BE:
+Chick_UpdatePhysics_ApplyGravity:  ; was: loc_146BE
                 addi.l  #$1000,d6
 
-loc_146C4:
+Chick_UpdatePhysics_Move:  ; was: loc_146C4
                 move.l  d7,$34(a0)
                 move.l  d6,$2C(a0)
                 bsr.w   Object_UpdatePosition
@@ -217,161 +217,161 @@ loc_146C4:
                 addq.w  #1,d6
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
-                beq.s   loc_146FA
+                beq.s   Chick_UpdatePhysics_Airborne
                 clr.l   $2C(a0)
                 clr.b   $38(a0)
                 move.w  d6,d5
                 andi.w  #$FFF8,d5
                 move.w  d5,$24(a0)
                 clr.w   $26(a0)
-                bra.s   loc_14700
+                bra.s   Chick_UpdatePhysics_CheckWalls
 
-loc_146FA:
+Chick_UpdatePhysics_Airborne:  ; was: loc_146FA
                 move.b  #1,$38(a0)
 
-loc_14700:
+Chick_UpdatePhysics_CheckWalls:  ; was: loc_14700
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 subq.w  #4,d6
                 tst.l   $34(a0)
-                bpl.s   loc_14720
+                bpl.s   Chick_UpdatePhysics_TestRight
                 subq.w  #4,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
-                beq.s   locret_1471E
+                beq.s   Chick_UpdatePhysics_LeftReturn
                 neg.l   $34(a0)
 
-locret_1471E:
+Chick_UpdatePhysics_LeftReturn:  ; was: locret_1471E
                 rts
 
-loc_14720:
+Chick_UpdatePhysics_TestRight:  ; was: loc_14720
                 addq.w  #4,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
-                beq.s   locret_1472E
+                beq.s   Chick_UpdatePhysics_RightReturn
                 neg.l   $34(a0)
 
-locret_1472E:
+Chick_UpdatePhysics_RightReturn:  ; was: locret_1472E
                 rts
 
-off_14730:      dc.l    byte_1476C
-                dc.l    byte_1477A
-                dc.l    byte_14788
-                dc.l    byte_14796
-                dc.l    byte_147A4
-                dc.l    byte_147B2
-                dc.l    byte_147C0
-                dc.l    byte_147CE
-                dc.l    byte_147DC
-                dc.l    byte_147EA
-                dc.l    byte_147F8
-                dc.l    byte_14806
-                dc.l    byte_14814
-                dc.l    byte_14822
-                dc.l    byte_14830
-byte_1476C:     dc.b    6, 1
-                dc.w    word_1A4E8-Sys_GameEntryPoint
-                dc.w    word_1A4F8-Sys_GameEntryPoint
-                dc.w    word_1A508-Sys_GameEntryPoint
-                dc.w    word_1A4F0-Sys_GameEntryPoint
-                dc.w    word_1A510-Sys_GameEntryPoint
-                dc.w    word_1A500-Sys_GameEntryPoint
-byte_1477A:     dc.b    6, 1
-                dc.w    word_1A518-Sys_GameEntryPoint
-                dc.w    word_1A528-Sys_GameEntryPoint
-                dc.w    word_1A538-Sys_GameEntryPoint
-                dc.w    word_1A520-Sys_GameEntryPoint
-                dc.w    word_1A540-Sys_GameEntryPoint
-                dc.w    word_1A530-Sys_GameEntryPoint
-byte_14788:     dc.b    6, 1
-                dc.w    word_1A548-Sys_GameEntryPoint
-                dc.w    word_1A558-Sys_GameEntryPoint
-                dc.w    word_1A568-Sys_GameEntryPoint
-                dc.w    word_1A550-Sys_GameEntryPoint
-                dc.w    word_1A570-Sys_GameEntryPoint
-                dc.w    word_1A560-Sys_GameEntryPoint
-byte_14796:     dc.b    6, 1
-                dc.w    word_1A578-Sys_GameEntryPoint
-                dc.w    word_1A588-Sys_GameEntryPoint
-                dc.w    word_1A598-Sys_GameEntryPoint
-                dc.w    word_1A580-Sys_GameEntryPoint
-                dc.w    word_1A5A0-Sys_GameEntryPoint
-                dc.w    word_1A590-Sys_GameEntryPoint
-byte_147A4:     dc.b    6, 1
-                dc.w    word_1A5A8-Sys_GameEntryPoint
-                dc.w    word_1A5B8-Sys_GameEntryPoint
-                dc.w    word_1A5C8-Sys_GameEntryPoint
-                dc.w    word_1A5B0-Sys_GameEntryPoint
-                dc.w    word_1A5D0-Sys_GameEntryPoint
-                dc.w    word_1A5C0-Sys_GameEntryPoint
-byte_147B2:     dc.b    6, 1
-                dc.w    word_1A5D8-Sys_GameEntryPoint
-                dc.w    word_1A5E8-Sys_GameEntryPoint
-                dc.w    word_1A5F8-Sys_GameEntryPoint
-                dc.w    word_1A5E0-Sys_GameEntryPoint
-                dc.w    word_1A600-Sys_GameEntryPoint
-                dc.w    word_1A5F0-Sys_GameEntryPoint
-byte_147C0:     dc.b    6, 1
-                dc.w    word_1A608-Sys_GameEntryPoint
-                dc.w    word_1A618-Sys_GameEntryPoint
-                dc.w    word_1A628-Sys_GameEntryPoint
-                dc.w    word_1A610-Sys_GameEntryPoint
-                dc.w    word_1A630-Sys_GameEntryPoint
-                dc.w    word_1A620-Sys_GameEntryPoint
-byte_147CE:     dc.b    6, 1
-                dc.w    word_1A638-Sys_GameEntryPoint
-                dc.w    word_1A648-Sys_GameEntryPoint
-                dc.w    word_1A658-Sys_GameEntryPoint
-                dc.w    word_1A640-Sys_GameEntryPoint
-                dc.w    word_1A660-Sys_GameEntryPoint
-                dc.w    word_1A650-Sys_GameEntryPoint
-byte_147DC:     dc.b    6, 1
-                dc.w    word_1A668-Sys_GameEntryPoint
-                dc.w    word_1A678-Sys_GameEntryPoint
-                dc.w    word_1A688-Sys_GameEntryPoint
-                dc.w    word_1A670-Sys_GameEntryPoint
-                dc.w    word_1A690-Sys_GameEntryPoint
-                dc.w    word_1A680-Sys_GameEntryPoint
-byte_147EA:     dc.b    6, 1
-                dc.w    word_1A698-Sys_GameEntryPoint
-                dc.w    word_1A6A8-Sys_GameEntryPoint
-                dc.w    word_1A6B8-Sys_GameEntryPoint
-                dc.w    word_1A6A0-Sys_GameEntryPoint
-                dc.w    word_1A6C0-Sys_GameEntryPoint
-                dc.w    word_1A6B0-Sys_GameEntryPoint
-byte_147F8:     dc.b    6, 1
-                dc.w    word_1A6C8-Sys_GameEntryPoint
-                dc.w    word_1A6D8-Sys_GameEntryPoint
-                dc.w    word_1A6E8-Sys_GameEntryPoint
-                dc.w    word_1A6D0-Sys_GameEntryPoint
-                dc.w    word_1A6F0-Sys_GameEntryPoint
-                dc.w    word_1A6E0-Sys_GameEntryPoint
-byte_14806:     dc.b    6, 1
-                dc.w    word_1A6F8-Sys_GameEntryPoint
-                dc.w    word_1A708-Sys_GameEntryPoint
-                dc.w    word_1A718-Sys_GameEntryPoint
-                dc.w    word_1A700-Sys_GameEntryPoint
-                dc.w    word_1A720-Sys_GameEntryPoint
-                dc.w    word_1A710-Sys_GameEntryPoint
-byte_14814:     dc.b    6, 1
-                dc.w    word_1A728-Sys_GameEntryPoint
-                dc.w    word_1A738-Sys_GameEntryPoint
-                dc.w    word_1A748-Sys_GameEntryPoint
-                dc.w    word_1A730-Sys_GameEntryPoint
-                dc.w    word_1A750-Sys_GameEntryPoint
-                dc.w    word_1A740-Sys_GameEntryPoint
-byte_14822:     dc.b    6, 1
-                dc.w    word_1A758-Sys_GameEntryPoint
-                dc.w    word_1A768-Sys_GameEntryPoint
-                dc.w    word_1A778-Sys_GameEntryPoint
-                dc.w    word_1A760-Sys_GameEntryPoint
-                dc.w    word_1A780-Sys_GameEntryPoint
-                dc.w    word_1A770-Sys_GameEntryPoint
-byte_14830:     dc.b    6, 1
-                dc.w    word_1A788-Sys_GameEntryPoint
-                dc.w    word_1A798-Sys_GameEntryPoint
-                dc.w    word_1A7A8-Sys_GameEntryPoint
-                dc.w    word_1A790-Sys_GameEntryPoint
-                dc.w    word_1A7B0-Sys_GameEntryPoint
-                dc.w    word_1A7A0-Sys_GameEntryPoint
+Chick_ThrownAnimPointers: dc.l    Chick_ThrownAnim0  ; was: off_14730
+                dc.l    Chick_ThrownAnim1
+                dc.l    Chick_ThrownAnim2
+                dc.l    Chick_ThrownAnim3
+                dc.l    Chick_ThrownAnim4
+                dc.l    Chick_ThrownAnim5
+                dc.l    Chick_ThrownAnim6
+                dc.l    Chick_ThrownAnim7
+                dc.l    Chick_ThrownAnim8
+                dc.l    Chick_ThrownAnim9
+                dc.l    Chick_ThrownAnim10
+                dc.l    Chick_ThrownAnim11
+                dc.l    Chick_ThrownAnim12
+                dc.l    Chick_ThrownAnim13
+                dc.l    Chick_ThrownAnim14
+Chick_ThrownAnim0: dc.b    6, 1  ; was: byte_1476C
+                dc.w    Chick_ThrownAnim0Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim0Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim0Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim0Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim0Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim0Data5-Sys_GameEntryPoint
+Chick_ThrownAnim1: dc.b    6, 1  ; was: byte_1477A
+                dc.w    Chick_ThrownAnim1Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim1Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim1Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim1Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim1Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim1Data5-Sys_GameEntryPoint
+Chick_ThrownAnim2: dc.b    6, 1  ; was: byte_14788
+                dc.w    Chick_ThrownAnim2Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim2Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim2Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim2Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim2Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim2Data5-Sys_GameEntryPoint
+Chick_ThrownAnim3: dc.b    6, 1  ; was: byte_14796
+                dc.w    Chick_ThrownAnim3Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim3Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim3Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim3Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim3Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim3Data5-Sys_GameEntryPoint
+Chick_ThrownAnim4: dc.b    6, 1  ; was: byte_147A4
+                dc.w    Chick_ThrownAnim4Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim4Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim4Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim4Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim4Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim4Data5-Sys_GameEntryPoint
+Chick_ThrownAnim5: dc.b    6, 1  ; was: byte_147B2
+                dc.w    Chick_ThrownAnim5Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim5Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim5Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim5Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim5Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim5Data5-Sys_GameEntryPoint
+Chick_ThrownAnim6: dc.b    6, 1  ; was: byte_147C0
+                dc.w    Chick_ThrownAnim6Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim6Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim6Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim6Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim6Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim6Data5-Sys_GameEntryPoint
+Chick_ThrownAnim7: dc.b    6, 1  ; was: byte_147CE
+                dc.w    Chick_ThrownAnim7Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim7Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim7Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim7Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim7Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim7Data5-Sys_GameEntryPoint
+Chick_ThrownAnim8: dc.b    6, 1  ; was: byte_147DC
+                dc.w    Chick_ThrownAnim8Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim8Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim8Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim8Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim8Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim8Data5-Sys_GameEntryPoint
+Chick_ThrownAnim9: dc.b    6, 1  ; was: byte_147EA
+                dc.w    Chick_ThrownAnim9Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim9Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim9Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim9Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim9Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim9Data5-Sys_GameEntryPoint
+Chick_ThrownAnim10: dc.b    6, 1  ; was: byte_147F8
+                dc.w    Chick_ThrownAnim10Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim10Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim10Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim10Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim10Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim10Data5-Sys_GameEntryPoint
+Chick_ThrownAnim11: dc.b    6, 1  ; was: byte_14806
+                dc.w    Chick_ThrownAnim11Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim11Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim11Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim11Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim11Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim11Data5-Sys_GameEntryPoint
+Chick_ThrownAnim12: dc.b    6, 1  ; was: byte_14814
+                dc.w    Chick_ThrownAnim12Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim12Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim12Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim12Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim12Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim12Data5-Sys_GameEntryPoint
+Chick_ThrownAnim13: dc.b    6, 1  ; was: byte_14822
+                dc.w    Chick_ThrownAnim13Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim13Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim13Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim13Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim13Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim13Data5-Sys_GameEntryPoint
+Chick_ThrownAnim14: dc.b    6, 1  ; was: byte_14830
+                dc.w    Chick_ThrownAnim14Data0-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim14Data1-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim14Data2-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim14Data3-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim14Data4-Sys_GameEntryPoint
+                dc.w    Chick_ThrownAnim14Data5-Sys_GameEntryPoint
 ; Enemy cat main object that chases player
