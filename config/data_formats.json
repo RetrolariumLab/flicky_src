@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "artifacts": [
+    {
+      "segment": "SegaPalette",
+      "path": "other/data_SegaPalette.bin",
+      "codec": "palette_compact",
+      "round_trip": "exact",
+      "note": "Index and colour packed into one word; bit 0 terminates the list."
+    },
+    {
+      "segment": "DemoInputStream0",
+      "path": "other/data_DemoInputStream0.bin",
+      "codec": "demo_input",
+      "round_trip": "exact",
+      "note": "Pairs of controller byte and hold count."
+    },
+    {
+      "segment": "DemoInputStream2",
+      "path": "other/data_DemoInputStream2.bin",
+      "codec": "demo_input",
+      "round_trip": "exact"
+    },
+    {
+      "segment": "DemoInputStream3",
+      "path": "other/data_DemoInputStream3.bin",
+      "codec": "demo_input",
+      "round_trip": "exact"
+    },
+    {
+      "segment": "LizardJumpArcTable",
+      "path": "other/data_LizardJumpArcTable.bin",
+      "codec": "velocity_pairs",
+      "round_trip": "exact",
+      "note": "Per-round horizontal and vertical jump velocity, 16.16 fixed point."
+    },
+    {
+      "segment": "EndingCongratsArt",
+      "path": "other/data_EndingCongratsArt.bin",
+      "codec": "tilemap_words",
+      "round_trip": "exact"
+    },
+    {
+      "segment": "Jap1BPPTiles",
+      "path": "artunc/data_Jap1BPPTiles.bin",
+      "codec": "font_1bpp",
+      "round_trip": "exact",
+      "note": "Expanded to 4bpp at load time by Nem_Decomp1bpp_Begin."
+    },
+    {
+      "segment": "Latin1BPPTiles",
+      "path": "artunc/data_Latin1BPPTiles.bin",
+      "codec": "font_1bpp",
+      "round_trip": "exact"
+    },
+    {
+      "segment": "SegaTiles",
+      "path": "artnem/data_SegaTiles.bin",
+      "codec": "nemesis",
+      "round_trip": "semantic",
+      "note": "See DATA-002: re-encoding is valid but not byte-identical."
+    },
+    {
+      "segment": "LevelTiles",
+      "path": "artnem/data_LevelTiles.bin",
+      "codec": "nemesis",
+      "round_trip": "semantic"
+    },
+    {
+      "segment": "ExitTiles",
+      "path": "artnem/data_ExitTiles.bin",
+      "codec": "nemesis",
+      "round_trip": "semantic"
+    },
+    {
+      "segment": "SpritesTiles",
+      "path": "artnem/data_SpritesTiles.bin",
+      "codec": "nemesis",
+      "round_trip": "semantic"
+    },
+    {
+      "segment": "ScoresTiles",
+      "path": "artnem/data_ScoresTiles.bin",
+      "codec": "nemesis",
+      "round_trip": "semantic"
+    },
+    {
+      "segment": "FlickyLogoTiles",
+      "path": "artnem/data_FlickyLogoTiles.bin",
+      "codec": "nemesis",
+      "round_trip": "semantic"
+    },
+    {
+      "segment": "SegaEnigma",
+      "path": "arteni/data_SegaEnigma.bin",
+      "codec": "enigma",
+      "round_trip": "decode_only",
+      "note": "See DATA-002: no encoder exists for this format."
+    },
+    {
+      "segment": "z80_part1",
+      "path": "sound/data_z80_part1.bin",
+      "codec": "opaque",
+      "round_trip": "none",
+      "note": "See SND-001: Z80 machine code, not decoded."
+    },
+    {
+      "segment": "z80_part2",
+      "path": "sound/data_z80_part2.bin",
+      "codec": "opaque",
+      "round_trip": "none",
+      "note": "See SND-001 and DATA-001."
+    }
+  ]
+}

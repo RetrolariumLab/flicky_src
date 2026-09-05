@@ -42,6 +42,8 @@ ASSET_MANIFEST ?= assets/manifest.json
 DATA_DIR ?= data
 DATA_ADDRS ?= $(DATA_DIR)/data_addrs.txt
 SCRIPTS_DIR ?= scripts
+DATA_FORMAT_MANIFEST ?= config/data_formats.json
+DATA_FORMAT_SUMMARY ?= build/data_formats.json
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -69,7 +71,7 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify init split check-assets compare lint format tools unpack-data clean \
+.PHONY: all build verify init split check-assets compare lint format tools unpack-data \n        roundtrip-formats clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help _require-assets _require-movie
 
@@ -152,6 +154,10 @@ tools:
 
 unpack-data:
 	@$(PYTHON) $(SCRIPTS_DIR)/unpack_data.py --data-dir $(DATA_DIR) -v
+
+# Decode every authored segment and check it round-trips as declared.
+roundtrip-formats: _require-assets
+	@$(PYTHON) $(SCRIPTS_DIR)/data_formats.py 		--manifest $(DATA_FORMAT_MANIFEST) --data-dir $(DATA_DIR) 		--summary $(DATA_FORMAT_SUMMARY)
 
 clean:
 	@$(PYTHON) $(SCRIPTS_DIR)/clean_project.py
@@ -271,6 +277,7 @@ help:
 	@echo "Data tools:"
 	@echo "  make tools                     Build the C decompressors"
 	@echo "  make unpack-data               Decompress Nemesis/Enigma segments"
+	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
 	@echo ""
 	@echo "Analysis (MOVIE=longplay|demos):"
 	@echo "  make reference MOVIE=longplay  Capture reference screenshots and dumps"

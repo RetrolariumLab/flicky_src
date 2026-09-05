@@ -1,6 +1,7 @@
 ; Nemesis and Enigma decompressors.
 ; ROM $000AD4-$000DBF.
 
+; !(UNKNOWN) DATA-002 no encoder reproduces these streams byte for byte
 Nem_Decomp:
                 movem.l d0-d7/a0-a1/a3-a5,-(sp)
                 lea     (Nem_PCD_WriteRowToVDP).l,a3

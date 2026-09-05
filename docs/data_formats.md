@@ -93,19 +93,42 @@ built into the ROM for attract mode.
 
 ## Round trips
 
-Not implemented yet. The tooling can decode every format but cannot re-encode
-any of them, so there is currently no proof that a decoded segment can be put
-back exactly as it was found.
+`make roundtrip-formats` decodes every segment and checks it against the claim
+recorded in `config/data_formats.json`. Three claims are possible and they are
+not interchangeable.
 
-That is milestone 5 in [`roadmap.md`](roadmap.md). It matters because a decoder
-can be plausibly wrong: it can produce sensible-looking tiles from a
-misunderstood header and nobody would notice. Requiring the encoder to
-reproduce the original bytes is what turns "this decodes" into "this is
-understood".
+**`exact`** -- decoding and re-encoding returns the original bytes. Eight
+segments qualify, and for these the field layout is proven rather than
+plausible:
 
-Nemesis re-encoding is the hard case. The format admits many valid encodings of
-the same art, and matching the original requires reproducing the choices the
-original compressor made rather than merely producing a valid stream. Where
-that turns out not to be achievable, the outcome will be recorded as an entry
-in [`unknowns.md`](unknowns.md) and the format will stay decode-only, rather
-than the claim being quietly weakened.
+```
+SegaPalette          20 bytes,    10 entries
+DemoInputStream0    256 bytes,   128 entries
+DemoInputStream2    286 bytes,   143 entries
+DemoInputStream3    256 bytes,   128 entries
+LizardJumpArcTable  384 bytes,    48 entries
+EndingCongratsArt   954 bytes,   477 entries
+Jap1BPPTiles      1,432 bytes, 1,432 rows
+Latin1BPPTiles      344 bytes,   344 rows
+```
+
+**`semantic`** -- re-encoding produces a valid stream that decodes to identical
+pixels, but not the original bytes. All six Nemesis segments are in this class.
+`tools/nemesis_enc.py` reuses the code table carried by the original stream, so
+the only remaining freedom is how the nybble sequence is split into runs, and
+no splitting rule tried so far reproduces the original. A bit-optimal split is
+consistently *smaller* than the original -- 117 bytes against 128 for
+`ExitTiles` -- which says the original compressor was not minimising size. This
+is [DATA-002](unknowns.md).
+
+**`decode_only`** -- there is a decoder and no encoder. `SegaEnigma` is the one
+case; it decodes from 10 bytes to 96 and stops there.
+
+The two Z80 images have no codec at all and are marked `none`.
+
+This distinction is the point of the milestone. A decoder can be plausibly
+wrong -- it can produce sensible-looking tiles from a misunderstood header and
+nobody would notice. Requiring the encoder to reproduce the original bytes is
+what turns "this decodes" into "this is understood", so the eight `exact`
+segments carry a stronger guarantee than the six `semantic` ones, and the
+manifest says which is which rather than rounding them all up.

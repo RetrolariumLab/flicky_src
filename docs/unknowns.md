@@ -98,6 +98,27 @@ reused, even after the entry is resolved.
   source does. Until then the constraint is a real one and belongs in
   `README.md` as a known gap.
 
+### DATA-002 Nemesis and Enigma cannot be re-encoded byte for byte
+
+- **Status:** open
+- **Confidence:** high
+- **Location:** `src/compression/nemesis_enigma.s`, `tools/nemesis_enc.py`
+- **Evidence:** `tools/nemesis_enc.py` re-encodes using the code table carried
+  by the original stream, so the only remaining freedom is how the nybble
+  sequence is split into runs. A greedy split and a bit-optimal split both
+  produce valid streams that decode to identical pixels, and neither reproduces
+  the original bytes. The optimal split is consistently *smaller* than the
+  original -- 117 against 128 bytes for `ExitTiles`, 6,037 against 6,052 for
+  `LevelTiles` -- which shows the original compressor was not minimising size
+  and used a heuristic that has not been identified. No Enigma encoder exists
+  at all.
+- **Experiment:** Compare against Nemesis streams from other Sega titles of the
+  same period, whose compressor is likely the same tool. If a splitting rule
+  reproduces those byte for byte, it should reproduce these. Until then the
+  formats are proven semantically -- decode, re-encode, decode again yields the
+  same pixels -- and `config/data_formats.json` records `semantic` rather than
+  `exact` for them so the weaker claim is visible.
+
 ### SND-001 The Z80 driver itself is not disassembled
 
 - **Status:** open
