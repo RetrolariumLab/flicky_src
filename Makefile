@@ -118,8 +118,9 @@ compare:
 		--built $(ROM) --original "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST)
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
-flicky.lst: $(SRC) src/macros.inc src/ports.inc src/equals.inc src/ram_addrs.inc
-	@$(AS_BIN) -L -olist $@ $(AS_ARGS) $(SRC)
+# -i lets modules under src/ resolve their binclude paths from the project root.
+flicky.lst: $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc)
+	@$(AS_BIN) -i . -L -olist $@ $(AS_ARGS) $(SRC)
 
 # ---------------------------------------------------------------------------
 # Data tools

@@ -47,12 +47,19 @@ def run(command: list[str], cwd: Path | None = None) -> int:
     return subprocess.call(command, cwd=str(cwd) if cwd else None)
 
 
-def assemble(source: Path, as_bin: Path, as_args: list[str]) -> Path:
+def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path) -> Path:
     """Run AS on the source. AS is invoked from its own directory so that it
-    finds the message catalogs (as.msg, cmdarg.msg, ioerrs.msg) beside it."""
+    finds the message catalogs (as.msg, cmdarg.msg, ioerrs.msg) beside it.
+
+    AS resolves include and binclude paths relative to the including file, so
+    a module under src/ could not reach data/ on its own. Passing the project
+    root as a search path lets every module spell its includes from the root,
+    the way the top-level index does.
+    """
     bin_dir = as_bin.parent
     source_rel = os.path.relpath(source, bin_dir)
-    if run([str(as_bin.resolve()), *as_args, source_rel], cwd=bin_dir) != 0:
+    command = [str(as_bin.resolve()), "-i", str(include_root.resolve()), *as_args, source_rel]
+    if run(command, cwd=bin_dir) != 0:
         fail("Assembly failed")
     obj = source.with_suffix(".p")
     if not obj.is_file():
@@ -152,7 +159,7 @@ def main() -> int:
         if not tool.is_file():
             fail(f"Toolchain executable not found: {tool}")
 
-    obj = assemble(source, as_bin, args.as_args.split())
+    obj = assemble(source, as_bin, args.as_args.split(), Path.cwd())
     output = Path(args.output).resolve()
     link(obj, output, p2bin, padding)
     compare(output, Path(args.original_rom), manifest, args.verify)

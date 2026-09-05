@@ -1,0 +1,106 @@
+; Sega logo screen and its compressed art.
+; ROM $000402-$000855.
+
+Gfx_ClearVRAMAndCRAM:
+                move.l  #$C0000000,(VDP_CTRL).l  ; was: sub_402
+                moveq   #$3F,d0
+
+loc_40E:
+                move.w  #0,(VDP_DATA).l
+                dbf     d0,loc_40E
+                move.l  #$40000000,(VDP_CTRL).l
+                lea     (VDP_DATA).l,a5
+                move.w  #0,d6
+                move.w  #$53FF,d7
+
+loc_432:
+                move.w  d6,(a5)
+                dbf     d7,loc_432
+                rts
+
+; Initializes single VDP register from table
+Gfx_InitVDPRegister:
+                movem.l d1-d2/a1,-(sp)  ; was: sub_43A
+                lea     byte_466(pc),a1
+                move.b  (a1),6(a0)
+                moveq   #0,d0
+                moveq   #8,d1
+
+loc_44A:
+                move.b  (a1)+,(a0)
+                nop
+                nop
+                move.b  (a0),d2
+                and.b   (a1)+,d2
+                beq.s   loc_458
+                or.b    d1,d0
+
+loc_458:
+                lsr.b   #1,d1
+                bne.s   loc_44A
+                clr.b   6(a0)
+                movem.l (sp)+,d1-d2/a1
+                rts
+
+byte_466:       dc.b $40, $C, $40, 3, 0, $C, 0, 3
+LoadSegaScreen:
+                bsr.w Sys_InitGameState
+                lea     word_4F6(pc),a5 ; palette cycle data?
+                bsr.w Gfx_LoadFullTilemap
+                move.w  #$B4,d1
+                moveq   #0,d2
+
+loc_480:
+                bsr.w Sys_WaitVBlank
+                subq.w  #1,d1
+                move.w  d1,d0
+                andi.w  #3,d0
+                bne.s   loc_480
+                cmpi.w  #$28,d2
+                bgt.s   locret_4B2
+                move.w  d2,d3
+                addq.w  #2,d2
+                lea     (unk_FFF7E4).w,a1
+                moveq   #$A,d7
+
+loc_49E:
+                cmpi.w  #$28,d3
+                blt.s   loc_4A6
+                moveq   #0,d3
+
+loc_4A6:
+                move.w  sega_pal(pc,d3.w),(a1)+
+                addq.w  #2,d3
+                dbf     d7,loc_49E
+                bra.s   loc_480
+
+locret_4B2:
+                rts
+
+sega_pal:       binclude "data/palettes/sega-fade.bin"
+SegaScreen:
+                btst    #7,(word_FFFF8E+1).w
+                bne.s   loc_4EC
+                cmpi.w  #$78,(word_FFFF92).w
+                bcs.s   loc_4F2
+
+loc_4EC:
+                move.w  #0,(word_FFFFC0).w
+
+loc_4F2:
+                bra.w Sound_QueueSFX
+
+word_4F6:
+SegaPalette:	binclude	"data/other/data_SegaPalette.bin"
+SegaPalette_End:
+; Tilemap header for SEGA screen (read by Gfx_ReadTilemapHeader)
+SegaTilemapHeader:
+		dc.w	$E316		; position X
+		dc.w	$0001		; position Y
+		dc.b	$0C		; width adjustment
+		dc.b	$04		; height adjustment
+SegaEnigma:	binclude	"data/arteni/data_SegaEnigma.bin"
+SegaEnigma_End:
+SegaTiles:	binclude	"data/artnem/data_SegaTiles.bin"	
+SegaTiles_End:
+; Unused interrupt handler (RTE)
