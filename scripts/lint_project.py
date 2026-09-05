@@ -21,6 +21,14 @@ APPROVED_TAGS = {"OBS", "ASSUME", "WHY?", "UNKNOWN", "BUG?", "UNUSED"}
 REGISTRY_ID_RE = re.compile(r"\b(?:CODE|DATA|RAM|SND)-\d{3}\b")
 REGISTRY = Path("docs/unknowns.md")
 
+CODE_SPAN_RE = re.compile(r"`[^`]*`")
+
+
+def strip_code_spans(line: str) -> str:
+    """Blank out inline code spans, preserving column positions."""
+    return CODE_SPAN_RE.sub(lambda m: " " * len(m.group(0)), line)
+
+
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)#]+)(?:#[^)]*)?\)")
 
 # Payloads that must never enter the repository, in the working tree or in any
@@ -88,7 +96,11 @@ def check_evidence(files: list[Path], texts: dict[Path, str], errors: list[str])
         text = texts.get(path)
         if text is None or path == REGISTRY:
             continue
-        for number, line in enumerate(text.split("\n"), 1):
+        markdown = path.suffix == ".md"
+        for number, raw_line in enumerate(text.split("\n"), 1):
+            # Documentation quotes the vocabulary in code spans; those are
+            # descriptions of a tag, not uses of one.
+            line = strip_code_spans(raw_line) if markdown else raw_line
             for raw in UNKNOWN_TAG_RE.finditer(line):
                 name = raw.group(1)
                 if name not in APPROVED_TAGS:
