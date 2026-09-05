@@ -2,13 +2,13 @@
 ; ROM $011422-$011673.
 
 Level_Init:
-                bsr.s Collision_LoadMap  ; was: sub_11422
-                bsr.s Level_SpawnObjects
-                bsr.w Level_BuildGroundTilemap
-                bsr.w Level_DrawUpperGround
-                bsr.w Level_DrawLowerGround
-                bsr.w Level_DrawEntryArrow
-                bsr.s Collision_SetBoundaries
+                bsr.s   Collision_LoadMap  ; was: sub_11422
+                bsr.s   Level_SpawnObjects
+                bsr.w   Level_BuildGroundTilemap
+                bsr.w   Level_DrawUpperGround
+                bsr.w   Level_DrawLowerGround
+                bsr.w   Level_DrawEntryArrow
+                bsr.s   Collision_SetBoundaries
                 rts
 
 ; Fills map edges with solid collision type
@@ -57,31 +57,31 @@ Level_SpawnObjects:
                 move.b  1(a6),(a0)
                 moveq   #0,d4
                 moveq   #0,d0
-                bsr.w Level_SpawnBackgroundLoop
+                bsr.w   Level_SpawnBackgroundLoop
                 lea     (byte_FFD830).w,a0
                 moveq   #0,d0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)+
                 moveq   #1,d4
-                bsr.w Level_SpawnBackgroundLoop
+                bsr.w   Level_SpawnBackgroundLoop
                 lea     (unk_FFD832).w,a0
                 moveq   #0,d0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)+
                 moveq   #1,d4
-                bsr.w Level_SpawnBackgroundLoop
+                bsr.w   Level_SpawnBackgroundLoop
                 lea     (byte_FFD834).w,a0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)
                 moveq   #2,d4
                 moveq   #0,d0
-                bsr.w Level_SpawnBackgroundLoop
+                bsr.w   Level_SpawnBackgroundLoop
                 moveq   #3,d4
                 moveq   #0,d0
                 move.b  (a6)+,d0
                 beq.s   loc_114E0
                 subq.b  #1,d0
-                bsr.w Level_SpawnBackgroundLoop
+                bsr.w   Level_SpawnBackgroundLoop
 
 loc_114E0:
                 moveq   #4,d4
@@ -89,7 +89,7 @@ loc_114E0:
                 move.b  (a6)+,d0
                 beq.s   loc_114EC
                 subq.b  #1,d0
-                bsr.s Level_SpawnBackgroundLoop
+                bsr.s   Level_SpawnBackgroundLoop
 
 loc_114EC:
                 moveq   #5,d4
@@ -97,7 +97,7 @@ loc_114EC:
                 move.b  (a6)+,d0
                 beq.s   loc_114F8
                 subq.b  #1,d0
-                bsr.s Level_SpawnBackgroundLoop
+                bsr.s   Level_SpawnBackgroundLoop
 
 loc_114F8:
                 lea     (unk_FFC200).w,a0
@@ -149,9 +149,9 @@ Level_SpawnBackgroundLoop:
                 move.b  (a6)+,d7
                 move.b  (a6)+,d6
                 movem.l d0/d4/a6,-(sp)
-                bsr.w Level_DrawBackgroundObject
+                bsr.w   Level_DrawBackgroundObject
                 movem.l (sp)+,d0/d4/a6
-                dbf d0,Level_SpawnBackgroundLoop
+                dbf     d0,Level_SpawnBackgroundLoop
                 rts
 
 ; Gets collision tile value at world position d7/d6

@@ -63,7 +63,7 @@ Data_DecompHorizontalRLE:
 loc_10DD0:
                 move.b  (a0)+,(a4)+
                 dbf     d2,loc_10DD0
-                bra.s Data_DecompHorizontalRLE
+                bra.s   Data_DecompHorizontalRLE
 
 loc_10DD8:
                 subq.b  #1,d2
@@ -73,7 +73,7 @@ loc_10DDC:
                 move.b  d3,(a4)+
                 addq.b  #1,d3
                 dbf     d2,loc_10DDC
-                bra.s Data_DecompHorizontalRLE
+                bra.s   Data_DecompHorizontalRLE
 
 locret_10DE6:
                 rts

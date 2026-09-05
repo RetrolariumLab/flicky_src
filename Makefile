@@ -63,9 +63,13 @@ ANALYSIS_DIFF_COLOR ?= pink
 PROCEDURES_FILE = $(WORKFLOW_DIR)/unanalyzed_procedures.txt
 BATCH_COUNT ?= 40
 
+# Set to --strict-naming once milestone 3 has removed every address-derived
+# identifier; until then the linter reports the remaining count instead.
+STRICT_NAMING ?=
+
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify init split check-assets compare tools unpack-data clean \
+.PHONY: all build verify init split check-assets compare lint format tools unpack-data clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help _require-assets _require-movie
 
@@ -121,6 +125,23 @@ compare:
 # -i lets modules under src/ resolve their binclude paths from the project root.
 flicky.lst: $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc)
 	@$(AS_BIN) -i . -L -olist $@ $(AS_ARGS) $(SRC)
+
+# ---------------------------------------------------------------------------
+# Validation
+# ---------------------------------------------------------------------------
+
+# Style, semantic source invariants, and repository-wide checks. None of these
+# substitute for "make verify": a green lint says nothing about byte identity.
+lint:
+	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py $(SRC) src
+	@$(PYTHON) $(SCRIPTS_DIR)/lint_source.py $(STRICT_NAMING)
+	@$(PYTHON) $(SCRIPTS_DIR)/lint_project.py
+
+# Deterministic whitespace, label-layout and case normalization, then re-check.
+# Formatting must never move a byte, so verify afterwards.
+format:
+	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py $(SRC) src --fix
+	@$(MAKE) lint
 
 # ---------------------------------------------------------------------------
 # Data tools
@@ -242,6 +263,10 @@ help:
 	@echo "  make verify                    Assemble; require byte identity (the gate)"
 	@echo "  make compare                   Compare an existing build without reassembling"
 	@echo "  make clean                     Remove build artifacts"
+	@echo ""
+	@echo "Validation:"
+	@echo "  make lint                      Style, naming and repository checks"
+	@echo "  make format                    Apply the deterministic fixes, then lint"
 	@echo ""
 	@echo "Data tools:"
 	@echo "  make tools                     Build the C decompressors"

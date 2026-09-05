@@ -8,8 +8,8 @@ Sys_GameEntryPoint:
                 move.w  #$40,(word_FFFFC0).w
                 clr.w   (word_FFFFC4).w
                 clr.w   (word_FFFFC2).w
-                bsr.w Gfx_InitCRAMAndClearVDP
-                bsr.w Sound_InitDriver
+                bsr.w   Gfx_InitCRAMAndClearVDP
+                bsr.w   Sound_InitDriver
                 bsr.w   LoadTilesToVRAM
                 lea     (dword_FFD800).w,a6
                 moveq   #0,d7
@@ -22,7 +22,7 @@ loc_10034:
                 move.w  #0,(VDP_DATA).l
                 move.l  #$40020010,(VDP_CTRL).l
                 move.w  #0,(VDP_DATA).l
-                bsr.w Camera_ClearScroll
+                bsr.w   Camera_ClearScroll
                 move.w  #$101,(word_FFD82C).w
                 move    #$2500,sr
 
@@ -35,22 +35,22 @@ loc_1006C:
                 bra.s   loc_1006C
 
 loc_10084:
-                bra.w Title_Init
-                bra.w Title_Update
-                bra.w Guide_Init
-                bra.w Guide_Update
-                bra.w RoundSelect_Init
-                bra.w RoundSelect_Update
-                bra.w Game_InitRound
-                bra.w Game_PreRoundDelay
-                bra.w Game_StartRound
-                bra.w Game_MainLoop
-                bra.w Bonus_Init
-                bra.w Bonus_MainLoop
-                bra.w Ending_Init
-                bra.w Ending_MainLoop
-                bra.w Demo_Init
-                bra.w Demo_Update
+                bra.w   Title_Init
+                bra.w   Title_Update
+                bra.w   Guide_Init
+                bra.w   Guide_Update
+                bra.w   RoundSelect_Init
+                bra.w   RoundSelect_Update
+                bra.w   Game_InitRound
+                bra.w   Game_PreRoundDelay
+                bra.w   Game_StartRound
+                bra.w   Game_MainLoop
+                bra.w   Bonus_Init
+                bra.w   Bonus_MainLoop
+                bra.w   Ending_Init
+                bra.w   Ending_MainLoop
+                bra.w   Demo_Init
+                bra.w   Demo_Update
                 bra.w   loc_100CC
                 bra.w   loc_100D0
 
@@ -70,8 +70,8 @@ Sys_InitTitleScreen:
 loc_100E2:
                 move.l  d7,(a6)+
                 dbf     d6,loc_100E2
-                bsr.w Camera_ClearScroll
-                bsr.w Object_ClearAllSlots
+                bsr.w   Camera_ClearScroll
+                bsr.w   Object_ClearAllSlots
                 move.w  #$8000,(word_FFD884).w
                 jmp     LoadLogoAndExitToVRAM
 
@@ -133,4 +133,4 @@ LoadLogoAndExitToVRAM:
                 jsr     j_Nem_Decomp
                 rts
 
-                ;org $81D4
+                ; org $81D4

@@ -17,10 +17,10 @@ loc_E52:
                 dbf     d7,loc_E52
                 rts
 
-initial_vdp_regs:dc.b 4, $34, $30, $2C, 7, $5F, 0, 0, 0, 0
-                dc.b $30, 2, 0, $2E, 0, 2, 0, 0, 0, 0
-byte_E6E:       dc.b 4, $14, $30, $2C, 7, $54, 0, 0, 0, 0
-                dc.b $30, 0, $81, $2B, 0, 2, 1, 0, 0, 0
+initial_vdp_regs:dc.b    4, $34, $30, $2C, 7, $5F, 0, 0, 0, 0
+                dc.b    $30, 2, 0, $2E, 0, 2, 0, 0, 0, 0
+byte_E6E:       dc.b    4, $14, $30, $2C, 7, $54, 0, 0, 0, 0
+                dc.b    $30, 0, $81, $2B, 0, 2, 1, 0, 0, 0
 ; Writes VDP registers 0-18 from RAM buffer
 Gfx_WriteVDPRegs:
                 lea     (unk_FFFF70).w,a1  ; was: sub_E82
@@ -40,7 +40,7 @@ loc_E90:
 Gfx_ClearSpriteArea:
                 move.w  #$B000,d2  ; was: sub_EA2
                 move.w  #$5000,d0
-                bsr.w Gfx_FillVRAMZero
+                bsr.w   Gfx_FillVRAMZero
                 clr.l   (dword_FFFFA4).w
                 clr.l   (dword_FFFFA8).w
                 lea     (dword_FFF550).w,a6

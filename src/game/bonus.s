@@ -2,18 +2,18 @@
 ; ROM $012F30-$01310F.
 
 Bonus_Init:
-                bsr.w Sys_InitTitleScreen  ; was: sub_12F30
+                bsr.w   Sys_InitTitleScreen  ; was: sub_12F30
                 move.w  #$8F02,(VDP_CTRL).l
                 lea     (word_16DE8).l,a5
                 jsr     unk_FFFBBA
                 move.w  #$2C,(word_FFF82E).w
-                bsr.w Collision_ClearMap
-                bsr.w Level_LoadTileset
-                bsr.w Level_LoadPalette
+                bsr.w   Collision_ClearMap
+                bsr.w   Level_LoadTileset
+                bsr.w   Level_LoadPalette
                 move.b  #1,(byte_FFD24E).w
                 move.b  #$14,(byte_FFD883).w
-                bsr.w Level_DrawUpperGround
-                bsr.w Level_DrawLowerGround
+                bsr.w   Level_DrawUpperGround
+                bsr.w   Level_DrawLowerGround
                 lea     (unk_FFCAA0).w,a0
                 moveq   #$1F,d0
 
@@ -28,24 +28,24 @@ loc_12F8C:
                 move.w  #$220D,(a0)
                 dbf     d0,loc_12F8C
                 lea     byte_12FCC(pc),a6
-                bsr.w Text_DrawString
+                bsr.w   Text_DrawString
                 lea     byte_12FD4(pc),a6
-                bsr.w Text_DrawString
-                bsr.w Bonus_SetupObjects
-                bsr.w UI_DrawScoreLabels
-                bsr.w UI_DrawScore
-                bsr.w UI_DrawHighScore
-                bsr.w UI_DrawRoundNumber
-                bsr.w UI_DrawLives
+                bsr.w   Text_DrawString
+                bsr.w   Bonus_SetupObjects
+                bsr.w   UI_DrawScoreLabels
+                bsr.w   UI_DrawScore
+                bsr.w   UI_DrawHighScore
+                bsr.w   UI_DrawRoundNumber
+                bsr.w   UI_DrawLives
                 move.b  #$81,d0
                 jsr     unk_FFFB66
                 jsr     unk_FFFB6C
                 jmp     unk_FFFB6C
 
-byte_12FCC:     dc.b $C0, $D4
-aBonus:         dc.b "BONUS",0
-byte_12FD4:     dc.b $C0, $E0
-aRound_0:       dc.b "ROUND",0
+byte_12FCC:     dc.b    $C0, $D4
+aBonus:         dc.b    "BONUS",0
+byte_12FD4:     dc.b    $C0, $E0
+aRound_0:       dc.b    "ROUND",0
 ; Bonus round main loop with state dispatcher
 Bonus_MainLoop:
                 move.w  (word_FFD2A6).w,d0  ; was: sub_12FDC
@@ -53,20 +53,20 @@ Bonus_MainLoop:
                 jsr     loc_13000(pc,d0.w)
                 btst    #7,(word_FFFF8E+1).w
                 beq.s   loc_12FF4
-                bsr.w Game_Pause
+                bsr.w   Game_Pause
 
 loc_12FF4:
-                bsr.w Score_CheckExtraLife
-                bsr.w Sound_ChannelCooldown
+                bsr.w   Score_CheckExtraLife
+                bsr.w   Sound_ChannelCooldown
                 jmp     unk_FFFB6C
 
 loc_13000:
-                bra.w Bonus_StatePlay
-                bra.w Bonus_StateComplete
+                bra.w   Bonus_StatePlay
+                bra.w   Bonus_StateComplete
 
 ; Bonus round play state
 Bonus_StatePlay:
-                bsr.w Object_UpdateAll  ; was: sub_13008
+                bsr.w   Object_UpdateAll  ; was: sub_13008
                 rts
 
 ; Bonus round complete state
@@ -77,18 +77,18 @@ Bonus_StateComplete:
 loc_13016:
                 tst.b   (byte_FFD2A4).w
                 beq.s   loc_13026
-                bsr.w Sound_ChannelCooldown
+                bsr.w   Sound_ChannelCooldown
                 jsr     unk_FFFB6C
                 bra.s   loc_13016
 
 loc_13026:
                 move.b  #$82,d0
                 jsr     unk_FFFB66
-                bsr.w Bonus_DrawResultLabels
+                bsr.w   Bonus_DrawResultLabels
 
 loc_13032:
-                bsr.w Object_UpdateAll
-                bsr.w Bonus_ScoreUpdate
+                bsr.w   Object_UpdateAll
+                bsr.w   Bonus_ScoreUpdate
                 rts
 
 ; Sets up bonus round objects: player, cats, chicks
@@ -125,7 +125,7 @@ loc_13098:
                 moveq   #0,d0
                 move.b  (word_FFD82C+1).w,d0
                 moveq   #$30,d7
-                bsr.w Math_ModuloLower
+                bsr.w   Math_ModuloLower
                 subq.b  #3,d0
                 lsr.w   #2,d0
                 lsl.w   #2,d0
@@ -143,8 +143,8 @@ Bonus_ScoreUpdate:
                 move.w  (word_FFFF92).w,d0
                 cmpi.w  #$FA,d0
                 bhi.s   loc_130EE
-                bsr.w Text_CycleBlink
-                bsr.w UI_DrawBonusRoundScore
+                bsr.w   Text_CycleBlink
+                bsr.w   UI_DrawBonusRoundScore
                 rts
 
 loc_130EE:

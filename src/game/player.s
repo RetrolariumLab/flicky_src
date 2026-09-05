@@ -7,7 +7,7 @@ Obj_Player:
                 move.l  #off_144AC,8(a0)
                 move.b  $3E(a0),d7
                 move.b  $3F(a0),d6
-                bsr.w Math_GridToScreen
+                bsr.w   Math_GridToScreen
                 addi.w  #$C,d7
                 addi.w  #$18,d6
                 move.w  d7,$30(a0)
@@ -30,36 +30,36 @@ loc_13EB6:
                 bcc.s   loc_13ECE
                 tst.b   (byte_FFD24F).w
                 bne.s   loc_13ECE
-                bsr.w Player_CheckProjectileHit
+                bsr.w   Player_CheckProjectileHit
 
 loc_13ECE:
-                bsr.w Player_RecordHistory
+                bsr.w   Player_RecordHistory
                 tst.b   (byte_FFD24E).w
                 bne.s   locret_13EDC
-                bsr.w UI_AnimateEntryArrow
+                bsr.w   UI_AnimateEntryArrow
 
 locret_13EDC:
                 rts
 
 loc_13EDE:
-                bra.w Player_StateNormal
-                bra.w Player_StateDeath
-                bra.w Player_StateRespawn
+                bra.w   Player_StateNormal
+                bra.w   Player_StateDeath
+                bra.w   Player_StateRespawn
 
 ; Player state: normal walking/running gameplay
 Player_StateNormal:
                 move.b  #$1E,5(a0)  ; was: sub_13EEA
-                bsr.s Player_ProcessInput
-                bsr.w Player_CheckExit
+                bsr.s   Player_ProcessInput
+                bsr.w   Player_CheckExit
                 tst.b   (byte_FFD24F).w
                 bne.s   loc_13F00
-                bsr.w Camera_UpdateScroll
+                bsr.w   Camera_UpdateScroll
 
 loc_13F00:
-                bsr.w Object_UpdatePosition
-                bsr.w Player_CheckGround
-                bsr.w Player_CheckWalls
-                bsr.w Player_UpdateAnim
+                bsr.w   Object_UpdatePosition
+                bsr.w   Player_CheckGround
+                bsr.w   Player_CheckWalls
+                bsr.w   Player_UpdateAnim
                 move.l  $34(a0),d0
                 beq.s   locret_13F24
                 move.b  #1,$39(a0)
@@ -88,7 +88,7 @@ loc_13F42:
                 move.l  d1,(dword_FFD004).w
 
 loc_13F54:
-                bsr.w Player_ThrowChick
+                bsr.w   Player_ThrowChick
                 tst.b   $38(a0)
                 bne.w   loc_1400A
                 btst    #0,$3A(a0)
@@ -98,7 +98,7 @@ loc_13F54:
                 beq.s   loc_13F98
                 move.l  a0,-(sp)
                 move.b  #$91,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.b  #1,$38(a0)
                 move.l  #$FFFD7000,$2C(a0)
@@ -208,7 +208,7 @@ Player_CheckGround:
                 tst.b   $38(a0)
                 bne.s   loc_1409E
                 addq.w  #1,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   locret_1409C
                 move.b  #1,$38(a0)
@@ -222,7 +222,7 @@ loc_1409E:
                 tst.l   $2C(a0)
                 bpl.s   loc_140BC
                 subi.w  #$E,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_140BA
                 clr.l   $2C(a0)
@@ -231,7 +231,7 @@ locret_140BA:
                 rts
 
 loc_140BC:
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_140D8
                 clr.b   $38(a0)
@@ -248,11 +248,11 @@ loc_140DA:
                 bpl.s   loc_140FE
                 subi.w  #$E,d6
                 addq.w  #4,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_140F8
                 subq.w  #8,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_140FC
 
@@ -264,11 +264,11 @@ locret_140FC:
 
 loc_140FE:
                 subq.w  #4,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_14112
                 addq.w  #8,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_14126
 
@@ -295,7 +295,7 @@ Player_CheckWalls:
                 tst.l   d5
                 bpl.s   loc_14170
                 subq.w  #6,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_1416E
                 move.l  $34(a0),d0
@@ -313,7 +313,7 @@ locret_1416E:
 
 loc_14170:
                 addq.w  #6,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_14198
                 move.l  $34(a0),d0
@@ -336,7 +336,7 @@ loc_1419A:
                 tst.l   d5
                 bpl.s   loc_141DC
                 subq.w  #6,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_141DA
                 btst    #1,d4
@@ -360,7 +360,7 @@ locret_141DA:
 
 loc_141DC:
                 addq.w  #6,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_14210
                 btst    #1,d4
@@ -406,7 +406,7 @@ loc_14232:
 
 loc_14248:
                 addq.w  #6,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_1425C
                 move.l  #$FFFF4000,$34(a0)
@@ -414,7 +414,7 @@ loc_14248:
 
 loc_1425C:
                 subi.w  #$C,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   locret_14270
                 move.l  #$C000,$34(a0)
@@ -486,7 +486,7 @@ Player_CheckExit:
                 clr.l   (dword_FFD004).w
                 addq.b  #1,(byte_FFD88D).w
                 move.l  a0,-(sp)
-                bsr.w UI_AnimateCatCountReverse
+                bsr.w   UI_AnimateCatCountReverse
                 movea.l (sp)+,a0
 
 locret_14316:
@@ -518,7 +518,7 @@ loc_14348:
 
 loc_14352:
                 clr.w   6(a0)
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_1435C:
@@ -534,12 +534,12 @@ loc_14366:
                 bset    #7,2(a0)
 
 loc_1437A:
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_14380:
                 move.w  #4,6(a0)
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 ; Player state: death falling animation
@@ -556,22 +556,22 @@ Player_StateDeath:
 
 loc_143AE:
                 addi.l  #$1000,$2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_143E4
                 tst.l   $2C(a0)
                 bpl.s   loc_143DE
                 subq.w  #8,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_143DE
                 clr.l   $2C(a0)
 
 loc_143DE:
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_143E4:
@@ -592,12 +592,12 @@ Player_StateRespawn:
                 move.b  #3,$39(a0)
 
 loc_14418:
-                bsr.w Object_UpdatePosition
-                bsr.w Anim_UpdateFrame
+                bsr.w   Object_UpdatePosition
+                bsr.w   Anim_UpdateFrame
                 bclr    #2,2(a0)
                 beq.s   loc_14430
                 subq.b  #1,$39(a0)
-                bsr.w Enemy_ClearProjectiles
+                bsr.w   Enemy_ClearProjectiles
 
 loc_14430:
                 tst.b   $39(a0)
@@ -605,12 +605,12 @@ loc_14430:
                 subq.b  #1,(byte_FFD882).w
                 beq.s   loc_1445C
                 move.b  #1,(byte_FFD886).w
-                bsr.w Enemy_BackupToBuffer
+                bsr.w   Enemy_BackupToBuffer
                 move.w  #$20,(word_FFFFC0).w
                 moveq   #$3C,d2
 
 loc_1444E:
-                bsr.w Timer_IncrementTime
+                bsr.w   Timer_IncrementTime
                 jsr     unk_FFFB6C
                 dbf     d2,loc_1444E
                 bra.s   locret_14462
@@ -641,7 +641,7 @@ loc_1447C:
                 btst    #0,5(a1)
                 beq.s   loc_144A2
                 movem.w d1,-(sp)
-                bsr.w Collision_CheckObjectPair
+                bsr.w   Collision_CheckObjectPair
                 movem.w (sp)+,d1
                 tst.b   d0
                 beq.s   loc_144A2
@@ -656,24 +656,24 @@ loc_144A2:
 locret_144AA:
                 rts
 
-off_144AC:      dc.l byte_144BC
-                dc.l byte_144C2
-                dc.l byte_144C8
-                dc.l byte_144CE
-byte_144BC:     dc.b 2, 2
-                dc.w byte_1A8A8-Sys_GameEntryPoint
-                dc.w byte_1A8B0-Sys_GameEntryPoint
-byte_144C2:     dc.b 2, 2
-                dc.w byte_1A8B8-Sys_GameEntryPoint
-                dc.w byte_1A8C0-Sys_GameEntryPoint
-byte_144C8:     dc.b 2, 2
-                dc.w byte_1A8C8-Sys_GameEntryPoint
-                dc.w word_1A8D0-Sys_GameEntryPoint
-byte_144CE:     dc.b 6, 3
-                dc.w word_1A878-Sys_GameEntryPoint
-                dc.w word_1A880-Sys_GameEntryPoint
-                dc.w byte_1A888-Sys_GameEntryPoint
-                dc.w word_1A890-Sys_GameEntryPoint
-                dc.w byte_1A888-Sys_GameEntryPoint
-                dc.w word_1A890-Sys_GameEntryPoint
+off_144AC:      dc.l    byte_144BC
+                dc.l    byte_144C2
+                dc.l    byte_144C8
+                dc.l    byte_144CE
+byte_144BC:     dc.b    2, 2
+                dc.w    byte_1A8A8-Sys_GameEntryPoint
+                dc.w    byte_1A8B0-Sys_GameEntryPoint
+byte_144C2:     dc.b    2, 2
+                dc.w    byte_1A8B8-Sys_GameEntryPoint
+                dc.w    byte_1A8C0-Sys_GameEntryPoint
+byte_144C8:     dc.b    2, 2
+                dc.w    byte_1A8C8-Sys_GameEntryPoint
+                dc.w    word_1A8D0-Sys_GameEntryPoint
+byte_144CE:     dc.b    6, 3
+                dc.w    word_1A878-Sys_GameEntryPoint
+                dc.w    word_1A880-Sys_GameEntryPoint
+                dc.w    byte_1A888-Sys_GameEntryPoint
+                dc.w    word_1A890-Sys_GameEntryPoint
+                dc.w    byte_1A888-Sys_GameEntryPoint
+                dc.w    word_1A890-Sys_GameEntryPoint
 ; Exit door object at level end

@@ -2,23 +2,23 @@
 ; ROM $001014-$001195.
 
 LoadZ80Driver:
-                bsr.w Sound_RequestZ80Bus
-                bsr.w Sound_ResetZ80
-                bsr.w Sound_ClearZ80RAM
+                bsr.w   Sound_RequestZ80Bus
+                bsr.w   Sound_ResetZ80
+                bsr.w   Sound_ClearZ80RAM
                 move.w  #$FE5,d0
                 moveq   #0,d1
                 moveq   #2,d2
                 lea     z80_part1(pc),a0
-                bsr.w Sound_CopyToZ80RAM
+                bsr.w   Sound_CopyToZ80RAM
                 moveq   #8,d0
                 move.w  #$1C00,d1
                 moveq   #1,d2
                 lea     byte_1046(pc),a0
-                bsr.w Sound_CopyToZ80RAM
+                bsr.w   Sound_CopyToZ80RAM
                 clr.w   (word_FFFFA2).w
                 rts
 
-byte_1046:      dc.b 0, $80, 0, $80, 0, 0, 0, 0, $20, 0
+byte_1046:      dc.b    0, $80, 0, $80, 0, 0, 0, 0, $20, 0
 RequestZ80Bus:
                 btst    #0,(IO_Z80BUS).l
                 sne     (byte_FFFFC8).w
@@ -52,9 +52,9 @@ locret_108C:
 ; Resets Z80 processor via IO_Z80RES
 Sound_ResetZ80:
                 move.w  #0,(IO_Z80RES).l  ; was: sub_108E
-                bsr.s Sys_DelayNop
-                bsr.s Sys_DelayNop
-                bsr.s Sys_DelayNop
+                bsr.s   Sys_DelayNop
+                bsr.s   Sys_DelayNop
+                bsr.s   Sys_DelayNop
                 move.w  #$100,(IO_Z80RES).l
 
 ; Delay NOP for Z80 reset timing
@@ -64,7 +64,7 @@ Sys_DelayNop:
 ; Copies d0 bytes from a0 to Z80 RAM at offset d1
 Sound_CopyToZ80RAM:
                 movem.l d0-d3/a0-a1,-(sp)  ; was: sub_10A6
-                bsr.s Sound_RequestZ80Bus
+                bsr.s   Sound_RequestZ80Bus
                 lea     (Z80_RAM).l,a1
                 adda.w  d1,a1
 
@@ -84,7 +84,7 @@ loc_10C4:
                 dbf     d0,loc_10B4
                 lsr.w   #1,d2
                 bcc.s   loc_10D0
-                bsr.s Sound_ResetZ80
+                bsr.s   Sound_ResetZ80
 
 loc_10D0:
                 lsr.w   #1,d2
@@ -100,7 +100,7 @@ loc_10D6:
 ; Sends command directly to Z80 RAM
 Sound_SendZ80Command:
                 movem.l d1/a0,-(sp)  ; was: sub_10DC
-                bsr.w Sound_RequestZ80Bus
+                bsr.w   Sound_RequestZ80Bus
                 lea     (unk_A01C04).l,a0
                 moveq   #0,d1
                 move.b  d1,(a0)+
@@ -131,7 +131,7 @@ Sound_QueueSFX:
                 beq.s   loc_115A
                 move.b  -$67(a0),d0
                 subq.w  #1,(word_FFFFA2).w
-                bsr.w Sound_RequestZ80Bus
+                bsr.w   Sound_RequestZ80Bus
                 tst.b   (byte_A01C0A).l
                 bne.s   loc_1138
                 move.b  d0,(byte_A01C0A).l
@@ -152,7 +152,7 @@ loc_1156:
                 bsr.w   ReleaseZ80Bus
 
 loc_115A:
-                bra.w Sys_WaitVBlank
+                bra.w   Sys_WaitVBlank
 
 ; Clears entire Z80 RAM (8KB)
 Sound_ClearZ80RAM:
@@ -173,7 +173,7 @@ loc_116A:
 ; Checks if specific sound is playing
 Sound_CheckPlaying:
                 movem.w d1,-(sp)  ; was: sub_117C
-                bsr.w Sound_RequestZ80Bus
+                bsr.w   Sound_RequestZ80Bus
                 move.b  (byte_A01C0A).l,d1
                 bsr.w   ReleaseZ80Bus
                 cmp.b   d0,d1

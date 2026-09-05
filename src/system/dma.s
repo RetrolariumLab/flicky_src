@@ -44,12 +44,12 @@ loc_88C:
                 move.b  #$3C,(byte_FFFF71).w
 
 loc_8C0:
-                bsr.w Gfx_WriteVDPRegs
+                bsr.w   Gfx_WriteVDPRegs
                 move.l  #$C0000000,(a6)
                 move.w  #0,-4(a6)
-                bra.w Gfx_ClearSpriteArea
+                bra.w   Gfx_ClearSpriteArea
 
-word_8D4:       dc.w $BE00, $B800, $B000, $C000, $E000, $40
+word_8D4:       dc.w    $BE00, $B800, $B000, $C000, $E000, $40
 ; DMA VRAM fill with >$400 byte chunking
 DMA_FillVRAMLarge:
                 movem.w d0-d2,-(sp)  ; was: sub_8E0
@@ -60,7 +60,7 @@ DMA_FillVRAMLarge:
                 subi.w  #$400,d0
                 cmpi.w  #$400,d0
                 bls.s   loc_906
-                bra.s DMA_FillVRAMLarge
+                bra.s   DMA_FillVRAMLarge
 
 ; DMA fill setup: initializes d1=0
 DMA_FillVRAMSetup:
@@ -68,7 +68,7 @@ DMA_FillVRAMSetup:
 
 loc_900:
                 cmpi.w  #$400,d0
-                bhi.s DMA_FillVRAMLarge
+                bhi.s   DMA_FillVRAMLarge
 
 loc_906:
                 lea     (VDP_CTRL).l,a6
@@ -93,7 +93,7 @@ loc_906:
                 swap    d0
                 move.l  d0,(a6)
                 move.b  d1,-4(a6)
-                bsr.w DMA_WaitComplete
+                bsr.w   DMA_WaitComplete
                 move.w  #$8F02,(a6)
                 rts
 
@@ -108,12 +108,12 @@ DMA_CopyLarge:
                 subi.w  #$200,d0
                 cmpi.w  #$200,d0
                 bls.s   loc_97C
-                bra.s DMA_CopyLarge
+                bra.s   DMA_CopyLarge
 
 ; DMA copy size check entry point
 DMA_CopyCheck:
                 cmpi.w  #$200,d0  ; was: sub_976
-                bhi.s DMA_CopyLarge
+                bhi.s   DMA_CopyLarge
 
 loc_97C:
                 lea     (VDP_CTRL).l,a6
@@ -143,7 +143,7 @@ loc_97C:
                 ori.w   #$4000,d0
                 swap    d0
                 move.l  d0,(a6)
-                bsr.w DMA_WaitComplete
+                bsr.w   DMA_WaitComplete
                 move.w  #$8F02,(a6)
                 rts
 
@@ -151,7 +151,7 @@ loc_97C:
 DMA_WaitComplete:
                 move.w  (a6),d0  ; was: sub_9D8
                 andi.w  #2,d0
-                bne.s DMA_WaitComplete
+                bne.s   DMA_WaitComplete
                 rts
 
 ; DMA to VRAM with large chunk handling
@@ -165,23 +165,23 @@ DMA_ToVRAMLarge:
                 subi.w  #$400,d0
                 cmpi.w  #$400,d0
                 bls.s   loc_A12
-                bra.s DMA_ToVRAMLarge
+                bra.s   DMA_ToVRAMLarge
 
 ; DMA transfer to CRAM (palette)
 DMA_ToCRAM:
-                bsr.s DMA_SetupRegs  ; was: sub_A04
+                bsr.s   DMA_SetupRegs  ; was: sub_A04
                 ori.w   #$C000,d0
-                bra.s DMA_Commit
+                bra.s   DMA_Commit
 
 ; DMA to VRAM size check entry point
 DMA_ToVRAMCheck:
                 cmpi.w  #$400,d0  ; was: sub_A0C
-                bhi.s DMA_ToVRAMLarge
+                bhi.s   DMA_ToVRAMLarge
 
 loc_A12:
-                bsr.s DMA_SetupRegs
+                bsr.s   DMA_SetupRegs
                 ori.w   #$4000,d0
-                bra.s DMA_Commit
+                bra.s   DMA_Commit
 
 ; Sets up DMA registers 93-96
 DMA_SetupRegs:

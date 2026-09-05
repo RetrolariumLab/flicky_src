@@ -8,7 +8,7 @@ Obj_Snake:
                 moveq   #0,d6
                 move.b  $3E(a0),d7
                 move.b  $3F(a0),d6
-                bsr.w Math_GridToScreen
+                bsr.w   Math_GridToScreen
                 addq.w  #8,d7
                 addi.w  #$10,d6
                 move.w  d7,$30(a0)
@@ -33,17 +33,17 @@ loc_15D8C:
                 beq.s   locret_15DC0
                 cmpi.w  #$10,d0
                 beq.s   locret_15DC0
-                bsr.w Snake_CheckPlayerHit
+                bsr.w   Snake_CheckPlayerHit
 
 locret_15DC0:
                 rts
 
 loc_15DC2:
-                bra.w Snake_StateSpawn
-                bra.w Snake_StateMove
-                bra.w Snake_StateTurn
-                bra.w Snake_StateHit
-                bra.w Snake_StateDeath
+                bra.w   Snake_StateSpawn
+                bra.w   Snake_StateMove
+                bra.w   Snake_StateTurn
+                bra.w   Snake_StateHit
+                bra.w   Snake_StateDeath
 
 ; Snake state: initial spawn animation
 Snake_StateSpawn:
@@ -54,7 +54,7 @@ Snake_StateSpawn:
                 move.b  #$A,$3B(a0)
 
 loc_15DF2:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 subq.b  #1,$3B(a0)
                 bne.s   locret_15E02
                 move.w  #4,$3C(a0)
@@ -76,14 +76,14 @@ loc_15E12:
                 rts
 
 loc_15E20:
-                bra.w Snake_MoveRight
-                bra.w Snake_MoveLeft
-                bra.w Snake_MoveLeft
-                bra.w Snake_MoveLeft
-                bra.w Snake_MoveUp
-                bra.w Snake_MoveUp
-                bra.w Snake_MoveDown
-                bra.w Snake_StateTurn
+                bra.w   Snake_MoveRight
+                bra.w   Snake_MoveLeft
+                bra.w   Snake_MoveLeft
+                bra.w   Snake_MoveLeft
+                bra.w   Snake_MoveUp
+                bra.w   Snake_MoveUp
+                bra.w   Snake_MoveDown
+                bra.w   Snake_StateTurn
 
 ; Snake state: moving right on wall
 Snake_MoveRight:
@@ -91,23 +91,23 @@ Snake_MoveRight:
                 bclr    #7,2(a0)
                 move.l  (dword_FFD27C).w,$34(a0)
                 clr.l   $2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_15E86
                 addq.w  #4,d7
                 subq.w  #4,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_15EA8
                 moveq   #0,d7
                 moveq   #$FFFFFFFC,d6
-                bsr.w Collision_GetTileAtObject
+                bsr.w   Collision_GetTileAtObject
                 tst.b   d4
                 bne.s   loc_15ED6
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_15E86:
@@ -146,23 +146,23 @@ Snake_MoveLeft:
                 neg.l   d0
                 move.l  d0,$34(a0)
                 clr.l   $2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_15F32
                 subq.w  #4,d7
                 addq.w  #4,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_15F5A
                 moveq   #0,d7
                 moveq   #4,d6
-                bsr.w Collision_GetTileAtObject
+                bsr.w   Collision_GetTileAtObject
                 tst.b   d4
                 bne.s   loc_15F8E
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_15F32:
@@ -203,18 +203,18 @@ Snake_MoveUp:
                 move.l  (dword_FFD27C).w,d0
                 neg.l   d0
                 move.l  d0,$2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_15FDE
                 subq.w  #4,d7
                 subq.w  #4,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_16004
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_15FDE:
@@ -248,18 +248,18 @@ Snake_MoveDown:
                 bset    #7,2(a0)
                 clr.l   $34(a0)
                 move.l  (dword_FFD27C).w,$2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_16072
                 addq.w  #4,d7
                 addq.w  #4,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_1609A
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_16072:
@@ -299,13 +299,13 @@ loc_160D6:
                 move.l  (dword_FFD27C).w,d0
                 neg.l   d0
                 move.l  d0,$2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 subq.w  #8,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 bne.s   loc_1610C
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_1610C:
@@ -323,13 +323,13 @@ loc_16136:
                 move.w  #$14,6(a0)
                 clr.l   $34(a0)
                 move.l  (dword_FFD27C).w,$2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 addq.w  #8,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 bne.s   loc_16160
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_16160:
@@ -348,14 +348,14 @@ Snake_StateHit:
                 bne.s   loc_161AA
                 move.l  a0,-(sp)
                 move.b  #$93,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.w  #$18,6(a0)
                 subq.b  #1,(byte_FFD26C).w
                 clr.b   5(a0)
 
 loc_161AA:
-                bsr.w Chick_UpdatePhysics
+                bsr.w   Chick_UpdatePhysics
                 tst.l   $34(a0)
                 bne.s   locret_161BA
                 move.w  #$10,$3C(a0)
@@ -374,8 +374,8 @@ Snake_StateDeath:
                 clr.b   5(a0)
 
 loc_161E0:
-                bsr.w Object_UpdatePosition
-                bsr.w Anim_UpdateFrame
+                bsr.w   Object_UpdatePosition
+                bsr.w   Anim_UpdateFrame
                 btst    #2,2(a0)
                 beq.s   locret_16216
                 move.b  (dword_FFD888+2).w,d0
@@ -389,7 +389,7 @@ loc_161E0:
                 move.w  #$28,(a1)
 
 loc_16212:
-                bsr.w Sprite_ClearLinkTable
+                bsr.w   Sprite_ClearLinkTable
 
 locret_16216:
                 rts
@@ -403,7 +403,7 @@ loc_1621E:
                 move.w  d0,-(sp)
                 btst    #4,5(a1)
                 beq.s   loc_1629C
-                bsr.w Collision_CheckObjectPair
+                bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   loc_1629C
                 move.w  #$C,$3C(a0)
@@ -420,7 +420,7 @@ loc_1621E:
                 move.l  dword_162AC(pc,d0.w),d0
                 move.l  d0,(dword_FFD262).w
                 move.l  a1,-(sp)
-                bsr.w Score_AddAndCheck
+                bsr.w   Score_AddAndCheck
                 movea.l (sp)+,a1
                 lea     (unk_FFC0C0).w,a2
                 moveq   #3,d0
@@ -453,40 +453,40 @@ loc_162A8:
                 move.w  (sp)+,d0
                 rts
 
-dword_162AC:    dc.l $200, $400, $800, $1600
-off_162BC:      dc.l byte_162DC
-                dc.l byte_162E6
-                dc.l byte_162F0
-                dc.l byte_162F6
-                dc.l byte_162FC
-                dc.l byte_16302
-                dc.l byte_16308
-                dc.l byte_154FE
-byte_162DC:     dc.b 4, 1
-                dc.w word_1AB7C-Sys_GameEntryPoint
-                dc.w word_1AB84-Sys_GameEntryPoint
-                dc.w word_1AB8C-Sys_GameEntryPoint
-                dc.w word_1AB84-Sys_GameEntryPoint
-byte_162E6:     dc.b 4, 1
-                dc.w word_1AB94-Sys_GameEntryPoint
-                dc.w word_1AB9C-Sys_GameEntryPoint
-                dc.w word_1ABA4-Sys_GameEntryPoint
-                dc.w word_1AB9C-Sys_GameEntryPoint
-byte_162F0:     dc.b 2, 1
-                dc.w word_1ABAC-Sys_GameEntryPoint
-                dc.w word_1ABB4-Sys_GameEntryPoint
-byte_162F6:     dc.b 2, 1
-                dc.w word_1ABBC-Sys_GameEntryPoint
-                dc.w word_1ABC4-Sys_GameEntryPoint
-byte_162FC:     dc.b 2, 1
-                dc.w word_1AC3C-Sys_GameEntryPoint
-                dc.w word_1AC44-Sys_GameEntryPoint
-byte_16302:     dc.b 2, 1
-                dc.w word_1AC54-Sys_GameEntryPoint
-                dc.w word_1AC5C-Sys_GameEntryPoint
-byte_16308:     dc.b 4, 1
-                dc.w word_1AC6C-Sys_GameEntryPoint
-                dc.w word_1AC7A-Sys_GameEntryPoint
-                dc.w word_1AC88-Sys_GameEntryPoint
-                dc.w word_1AC96-Sys_GameEntryPoint
+dword_162AC:    dc.l    $200, $400, $800, $1600
+off_162BC:      dc.l    byte_162DC
+                dc.l    byte_162E6
+                dc.l    byte_162F0
+                dc.l    byte_162F6
+                dc.l    byte_162FC
+                dc.l    byte_16302
+                dc.l    byte_16308
+                dc.l    byte_154FE
+byte_162DC:     dc.b    4, 1
+                dc.w    word_1AB7C-Sys_GameEntryPoint
+                dc.w    word_1AB84-Sys_GameEntryPoint
+                dc.w    word_1AB8C-Sys_GameEntryPoint
+                dc.w    word_1AB84-Sys_GameEntryPoint
+byte_162E6:     dc.b    4, 1
+                dc.w    word_1AB94-Sys_GameEntryPoint
+                dc.w    word_1AB9C-Sys_GameEntryPoint
+                dc.w    word_1ABA4-Sys_GameEntryPoint
+                dc.w    word_1AB9C-Sys_GameEntryPoint
+byte_162F0:     dc.b    2, 1
+                dc.w    word_1ABAC-Sys_GameEntryPoint
+                dc.w    word_1ABB4-Sys_GameEntryPoint
+byte_162F6:     dc.b    2, 1
+                dc.w    word_1ABBC-Sys_GameEntryPoint
+                dc.w    word_1ABC4-Sys_GameEntryPoint
+byte_162FC:     dc.b    2, 1
+                dc.w    word_1AC3C-Sys_GameEntryPoint
+                dc.w    word_1AC44-Sys_GameEntryPoint
+byte_16302:     dc.b    2, 1
+                dc.w    word_1AC54-Sys_GameEntryPoint
+                dc.w    word_1AC5C-Sys_GameEntryPoint
+byte_16308:     dc.b    4, 1
+                dc.w    word_1AC6C-Sys_GameEntryPoint
+                dc.w    word_1AC7A-Sys_GameEntryPoint
+                dc.w    word_1AC88-Sys_GameEntryPoint
+                dc.w    word_1AC96-Sys_GameEntryPoint
 ; Enemy spawner object with countdown timer

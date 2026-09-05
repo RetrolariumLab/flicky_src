@@ -25,11 +25,11 @@ loc_AFE:
                 moveq   #0,d2
                 moveq   #0,d4
                 bsr.w   Nem_Build_Code_Table
-                bsr.w Nem_GetCodeWord
+                bsr.w   Nem_GetCodeWord
 
 Nem_Process_Compressed_Data:
                 moveq   #8,d0
-                bsr.w Nem_GetBits
+                bsr.w   Nem_GetBits
                 cmpi.w  #$FC,d1
                 bcc.s   loc_B4C
                 add.w   d1,d1
@@ -63,7 +63,7 @@ loc_B4C:
                 moveq   #6,d0
                 bsr.w   Nem_PCD_InlineData
                 moveq   #7,d0
-                bsr.w Nem_GetBitsShift
+                bsr.w   Nem_GetBitsShift
                 bra.s   Nem_PCD_GetRepeatCount
 
 Nem_PCD_WriteRowToVDP:
@@ -199,7 +199,7 @@ Nem_GetBits:
 
 ; Gets bits and shifts for inline data (Nemesis decompressor)
 Nem_GetBitsShift:
-                bsr.s Nem_GetBits  ; was: sub_C26
+                bsr.s   Nem_GetBits  ; was: sub_C26
                 lsr.w   #1,d0
 
 Nem_PCD_InlineData:
@@ -213,22 +213,22 @@ Nem_PCD_InlineData:
 locret_C38:
                 rts
 
-word_C3A:       dc.w 1
-                dc.w 3
-                dc.w 7
-                dc.w $F
-                dc.w $1F
-                dc.w $3F
-                dc.w $7F
-                dc.w $FF
-                dc.w $1FF
-                dc.w $3FF
-                dc.w $7FF
-                dc.w $FFF
-                dc.w $1FFF
-                dc.w $3FFF
-                dc.w $7FFF
-                dc.w $FFFF
+word_C3A:       dc.w    1
+                dc.w    3
+                dc.w    7
+                dc.w    $F
+                dc.w    $1F
+                dc.w    $3F
+                dc.w    $7F
+                dc.w    $FF
+                dc.w    $1FF
+                dc.w    $3FF
+                dc.w    $7FF
+                dc.w    $FFF
+                dc.w    $1FFF
+                dc.w    $3FFF
+                dc.w    $7FFF
+                dc.w    $FFFF
 ; Enigma tile decode with pattern bits
 Eni_DecodeTile:
                 move.w  a3,d3  ; was: sub_C5A
@@ -345,11 +345,11 @@ Eni_Decompress:
                 adda.w  a3,a2
                 movea.w (a0)+,a4
                 adda.w  a3,a4
-                bsr.w Nem_GetCodeWord
+                bsr.w   Nem_GetCodeWord
 
 loc_D28:
                 moveq   #7,d0
-                bsr.w Nem_GetBits
+                bsr.w   Nem_GetBits
                 move.w  d1,d2
                 moveq   #7,d0
                 cmpi.w  #$40,d1
@@ -368,18 +368,18 @@ loc_D3C:
 Eni_WriteTileInc:
                 move.w  a2,(a1)+  ; was: sub_D4C
                 addq.w  #1,a2
-                dbf d2,Eni_WriteTileInc
+                dbf     d2,Eni_WriteTileInc
                 bra.s   loc_D28
 
 ; Enigma write repeated tile pattern
 Eni_WriteRepeat:
                 move.w  a4,(a1)+  ; was: sub_D56
-                dbf d2,Eni_WriteRepeat
+                dbf     d2,Eni_WriteRepeat
                 bra.s   loc_D28
 
 ; Enigma write static tile value
 Eni_WriteStatic:
-                bsr.w Eni_DecodeTile  ; was: sub_D5E
+                bsr.w   Eni_DecodeTile  ; was: sub_D5E
 
 loc_D62:
                 move.w  d1,(a1)+
@@ -388,7 +388,7 @@ loc_D62:
 
 ; Enigma write incrementing tile values
 Eni_WriteIncrement:
-                bsr.w Eni_DecodeTile  ; was: sub_D6A
+                bsr.w   Eni_DecodeTile  ; was: sub_D6A
 
 loc_D6E:
                 move.w  d1,(a1)+
@@ -398,7 +398,7 @@ loc_D6E:
 
 ; Enigma write decrementing tile values
 Eni_WriteDecrement:
-                bsr.w Eni_DecodeTile  ; was: sub_D78
+                bsr.w   Eni_DecodeTile  ; was: sub_D78
 
 loc_D7C:
                 move.w  d1,(a1)+
@@ -412,20 +412,20 @@ Eni_DecodeInline:
                 beq.s   loc_DA8
 
 loc_D8C:
-                bsr.w Eni_DecodeTile
+                bsr.w   Eni_DecodeTile
                 move.w  d1,(a1)+
                 dbf     d2,loc_D8C
                 bra.s   loc_D28
 
 loc_D98:
-                bra.s Eni_WriteTileInc
-                bra.s Eni_WriteTileInc
-                bra.s Eni_WriteRepeat
-                bra.s Eni_WriteRepeat
-                bra.s Eni_WriteStatic
-                bra.s Eni_WriteIncrement
-                bra.s Eni_WriteDecrement
-                bra.s Eni_DecodeInline
+                bra.s   Eni_WriteTileInc
+                bra.s   Eni_WriteTileInc
+                bra.s   Eni_WriteRepeat
+                bra.s   Eni_WriteRepeat
+                bra.s   Eni_WriteStatic
+                bra.s   Eni_WriteIncrement
+                bra.s   Eni_WriteDecrement
+                bra.s   Eni_DecodeInline
 
 loc_DA8:
                 subq.w  #1,a0

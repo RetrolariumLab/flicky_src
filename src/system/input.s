@@ -34,10 +34,10 @@ InitJoypads:
                 bsr.w   RequestZ80Bus
                 lea     (word_FFFF8E).w,a0
                 lea     ((IO_CT1_DATA+1)).l,a1
-                bsr.s Input_ReadPort
+                bsr.s   Input_ReadPort
                 addq.w  #2,a1
-                bsr.s Input_ReadPort
-                bra.w Sound_ReleaseZ80Check
+                bsr.s   Input_ReadPort
+                bra.w   Sound_ReleaseZ80Check
 
 ; Reads controller port with 6-button protocol
 Input_ReadPort:

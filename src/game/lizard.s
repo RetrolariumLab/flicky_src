@@ -8,7 +8,7 @@ Obj_Lizard:
                 moveq   #0,d6
                 move.b  $3E(a0),d7
                 move.b  $3F(a0),d6
-                bsr.w Math_GridToScreen
+                bsr.w   Math_GridToScreen
                 addq.w  #8,d7
                 addi.w  #$10,d6
                 move.w  d7,$30(a0)
@@ -33,7 +33,7 @@ loc_14EFA:
                 beq.s   loc_14F2E
                 cmpi.w  #$1C,d0
                 beq.s   loc_14F2E
-                bsr.w Lizard_CheckPlayerHit
+                bsr.w   Lizard_CheckPlayerHit
 
 loc_14F2E:
                 move.l  $34(a0),d0
@@ -47,14 +47,14 @@ locret_14F42:
                 rts
 
 loc_14F44:
-                bra.w Lizard_StateWait
-                bra.w Lizard_StateLocate
-                bra.w Lizard_StateChase
-                bra.w Lizard_StateJump
-                bra.w Lizard_StateStunned
-                bra.w Lizard_StateHit
-                bra.w Lizard_StateTrack
-                bra.w Lizard_StateDeath
+                bra.w   Lizard_StateWait
+                bra.w   Lizard_StateLocate
+                bra.w   Lizard_StateChase
+                bra.w   Lizard_StateJump
+                bra.w   Lizard_StateStunned
+                bra.w   Lizard_StateHit
+                bra.w   Lizard_StateTrack
+                bra.w   Lizard_StateDeath
 
 ; Lizard state: waiting/idle after hit
 Lizard_StateWait:
@@ -66,8 +66,8 @@ Lizard_StateWait:
                 move.b  #6,5(a0)
 
 loc_14F80:
-                bsr.w Object_UpdatePosition
-                bsr.w Anim_UpdateFrame
+                bsr.w   Object_UpdatePosition
+                bsr.w   Anim_UpdateFrame
                 bclr    #2,2(a0)
                 beq.s   locret_14FD0
                 move.w  #8,$3C(a0)
@@ -106,7 +106,7 @@ Lizard_StateLocate:
                 bset    #7,2(a0)
 
 loc_15004:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $20(a0),d7
                 move.w  $24(a0),d6
                 lea     (word_FFC440).w,a1
@@ -158,7 +158,7 @@ loc_1508A:
                 neg.l   $34(a0)
 
 loc_15094:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 subq.w  #8,d6
@@ -171,7 +171,7 @@ loc_150AC:
                 addq.w  #8,d7
 
 loc_150AE:
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_150BA
                 neg.l   $34(a0)
@@ -179,7 +179,7 @@ loc_150AE:
 loc_150BA:
                 moveq   #0,d7
                 moveq   #1,d6
-                bsr.w Collision_GetTileAtObject
+                bsr.w   Collision_GetTileAtObject
                 btst    #7,d4
                 bne.s   loc_150EA
                 tst.l   $34(a0)
@@ -226,7 +226,7 @@ loc_15114:
 
 loc_15126:
                 move.w  #4,6(a0)
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 rts
 
 loc_15132:
@@ -278,10 +278,10 @@ loc_151AA:
 
 loc_151B4:
                 addi.l  #$1000,$2C(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_1520C
                 subq.w  #8,d6
@@ -294,7 +294,7 @@ loc_151DC:
                 addq.w  #8,d7
 
 loc_151DE:
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_151EC
                 neg.l   $34(a0)
@@ -306,7 +306,7 @@ loc_151EC:
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 subi.w  #$D,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_1520A
                 clr.l   $2C(a0)
@@ -338,7 +338,7 @@ locret_1524A:
 
 loc_1524C:
                 subq.b  #1,$3B(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 rts
 
 ; Lizard state: stunned/recovering after hit
@@ -353,14 +353,14 @@ Lizard_StateStunned:
                 clr.b   $10(a0)
 
 loc_1527A:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 bclr    #7,2(a0)
                 tst.b   $39(a0)
                 beq.s   loc_15290
                 bset    #7,2(a0)
 
 loc_15290:
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 bclr    #2,2(a0)
                 beq.s   locret_152A8
                 bchg    #0,$39(a0)
@@ -371,7 +371,7 @@ locret_152A8:
 
 loc_152AA:
                 subq.b  #1,$3B(a0)
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 rts
 
 ; Lizard state: hit by player bouncing
@@ -380,7 +380,7 @@ Lizard_StateHit:
                 bne.s   loc_152E4
                 move.l  a0,-(sp)
                 move.b  #$93,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 tst.b   $16(a0)
                 bne.s   loc_152D6
@@ -392,7 +392,7 @@ loc_152D6:
                 subq.b  #1,(byte_FFD26C).w
 
 loc_152E4:
-                bsr.w Chick_UpdatePhysics
+                bsr.w   Chick_UpdatePhysics
                 tst.l   $34(a0)
                 bne.s   locret_152F4
                 move.w  #$1C,$3C(a0)
@@ -414,7 +414,7 @@ Lizard_StateTrack:
                 bset    #7,2(a0)
 
 loc_15328:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 move.w  $20(a0),d7
                 move.w  $24(a0),d6
                 lea     (word_FFC440).w,a1
@@ -459,7 +459,7 @@ loc_1538C:
 ; Decrements lizard action timer
 Lizard_DecrementTimer:
                 subq.b  #1,$3B(a0)  ; was: sub_1539A
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 rts
 
 ; Lizard state: death anim spawns new enemy
@@ -473,8 +473,8 @@ Lizard_StateDeath:
                 move.l  #$FFFFC000,$2C(a0)
 
 loc_153C8:
-                bsr.w Object_UpdatePosition
-                bsr.w Anim_UpdateFrame
+                bsr.w   Object_UpdatePosition
+                bsr.w   Anim_UpdateFrame
                 btst    #2,2(a0)
                 beq.s   locret_15408
                 move.b  (dword_FFD888+2).w,d0
@@ -493,7 +493,7 @@ loc_153F0:
                 move.w  #$28,(a1)
 
 loc_15404:
-                bsr.w Sprite_ClearLinkTable
+                bsr.w   Sprite_ClearLinkTable
 
 locret_15408:
                 rts
@@ -507,7 +507,7 @@ loc_15410:
                 move.w  d0,-(sp)
                 btst    #3,5(a1)
                 beq.s   loc_1548E
-                bsr.w Collision_CheckObjectPair
+                bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   loc_1548E
                 move.w  #$14,$3C(a0)
@@ -524,7 +524,7 @@ loc_15410:
                 move.l  dword_1549E(pc,d0.w),d0
                 move.l  d0,(dword_FFD262).w
                 move.l  a1,-(sp)
-                bsr.w Score_AddAndCheck
+                bsr.w   Score_AddAndCheck
                 movea.l (sp)+,a1
                 lea     (unk_FFC0C0).w,a2
                 moveq   #3,d0
@@ -557,47 +557,47 @@ loc_1549A:
                 move.w  (sp)+,d0
                 rts
 
-dword_1549E:    dc.l $200
-                dc.l $400
-                dc.l $800
-                dc.l $1600
-off_154AE:      dc.l byte_154C2
-                dc.l byte_154D0
-                dc.l byte_154E2
-                dc.l byte_154F4
-                dc.l byte_154FE
-byte_154C2:     dc.b 6, $C
-                dc.w word_1A8F8-Sys_GameEntryPoint
-                dc.w word_1A900-Sys_GameEntryPoint
-                dc.w word_1A8F8-Sys_GameEntryPoint
-                dc.w word_1A900-Sys_GameEntryPoint
-                dc.w word_1A908-Sys_GameEntryPoint
-                dc.w word_1A910-Sys_GameEntryPoint
-byte_154D0:     dc.b 8, 1
-                dc.w word_1A918-Sys_GameEntryPoint
-                dc.w word_1A926-Sys_GameEntryPoint
-                dc.w word_1A93A-Sys_GameEntryPoint
-                dc.w word_1A94E-Sys_GameEntryPoint
-                dc.w word_1A94E-Sys_GameEntryPoint
-                dc.w word_1A95C-Sys_GameEntryPoint
-                dc.w word_1A93A-Sys_GameEntryPoint
-                dc.w word_1A926-Sys_GameEntryPoint
-byte_154E2:     dc.b 8, 1
-                dc.w word_1A992-Sys_GameEntryPoint
-                dc.w word_1A99A-Sys_GameEntryPoint
-                dc.w word_1A9AE-Sys_GameEntryPoint
-                dc.w word_1A9B6-Sys_GameEntryPoint
-                dc.w word_1A9CA-Sys_GameEntryPoint
-                dc.w word_1A9D2-Sys_GameEntryPoint
-                dc.w word_1A9E6-Sys_GameEntryPoint
-                dc.w word_1A9EE-Sys_GameEntryPoint
-byte_154F4:     dc.b 4, 5
-                dc.w word_1AA02-Sys_GameEntryPoint
-                dc.w word_1AA02-Sys_GameEntryPoint
-                dc.w word_1AA0A-Sys_GameEntryPoint
-                dc.w word_1AA12-Sys_GameEntryPoint
-byte_154FE:     dc.b 4, 6
-                dc.w word_1AA7E-Sys_GameEntryPoint
-                dc.w word_1AA7E-Sys_GameEntryPoint
-                dc.w word_1AA86-Sys_GameEntryPoint
-                dc.w word_1AA8E-Sys_GameEntryPoint
+dword_1549E:    dc.l    $200
+                dc.l    $400
+                dc.l    $800
+                dc.l    $1600
+off_154AE:      dc.l    byte_154C2
+                dc.l    byte_154D0
+                dc.l    byte_154E2
+                dc.l    byte_154F4
+                dc.l    byte_154FE
+byte_154C2:     dc.b    6, $C
+                dc.w    word_1A8F8-Sys_GameEntryPoint
+                dc.w    word_1A900-Sys_GameEntryPoint
+                dc.w    word_1A8F8-Sys_GameEntryPoint
+                dc.w    word_1A900-Sys_GameEntryPoint
+                dc.w    word_1A908-Sys_GameEntryPoint
+                dc.w    word_1A910-Sys_GameEntryPoint
+byte_154D0:     dc.b    8, 1
+                dc.w    word_1A918-Sys_GameEntryPoint
+                dc.w    word_1A926-Sys_GameEntryPoint
+                dc.w    word_1A93A-Sys_GameEntryPoint
+                dc.w    word_1A94E-Sys_GameEntryPoint
+                dc.w    word_1A94E-Sys_GameEntryPoint
+                dc.w    word_1A95C-Sys_GameEntryPoint
+                dc.w    word_1A93A-Sys_GameEntryPoint
+                dc.w    word_1A926-Sys_GameEntryPoint
+byte_154E2:     dc.b    8, 1
+                dc.w    word_1A992-Sys_GameEntryPoint
+                dc.w    word_1A99A-Sys_GameEntryPoint
+                dc.w    word_1A9AE-Sys_GameEntryPoint
+                dc.w    word_1A9B6-Sys_GameEntryPoint
+                dc.w    word_1A9CA-Sys_GameEntryPoint
+                dc.w    word_1A9D2-Sys_GameEntryPoint
+                dc.w    word_1A9E6-Sys_GameEntryPoint
+                dc.w    word_1A9EE-Sys_GameEntryPoint
+byte_154F4:     dc.b    4, 5
+                dc.w    word_1AA02-Sys_GameEntryPoint
+                dc.w    word_1AA02-Sys_GameEntryPoint
+                dc.w    word_1AA0A-Sys_GameEntryPoint
+                dc.w    word_1AA12-Sys_GameEntryPoint
+byte_154FE:     dc.b    4, 6
+                dc.w    word_1AA7E-Sys_GameEntryPoint
+                dc.w    word_1AA7E-Sys_GameEntryPoint
+                dc.w    word_1AA86-Sys_GameEntryPoint
+                dc.w    word_1AA8E-Sys_GameEntryPoint

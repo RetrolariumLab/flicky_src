@@ -82,7 +82,7 @@ Object_ClearAllSlots:
                 lea     (word_FFC000).w,a0
 
 loc_1110A:
-                bsr.s Object_ClearSlot
+                bsr.s   Object_ClearSlot
                 movea.w a6,a0
                 dbf     d5,loc_1110A
                 movem.l (sp)+,d5/a0
@@ -181,7 +181,7 @@ locret_111D2:
 ; Updates main object slot and builds sprite list
 Object_UpdateMain:
                 lea     (word_FFC000).w,a0  ; was: sub_111D4
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 bsr.w   loc_11254
                 rts
 
@@ -190,45 +190,45 @@ Object_UpdateAll:
                 tst.b   (byte_FFD24E).w  ; was: sub_111E2
                 bne.s   loc_11228
                 lea     (word_FFC440).w,a0
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     (unk_FFC200).w,a0
                 moveq   #8,d0
 
 loc_111F6:
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,loc_111F6
                 lea     (unk_FFC480).w,a0
                 moveq   #$D,d0
 
 loc_11208:
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,loc_11208
                 lea     (word_FFC000).w,a0
                 moveq   #7,d0
 
 loc_1121A:
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,loc_1121A
                 bra.s   loc_11254
 
 loc_11228:
                 lea     (unk_FFC580).w,a0
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     (word_FFC040).w,a0
                 moveq   #$14,d0
 
 loc_11236:
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,loc_11236
                 lea     (unk_FFC5C0).w,a0
                 moveq   #3,d0
 
 loc_11248:
-                bsr.w Object_CallHandler
+                bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,loc_11248
 
@@ -244,7 +244,7 @@ loc_11266:
                 beq.s   loc_11280
                 movea.w (word_FFD000).w,a2
                 move.w  (word_FFD002).w,d6
-                bsr.w Sprite_RenderObject
+                bsr.w   Sprite_RenderObject
                 move.w  d6,(word_FFD002).w
                 move.w  a2,(word_FFD000).w
 
@@ -278,27 +278,27 @@ loc_112AC:
 
 loc_112B0:
                 bra.w   locret_1129C
-                bra.w Obj_Chick
-                bra.w Obj_Cat
-                bra.w Obj_Player
-                bra.w Obj_Lizard
-                bra.w Obj_Snake
-                bra.w Obj_Spawner
-                bra.w Obj_ScorePopup
-                bra.w Obj_ChickCountPopup
-                bra.w Obj_BonusScorePopup
-                bra.w Obj_StarBonus
-                bra.w Obj_BonusHeldChick
-                bra.w Obj_BonusCatOuter
-                bra.w Obj_BonusCatInner
-                bra.w Obj_BonusChick
-                bra.w Obj_GameOverText
-                bra.w Obj_TitleBird
-                bra.w Obj_TitleCursor
-                bra.w Obj_TitleStatic
-                bra.w Obj_GuideCharacter
-                bra.w Obj_CreditsCharacter
-                bra.w Obj_ExitDoor
-                bra.w Obj_TimeOverText
+                bra.w   Obj_Chick
+                bra.w   Obj_Cat
+                bra.w   Obj_Player
+                bra.w   Obj_Lizard
+                bra.w   Obj_Snake
+                bra.w   Obj_Spawner
+                bra.w   Obj_ScorePopup
+                bra.w   Obj_ChickCountPopup
+                bra.w   Obj_BonusScorePopup
+                bra.w   Obj_StarBonus
+                bra.w   Obj_BonusHeldChick
+                bra.w   Obj_BonusCatOuter
+                bra.w   Obj_BonusCatInner
+                bra.w   Obj_BonusChick
+                bra.w   Obj_GameOverText
+                bra.w   Obj_TitleBird
+                bra.w   Obj_TitleCursor
+                bra.w   Obj_TitleStatic
+                bra.w   Obj_GuideCharacter
+                bra.w   Obj_CreditsCharacter
+                bra.w   Obj_ExitDoor
+                bra.w   Obj_TimeOverText
 
 ; Adds scroll velocity to camera position

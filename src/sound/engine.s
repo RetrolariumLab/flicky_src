@@ -16,8 +16,8 @@ loc_10CE0:
 Sound_InitDriver:
                 jsr     j_LoadZ80Driver  ; was: sub_10CF6
                 lea     (z80_part2).l,a1
-                bsr.s Sound_LoadZ80Table
-                bsr.s Sound_LoadZ80Table
+                bsr.s   Sound_LoadZ80Table
+                bsr.s   Sound_LoadZ80Table
                 moveq   #8,d0
                 move.w  #$1C00,d1
                 moveq   #1,d2
@@ -26,7 +26,7 @@ Sound_InitDriver:
                 clr.w   (word_FFFFA2).w
                 rts
 
-byte_10D1A:     dc.b 0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0
+byte_10D1A:     dc.b    0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0
 ; Loads Z80 data using table pointer in a1
 Sound_LoadZ80Table:
                 moveq   #2,d2  ; was: sub_10D24
@@ -47,7 +47,7 @@ Sound_PlayNote:
 Sound_PlayNoteIfActive:
                 tst.b   (byte_FFD2A4).w  ; was: sub_10D48
                 bne.s   locret_10D50
-                bsr.s Sound_PlayNote
+                bsr.s   Sound_PlayNote
 
 locret_10D50:
                 rts

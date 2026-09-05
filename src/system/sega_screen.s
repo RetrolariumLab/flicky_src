@@ -42,16 +42,16 @@ loc_458:
                 movem.l (sp)+,d1-d2/a1
                 rts
 
-byte_466:       dc.b $40, $C, $40, 3, 0, $C, 0, 3
+byte_466:       dc.b    $40, $C, $40, 3, 0, $C, 0, 3
 LoadSegaScreen:
-                bsr.w Sys_InitGameState
-                lea     word_4F6(pc),a5 ; palette cycle data?
-                bsr.w Gfx_LoadFullTilemap
+                bsr.w   Sys_InitGameState
+                lea     word_4F6(pc),a5  ; palette cycle data?
+                bsr.w   Gfx_LoadFullTilemap
                 move.w  #$B4,d1
                 moveq   #0,d2
 
 loc_480:
-                bsr.w Sys_WaitVBlank
+                bsr.w   Sys_WaitVBlank
                 subq.w  #1,d1
                 move.w  d1,d0
                 andi.w  #3,d0
@@ -88,19 +88,19 @@ loc_4EC:
                 move.w  #0,(word_FFFFC0).w
 
 loc_4F2:
-                bra.w Sound_QueueSFX
+                bra.w   Sound_QueueSFX
 
 word_4F6:
-SegaPalette:	binclude	"data/other/data_SegaPalette.bin"
+SegaPalette:    binclude "data/other/data_SegaPalette.bin"
 SegaPalette_End:
 ; Tilemap header for SEGA screen (read by Gfx_ReadTilemapHeader)
 SegaTilemapHeader:
-		dc.w	$E316		; position X
-		dc.w	$0001		; position Y
-		dc.b	$0C		; width adjustment
-		dc.b	$04		; height adjustment
-SegaEnigma:	binclude	"data/arteni/data_SegaEnigma.bin"
+                dc.w    $E316  ; position X
+                dc.w    $0001  ; position Y
+                dc.b    $0C  ; width adjustment
+                dc.b    $04  ; height adjustment
+SegaEnigma:     binclude "data/arteni/data_SegaEnigma.bin"
 SegaEnigma_End:
-SegaTiles:	binclude	"data/artnem/data_SegaTiles.bin"	
+SegaTiles:      binclude "data/artnem/data_SegaTiles.bin"
 SegaTiles_End:
 ; Unused interrupt handler (RTE)

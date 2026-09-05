@@ -77,27 +77,27 @@ psg_init_loop:
 skip_setup:
                 bra.s   GameProgram
 SetupValues:
-                dc.w $8000
-                dc.w $3FFF
-                dc.w $100
-                dc.l Z80_RAM
-                dc.l IO_Z80BUS
-                dc.l IO_Z80RES
-                dc.l VDP_DATA
-                dc.l VDP_CTRL
-                dc.b 4, $14, $30, $3C, 7, $6C, 0, 0
-                dc.b 0, 0, $FF, 0, $81, $37, 0, 1
-                dc.b 1, 0, 0, $FF, $FF, 0, 0, $80
-                dc.l $40000080
-                dc.b $AF, 1, $D9, $1F, $11, $27, 0, $21
-                dc.b $26, 0, $F9, $77, $ED, $B0, $DD, $E1
-                dc.b $FD, $E1, $ED, $47, $ED, $4F, $D1, $E1
-                dc.b $F1, 8, $D9, $C1, $D1, $E1, $F1, $F9
-                dc.b $F3, $ED, $56, $36, $E9, $E9
-                dc.l $81048F02
-                dc.l $C0000000
-                dc.l $40000010
-                dc.b $9F,$BF,$DF,$FF
+                dc.w    $8000
+                dc.w    $3FFF
+                dc.w    $100
+                dc.l    Z80_RAM
+                dc.l    IO_Z80BUS
+                dc.l    IO_Z80RES
+                dc.l    VDP_DATA
+                dc.l    VDP_CTRL
+                dc.b    4, $14, $30, $3C, 7, $6C, 0, 0
+                dc.b    0, 0, $FF, 0, $81, $37, 0, 1
+                dc.b    1, 0, 0, $FF, $FF, 0, 0, $80
+                dc.l    $40000080
+                dc.b    $AF, 1, $D9, $1F, $11, $27, 0, $21
+                dc.b    $26, 0, $F9, $77, $ED, $B0, $DD, $E1
+                dc.b    $FD, $E1, $ED, $47, $ED, $4F, $D1, $E1
+                dc.b    $F1, 8, $D9, $C1, $D1, $E1, $F1, $F9
+                dc.b    $F3, $ED, $56, $36, $E9, $E9
+                dc.l    $81048F02
+                dc.l    $C0000000
+                dc.l    $40000010
+                dc.b    $9F,$BF,$DF,$FF
 
 GameProgram:
                 tst.w   (VDP_CTRL).l
@@ -132,7 +132,7 @@ CheckSumOk:
                 bne.s   loc_3AA
                 move    #$2700,sr
                 lea     ((IO_CT1_DATA+1)).l,a0
-                bsr.w Gfx_InitVDPRegister
+                bsr.w   Gfx_InitVDPRegister
                 cmpi.b  #0,d0
                 beq.s   loc_374
                 nop
@@ -161,10 +161,10 @@ loc_3AA:
                 bne.s   loc_388
                 bsr.w   LoadFuncTable
                 bsr.w   SetInitialVDPRegs
-                bsr.w Gfx_WriteVDPRegs
-                bsr.w Gfx_ClearVRAMAndCRAM
+                bsr.w   Gfx_WriteVDPRegs
+                bsr.w   Gfx_ClearVRAMAndCRAM
                 bsr.w   LoadZ80Driver
-                lea (Sys_GameEntryPoint).l,a0
+                lea     (Sys_GameEntryPoint).l,a0
                 lea     (M68K_RAM).l,a1
                 move.w  #$2FFF,d0
 
@@ -174,7 +174,7 @@ loc_3D8:
                 jmp     M68K_RAM
 
 CheckSumError:
-                bsr.w Gfx_ClearVRAMAndCRAM
+                bsr.w   Gfx_ClearVRAMAndCRAM
                 move.l  #$C0000000,(VDP_CTRL).l
                 moveq   #$3F,d7
 

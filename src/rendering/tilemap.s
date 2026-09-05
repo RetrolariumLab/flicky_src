@@ -35,7 +35,7 @@ Gfx_VBlankScrollUpdate:
                 move.l  #$40000010,(VDP_CTRL).l
                 move.l  (dword_FFFFA4).w,-4(a6)
                 move.w  (word_FFFFDA).w,d0
-                bsr.w Gfx_SetVRAMWriteAddr
+                bsr.w   Gfx_SetVRAMWriteAddr
                 move.l  (dword_FFFFA8).w,d0
                 neg.w   d0
                 swap    d0
@@ -57,7 +57,7 @@ loc_1218:
                 move.w  d4,d1
                 moveq   #$20,d0
                 add.w   d0,d3
-                bsr.w Gfx_FillVRAMValue
+                bsr.w   Gfx_FillVRAMValue
                 addi.b  #$11,d4
                 bcc.s   loc_1218
                 rts
@@ -66,13 +66,13 @@ loc_1218:
 Gfx_DecompEnigmaTilemap:
                 movem.l d1-d5/a0,-(sp)  ; was: sub_122C
                 movea.l a5,a0
-                bsr.s Gfx_ReadTilemapHeader
+                bsr.s   Gfx_ReadTilemapHeader
                 clr.w   d0
                 lea     (unk_FFC3E0).w,a1
-                bsr.w Eni_Decompress
+                bsr.w   Eni_Decompress
                 movea.l a0,a5
                 movea.l a1,a0
-                bsr.s Gfx_DrawTilemapRows
+                bsr.s   Gfx_DrawTilemapRows
                 movem.l (sp)+,d1-d5/a0
                 rts
 
@@ -90,7 +90,7 @@ Gfx_ReadTilemapHeader:
 ; Draws decompressed tilemap rows to VDP
 Gfx_DrawTilemapRows:
                 move.w  d2,d0  ; was: sub_1260
-                bsr.w Gfx_SetVRAMWriteAddr
+                bsr.w   Gfx_SetVRAMWriteAddr
                 move.w  d4,d0
 
 loc_1268:
@@ -99,15 +99,15 @@ loc_1268:
                 move.w  d1,-4(a6)
                 dbf     d0,loc_1268
                 add.w   (word_FFFFE2).w,d2
-                dbf d5,Gfx_DrawTilemapRows
+                dbf     d5,Gfx_DrawTilemapRows
                 move.w  d3,d0
                 rts
 
 ; Loads palette, tilemap, and Nemesis tiles
 Gfx_LoadFullTilemap:
-                bsr.w Gfx_LoadPaletteCompact  ; was: sub_1280
-                bsr.s Gfx_DecompEnigmaTilemap
-                bsr.w Gfx_SetTileWriteAddr
+                bsr.w   Gfx_LoadPaletteCompact  ; was: sub_1280
+                bsr.s   Gfx_DecompEnigmaTilemap
+                bsr.w   Gfx_SetTileWriteAddr
                 movea.l a5,a0
                 bra.w   Nem_Decomp
 

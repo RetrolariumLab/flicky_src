@@ -6,7 +6,7 @@ Obj_Spawner:
                 bne.s   loc_1633E
                 move.b  $3E(a0),d7
                 move.b  $3F(a0),d6
-                bsr.w Math_GridToScreen
+                bsr.w   Math_GridToScreen
                 addq.w  #8,d7
                 addi.w  #$10,d6
                 move.w  d7,$30(a0)
@@ -29,8 +29,8 @@ locret_1635C:
                 rts
 
 loc_1635E:
-                bra.w Spawner_StateCountdown
-                bra.w Spawner_StateSpawn
+                bra.w   Spawner_StateCountdown
+                bra.w   Spawner_StateSpawn
 
 ; Spawner state: countdown before spawn
 Spawner_StateCountdown:
@@ -40,7 +40,7 @@ Spawner_StateCountdown:
                 bset    #1,2(a0)
 
 loc_16378:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 tst.w   $38(a0)
                 bne.s   loc_16390
                 bclr    #1,2(a0)
@@ -60,8 +60,8 @@ Spawner_StateSpawn:
                 clr.w   6(a0)
 
 loc_163AC:
-                bsr.w Object_UpdatePosition
-                bsr.w Anim_UpdateFrame
+                bsr.w   Object_UpdatePosition
+                bsr.w   Anim_UpdateFrame
                 bclr    #2,2(a0)
                 beq.s   locret_163DE
                 movea.l a0,a1
@@ -74,43 +74,43 @@ loc_163AC:
                 move.w  #$14,(a1)
 
 loc_163DA:
-                bsr.w Sprite_ClearLinkTable
+                bsr.w   Sprite_ClearLinkTable
 
 locret_163DE:
                 rts
 
-off_163E0:      dc.l byte_163E4
-byte_163E4:     dc.b $1C, 4
-                dc.w word_1AAEC-Sys_GameEntryPoint
-                dc.w word_1AAEC-Sys_GameEntryPoint
-                dc.w word_1AAEC-Sys_GameEntryPoint
-                dc.w word_1AAF4-Sys_GameEntryPoint
-                dc.w word_1AAF4-Sys_GameEntryPoint
-                dc.w word_1AAF4-Sys_GameEntryPoint
-                dc.w word_1AAFC-Sys_GameEntryPoint
-                dc.w word_1AB04-Sys_GameEntryPoint
-                dc.w word_1AB0C-Sys_GameEntryPoint
-                dc.w word_1AB14-Sys_GameEntryPoint
-                dc.w word_1AB1C-Sys_GameEntryPoint
-                dc.w word_1AB14-Sys_GameEntryPoint
-                dc.w word_1AB0C-Sys_GameEntryPoint
-                dc.w word_1AB04-Sys_GameEntryPoint
-                dc.w word_1AAFC-Sys_GameEntryPoint
-                dc.w word_1AB04-Sys_GameEntryPoint
-                dc.w word_1AB0C-Sys_GameEntryPoint
-                dc.w word_1AB14-Sys_GameEntryPoint
-                dc.w word_1AB1C-Sys_GameEntryPoint
-                dc.w word_1AB14-Sys_GameEntryPoint
-                dc.w word_1AB0C-Sys_GameEntryPoint
-                dc.w word_1AB04-Sys_GameEntryPoint
-                dc.w word_1AAFC-Sys_GameEntryPoint
-                dc.w word_1AB04-Sys_GameEntryPoint
-                dc.w word_1AB0C-Sys_GameEntryPoint
-                dc.w word_1AB14-Sys_GameEntryPoint
-                dc.w word_1AB1C-Sys_GameEntryPoint
-                dc.w word_1AB14-Sys_GameEntryPoint
-                dc.w word_1AB0C-Sys_GameEntryPoint
-                dc.w word_1AB04-Sys_GameEntryPoint
+off_163E0:      dc.l    byte_163E4
+byte_163E4:     dc.b    $1C, 4
+                dc.w    word_1AAEC-Sys_GameEntryPoint
+                dc.w    word_1AAEC-Sys_GameEntryPoint
+                dc.w    word_1AAEC-Sys_GameEntryPoint
+                dc.w    word_1AAF4-Sys_GameEntryPoint
+                dc.w    word_1AAF4-Sys_GameEntryPoint
+                dc.w    word_1AAF4-Sys_GameEntryPoint
+                dc.w    word_1AAFC-Sys_GameEntryPoint
+                dc.w    word_1AB04-Sys_GameEntryPoint
+                dc.w    word_1AB0C-Sys_GameEntryPoint
+                dc.w    word_1AB14-Sys_GameEntryPoint
+                dc.w    word_1AB1C-Sys_GameEntryPoint
+                dc.w    word_1AB14-Sys_GameEntryPoint
+                dc.w    word_1AB0C-Sys_GameEntryPoint
+                dc.w    word_1AB04-Sys_GameEntryPoint
+                dc.w    word_1AAFC-Sys_GameEntryPoint
+                dc.w    word_1AB04-Sys_GameEntryPoint
+                dc.w    word_1AB0C-Sys_GameEntryPoint
+                dc.w    word_1AB14-Sys_GameEntryPoint
+                dc.w    word_1AB1C-Sys_GameEntryPoint
+                dc.w    word_1AB14-Sys_GameEntryPoint
+                dc.w    word_1AB0C-Sys_GameEntryPoint
+                dc.w    word_1AB04-Sys_GameEntryPoint
+                dc.w    word_1AAFC-Sys_GameEntryPoint
+                dc.w    word_1AB04-Sys_GameEntryPoint
+                dc.w    word_1AB0C-Sys_GameEntryPoint
+                dc.w    word_1AB14-Sys_GameEntryPoint
+                dc.w    word_1AB1C-Sys_GameEntryPoint
+                dc.w    word_1AB14-Sys_GameEntryPoint
+                dc.w    word_1AB0C-Sys_GameEntryPoint
+                dc.w    word_1AB04-Sys_GameEntryPoint
 ; Floating score popup display object
 Obj_ScorePopup:
                 bset    #7,(a0)  ; was: sub_16422
@@ -125,7 +125,7 @@ Obj_ScorePopup:
                 move.w  #$3C,$38(a0)
 
 loc_16442:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 subq.w  #1,$38(a0)
                 bne.s   locret_1644E
                 clr.w   (a0)
@@ -133,9 +133,9 @@ loc_16442:
 locret_1644E:
                 rts
 
-off_16450:      dc.w byte_1AB2C-Sys_GameEntryPoint
-                dc.w word_1AB3C-Sys_GameEntryPoint
-                dc.w word_1AB4C-Sys_GameEntryPoint
+off_16450:      dc.w    byte_1AB2C-Sys_GameEntryPoint
+                dc.w    word_1AB3C-Sys_GameEntryPoint
+                dc.w    word_1AB4C-Sys_GameEntryPoint
 ; Chick delivery count popup object
 Obj_ChickCountPopup:
                 bset    #7,(a0)  ; was: sub_16456
@@ -163,7 +163,7 @@ loc_16486:
                 move.w  #$1E,$38(a0)
 
 loc_16490:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 subq.w  #1,$38(a0)
                 bne.s   locret_1649C
                 clr.w   (a0)
@@ -171,14 +171,14 @@ loc_16490:
 locret_1649C:
                 rts
 
-off_1649E:      dc.w word_1AB24-Sys_GameEntryPoint
-                dc.w byte_1AB2C-Sys_GameEntryPoint
-                dc.w word_1AB34-Sys_GameEntryPoint
-                dc.w word_1AB3C-Sys_GameEntryPoint
-                dc.w word_1AB44-Sys_GameEntryPoint
-                dc.w word_1AB54-Sys_GameEntryPoint
-                dc.w word_1AB5C-Sys_GameEntryPoint
-                dc.w word_1AB6C-Sys_GameEntryPoint
+off_1649E:      dc.w    word_1AB24-Sys_GameEntryPoint
+                dc.w    byte_1AB2C-Sys_GameEntryPoint
+                dc.w    word_1AB34-Sys_GameEntryPoint
+                dc.w    word_1AB3C-Sys_GameEntryPoint
+                dc.w    word_1AB44-Sys_GameEntryPoint
+                dc.w    word_1AB54-Sys_GameEntryPoint
+                dc.w    word_1AB5C-Sys_GameEntryPoint
+                dc.w    word_1AB6C-Sys_GameEntryPoint
 ; Bonus round score popup object
 Obj_BonusScorePopup:
                 bset    #7,(a0)  ; was: sub_164AE
@@ -192,7 +192,7 @@ Obj_BonusScorePopup:
                 move.w  #$3C,$38(a0)
 
 loc_164CC:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 subq.w  #1,$38(a0)
                 bne.s   locret_164D8
                 clr.w   (a0)
@@ -200,13 +200,13 @@ loc_164CC:
 locret_164D8:
                 rts
 
-off_164DA:      dc.w word_1AB24-Sys_GameEntryPoint
-                dc.w byte_1AB2C-Sys_GameEntryPoint
-                dc.w word_1AB34-Sys_GameEntryPoint
-                dc.w word_1AB3C-Sys_GameEntryPoint
-                dc.w word_1AB44-Sys_GameEntryPoint
-                dc.w word_1AB4C-Sys_GameEntryPoint
-                dc.w word_1AB54-Sys_GameEntryPoint
-                dc.w word_1AB5C-Sys_GameEntryPoint
-                dc.w word_1AB64-Sys_GameEntryPoint
+off_164DA:      dc.w    word_1AB24-Sys_GameEntryPoint
+                dc.w    byte_1AB2C-Sys_GameEntryPoint
+                dc.w    word_1AB34-Sys_GameEntryPoint
+                dc.w    word_1AB3C-Sys_GameEntryPoint
+                dc.w    word_1AB44-Sys_GameEntryPoint
+                dc.w    word_1AB4C-Sys_GameEntryPoint
+                dc.w    word_1AB54-Sys_GameEntryPoint
+                dc.w    word_1AB5C-Sys_GameEntryPoint
+                dc.w    word_1AB64-Sys_GameEntryPoint
 ; Collectible star bonus object

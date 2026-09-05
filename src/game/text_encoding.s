@@ -61,7 +61,7 @@ loc_10E48:
 
 ; Gets random byte via trap 0 and rotate
 Math_GetRandomByte:
-                trap    #0              ; ErrorTrap  ; was: sub_10E52
+                trap    #0  ; ErrorTrap  ; was: sub_10E52
                 ror.l   #8,d1
                 rts
 
@@ -75,7 +75,7 @@ Math_CalcRandomSum:
                 bcs.s   loc_10E82
 
 loc_10E6C:
-                bsr.s Math_GetRandomByte
+                bsr.s   Math_GetRandomByte
                 andi.l  #$FFFF,d1
                 divu.w  (word_FFE634).w,d1
                 swap    d1

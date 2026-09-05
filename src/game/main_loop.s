@@ -2,24 +2,24 @@
 ; ROM $012A94-$012F2F.
 
 Game_StartRound:
-                jsr Sys_InitTitleScreen  ; was: sub_12A94
+                jsr     Sys_InitTitleScreen  ; was: sub_12A94
                 lea     (word_16DE8).l,a5
                 jsr     unk_FFFBBA
-                bsr.s Game_SetupLevel
+                bsr.s   Game_SetupLevel
                 move.w  #$83,d0
                 jsr     unk_FFFB66
-                bsr.w Game_RoundStartSequence
-                bsr.w Game_CalcDifficulty
+                bsr.w   Game_RoundStartSequence
+                bsr.w   Game_CalcDifficulty
                 jmp     unk_FFFB6C
 
 ; Sets up level: collision, objects, enemies, HUD
 Game_SetupLevel:
                 clr.b   (byte_FFD883).w  ; was: sub_12ABA
-                bsr.w Level_LoadTileset
-                bsr.w Level_LoadPalette
+                bsr.w   Level_LoadTileset
+                bsr.w   Level_LoadPalette
                 move.w  #1,(dword_FFFFA8).w
                 moveq   #$30,d7
-                bsr.w Math_ModuloUpper
+                bsr.w   Math_ModuloUpper
                 subq.b  #1,d0
                 lsl.w   #1,d0
                 moveq   #$FFFFFFFF,d1
@@ -27,14 +27,14 @@ Game_SetupLevel:
                 move.w  (a0,d0.w),d1
                 movea.l d1,a6
                 move.w  d0,-(sp)
-                bsr.w Level_Init
+                bsr.w   Level_Init
                 move.w  (sp)+,d0
                 moveq   #$FFFFFFFF,d1
                 lea     off_15508(pc),a0
                 move.w  (a0,d0.w),d1
                 movea.l d1,a6
                 move.w  d0,-(sp)
-                bsr.w Collision_SetSpecialTiles
+                bsr.w   Collision_SetSpecialTiles
                 move.w  (sp)+,d0
                 lsl.w   #2,d0
                 lea     dword_15B94(pc),a0
@@ -43,18 +43,18 @@ Game_SetupLevel:
                 tst.b   (byte_FFD886).w
                 beq.s   loc_12B20
                 clr.b   (byte_FFD886).w
-                bsr.w Enemy_RestoreFromBuffer
+                bsr.w   Enemy_RestoreFromBuffer
 
 loc_12B20:
-                bsr.w Level_CountChicks
-                bsr.w Level_DrawCatDoor
-                bsr.w Level_CalcExitPos
-                bsr.w Level_SetCatPositions
-                bsr.w UI_DrawScoreLabels
-                bsr.w UI_DrawScore
-                bsr.w UI_DrawHighScore
-                bsr.w UI_DrawRoundNumber
-                bsr.w UI_DrawLives
+                bsr.w   Level_CountChicks
+                bsr.w   Level_DrawCatDoor
+                bsr.w   Level_CalcExitPos
+                bsr.w   Level_SetCatPositions
+                bsr.w   UI_DrawScoreLabels
+                bsr.w   UI_DrawScore
+                bsr.w   UI_DrawHighScore
+                bsr.w   UI_DrawRoundNumber
+                bsr.w   UI_DrawLives
                 rts
 
 ; Main gameplay loop with state dispatcher
@@ -64,19 +64,19 @@ Game_MainLoop:
                 jsr     loc_12B6A(pc,d0.w)
                 btst    #7,(word_FFFF8E+1).w
                 beq.s   loc_12B5E
-                bsr.w Game_Pause
+                bsr.w   Game_Pause
 
 loc_12B5E:
-                bsr.w Score_CheckExtraLife
-                bsr.w Sound_ChannelCooldown
+                bsr.w   Score_CheckExtraLife
+                bsr.w   Sound_ChannelCooldown
                 jmp     unk_FFFB6C
 
 loc_12B6A:
-                bra.w Game_StatePlay
-                bra.w Game_StateRoundComplete
-                bra.w Game_StateBonusCheck
-                bra.w Game_CheckSkipBonus
-                bra.w Game_StateNextRound
+                bra.w   Game_StatePlay
+                bra.w   Game_StateRoundComplete
+                bra.w   Game_StateBonusCheck
+                bra.w   Game_CheckSkipBonus
+                bra.w   Game_StateNextRound
 
 ; Gameplay state: normal play with object updates
 Game_StatePlay:
@@ -85,9 +85,9 @@ Game_StatePlay:
                 addq.l  #7,(dword_FFD296).w
 
 loc_12B8C:
-                bsr.w Enemy_SpawnCats
-                bsr.w Object_UpdateAll
-                bsr.w Timer_IncrementTime
+                bsr.w   Enemy_SpawnCats
+                bsr.w   Object_UpdateAll
+                bsr.w   Timer_IncrementTime
                 rts
 
 ; Gameplay state: round complete score screen
@@ -98,7 +98,7 @@ Game_StateRoundComplete:
 loc_12BA2:
                 tst.b   (byte_FFD2A4).w
                 beq.s   loc_12BB2
-                bsr.w Sound_ChannelCooldown
+                bsr.w   Sound_ChannelCooldown
                 jsr     unk_FFFB6C
                 bra.s   loc_12BA2
 
@@ -106,14 +106,14 @@ loc_12BB2:
                 move.b  #$82,d0
                 jsr     unk_FFFB66
                 move.w  #$8000,(word_FFD884).w
-                bsr.w UI_DrawScoreScreenLabels
+                bsr.w   UI_DrawScoreScreenLabels
                 clr.w   (word_FFFF92).w
                 lea     (word_FFC040).w,a0
                 move.w  #4,word_FFC07C-word_FFC040(a0)
 
 loc_12BD2:
-                bsr.w Object_UpdateAll
-                bsr.w Score_UpdateDisplay
+                bsr.w   Object_UpdateAll
+                bsr.w   Score_UpdateDisplay
                 rts
 
 ; Gameplay state: bonus life check and award
@@ -122,7 +122,7 @@ Game_StateBonusCheck:
                 bne.s   loc_12C2E
                 clr.w   (word_FFFF92).w
                 moveq   #$30,d7
-                bsr.w Math_ModuloUpper
+                bsr.w   Math_ModuloUpper
                 move.b  d0,d1
                 moveq   #0,d0
                 move.b  (word_FFD82C+1).w,d0
@@ -152,10 +152,10 @@ loc_12C2E:
                 bne.s   loc_12C6A
                 clr.w   (a0)
                 move.w  #$8000,(word_FFD884).w
-                bsr.w Score_AddAndCheck
+                bsr.w   Score_AddAndCheck
                 movem.l d0/a0,-(sp)
                 move.b  #$98,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movem.l (sp)+,d0/a0
                 addq.b  #1,(byte_FFD88C).w
                 cmpi.b  #$A,(byte_FFD88C).w
@@ -165,7 +165,7 @@ loc_12C2E:
                 bra.s   loc_12C74
 
 loc_12C6A:
-                bsr.w Object_UpdateAll
+                bsr.w   Object_UpdateAll
                 rts
 
 loc_12C70:
@@ -175,8 +175,8 @@ loc_12C74:
                 move.w  #4,(word_FFD2A0).w
                 rts
 
-byte_12C7C:     dc.b 2, $A, $12, $1A, $22, $2A
-dword_12C82:    dc.l $200000, $1000, $5000, $10000, $50000, $100000
+byte_12C7C:     dc.b    2, $A, $12, $1A, $22, $2A
+dword_12C82:    dc.l    $200000, $1000, $5000, $10000, $50000, $100000
 ; Checks if should skip bonus based on time
 Game_CheckSkipBonus:
                 moveq   #0,d0  ; was: sub_12C9A
@@ -200,7 +200,7 @@ loc_12CC6:
                 move.w  #8,(word_FFD2A0).w
                 rts
 
-word_12CCE:     dc.w $25, $30, $35, $40, $45, $50
+word_12CCE:     dc.w    $25, $30, $35, $40, $45, $50
 ; Gameplay state: next round transition
 Game_StateNextRound:
                 bset    #7,(word_FFD2A0).w  ; was: sub_12CDA
@@ -216,13 +216,13 @@ loc_12CE4:
                 clr.b   (byte_FFD886).w
 
 loc_12CFE:
-                bsr.w Object_UpdateMain
+                bsr.w   Object_UpdateMain
                 move.w  #$B4,d1
 
 loc_12D06:
                 jsr     unk_FFFB6C
                 dbf     d1,loc_12D06
-                bsr.w Gfx_FadeInPalette
+                bsr.w   Gfx_FadeInPalette
                 move.w  #$40,(word_FFFFC0).w
                 rts
 
@@ -233,7 +233,7 @@ Level_CalcExitPos:
                 lea     (byte_FFD82E).w,a0
                 move.b  (a0),d7
                 move.b  1(a0),d6
-                bsr.w Math_GridToScreen
+                bsr.w   Math_GridToScreen
                 move.w  d7,(word_FFD25E).w
                 addi.w  #$17,d7
                 move.w  d7,(word_FFD260).w
@@ -246,8 +246,8 @@ Score_UpdateDisplay:
                 move.w  (word_FFFF92).w,d0  ; was: sub_12D42
                 cmpi.w  #$FA,d0
                 bhi.s   loc_12D56
-                bsr.w Text_CycleBlink
-                bsr.w UI_DrawScoreBreakdown
+                bsr.w   Text_CycleBlink
+                bsr.w   UI_DrawScoreBreakdown
                 rts
 
 loc_12D56:
@@ -328,19 +328,19 @@ loc_12DF2:
 
 ; Round start sequence with countdown animation
 Game_RoundStartSequence:
-                bsr.w Object_UpdateAll  ; was: sub_12E00
+                bsr.w   Object_UpdateAll  ; was: sub_12E00
                 jsr     unk_FFFB6C
                 moveq   #$3C,d2
 
 loc_12E0A:
-                bsr.w Timer_IncrementTime
+                bsr.w   Timer_IncrementTime
                 jsr     unk_FFFB6C
                 dbf     d2,loc_12E0A
-                bsr.w UI_AnimateTimer
+                bsr.w   UI_AnimateTimer
                 move.w  #$C,(word_FFC440).w
-                bsr.w Object_UpdateAll
+                bsr.w   Object_UpdateAll
                 jsr     unk_FFFB6C
-                bsr.w UI_AnimateCatCountdown
+                bsr.w   UI_AnimateCatCountdown
                 rts
 
 ; Calculates round difficulty: speed and patterns
@@ -366,7 +366,7 @@ loc_12E44:
 loc_12E70:
                 moveq   #0,d1
                 moveq   #$30,d7
-                bsr.w Math_ModuloUpper
+                bsr.w   Math_ModuloUpper
                 subq.b  #1,d0
                 lea     byte_15D28(pc),a0
                 move.b  (a0,d0.w),d1
@@ -389,7 +389,7 @@ loc_12E98:
                 cmp.l   dword_12EE0(pc,d2.w),d0
                 bcs.s   loc_12EB2
                 bset    d1,(byte_FFD887).w
-                bsr.w Score_AwardExtraLife
+                bsr.w   Score_AwardExtraLife
                 bra.s   locret_12EB8
 
 loc_12EB2:
@@ -409,10 +409,10 @@ Score_AwardExtraLife:
                 jsr     unk_FFFB3C
                 move.l  (sp)+,d0
                 addq.b  #1,(byte_FFD882).w
-                bsr.w UI_DrawLives
+                bsr.w   UI_DrawLives
                 rts
 
-dword_12EE0:    dc.l $30000, $80000, $160000, $240000, $320000
+dword_12EE0:    dc.l    $30000, $80000, $160000, $240000, $320000
 ; Pause game and wait for unpause input
 Game_Pause:
                 jsr     unk_FFFB36  ; was: sub_12EF4
@@ -421,7 +421,7 @@ Game_Pause:
                 move.w  #$58,(word_FFC000).w
 
 loc_12F0A:
-                bsr.w Object_UpdateMain
+                bsr.w   Object_UpdateMain
                 jsr     unk_FFFB6C
                 btst    #7,(word_FFFF8E+1).w
                 beq.s   loc_12F0A

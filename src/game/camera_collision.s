@@ -56,7 +56,7 @@ loc_1138A:
 loc_113A0:
                 asl.w   #2,d0
                 movea.l 2(a1,d0.w),a6
-                bsr.w Gfx_DrawTilemapRect
+                bsr.w   Gfx_DrawTilemapRect
                 rts
 
 ; Clears 896-byte collision map at FFC800
@@ -89,7 +89,7 @@ Collision_SetTile:
 
 ; Loads collision map from compressed data at (a6)
 Collision_LoadMap:
-                bsr.s Collision_ClearMap  ; was: sub_113E4
+                bsr.s   Collision_ClearMap  ; was: sub_113E4
                 lea     (unk_FFC840).w,a0
 
 loc_113EA:

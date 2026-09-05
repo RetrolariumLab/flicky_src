@@ -12,7 +12,7 @@ Obj_Cat:
 loc_1485A:
                 move.b  $3E(a0),d7
                 move.b  $3F(a0),d6
-                bsr.w Math_GridToScreen
+                bsr.w   Math_GridToScreen
                 addq.w  #8,d7
                 addi.w  #$10,d6
                 move.w  d7,$30(a0)
@@ -35,10 +35,10 @@ locret_14898:
                 rts
 
 loc_1489A:
-                bra.w Cat_StatePatrol
-                bra.w Cat_StateFollowing
-                bra.w Cat_StateWalking
-                bra.w Cat_StateStunWalk
+                bra.w   Cat_StatePatrol
+                bra.w   Cat_StateFollowing
+                bra.w   Cat_StateWalking
+                bra.w   Cat_StateStunWalk
 
 ; Cat state: patrolling and bouncing
 Cat_StatePatrol:
@@ -58,22 +58,22 @@ loc_148C6:
 
 loc_148DA:
                 lea     (word_FFC440).w,a1
-                bsr.w Collision_CheckObjectPair
+                bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   loc_1490E
                 move.l  a0,-(sp)
                 move.b  #$90,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.w  #4,$3C(a0)
                 addq.b  #1,(byte_FFD27A).w
                 move.b  (byte_FFD27A).w,$38(a0)
                 move.l  #$10,(dword_FFD262).w
-                bsr.w Score_AddAndCheck
+                bsr.w   Score_AddAndCheck
 
 loc_1490E:
-                bsr.w Anim_UpdateFrame
-                bsr.w Object_UpdatePosition
+                bsr.w   Anim_UpdateFrame
+                bsr.w   Object_UpdatePosition
 
 locret_14916:
                 rts
@@ -103,7 +103,7 @@ loc_14940:
                 movea.l d1,a1
                 move.l  (a1),$30(a0)
                 move.l  4(a1),$24(a0)
-                bsr.w Object_CalcScreenPos
+                bsr.w   Object_CalcScreenPos
                 lea     byte_14A6A(pc),a1
                 move.w  (a1,d0.w),d1
                 movea.l d1,a1
@@ -112,7 +112,7 @@ loc_14940:
                 move.w  d1,-(sp)
                 tst.b   (byte_FFD24F).w
                 bne.s   loc_1497C
-                bsr.w Chick_CheckEnemyHit
+                bsr.w   Chick_CheckEnemyHit
 
 loc_1497C:
                 move.w  (sp)+,d1
@@ -127,17 +127,17 @@ loc_1497C:
                 bne.s   loc_149F2
                 move.l  a0,-(sp)
                 move.b  #$94,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 clr.w   (a0)
-                bsr.w Chick_AwardPoints
+                bsr.w   Chick_AwardPoints
                 subq.b  #1,(byte_FFD883).w
                 bne.s   loc_149CE
                 move.b  #1,(byte_FFD281).w
                 clr.w   (word_FFFF92).w
                 move.b  (dword_FFD888).w,(byte_FFD266).w
                 move.b  (dword_FFD888+1).w,(byte_FFD267).w
-                bsr.w Score_CalcTimeBonus
+                bsr.w   Score_CalcTimeBonus
 
 loc_149CE:
                 move.l  a0,-(sp)
@@ -152,7 +152,7 @@ loc_149D2:
                 bne.s   loc_149F2
                 clr.b   (byte_FFD24F).w
                 move.l  a0,-(sp)
-                bsr.w UI_AnimateBonus
+                bsr.w   UI_AnimateBonus
                 movea.l (sp)+,a0
 
 loc_149F2:
@@ -189,14 +189,14 @@ loc_14A48:
                 move.w  #4,6(a0)
 
 loc_14A4E:
-                bsr.w Anim_UpdateFrame
-                bsr.w Object_CalcScreenPos
+                bsr.w   Anim_UpdateFrame
+                bsr.w   Object_CalcScreenPos
                 rts
 
-byte_14A58:     dc.b 0, 0
-                dc.w $D036, $D05E, $D086, $D0AE, $D0D6, $D0FE, $D126, $D14E
-byte_14A6A:     dc.b 0, 0
-                dc.w $D213, $D218, $D21D, $D222, $D227, $D22C, $D231, $D236
+byte_14A58:     dc.b    0, 0
+                dc.w    $D036, $D05E, $D086, $D0AE, $D0D6, $D0FE, $D126, $D14E
+byte_14A6A:     dc.b    0, 0
+                dc.w    $D213, $D218, $D21D, $D222, $D227, $D22C, $D231, $D236
 ; Awards points when chick delivered to door
 Chick_AwardPoints:
                 moveq   #0,d0  ; was: sub_14A7C
@@ -205,7 +205,7 @@ Chick_AwardPoints:
                 lsl.w   #2,d0
                 move.l  dword_14AC0(pc,d0.w),d0
                 move.l  d0,(dword_FFD262).w
-                bsr.w Score_AddAndCheck
+                bsr.w   Score_AddAndCheck
                 moveq   #0,d0
                 move.b  $38(a0),d0
                 move.b  d0,d1
@@ -222,15 +222,15 @@ Chick_AwardPoints:
                 move.w  d7,$30(a2)
                 rts
 
-dword_14AC0:    dc.l $100
-                dc.l $200
-                dc.l $300
-                dc.l $400
-                dc.l $500
-                dc.l $1000
-                dc.l $2000
-                dc.l $5000
-word_14AE0:     dc.w $C100, $C140, $C180, $C1C0, $C100, $C140, $C180, $C1C0
+dword_14AC0:    dc.l    $100
+                dc.l    $200
+                dc.l    $300
+                dc.l    $400
+                dc.l    $500
+                dc.l    $1000
+                dc.l    $2000
+                dc.l    $5000
+word_14AE0:     dc.w    $C100, $C140, $C180, $C1C0, $C100, $C140, $C180, $C1C0
 ; Checks if chick chain hit by enemy
 Chick_CheckEnemyHit:
                 lea     (unk_FFC380).w,a1  ; was: sub_14AF0
@@ -240,7 +240,7 @@ loc_14AF6:
                 move.w  d0,-(sp)
                 btst    #1,5(a1)
                 beq.s   loc_14B30
-                bsr.w Collision_CheckObjectPair
+                bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   loc_14B30
                 move.b  $38(a0),d0
@@ -276,7 +276,7 @@ Cat_StateIdle:
 ; Cat state: walking on ground turning at walls
 Cat_StateWalking:
                 tst.b   $3A(a0)  ; was: sub_14B42
-                bne.w Cat_StateWalkAlt
+                bne.w   Cat_StateWalkAlt
                 bset    #7,$3C(a0)
                 bne.s   loc_14B76
                 moveq   #0,d0
@@ -293,13 +293,13 @@ loc_14B70:
                 move.w  #8,6(a0)
 
 loc_14B76:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 tst.l   $2C(a0)
                 bne.w   loc_14BF8
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 addq.w  #1,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_14BA4
                 addi.l  #$1000,$2C(a0)
@@ -312,7 +312,7 @@ loc_14BA4:
                 tst.b   $39(a0)
                 bne.s   loc_14BC6
                 subi.l  #$400,$34(a0)
-                bra.s Cat_CheckWallCollision
+                bra.s   Cat_CheckWallCollision
 
 loc_14BBA:
                 clr.l   $34(a0)
@@ -321,7 +321,7 @@ loc_14BBA:
 
 loc_14BC6:
                 addi.l  #$400,$34(a0)
-                bra.s Cat_CheckWallCollision
+                bra.s   Cat_CheckWallCollision
 
 ; Clears cat horizontal velocity
 Cat_ClearVelocity:
@@ -339,7 +339,7 @@ Cat_CheckWallCollision:
 
 loc_14BE8:
                 add.w   d0,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_14BF6
                 neg.l   $34(a0)
@@ -350,7 +350,7 @@ loc_14BF6:
 loc_14BF8:
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_14C20
                 clr.l   $2C(a0)
@@ -371,18 +371,18 @@ loc_14C2E:
                 bset    #7,2(a0)
 
 loc_14C40:
-                bsr.w Anim_UpdateFrame
-                bsr.w Cat_CheckPlayerPickup
+                bsr.w   Anim_UpdateFrame
+                bsr.w   Cat_CheckPlayerPickup
                 rts
 
-dword_14C4A:    dc.l $A000
-                dc.l $C000
-                dc.l $E000
-                dc.l $10000
-                dc.l $12000
-                dc.l $14000
-                dc.l $16000
-                dc.l $18000
+dword_14C4A:    dc.l    $A000
+                dc.l    $C000
+                dc.l    $E000
+                dc.l    $10000
+                dc.l    $12000
+                dc.l    $14000
+                dc.l    $16000
+                dc.l    $18000
 ; Cat state: alternate walking pattern
 Cat_StateWalkAlt:
                 bset    #7,$3C(a0)  ; was: sub_14C6A
@@ -401,13 +401,13 @@ loc_14C90:
                 move.w  #8,6(a0)
 
 loc_14C96:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 tst.l   $2C(a0)
                 bne.w   loc_14CE0
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 addq.w  #1,d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 bne.s   loc_14CC4
                 addi.l  #$1000,$2C(a0)
@@ -423,7 +423,7 @@ loc_14CC4:
 
 loc_14CD0:
                 add.w   d0,d7
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_14CDE
                 neg.l   $34(a0)
@@ -434,7 +434,7 @@ loc_14CDE:
 loc_14CE0:
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                bsr.w Collision_GetTileAtPos
+                bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   loc_14D08
                 clr.l   $2C(a0)
@@ -455,30 +455,30 @@ loc_14D16:
                 bset    #7,2(a0)
 
 loc_14D28:
-                bsr.w Anim_UpdateFrame
-                bsr.w Cat_CheckPlayerPickup
+                bsr.w   Anim_UpdateFrame
+                bsr.w   Cat_CheckPlayerPickup
                 rts
 
-dword_14D32:    dc.l $C000
-                dc.l $D000
-                dc.l $E000
-                dc.l $F000
-                dc.l $10000
-                dc.l $11000
-                dc.l $12000
-                dc.l $13000
+dword_14D32:    dc.l    $C000
+                dc.l    $D000
+                dc.l    $E000
+                dc.l    $F000
+                dc.l    $10000
+                dc.l    $11000
+                dc.l    $12000
+                dc.l    $13000
 ; Checks if player picked up cat/chick
 Cat_CheckPlayerPickup:
                 lea     (word_FFC440).w,a1  ; was: sub_14D52
                 move.w  word_FFC47C-word_FFC440(a1),d0
                 andi.w  #$7C,d0
                 bne.s   locret_14D84
-                bsr.w Collision_CheckObjectPair
+                bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   locret_14D84
                 move.l  a0,-(sp)
                 move.b  #$90,d0
-                bsr.w Sound_PlayNoteIfActive
+                bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.w  #4,$3C(a0)
                 addq.b  #1,(byte_FFD27A).w
@@ -489,7 +489,7 @@ locret_14D84:
 
 ; Cat state: stunned walking animation
 Cat_StateStunWalk:
-                bsr.w Object_UpdatePosition  ; was: sub_14D86
+                bsr.w   Object_UpdatePosition  ; was: sub_14D86
                 bset    #7,$3C(a0)
                 bne.s   loc_14DA2
                 bclr    #2,2(a0)
@@ -497,21 +497,21 @@ Cat_StateStunWalk:
                 clr.b   $10(a0)
 
 loc_14DA2:
-                bsr.w Object_UpdatePosition
+                bsr.w   Object_UpdatePosition
                 bclr    #7,2(a0)
                 tst.b   $39(a0)
                 beq.s   loc_14DB8
                 bset    #7,2(a0)
 
 loc_14DB8:
-                bsr.w Anim_UpdateFrame
+                bsr.w   Anim_UpdateFrame
                 bclr    #2,2(a0)
                 beq.s   loc_14DD0
                 bchg    #0,$39(a0)
                 move.w  #8,$3C(a0)
 
 loc_14DD0:
-                bsr.s Cat_CheckPlayerPickup
+                bsr.s   Cat_CheckPlayerPickup
                 rts
 
 ; Calculates time bonus from remaining time
@@ -526,97 +526,97 @@ Score_CalcTimeBonus:
                 move.l  dword_14DFA(pc,d0.w),d0
                 move.l  d0,(dword_FFD268).w
                 move.l  d0,(dword_FFD262).w
-                bsr.w Score_AddAndCheck
+                bsr.w   Score_AddAndCheck
 
 locret_14DF8:
                 rts
 
-dword_14DFA:    dc.l $20000
-                dc.l $20000
-                dc.l $10000
-                dc.l $5000
-                dc.l $3000
-                dc.l $1000
-off_14E12:      dc.l byte_14E32
-                dc.l byte_14E96
-                dc.l byte_14EA2
-                dc.l byte_14EB2
-off_14E22:      dc.l byte_14E64
-                dc.l byte_14E9C
-                dc.l byte_14EAA
-                dc.l byte_14EBC
-byte_14E32:     dc.b $18, 4
-                dc.w word_1A7B8-Sys_GameEntryPoint
-                dc.w word_1A7C0-Sys_GameEntryPoint
-                dc.w word_1A7B8-Sys_GameEntryPoint
-                dc.w word_1A7C0-Sys_GameEntryPoint
-                dc.w word_1A7B8-Sys_GameEntryPoint
-                dc.w word_1A7C0-Sys_GameEntryPoint
-                dc.w word_1A7B8-Sys_GameEntryPoint
-                dc.w word_1A7C0-Sys_GameEntryPoint
-                dc.w word_1A7B8-Sys_GameEntryPoint
-                dc.w word_1A7C0-Sys_GameEntryPoint
-                dc.w word_1A7B8-Sys_GameEntryPoint
-                dc.w word_1A7C0-Sys_GameEntryPoint
-                dc.w word_1A7C8-Sys_GameEntryPoint
-                dc.w word_1A7D0-Sys_GameEntryPoint
-                dc.w word_1A7C8-Sys_GameEntryPoint
-                dc.w word_1A7D0-Sys_GameEntryPoint
-                dc.w word_1A7C8-Sys_GameEntryPoint
-                dc.w word_1A7D0-Sys_GameEntryPoint
-                dc.w word_1A7C8-Sys_GameEntryPoint
-                dc.w word_1A7D0-Sys_GameEntryPoint
-                dc.w word_1A7C8-Sys_GameEntryPoint
-                dc.w word_1A7D0-Sys_GameEntryPoint
-                dc.w word_1A7C8-Sys_GameEntryPoint
-                dc.w word_1A7D0-Sys_GameEntryPoint
-byte_14E64:     dc.b $18, 4
-                dc.w word_1A818-Sys_GameEntryPoint
-                dc.w word_1A820-Sys_GameEntryPoint
-                dc.w word_1A818-Sys_GameEntryPoint
-                dc.w word_1A820-Sys_GameEntryPoint
-                dc.w word_1A818-Sys_GameEntryPoint
-                dc.w word_1A820-Sys_GameEntryPoint
-                dc.w word_1A818-Sys_GameEntryPoint
-                dc.w word_1A820-Sys_GameEntryPoint
-                dc.w word_1A818-Sys_GameEntryPoint
-                dc.w word_1A820-Sys_GameEntryPoint
-                dc.w word_1A818-Sys_GameEntryPoint
-                dc.w word_1A820-Sys_GameEntryPoint
-                dc.w word_1A828-Sys_GameEntryPoint
-                dc.w word_1A830-Sys_GameEntryPoint
-                dc.w word_1A828-Sys_GameEntryPoint
-                dc.w word_1A830-Sys_GameEntryPoint
-                dc.w word_1A828-Sys_GameEntryPoint
-                dc.w word_1A830-Sys_GameEntryPoint
-                dc.w word_1A828-Sys_GameEntryPoint
-                dc.w word_1A830-Sys_GameEntryPoint
-                dc.w word_1A828-Sys_GameEntryPoint
-                dc.w word_1A830-Sys_GameEntryPoint
-                dc.w word_1A828-Sys_GameEntryPoint
-                dc.w word_1A830-Sys_GameEntryPoint
-byte_14E96:     dc.b 2, 3
-                dc.w word_1A7D8-Sys_GameEntryPoint
-                dc.w word_1A7E0-Sys_GameEntryPoint
-byte_14E9C:     dc.b 2, 3
-                dc.w word_1A838-Sys_GameEntryPoint
-                dc.w word_1A840-Sys_GameEntryPoint
-byte_14EA2:     dc.b 3, 4
-                dc.w word_1A7E8-Sys_GameEntryPoint
-                dc.w word_1A7F0-Sys_GameEntryPoint
-                dc.w word_1A7F8-Sys_GameEntryPoint
-byte_14EAA:     dc.b 3, 4
-                dc.w word_1A848-Sys_GameEntryPoint
-                dc.w word_1A850-Sys_GameEntryPoint
-                dc.w word_1A858-Sys_GameEntryPoint
-byte_14EB2:     dc.b 4, $A
-                dc.w word_1A800-Sys_GameEntryPoint
-                dc.w word_1A800-Sys_GameEntryPoint
-                dc.w word_1A808-Sys_GameEntryPoint
-                dc.w word_1A810-Sys_GameEntryPoint
-byte_14EBC:     dc.b 4, $A
-                dc.w word_1A860-Sys_GameEntryPoint
-                dc.w word_1A860-Sys_GameEntryPoint
-                dc.w word_1A868-Sys_GameEntryPoint
-                dc.w word_1A870-Sys_GameEntryPoint
+dword_14DFA:    dc.l    $20000
+                dc.l    $20000
+                dc.l    $10000
+                dc.l    $5000
+                dc.l    $3000
+                dc.l    $1000
+off_14E12:      dc.l    byte_14E32
+                dc.l    byte_14E96
+                dc.l    byte_14EA2
+                dc.l    byte_14EB2
+off_14E22:      dc.l    byte_14E64
+                dc.l    byte_14E9C
+                dc.l    byte_14EAA
+                dc.l    byte_14EBC
+byte_14E32:     dc.b    $18, 4
+                dc.w    word_1A7B8-Sys_GameEntryPoint
+                dc.w    word_1A7C0-Sys_GameEntryPoint
+                dc.w    word_1A7B8-Sys_GameEntryPoint
+                dc.w    word_1A7C0-Sys_GameEntryPoint
+                dc.w    word_1A7B8-Sys_GameEntryPoint
+                dc.w    word_1A7C0-Sys_GameEntryPoint
+                dc.w    word_1A7B8-Sys_GameEntryPoint
+                dc.w    word_1A7C0-Sys_GameEntryPoint
+                dc.w    word_1A7B8-Sys_GameEntryPoint
+                dc.w    word_1A7C0-Sys_GameEntryPoint
+                dc.w    word_1A7B8-Sys_GameEntryPoint
+                dc.w    word_1A7C0-Sys_GameEntryPoint
+                dc.w    word_1A7C8-Sys_GameEntryPoint
+                dc.w    word_1A7D0-Sys_GameEntryPoint
+                dc.w    word_1A7C8-Sys_GameEntryPoint
+                dc.w    word_1A7D0-Sys_GameEntryPoint
+                dc.w    word_1A7C8-Sys_GameEntryPoint
+                dc.w    word_1A7D0-Sys_GameEntryPoint
+                dc.w    word_1A7C8-Sys_GameEntryPoint
+                dc.w    word_1A7D0-Sys_GameEntryPoint
+                dc.w    word_1A7C8-Sys_GameEntryPoint
+                dc.w    word_1A7D0-Sys_GameEntryPoint
+                dc.w    word_1A7C8-Sys_GameEntryPoint
+                dc.w    word_1A7D0-Sys_GameEntryPoint
+byte_14E64:     dc.b    $18, 4
+                dc.w    word_1A818-Sys_GameEntryPoint
+                dc.w    word_1A820-Sys_GameEntryPoint
+                dc.w    word_1A818-Sys_GameEntryPoint
+                dc.w    word_1A820-Sys_GameEntryPoint
+                dc.w    word_1A818-Sys_GameEntryPoint
+                dc.w    word_1A820-Sys_GameEntryPoint
+                dc.w    word_1A818-Sys_GameEntryPoint
+                dc.w    word_1A820-Sys_GameEntryPoint
+                dc.w    word_1A818-Sys_GameEntryPoint
+                dc.w    word_1A820-Sys_GameEntryPoint
+                dc.w    word_1A818-Sys_GameEntryPoint
+                dc.w    word_1A820-Sys_GameEntryPoint
+                dc.w    word_1A828-Sys_GameEntryPoint
+                dc.w    word_1A830-Sys_GameEntryPoint
+                dc.w    word_1A828-Sys_GameEntryPoint
+                dc.w    word_1A830-Sys_GameEntryPoint
+                dc.w    word_1A828-Sys_GameEntryPoint
+                dc.w    word_1A830-Sys_GameEntryPoint
+                dc.w    word_1A828-Sys_GameEntryPoint
+                dc.w    word_1A830-Sys_GameEntryPoint
+                dc.w    word_1A828-Sys_GameEntryPoint
+                dc.w    word_1A830-Sys_GameEntryPoint
+                dc.w    word_1A828-Sys_GameEntryPoint
+                dc.w    word_1A830-Sys_GameEntryPoint
+byte_14E96:     dc.b    2, 3
+                dc.w    word_1A7D8-Sys_GameEntryPoint
+                dc.w    word_1A7E0-Sys_GameEntryPoint
+byte_14E9C:     dc.b    2, 3
+                dc.w    word_1A838-Sys_GameEntryPoint
+                dc.w    word_1A840-Sys_GameEntryPoint
+byte_14EA2:     dc.b    3, 4
+                dc.w    word_1A7E8-Sys_GameEntryPoint
+                dc.w    word_1A7F0-Sys_GameEntryPoint
+                dc.w    word_1A7F8-Sys_GameEntryPoint
+byte_14EAA:     dc.b    3, 4
+                dc.w    word_1A848-Sys_GameEntryPoint
+                dc.w    word_1A850-Sys_GameEntryPoint
+                dc.w    word_1A858-Sys_GameEntryPoint
+byte_14EB2:     dc.b    4, $A
+                dc.w    word_1A800-Sys_GameEntryPoint
+                dc.w    word_1A800-Sys_GameEntryPoint
+                dc.w    word_1A808-Sys_GameEntryPoint
+                dc.w    word_1A810-Sys_GameEntryPoint
+byte_14EBC:     dc.b    4, $A
+                dc.w    word_1A860-Sys_GameEntryPoint
+                dc.w    word_1A860-Sys_GameEntryPoint
+                dc.w    word_1A868-Sys_GameEntryPoint
+                dc.w    word_1A870-Sys_GameEntryPoint
 ; Lizard enemy main object with state machine

@@ -14,15 +14,15 @@ Int_VBlankHandler:
 
 loc_10EAC:
                 bra.w   locret_10EB8
-                bra.w Int_VBlankMain
-                bra.w Int_VBlankMain
+                bra.w   Int_VBlankMain
+                bra.w   Int_VBlankMain
 
 locret_10EB8:
                 rts
 
 ; VBlank main processing: scroll DMA and palette update
 Int_VBlankMain:
-                bsr.w Gfx_UpdateScrollRegs  ; was: sub_10EBA
+                bsr.w   Gfx_UpdateScrollRegs  ; was: sub_10EBA
                 jsr     unk_FFFB12
                 move.w  #$F550,d1
                 move.w  #$BE00,d2

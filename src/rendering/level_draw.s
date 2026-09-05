@@ -4,17 +4,17 @@
 UI_DrawGroundTile:
                 lsl.w   #1,d4  ; was: sub_11910
                 move.w  word_1191C(pc,d4.w),d4
-                bsr.w Gfx_WriteTileAtOffset
+                bsr.w   Gfx_WriteTileAtOffset
                 rts
 
-word_1191C:     dc.w $220D, $2206, $2207, $2208, $2209, $220A, $220B, $220C
-                dc.w $220D, $220E, $220F, $2210, $2211, $2212, $2213, $2214
+word_1191C:     dc.w    $220D, $2206, $2207, $2208, $2209, $220A, $220B, $220C
+                dc.w    $220D, $220E, $220F, $2210, $2211, $2212, $2213, $2214
 ; Writes ground tile from pointer table to VRAM
 UI_DrawGroundTilePtr:
                 lsl.w   #1,d4  ; was: sub_1193C
                 movea.l (dword_FFD800).w,a1
                 move.w  (a1,d4.w),d4
-                bsr.w Gfx_WriteTileAtOffset
+                bsr.w   Gfx_WriteTileAtOffset
                 rts
 
 ; Draws 8 columns of upper ground decoration
@@ -25,7 +25,7 @@ Level_DrawUpperGround:
 
 loc_11954:
                 move.w  d0,-(sp)
-                bsr.s Level_DrawUpperGroundBlock
+                bsr.s   Level_DrawUpperGroundBlock
                 move.w  (sp)+,d0
                 addq.w  #8,d5
                 dbf     d0,loc_11954
@@ -38,7 +38,7 @@ Level_DrawUpperGroundBlock:
                 moveq   #3,d7
                 moveq   #1,d6
                 move.l  d5,-(sp)
-                bsr.w Gfx_DrawTilemapStart
+                bsr.w   Gfx_DrawTilemapStart
                 move.l  (sp)+,d5
                 rts
 
@@ -50,7 +50,7 @@ Level_DrawLowerGround:
 
 loc_1197E:
                 move.w  d0,-(sp)
-                bsr.s Level_DrawLowerGroundBlock
+                bsr.s   Level_DrawLowerGroundBlock
                 move.w  (sp)+,d0
                 addq.w  #8,d5
                 dbf     d0,loc_1197E
@@ -63,7 +63,7 @@ Level_DrawLowerGroundBlock:
                 moveq   #3,d7
                 moveq   #1,d6
                 move.l  d5,-(sp)
-                bsr.w Gfx_DrawTilemapStart
+                bsr.w   Gfx_DrawTilemapStart
                 move.l  (sp)+,d5
                 rts
 
@@ -122,7 +122,7 @@ loc_11A18:
                 bne.s   loc_11A2C
                 move.w  #3,d4
                 movem.l d5/a0,-(sp)
-                bsr.w UI_DrawGroundTilePtr
+                bsr.w   UI_DrawGroundTilePtr
                 movem.l (sp)+,d5/a0
 
 loc_11A2C:
@@ -152,7 +152,7 @@ loc_11A52:
 
 loc_11A5C:
                 move.b  d4,(a0)
-                bsr.w UI_DrawGroundTile
+                bsr.w   UI_DrawGroundTile
                 bra.w   loc_11A00
 
 loc_11A66:
@@ -177,7 +177,7 @@ loc_11A84:
 
 loc_11A8E:
                 move.b  d4,(a0)
-                bsr.w UI_DrawGroundTile
+                bsr.w   UI_DrawGroundTile
                 bra.w   loc_11A00
 
 loc_11A98:
@@ -202,7 +202,7 @@ loc_11AB6:
 
 loc_11AC0:
                 move.b  d4,(a0)
-                bsr.w UI_DrawGroundTile
+                bsr.w   UI_DrawGroundTile
                 bra.w   loc_11A00
 
 loc_11ACA:
@@ -221,7 +221,7 @@ loc_11ADE:
                 bset    #2,d4
 
 loc_11AE8:
-                bsr.w UI_DrawGroundTilePtr
+                bsr.w   UI_DrawGroundTilePtr
                 bra.w   loc_11A00
 
 loc_11AF0:
@@ -240,14 +240,14 @@ loc_11B04:
                 bset    #2,d4
 
 loc_11B0E:
-                bsr.w UI_DrawGroundTilePtr
+                bsr.w   UI_DrawGroundTilePtr
                 bra.w   loc_11A00
 
 ; Draws background object at grid position d7/d6
 Level_DrawBackgroundObject:
                 moveq   #0,d5  ; was: sub_11B16
                 move.w  #$C000,d5
-                bsr.w Gfx_TilemapCoordToAddr
+                bsr.w   Gfx_TilemapCoordToAddr
                 lsl.w   #2,d4
                 move.w  word_11B3C(pc,d4.w),d7
                 move.w  word_11B3E(pc,d4.w),d6
@@ -256,12 +256,12 @@ Level_DrawBackgroundObject:
                 move.w  word_11B54(pc,d4.w),d2
                 movea.l d2,a6
                 movea.l (a6),a6
-                bsr.w Gfx_DrawTilemapRect
+                bsr.w   Gfx_DrawTilemapRect
                 rts
 
-word_11B3C:     dc.w 2
-word_11B3E:     dc.w 2, 1, 1, 1, 2, 1, 2, 4, 2, 3, 3
-word_11B54:     dc.w $D81C, $D820, $D824, $D810, $D814, $D818
+word_11B3C:     dc.w    2
+word_11B3E:     dc.w    2, 1, 1, 1, 2, 1, 2, 4, 2, 3, 3
+word_11B54:     dc.w    $D81C, $D820, $D824, $D810, $D814, $D818
 ; Draws cat exit door at level start position
 Level_DrawCatDoor:
                 moveq   #0,d7  ; was: sub_11B60
@@ -270,11 +270,11 @@ Level_DrawCatDoor:
                 move.b  (byte_FFD82E).w,d7
                 move.b  (byte_FFD82F).w,d6
                 move.w  #$E000,d5
-                bsr.w Gfx_TilemapCoordToAddr
+                bsr.w   Gfx_TilemapCoordToAddr
                 moveq   #2,d7
                 moveq   #2,d6
                 lea     (word_1A4B4).l,a6
-                bsr.w Gfx_DrawTilemapRect
+                bsr.w   Gfx_DrawTilemapRect
                 rts
 
 ; Draws player entry indicator above start pos
@@ -287,7 +287,7 @@ Level_DrawEntryArrow:
                 move.b  1(a0),d6
                 subq.b  #1,d6
                 move.w  #$E000,d5
-                bsr.w Gfx_TilemapCoordToAddr
+                bsr.w   Gfx_TilemapCoordToAddr
                 moveq   #2,d7
                 moveq   #0,d6
                 lea     (word_1A262).l,a6
@@ -296,7 +296,7 @@ Level_DrawEntryArrow:
                 lea     (word_11C98).l,a6
 
 loc_11BBC:
-                bsr.w Gfx_DrawTilemapRect
+                bsr.w   Gfx_DrawTilemapRect
                 rts
 
 ; Draws HUD: score labels and life indicators

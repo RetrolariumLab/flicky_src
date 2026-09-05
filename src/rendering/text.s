@@ -18,12 +18,12 @@ Gfx_MakeVDPWriteCmd:
 
 ; Writes tile d4 at tilemap coordinates
 Gfx_WriteTileAtCoord:
-                bsr.s Gfx_TilemapCoordToAddr  ; was: sub_10F3A
+                bsr.s   Gfx_TilemapCoordToAddr  ; was: sub_10F3A
                 bra.s   loc_10F40
 
 ; Writes tile d4 at VRAM offset d5
 Gfx_WriteTileAtOffset:
-                bsr.s Gfx_MakeVDPWriteCmd  ; was: sub_10F3E
+                bsr.s   Gfx_MakeVDPWriteCmd  ; was: sub_10F3E
 
 loc_10F40:
                 move.l  d5,(VDP_CTRL).l
@@ -47,7 +47,7 @@ loc_10F66:
 
 ; Prepares VDP command and calls DrawTilemapRows
 Gfx_DrawTilemapStart:
-                bsr.s Gfx_MakeVDPWriteCmd  ; was: sub_10F6E
+                bsr.s   Gfx_MakeVDPWriteCmd  ; was: sub_10F6E
 
 ; Draws d6+1 rows of d7+1 tiles from (a6)+
 Gfx_DrawTilemapRect:
@@ -77,7 +77,7 @@ loc_10FA2:
                 add.w   (word_FFD884).w,d4
 
 loc_10FA6:
-                bsr.s Gfx_WriteTileAtOffset
+                bsr.s   Gfx_WriteTileAtOffset
                 rts
 
 ; Draws null-terminated string from (a6) at VRAM pos
@@ -91,7 +91,7 @@ loc_10FAE:
                 move.w  d6,d5
                 move.b  (a6)+,d4
                 beq.s   locret_10FBE
-                bsr.s Text_WriteCharTile
+                bsr.s   Text_WriteCharTile
                 addq.w  #2,d6
                 bra.s   loc_10FAE
 
@@ -108,17 +108,17 @@ loc_10FC4:
                 moveq   #0,d5
                 move.b  (a6)+,d4
                 beq.s   locret_10FF2
-                bsr.w Text_CharToTileIndex
+                bsr.w   Text_CharToTileIndex
                 move.w  d5,d3
                 move.w  d6,d5
                 subi.w  #$20,d4
                 move.l  d5,-(sp)
-                bsr.w Gfx_WriteTileAtOffset
+                bsr.w   Gfx_WriteTileAtOffset
                 move.l  (sp)+,d5
                 subi.w  #$40,d5
                 move.w  d3,d4
                 subi.w  #$20,d4
-                bsr.w Gfx_WriteTileAtOffset
+                bsr.w   Gfx_WriteTileAtOffset
                 addq.w  #2,d6
                 bra.s   loc_10FC4
 
@@ -137,19 +137,19 @@ loc_10FFA:
                 lsr.w   #4,d4
                 addq.w  #2,d5
                 movem.l d0-d1/d5,-(sp)
-                bsr.w Text_DrawDigit
+                bsr.w   Text_DrawDigit
                 movem.l (sp)+,d0-d1/d5
                 andi.w  #$F,d1
                 move.w  d1,d4
                 addq.w  #2,d5
                 movem.l d0-d1/d5,-(sp)
-                bsr.w Text_DrawDigit
+                bsr.w   Text_DrawDigit
                 movem.l (sp)+,d0-d1/d5
                 dbf     d0,loc_10FFA
                 tst.b   (byte_FFD00D).w
                 bne.s   locret_11034
                 moveq   #$30,d4
-                bsr.w Text_WriteCharTile
+                bsr.w   Text_WriteCharTile
 
 locret_11034:
                 rts
@@ -162,7 +162,7 @@ Text_DrawDigit:
                 bne.s   loc_11052
                 tst.b   (byte_FFD29A).w
                 beq.s   locret_1104A
-                bsr.w Text_WriteCharTile
+                bsr.w   Text_WriteCharTile
 
 locret_1104A:
                 rts
@@ -172,7 +172,7 @@ loc_1104C:
 
 loc_11052:
                 addi.w  #$30,d4
-                bsr.w Text_WriteCharTile
+                bsr.w   Text_WriteCharTile
                 rts
 
 ; Updates object X/Y position from velocity with wrapping

@@ -22,13 +22,13 @@ Score_AddAndCheck:
 loc_1169E:
                 abcd    -(a2),-(a1)
                 dbf     d0,loc_1169E
-                bsr.w UI_DrawScore
+                bsr.w   UI_DrawScore
                 move.l  (dword_FFD87E).w,d0
                 move.l  (dword_FFCC00).w,d1
                 cmp.l   d0,d1
                 bge.s   locret_116BC
                 move.l  d0,(dword_FFCC00).w
-                bsr.w UI_DrawHighScore
+                bsr.w   UI_DrawHighScore
 
 locret_116BC:
                 rts
@@ -101,7 +101,7 @@ Text_CycleBlink:
                 move.w  word_1175C(pc,d0.w),(word_FFD884).w
                 rts
 
-word_1175C:     dc.w $8100, $8000, $FFFF, $8000
+word_1175C:     dc.w    $8100, $8000, $FFFF, $8000
 ; Calculates (word_FFD82C+1) mod d7 with bcs
 Math_ModuloLower:
                 moveq   #0,d0  ; was: sub_11764
