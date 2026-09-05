@@ -81,31 +81,31 @@ Title_TextPointersAlt: dc.l    Title_CastLabel  ; was: off_1209E
                 dc.l    Title_IggyLabel
                 dc.l    Title_CopyrightLabel
 Title_CastLabel: dc.b    $C2, $9C  ; was: byte_120B6
-aCast:          dc.b    "CAST",0
+Title_CastText: dc.b    "CAST",0
                 dc.b    0
 Title_FlickyLabel: dc.b    $C3, $10  ; was: byte_120BE
-aFlicky:        dc.b    "FLICKY",0
+Title_FlickyText: dc.b    "FLICKY",0
                 dc.b    0
 Title_PiopioLabel: dc.b    $C3, $28  ; was: byte_120C8
-aPiopio:        dc.b    "PIOPIO",0
+Title_PiopioText: dc.b    "PIOPIO",0
                 dc.b    0
 Title_NyannyanLabel: dc.b    $C3, $D0  ; was: byte_120D2
-aNyannyan:      dc.b    "NYANNYAN",0
+Title_NyannyanText: dc.b    "NYANNYAN",0
                 dc.b    0
 Title_ChoroLabel: dc.b    $C3, $E8  ; was: byte_120DE
-aChoro:         dc.b    "CHORO",0
+Title_ChoroText: dc.b    "CHORO",0
 Title_CopyrightLabel: dc.b    $C6, $54  ; was: byte_120E6
-aSega1991:      dc.b    $27," SEGA 1991",0
+Title_Sega1991Text: dc.b    $27," SEGA 1991",0
 Title_ChirpLabel: dc.b    $C3, $28  ; was: byte_120F4
-aChirp:         dc.b    "CHIRP",0
+Title_ChirpText: dc.b    "CHIRP",0
 Title_TigerLabel: dc.b    $C3, $D0  ; was: byte_120FC
-aTiger:         dc.b    "TIGER",0
+Title_TigerText: dc.b    "TIGER",0
 Title_IggyLabel: dc.b    $C3, $E8  ; was: byte_12104
-aIggy:          dc.b    "IGGY",0
+Title_IggyText: dc.b    "IGGY",0
                 dc.b    0
 Title_LogoPalette: binclude "data/palettes/title-logo.bin"
 Title_TrademarkLabel: dc.b    $C0, $EE  ; was: byte_1211C
-aTm:            dc.b    "TM",0
+Title_TmText:   dc.b    "TM",0
                 dc.b    0
 ; Title screen update: handles start button and fade
 Title_Update:

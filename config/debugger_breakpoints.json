@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "breakpoints": [
+    { "group": "system", "symbol": "Sys_MainLoop", "description": "Top of the frame loop" },
+    { "group": "system", "symbol": "Sys_GameModeTable", "description": "Game mode dispatch" },
+    { "group": "system", "symbol": "Int_VBlankMain", "description": "VBlank work" },
+    { "group": "system", "symbol": "Boot_CheckInitFlag", "description": "Soft-reset path" },
+    { "group": "objects", "symbol": "Object_CallHandler", "description": "Per-object dispatch" },
+    { "group": "objects", "symbol": "Sprite_BuildTable", "description": "Sprite table assembly" },
+    { "group": "objects", "symbol": "Object_UpdatePosition", "description": "Position integration" },
+    { "group": "player", "symbol": "Player_StateTable", "description": "Player state dispatch" },
+    { "group": "player", "symbol": "Player_CheckGround", "description": "Ground collision" },
+    { "group": "player", "symbol": "Player_ThrowChick", "description": "Chick thrown" },
+    { "group": "player", "symbol": "Player_CheckExit", "description": "Exit door reached" },
+    { "group": "scoring", "symbol": "Score_AddAndCheck", "description": "Score added" },
+    { "group": "scoring", "symbol": "Score_AwardExtraLife", "description": "Extra life granted" },
+    { "group": "scoring", "symbol": "Chick_AwardPoints", "description": "Chick delivered" },
+    { "group": "scoring", "symbol": "Score_CalcTimeBonus", "description": "Time bonus computed" },
+    { "group": "level", "symbol": "Level_Init", "description": "Level construction" },
+    { "group": "level", "symbol": "Level_LoadTileset", "description": "Per-round appearance" },
+    { "group": "level", "symbol": "Collision_LoadMap", "description": "Collision map decode" },
+    { "group": "sound", "symbol": "Sound_QueueSFX", "description": "Effect queued to the Z80" },
+    { "group": "sound", "symbol": "Sound_InitDriver", "description": "Z80 driver upload" },
+    { "group": "compression", "symbol": "Nem_Decomp", "description": "Nemesis decompression" },
+    { "group": "compression", "symbol": "Eni_Decompress", "description": "Enigma decompression" }
+  ]
+}

@@ -71,10 +71,10 @@ Ending_DrawCongrats:
                 rts
 
 Ending_CongratsLabel: dc.b    $C2, $90  ; was: byte_131EC
-aCongratulation: dc.b    "CONGRATULATIONS!",0
+Ending_CongratulationsText: dc.b    "CONGRATULATIONS!",0
                 dc.b    0
 Ending_SuperPlayerLabel: dc.b    $C3, $8A  ; was: byte_13200
-aYouAreASuperPl: dc.b    "YOU ARE A SUPER PLAYER.",0
+Ending_YouAreASuperText: dc.b    "YOU ARE A SUPER PLAYER.",0
 ; Ending state: scrolling credits sequence
 Ending_StateCredits:
                 bset    #7,(Ram_EndingState).w  ; was: sub_1321A
@@ -146,68 +146,63 @@ Ending_DrawCreditsLine_ClearRowLoop:  ; was: loc_132BA
                 bsr.w   Text_DrawString_Loop
                 rts
 
-Ending_CreditsLinePointers: dc.w    aStaff-Sys_GameEntryPoint  ; was: off_132E0
+Ending_CreditsLinePointers: dc.w    Ending_StaffText-Sys_GameEntryPoint  ; was: off_132E0
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aDirector-Sys_GameEntryPoint
+                dc.w    Ending_DirectorText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aKFuzzy-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aDesigner-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aYumi-Sys_GameEntryPoint
+                dc.w    Ending_KFuzzyText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aProgrammer-Sys_GameEntryPoint
+                dc.w    Ending_DesignerText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aOSamu-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aSoundDesign-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aTSMusic-Sys_GameEntryPoint
+                dc.w    Ending_YumiText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aAnd-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aSpecialThanks-Sys_GameEntryPoint
+                dc.w    Ending_ProgrammerText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aLee-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aBo-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aArcadeFlickySt-Sys_GameEntryPoint
-                dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aTestPlayers-Sys_GameEntryPoint
+                dc.w    Ending_OSamuText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_SoundDesignText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_TSMusicText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_AndText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_SpecialThanksText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_LeeText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BoText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_ArcadeFlickyStaffText-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_TestPlayersText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
@@ -221,7 +216,12 @@ Ending_CreditsLinePointers: dc.w    aStaff-Sys_GameEntryPoint  ; was: off_132E0
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-                dc.w    aChallengeTheNe-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_BlankLine-Sys_GameEntryPoint
+                dc.w    Ending_ChallengeTheNextStageText-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
@@ -241,32 +241,32 @@ Ending_CreditsLinePointers: dc.w    aStaff-Sys_GameEntryPoint  ; was: off_132E0
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
 Ending_BlankLine: dc.b    0, 0  ; was: byte_1339C
-aStaff:         dc.b    "     STAFF",0
+Ending_StaffText: dc.b    "     STAFF",0
                 dc.b    0
-aDirector:      dc.b    "    DIRECTOR",0
+Ending_DirectorText: dc.b    "    DIRECTOR",0
                 dc.b    0
-aKFuzzy:        dc.b    "     K.FUZZY",0
+Ending_KFuzzyText: dc.b    "     K.FUZZY",0
                 dc.b    0
-aDesigner:      dc.b    "    DESIGNER",0
+Ending_DesignerText: dc.b    "    DESIGNER",0
                 dc.b    0
-aYumi:          dc.b    "     YUMI",0
-aProgrammer:    dc.b    "    PROGRAMMER",0
+Ending_YumiText: dc.b    "     YUMI",0
+Ending_ProgrammerText: dc.b    "    PROGRAMMER",0
                 dc.b    0
-aOSamu:         dc.b    "     O.SAMU",0
-aSoundDesign:   dc.b    "    SOUND DESIGN",0
+Ending_OSamuText: dc.b    "     O.SAMU",0
+Ending_SoundDesignText: dc.b    "    SOUND DESIGN",0
                 dc.b    0
-aTSMusic:       dc.b    "     T@S MUSIC",0
+Ending_TSMusicText: dc.b    "     T@S MUSIC",0
                 dc.b    0
-aAnd:           dc.b    "      AND",0
-aSpecialThanks: dc.b    "    SPECIAL THANKS",0
+Ending_AndText: dc.b    "      AND",0
+Ending_SpecialThanksText: dc.b    "    SPECIAL THANKS",0
                 dc.b    0
-aArcadeFlickySt: dc.b    "     ARCADE FLICKY STAFF",0
+Ending_ArcadeFlickyStaffText: dc.b    "     ARCADE FLICKY STAFF",0
                 dc.b    0
-aTestPlayers:   dc.b    "     TEST PLAYERS",0
-aLee:           dc.b    "     LEE",0
+Ending_TestPlayersText: dc.b    "     TEST PLAYERS",0
+Ending_LeeText: dc.b    "     LEE",0
                 dc.b    0
-aBo:            dc.b    "     BO",0
-aChallengeTheNe: dc.b    "CHALLENGE THE NEXT STAGE.",0
+Ending_BoText:  dc.b    "     BO",0
+Ending_ChallengeTheNextStageText: dc.b    "CHALLENGE THE NEXT STAGE.",0
 ; Ending state: wait for start to restart game
 Ending_StateRestart:
                 btst    #7,(Ram_Joypad+1).w  ; was: sub_13492

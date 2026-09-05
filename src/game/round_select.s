@@ -13,7 +13,7 @@ RoundSelect_Init:
                 jmp     j_Sound_QueueSFX
 
 RoundSelect_RoundLabel: dc.b    $C3, $54  ; was: byte_125E8
-aRound:         dc.b    "ROUND ",0
+RoundSelect_RoundText: dc.b    "ROUND ",0
                 dc.b    0
 ; Round select: handles up/down input
 RoundSelect_Update:

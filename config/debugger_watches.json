@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "watches": [
+    { "group": "frame", "symbol": "Ram_FrameCounter", "description": "Frames since the mode started" },
+    { "group": "frame", "symbol": "Ram_NextGameMode", "description": "Mode the loop will run next" },
+    { "group": "frame", "symbol": "Ram_VBlankRequest", "description": "Pending VBlank work" },
+    { "group": "frame", "symbol": "Ram_Joypad", "description": "Current and newly pressed buttons" },
+    { "group": "progress", "symbol": "Ram_RoundNumber", "description": "Round, BCD" },
+    { "group": "progress", "symbol": "Ram_Score", "description": "Score, BCD" },
+    { "group": "progress", "symbol": "Ram_HighScore", "description": "High score, BCD" },
+    { "group": "progress", "symbol": "Ram_Lives", "description": "Remaining lives" },
+    { "group": "progress", "symbol": "Ram_RoundTime", "description": "Elapsed round time, BCD" },
+    { "group": "gameplay", "symbol": "Ram_GameState", "description": "Gameplay state index" },
+    { "group": "gameplay", "symbol": "Ram_ChicksRemaining", "description": "Chicks left to rescue" },
+    { "group": "gameplay", "symbol": "Ram_ChickChainCount", "description": "Chicks following the player" },
+    { "group": "gameplay", "symbol": "Ram_RoundEndingFlag", "description": "Exit reached, actors frozen" },
+    { "group": "gameplay", "symbol": "Ram_PlayerHitFlag", "description": "Player was hit this frame" },
+    { "group": "camera", "symbol": "Ram_CameraX", "description": "Camera X" },
+    { "group": "camera", "symbol": "Ram_CameraY", "description": "Camera Y" },
+    { "group": "difficulty", "symbol": "Ram_LizardSpeed", "description": "Lizard chase speed" },
+    { "group": "difficulty", "symbol": "Ram_SnakeSpeed", "description": "Snake crawl speed" },
+    { "group": "sound", "symbol": "Z80_MusicCommand", "description": "Music command byte" },
+    { "group": "sound", "symbol": "Z80_SFXSlot0", "description": "First effect slot" }
+  ]
+}

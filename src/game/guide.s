@@ -119,21 +119,21 @@ Guide_TextPointers: dc.l    Guide_MoveLabel  ; was: off_123F0
                 dc.l    Guide_ButtonLabel
                 dc.l    Guide_ScoreLabel
 Guide_MoveLabel: dc.b    $C0, $D2  ; was: byte_12408
-aMakeYourMove:  dc.b    "MAKE YOUR MOVE",0
+Guide_MakeYourMoveText: dc.b    "MAKE YOUR MOVE",0
                 dc.b    0
 Guide_HelpLabel: dc.b    $C2, 2  ; was: byte_1241A
-aHelp:          dc.b    "HELP",0
+Guide_HelpText: dc.b    "HELP",0
                 dc.b    0
 Guide_GuideLabel: dc.b    $C2, $E  ; was: byte_12422
-aGuide:         dc.b    "GUIDE",0
+Guide_GuideText: dc.b    "GUIDE",0
 Guide_DoorLabel: dc.b    $C2, $26  ; was: byte_1242A
-aToTheDoor:     dc.b    "TO THE DOOR!",0
+Guide_ToTheDoorText: dc.b    "TO THE DOOR!",0
                 dc.b    0
 Guide_ButtonLabel: dc.b    $C2, $C2  ; was: byte_1243A
-aPressButtonToJ: dc.b    "PRESS BUTTON TO JUMP AND SHOOT",0
+Guide_PressButtonToJumpText: dc.b    "PRESS BUTTON TO JUMP AND SHOOT",0
                 dc.b    0
 Guide_ScoreLabel: dc.b    $C5, $92  ; was: byte_1245C
-aRackUpASuperSc: dc.b    "RACK UP A SUPER SCORE!",0
+Guide_RackUpASuperText: dc.b    "RACK UP A SUPER SCORE!",0
                 dc.b    0
 ; Guide screen character objects (Flicky, cats)
 Obj_GuideCharacter:

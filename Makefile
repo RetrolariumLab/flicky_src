@@ -44,6 +44,10 @@ DATA_ADDRS ?= $(DATA_DIR)/data_addrs.txt
 SCRIPTS_DIR ?= scripts
 DATA_FORMAT_MANIFEST ?= config/data_formats.json
 DATA_FORMAT_SUMMARY ?= build/data_formats.json
+DEBUG_BREAKPOINTS ?= config/debugger_breakpoints.json
+DEBUG_WATCHES ?= config/debugger_watches.json
+SYMBOL_FILE ?= build/flicky.sym
+DEBUG_SUMMARY ?= build/debug_symbols.json
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -71,7 +75,7 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify init split check-assets compare lint format tools unpack-data \n        roundtrip-formats clean \
+.PHONY: all build verify init split check-assets compare lint format tools unpack-data \n        roundtrip-formats symbols clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help _require-assets _require-movie
 
@@ -161,6 +165,10 @@ roundtrip-formats: _require-assets
 
 clean:
 	@$(PYTHON) $(SCRIPTS_DIR)/clean_project.py
+
+# Export the symbol map and resolve the debugger configs against it.
+symbols: flicky.lst
+	@$(PYTHON) $(SCRIPTS_DIR)/debug_symbols.py 		--listing flicky.lst 		--breakpoints $(DEBUG_BREAKPOINTS) --watches $(DEBUG_WATCHES) 		--sym $(SYMBOL_FILE) --summary $(DEBUG_SUMMARY)
 
 # ---------------------------------------------------------------------------
 # Emulator analysis (requires MOVIE=longplay|demos)
@@ -278,6 +286,7 @@ help:
 	@echo "  make tools                     Build the C decompressors"
 	@echo "  make unpack-data               Decompress Nemesis/Enigma segments"
 	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
+	@echo "  make symbols                   Export build/flicky.sym for debuggers"
 	@echo ""
 	@echo "Analysis (MOVIE=longplay|demos):"
 	@echo "  make reference MOVIE=longplay  Capture reference screenshots and dumps"

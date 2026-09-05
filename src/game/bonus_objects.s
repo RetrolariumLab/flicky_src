@@ -420,12 +420,12 @@ Bonus_DrawResultLabels_NoBonus:  ; was: loc_16944
 Bonus_PtsPerChickLabel: dc.b    $C2, $4E  ; was: byte_1694C
 a250PtsPts:     dc.b    "; 250 PTS.=      PTS.",0
 Bonus_PerfectLabel: dc.b    $C3, $12  ; was: byte_16964
-aPerfectBonus:  dc.b    "PERFECT BONUS",0
+Bonus_PerfectBonusText: dc.b    "PERFECT BONUS",0
 Bonus_PtsLabel: dc.b    $C3, $A2  ; was: byte_16974
-aPts_0:         dc.b    "PTS.",0
+Bonus_PtsText:  dc.b    "PTS.",0
                 dc.b    0
 Bonus_NoBonusLabel: dc.b    $C3, $16  ; was: byte_1697C
-aNoBonus_0:     dc.b    "NO BONUS",0
+Bonus_NoBonusText: dc.b    "NO BONUS",0
                 dc.b    0
 ; Calculates bonus round score total
 Bonus_CalcScore:

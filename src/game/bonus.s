@@ -43,9 +43,9 @@ Bonus_Init_FillGroundLoop:  ; was: loc_12F8C
                 jmp     j_Sound_QueueSFX
 
 Bonus_BonusLabel: dc.b    $C0, $D4  ; was: byte_12FCC
-aBonus:         dc.b    "BONUS",0
+Bonus_BonusText: dc.b    "BONUS",0
 Bonus_RoundLabel: dc.b    $C0, $E0  ; was: byte_12FD4
-aRound_0:       dc.b    "ROUND",0
+Bonus_RoundText: dc.b    "ROUND",0
 ; Bonus round main loop with state dispatcher
 Bonus_MainLoop:
                 move.w  (Ram_BonusState).w,d0  ; was: sub_12FDC

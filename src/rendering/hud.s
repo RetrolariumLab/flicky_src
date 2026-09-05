@@ -237,9 +237,9 @@ UI_Draw1UPAndHILabels:
                 rts
 
 UI_RoundLabel:  dc.b    $C6, $B4  ; was: byte_11E46
-aRd:            dc.b    "RD.",0
+UI_RdText:      dc.b    "RD.",0
 UI_RoundLabelAlt: dc.b    $C7, $74  ; was: byte_11E4C
-aRd_0:          dc.b    "RD.",0
+UI_RdText2:     dc.b    "RD.",0
 ; Draws detailed score breakdown on results
 UI_DrawScoreBreakdown:
                 lea     (Ram_RoundMinutes).w,a6  ; was: sub_11E52
@@ -311,30 +311,30 @@ UI_DrawScoreScreenLabels_Return:  ; was: locret_11F02
                 rts
 
 UI_GameTimeLabel: dc.b    $C1, $4A  ; was: byte_11F04
-aGameTime:      dc.b    "GAME TIME",0
+UI_GameTimeText: dc.b    "GAME TIME",0
 UI_MinSecLabel: dc.b    $C1, $64  ; was: byte_11F10
-aMinSec:        dc.b    "MIN.  SEC.",0
+UI_MinSecText:  dc.b    "MIN.  SEC.",0
                 dc.b    0
 UI_TimeBonusLabel: dc.b    $C2, $4A  ; was: byte_11F1E
-aTimeBonus:     dc.b    "TIME BONUS",0
+UI_TimeBonusText: dc.b    "TIME BONUS",0
                 dc.b    0
 UI_PtsLabel:    dc.b    $C2, $72  ; was: byte_11F2C
-aPts:           dc.b    "PTS.",0
+UI_PtsText:     dc.b    "PTS.",0
                 dc.b    0
 UI_NoBonusLabel: dc.b    $C2, $68  ; was: byte_11F34
-aNoBonus:       dc.b    "NO BONUS",0
+UI_NoBonusText: dc.b    "NO BONUS",0
                 dc.b    0
 UI_RoundTimeLabel: dc.b    $C1, $48  ; was: byte_11F40
-aRoundTime:     dc.b    "ROUND TIME",0
+UI_RoundTimeText: dc.b    "ROUND TIME",0
                 dc.b    0
 UI_MinLabel:    dc.b    $C1, $62  ; was: byte_11F4E
-aMin:           dc.b    "MIN.",0
+UI_MinText:     dc.b    "MIN.",0
                 dc.b    0
 UI_SecLabel:    dc.b    $C1, $72  ; was: byte_11F56
-aSec:           dc.b    "SEC.",0
+UI_SecText:     dc.b    "SEC.",0
                 dc.b    0
 UI_TimeBonusLabelAlt: dc.b    $C2, $48  ; was: byte_11F5E
-aTimeBonus_0:   dc.b    "TIME BONUS",0
+UI_TimeBonusText2: dc.b    "TIME BONUS",0
                 dc.b    0
 ; Draws bonus round chicks collected and score
 UI_DrawBonusRoundScore:
