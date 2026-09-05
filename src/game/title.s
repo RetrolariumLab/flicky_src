@@ -4,15 +4,15 @@
 Title_Init:
                 bsr.w   Sys_InitTitleScreen  ; was: sub_11FB0
                 move.w  #$740,d0
-                jsr     unk_FFFB8A
+                jsr     j_Gfx_SetTileWriteAddr
                 lea     (FlickyLogoTiles).l,a0
                 jsr     j_Nem_Decomp
-                clr.b   (byte_FFD88E).w
+                clr.b   (Ram_FontBankFlag).w
                 bsr.w   LoadTilesToVRAM_LoadFont
-                lea     (Gfx_ScreenInitData).l,a5
-                jsr     unk_FFFBBA
+                lea     (Gfx_SharedPalette).l,a5
+                jsr     j_Gfx_LoadPaletteCompact
                 lea     Title_LogoPalette(pc),a0
-                lea     (unk_FFF840).w,a1
+                lea     (Ram_TitlePaletteSlot).w,a1
                 moveq   #3,d0
 
 Title_Init_CopyPaletteLoop:  ; was: loc_11FE2
@@ -28,10 +28,10 @@ Title_Init_DrawTextLoop:  ; was: loc_11FFC
                 movea.l (a0)+,a6
                 bsr.w   Text_DrawString
                 dbf     d0,Title_Init_DrawTextLoop
-                move.b  #3,(byte_FFD882).w
-                move.w  #$101,(word_FFD82C).w
-                move.b  #1,(byte_FFD88F).w
-                lea     (word_FFC000).w,a0
+                move.b  #3,(Ram_Lives).w
+                move.w  #$101,(Ram_RoundNumber).w
+                move.b  #1,(Ram_SkipBonusFlag).w
+                lea     (Ram_ObjectSlots).w,a0
                 moveq   #0,d1
                 moveq   #3,d0
 
@@ -42,7 +42,7 @@ Title_Init_SpawnBirdsLoop:  ; was: loc_12020
                 addq.w  #1,d1
                 dbf     d0,Title_Init_SpawnBirdsLoop
                 move.w  #$44,(a0)
-                lea     (unk_FFC140).w,a0
+                lea     (Ram_TitleStaticSlots).w,a0
                 moveq   #0,d1
                 moveq   #5,d0
 
@@ -62,11 +62,11 @@ Title_Init_DrawHUD:  ; was: loc_12062
                 bsr.w   UI_DrawScore
                 bsr.w   UI_DrawHighScore
                 bsr.w   Object_UpdateAll
-                clr.w   (word_FFFF92).w
+                clr.w   (Ram_FrameCounter).w
                 move.b  #$85,d0
-                jsr     unk_FFFB66
-                jsr     unk_FFFB6C
-                jmp     unk_FFFB6C
+                jsr     j_Sound_QueueToBuffer
+                jsr     j_Sound_QueueSFX
+                jmp     j_Sound_QueueSFX
 
 Title_TextPointers: dc.l    Title_CastLabel  ; was: off_12086
                 dc.l    Title_FlickyLabel
@@ -109,28 +109,28 @@ aTm:            dc.b    "TM",0
                 dc.b    0
 ; Title screen update: handles start button and fade
 Title_Update:
-                btst    #7,(word_FFFF8E+1).w  ; was: sub_12122
+                btst    #7,(Ram_Joypad+1).w  ; was: sub_12122
                 beq.s   Title_Update_CheckTimeout
                 bsr.w   Gfx_FadeInPalette
                 move.b  #$E0,d0
                 bsr.w   Sound_PlayNote
-                move.b  #1,(byte_FFD88E).w
+                move.b  #1,(Ram_FontBankFlag).w
                 bsr.w   LoadTilesToVRAM_LoadFont
-                move.w  #8,(word_FFFFC0).w
+                move.w  #8,(Ram_NextGameMode).w
 
 Title_Update_CheckTimeout:  ; was: loc_12146
-                cmpi.w  #$400,(word_FFFF92).w
+                cmpi.w  #$400,(Ram_FrameCounter).w
                 bcs.s   Title_Update_Draw
                 bsr.w   Gfx_FadeInPalette
                 move.b  #$E0,d0
                 bsr.w   Sound_PlayNote
-                move.b  #1,(byte_FFD88E).w
+                move.b  #1,(Ram_FontBankFlag).w
                 bsr.w   LoadTilesToVRAM_LoadFont
-                move.w  #$38,(word_FFFFC0).w
+                move.w  #$38,(Ram_NextGameMode).w
 
 Title_Update_Draw:  ; was: loc_1216A
                 bsr.w   Object_UpdateAll
-                jmp     unk_FFFB6C
+                jmp     j_Sound_QueueSFX
 
 ; Title screen Flicky bird animation object
 Obj_TitleBird:

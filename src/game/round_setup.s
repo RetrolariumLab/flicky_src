@@ -3,23 +3,23 @@
 
 Game_InitRound:
                 bsr.w   Sys_InitTitleScreen  ; was: sub_12656
-                lea     (Gfx_ScreenInitData).l,a5
-                jsr     unk_FFFBBA
-                clr.l   (dword_FFD888).w
-                clr.b   (byte_FFD88D).w
+                lea     (Gfx_SharedPalette).l,a5
+                jsr     j_Gfx_LoadPaletteCompact
+                clr.l   (Ram_RoundTime).w
+                clr.b   (Ram_ExitReachedFlag).w
                 rts
 
 ; Short delay before round based on round mod 4
 Game_PreRoundDelay:
-                move.w  #$20,(word_FFFFC0).w  ; was: sub_1266E
-                move.b  (word_FFD82C+1).w,d0
+                move.w  #$20,(Ram_NextGameMode).w  ; was: sub_1266E
+                move.b  (Ram_RoundNumber+1).w,d0
                 andi.b  #3,d0
                 cmpi.b  #3,d0
                 bne.s   Game_PreRoundDelay_Wait
-                move.w  #$28,(word_FFFFC0).w
+                move.w  #$28,(Ram_NextGameMode).w
 
 Game_PreRoundDelay_Wait:  ; was: loc_12688
-                jsr     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
                 rts
 
 ; Loads level tileset based on round number
@@ -30,22 +30,22 @@ Level_LoadTileset:
                 lsl.w   #2,d0
                 lea     Level_BackgroundTilePointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD804).w
+                move.l  d1,(Ram_BackgroundTilePtr).w
                 lea     Level_GroundTilePointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD800).w
+                move.l  d1,(Ram_GroundTilePtr).w
                 lea     Level_UpperGroundPointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD808).w
+                move.l  d1,(Ram_UpperGroundPtr).w
                 lea     Level_LowerGroundPointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD80C).w
+                move.l  d1,(Ram_LowerGroundPtr).w
                 lea     Level_BgObject4Pointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD814).w
+                move.l  d1,(Ram_BgObject4Ptr).w
                 lea     Level_BgObject5Pointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD818).w
+                move.l  d1,(Ram_BgObject5Ptr).w
                 moveq   #$20,d7
                 bsr.w   Math_ModuloUpper
                 subq.b  #1,d0
@@ -53,17 +53,17 @@ Level_LoadTileset:
                 lsl.w   #2,d0
                 lea     Level_BgObject3Pointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD810).w
+                move.l  d1,(Ram_BgObject3Ptr).w
                 moveq   #$F,d7
                 bsr.w   Math_ModuloUpper
                 subq.b  #1,d0
                 lsl.w   #2,d0
                 lea     Level_ChickMappingPointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(dword_FFD828).w
-                move.l  #Level_BgObject0Data,(dword_FFD81C).w
-                move.l  #Level_BgObject1Data,(dword_FFD820).w
-                move.l  #Level_BgObject2Data,(dword_FFD824).w
+                move.l  d1,(Ram_ChickMappingPtr).w
+                move.l  #Level_BgObject0Data,(Ram_BgObject0Ptr).w
+                move.l  #Level_BgObject1Data,(Ram_BgObject1Ptr).w
+                move.l  #Level_BgObject2Data,(Ram_BgObject2Ptr).w
                 rts
 
 Level_BackgroundTilePointers: dc.l    Level_BackgroundTileData0  ; was: off_12728
@@ -139,7 +139,7 @@ Level_LoadPalette:
                 moveq   #$FFFFFFFF,d1
                 move.w  (a0,d0.w),d1
                 movea.l d1,a0
-                lea     (unk_FFF800).w,a1
+                lea     (Ram_LevelPalette).w,a1
                 moveq   #7,d0
 
 Level_LoadPalette_CopyLoop:  ; was: loc_12840
@@ -150,7 +150,7 @@ Level_LoadPalette_CopyLoop:  ; was: loc_12840
                 subq.w  #1,d0
                 lsl.w   #1,d0
                 lea     Level_AccentPalettePointers(pc),a0
-                lea     (unk_FFF858).w,a1
+                lea     (Ram_AccentPaletteSlot).w,a1
                 moveq   #$FFFFFFFF,d1
                 move.w  (a0,d0.w),d1
                 movea.l d1,a0

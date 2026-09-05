@@ -12,7 +12,7 @@ Nem_Decomp_To_RAM:
                 lea     (Nem_PCD_WriteRowToRAM).l,a3
 
 Nem_Decomp_Main:
-                lea     (word_FFE630).w,a1
+                lea     (Ram_DecompCodeTable).w,a1
                 move.w  (a0)+,d2
                 lsl.w   #1,d2
                 bcc.s   Nem_Decomp_Main_Setup

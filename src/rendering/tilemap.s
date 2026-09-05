@@ -3,7 +3,7 @@
 
 Gfx_LoadPaletteCompact:
                 movem.l d0-d2/a0,-(sp)  ; was: sub_1196
-                lea     (word_FFF7E0).w,a0
+                lea     (Ram_Palette).w,a0
 
 Gfx_LoadPaletteCompact_Loop:  ; was: loc_119E
                 move.w  (a5),d0
@@ -29,14 +29,14 @@ Gfx_LoadPaletteCompact_Loop:  ; was: loc_119E
 ; Updates scroll registers during VBlank
 Gfx_VBlankScrollUpdate:
                 move.w  #$8100,d0  ; was: sub_11D0
-                move.b  (byte_FFFF71).w,d0
+                move.b  (Ram_VDPMode2).w,d0
                 ori.b   #$40,d0
                 move.w  d0,(a6)
                 move.l  #$40000010,(VDP_CTRL).l
-                move.l  (dword_FFFFA4).w,-4(a6)
-                move.w  (word_FFFFDA).w,d0
+                move.l  (Ram_CameraY).w,-4(a6)
+                move.w  (Ram_HScrollAddr).w,d0
                 bsr.w   Gfx_SetVRAMWriteAddr
-                move.l  (dword_FFFFA8).w,d0
+                move.l  (Ram_CameraX).w,d0
                 neg.w   d0
                 swap    d0
                 neg.w   d0
@@ -48,7 +48,7 @@ Gfx_VBlankScrollUpdate:
 Gfx_InitTilemapGradient:
                 lea     (VDP_CTRL).l,a6  ; was: sub_1208
                 move.w  d0,d3
-                move.w  d0,(word_FFFFE4).w
+                move.w  d0,(Ram_TilemapGradientBase).w
                 lsl.w   #5,d3
                 clr.b   d4
 
@@ -68,7 +68,7 @@ Gfx_DecompEnigmaTilemap:
                 movea.l a5,a0
                 bsr.s   Gfx_ReadTilemapHeader
                 clr.w   d0
-                lea     (unk_FFC3E0).w,a1
+                lea     (Ram_EnigmaBuffer).w,a1  ; !(UNKNOWN) RAM-002 overlaps the object array
                 bsr.w   Eni_Decompress
                 movea.l a0,a5
                 movea.l a1,a0
@@ -98,7 +98,7 @@ Gfx_DrawTilemapRows_ColumnLoop:  ; was: loc_1268
                 add.w   d3,d1
                 move.w  d1,-4(a6)
                 dbf     d0,Gfx_DrawTilemapRows_ColumnLoop
-                add.w   (word_FFFFE2).w,d2
+                add.w   (Ram_TilemapRowStride).w,d2
                 dbf     d5,Gfx_DrawTilemapRows
                 move.w  d3,d0
                 rts

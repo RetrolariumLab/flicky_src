@@ -68,13 +68,13 @@ Gfx_DrawTilemapRect_ColumnLoop:  ; was: loc_10F86
 
 ; Writes single character tile with base offset
 Text_WriteCharTile:
-                cmpi.w  #$FFFF,(word_FFD884).w  ; was: sub_10F94
+                cmpi.w  #$FFFF,(Ram_TextTileBase).w  ; was: sub_10F94
                 bne.s   Text_WriteCharTile_AddBase
                 move.w  #$8020,d4
                 bra.s   Text_WriteCharTile_Emit
 
 Text_WriteCharTile_AddBase:  ; was: loc_10FA2
-                add.w   (word_FFD884).w,d4
+                add.w   (Ram_TextTileBase).w,d4
 
 Text_WriteCharTile_Emit:  ; was: loc_10FA6
                 bsr.s   Gfx_WriteTileAtOffset
@@ -127,7 +127,7 @@ Text_DrawDoubleHeight_Return:  ; was: locret_10FF2
 
 ; Draws BCD number from (a6) with leading zero handling
 Text_DrawBCDNumber:
-                clr.b   (byte_FFD00D).w  ; was: sub_10FF4
+                clr.b   (Ram_LeadingDigitSeen).w  ; was: sub_10FF4
                 subq.w  #2,d5
 
 Text_DrawBCDNumber_Loop:  ; was: loc_10FFA
@@ -146,7 +146,7 @@ Text_DrawBCDNumber_Loop:  ; was: loc_10FFA
                 bsr.w   Text_DrawDigit
                 movem.l (sp)+,d0-d1/d5
                 dbf     d0,Text_DrawBCDNumber_Loop
-                tst.b   (byte_FFD00D).w
+                tst.b   (Ram_LeadingDigitSeen).w
                 bne.s   Text_DrawBCDNumber_Return
                 moveq   #$30,d4
                 bsr.w   Text_WriteCharTile
@@ -158,9 +158,9 @@ Text_DrawBCDNumber_Return:  ; was: locret_11034
 Text_DrawDigit:
                 tst.b   d4  ; was: sub_11036
                 bne.s   Text_DrawDigit_SeenNonZero
-                tst.b   (byte_FFD00D).w
+                tst.b   (Ram_LeadingDigitSeen).w
                 bne.s   Text_DrawDigit_Emit
-                tst.b   (byte_FFD29A).w
+                tst.b   (Ram_ShowLeadingZeros).w
                 beq.s   Text_DrawDigit_Return
                 bsr.w   Text_WriteCharTile
 
@@ -168,7 +168,7 @@ Text_DrawDigit_Return:  ; was: locret_1104A
                 rts
 
 Text_DrawDigit_SeenNonZero:  ; was: loc_1104C
-                move.b  #1,(byte_FFD00D).w
+                move.b  #1,(Ram_LeadingDigitSeen).w
 
 Text_DrawDigit_Emit:  ; was: loc_11052
                 addi.w  #$30,d4

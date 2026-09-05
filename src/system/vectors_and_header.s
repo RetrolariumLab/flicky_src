@@ -1,7 +1,7 @@
 ; Exception vector table and ROM header.
 ; ROM $000000-$0001FF.
 
-Sys_VectorTable: dc.l    unk_FFFF70  ; was: off_0
+Sys_VectorTable: dc.l    Ram_VDPRegisters  ; was: off_0
                 dc.l    EntryPoint
                 dc.l    ErrorTrap
                 dc.l    ErrorTrap
@@ -73,7 +73,7 @@ Peripherials:   dc.b    "J               "
 RomStart:       dc.l    0
 RomEnd:         dc.l    RomEndData
 RamStart:       dc.l    M68K_RAM
-RamEnd:         dc.l    dword_FFFFFC+3
+RamEnd:         dc.l    Ram_InitFlag+3
 SramCode:       dc.b    "            "
 ModemCode:      dc.b    "            "
 Reserved:       dc.b    "                                        "

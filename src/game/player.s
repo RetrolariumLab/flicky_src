@@ -15,9 +15,9 @@ Obj_Player:
                 move.b  #3,$3A(a0)
 
 Obj_Player_Update:  ; was: loc_13EA0
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Player_Return
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Obj_Player_CheckProjectiles
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
@@ -28,13 +28,13 @@ Obj_Player_CheckProjectiles:  ; was: loc_13EB6
                 andi.w  #$7C,d0
                 cmpi.w  #4,d0
                 bcc.s   Obj_Player_RecordAndAnimate
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Obj_Player_RecordAndAnimate
                 bsr.w   Player_CheckProjectileHit
 
 Obj_Player_RecordAndAnimate:  ; was: loc_13ECE
                 bsr.w   Player_RecordHistory
-                tst.b   (byte_FFD24E).w
+                tst.b   (Ram_BonusRoundFlag).w
                 bne.s   Obj_Player_Return
                 bsr.w   UI_AnimateEntryArrow
 
@@ -51,7 +51,7 @@ Player_StateNormal:
                 move.b  #$1E,5(a0)  ; was: sub_13EEA
                 bsr.s   Player_ProcessInput
                 bsr.w   Player_CheckExit
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Player_StateNormal_Move
                 bsr.w   Camera_UpdateScroll
 
@@ -72,7 +72,7 @@ Player_StateNormal_Return:  ; was: locret_13F24
 
 ; Player input processing: joypad to velocity
 Player_ProcessInput:
-                move.b  (word_FFFF8E).w,d0  ; was: sub_13F26
+                move.b  (Ram_Joypad).w,d0  ; was: sub_13F26
                 andi.b  #$C,d0
                 beq.w   Player_ProcessInput_NoDirection
                 btst    #3,d0
@@ -83,9 +83,9 @@ Player_ProcessInput:
 Player_ProcessInput_Apply:  ; was: loc_13F42
                 move.l  $30(a0),d2
                 move.l  d1,$34(a0)
-                tst.b   (byte_FFD24E).w
+                tst.b   (Ram_BonusRoundFlag).w
                 bne.s   Player_ProcessInput_CheckJump
-                move.l  d1,(dword_FFD004).w
+                move.l  d1,(Ram_CameraVelocityX).w
 
 Player_ProcessInput_CheckJump:  ; was: loc_13F54
                 bsr.w   Player_ThrowChick
@@ -93,7 +93,7 @@ Player_ProcessInput_CheckJump:  ; was: loc_13F54
                 bne.w   Player_ProcessInput_Airborne
                 btst    #0,$3A(a0)
                 beq.s   Player_ProcessInput_CheckRelease
-                move.b  (word_FFFF8E).w,d0
+                move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
                 beq.s   Player_ProcessInput_CheckRelease
                 move.l  a0,-(sp)
@@ -106,7 +106,7 @@ Player_ProcessInput_CheckJump:  ; was: loc_13F54
                 bclr    #1,$3A(a0)
 
 Player_ProcessInput_CheckRelease:  ; was: loc_13F98
-                move.b  (word_FFFF8E).w,d0
+                move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
                 bne.s   Player_ProcessInput_Return
                 move.b  #3,$3A(a0)
@@ -163,7 +163,7 @@ Player_ProcessInput_Airborne:  ; was: loc_1400A
                 addi.l  #$1000,$2C(a0)
 
 Player_ProcessInput_AirReleaseCheck:  ; was: loc_1401C
-                move.b  (word_FFFF8E).w,d0
+                move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
                 bne.s   Player_ProcessInput_AirReturn
                 move.b  #3,$3A(a0)
@@ -181,12 +181,12 @@ Player_ClearAirState:
 Player_ThrowChick:
                 btst    #1,$3A(a0)  ; was: sub_14038
                 beq.s   Player_ThrowChick_Return
-                move.b  (word_FFFF8E).w,d0
+                move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
                 beq.s   Player_ThrowChick_Return
                 tst.b   $3B(a0)
                 beq.s   Player_ThrowChick_Return
-                movea.l (dword_FFD250).w,a1
+                movea.l (Ram_HeldChickObject).w,a1
                 move.w  #4,$34(a1)
                 tst.b   $39(a0)
                 beq.s   Player_ThrowChick_SetVelocity
@@ -424,10 +424,10 @@ Player_CheckWalls_PushReturn:  ; was: locret_14270
 
 ; Records player position history for chicks
 Player_RecordHistory:
-                lea     (unk_FFD206).w,a2  ; was: sub_14272
-                lea     (unk_FFD1FE).w,a1
-                lea     (unk_FFD20A).w,a4
-                lea     (unk_FFD202).w,a3
+                lea     (Ram_PlayerTrailXShift).w,a2  ; was: sub_14272
+                lea     (Ram_PlayerTrailXLast).w,a1
+                lea     (Ram_PlayerTrailYShift).w,a4
+                lea     (Ram_PlayerTrailYLast).w,a3
                 moveq   #$3F,d0
 
 Player_RecordHistory_ShiftLoop:  ; was: loc_14284
@@ -438,15 +438,15 @@ Player_RecordHistory_ShiftLoop:  ; was: loc_14284
                 subq.l  #8,a3
                 subq.l  #8,a4
                 dbf     d0,Player_RecordHistory_ShiftLoop
-                lea     (byte_FFD24E).w,a2
-                lea     (unk_FFD24D).w,a1
+                lea     (Ram_BonusRoundFlag).w,a2
+                lea     (Ram_PlayerTrailFlagsLast).w,a1
                 moveq   #$3F,d0
 
 Player_RecordHistory_ShiftFlagsLoop:  ; was: loc_1429E
                 move.b  -(a1),-(a2)
                 dbf     d0,Player_RecordHistory_ShiftFlagsLoop
-                move.l  $30(a0),(dword_FFD00E).w
-                move.l  $24(a0),(dword_FFD012).w
+                move.l  $30(a0),(Ram_PlayerTrailX).w
+                move.l  $24(a0),(Ram_PlayerTrailY).w
                 moveq   #0,d0
                 tst.b   $38(a0)
                 beq.s   Player_RecordHistory_EncodeDirection
@@ -464,27 +464,27 @@ Player_RecordHistory_FacingRight:  ; was: loc_142CC
                 bset    #0,d0
 
 Player_RecordHistory_Store:  ; was: loc_142D0
-                move.b  d0,(byte_FFD20E).w
+                move.b  d0,(Ram_PlayerTrailFlags).w
                 rts
 
 ; Player checks if entered exit door
 Player_CheckExit:
-                tst.b   (byte_FFD27A).w  ; was: sub_142D6
+                tst.b   (Ram_ChickChainCount).w  ; was: sub_142D6
                 beq.s   Player_CheckExit_Return
                 tst.b   $38(a0)
                 bne.s   Player_CheckExit_Return
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
-                cmp.w   (word_FFD25C).w,d6
+                cmp.w   (Ram_ExitDoorY).w,d6
                 bne.s   Player_CheckExit_Return
-                cmp.w   (word_FFD25E).w,d7
+                cmp.w   (Ram_ExitDoorLeftX).w,d7
                 blt.s   Player_CheckExit_Return
-                cmp.w   (word_FFD260).w,d7
+                cmp.w   (Ram_ExitDoorRightX).w,d7
                 bgt.s   Player_CheckExit_Return
-                move.b  #1,(byte_FFD24F).w
+                move.b  #1,(Ram_RoundEndingFlag).w
                 clr.l   $34(a0)
-                clr.l   (dword_FFD004).w
-                addq.b  #1,(byte_FFD88D).w
+                clr.l   (Ram_CameraVelocityX).w
+                addq.b  #1,(Ram_ExitReachedFlag).w
                 move.l  a0,-(sp)
                 bsr.w   UI_AnimateCatCountReverse
                 movea.l (sp)+,a0
@@ -496,7 +496,7 @@ Player_CheckExit_Return:  ; was: locret_14316
 Player_UpdateAnim:
                 bclr    #7,2(a0)  ; was: sub_14318
                 move.l  $34(a0),d0
-                move.b  (word_FFFF8E).w,d1
+                move.b  (Ram_Joypad).w,d1
                 tst.b   $38(a0)
                 bne.s   Player_UpdateAnim_Airborne
                 tst.l   d0
@@ -548,7 +548,7 @@ Player_StateDeath:
                 bne.s   Player_StateDeath_Fall
                 move.l  a0,-(sp)
                 move.b  #$87,d0
-                jsr     unk_FFFB66
+                jsr     j_Sound_QueueToBuffer
                 movea.l (sp)+,a0
                 clr.b   5(a0)
                 clr.l   $34(a0)
@@ -602,28 +602,28 @@ Player_StateRespawn_Update:  ; was: loc_14418
 Player_StateRespawn_CheckDone:  ; was: loc_14430
                 tst.b   $39(a0)
                 bne.s   Player_StateRespawn_Return
-                subq.b  #1,(byte_FFD882).w
+                subq.b  #1,(Ram_Lives).w
                 beq.s   Player_StateRespawn_GameOver
-                move.b  #1,(byte_FFD886).w
+                move.b  #1,(Ram_RestoreEnemiesFlag).w
                 bsr.w   Enemy_BackupToBuffer
-                move.w  #$20,(word_FFFFC0).w
+                move.w  #$20,(Ram_NextGameMode).w
                 moveq   #$3C,d2
 
 Player_StateRespawn_DelayLoop:  ; was: loc_1444E
                 bsr.w   Timer_IncrementTime
-                jsr     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
                 dbf     d2,Player_StateRespawn_DelayLoop
                 bra.s   Player_StateRespawn_Return
 
 Player_StateRespawn_GameOver:  ; was: loc_1445C
-                move.w  #$10,(word_FFD2A0).w
+                move.w  #$10,(Ram_GameState).w
 
 Player_StateRespawn_Return:  ; was: locret_14462
                 rts
 
 ; Clears enemy projectile object slots
 Enemy_ClearProjectiles:
-                lea     (unk_FFC380).w,a1  ; was: sub_14464
+                lea     (Ram_ProjectileSlots).w,a1  ; was: sub_14464
                 moveq   #2,d0
 
 Enemy_ClearProjectiles_Loop:  ; was: loc_1446A
@@ -634,7 +634,7 @@ Enemy_ClearProjectiles_Loop:  ; was: loc_1446A
 
 ; Checks player collision with projectiles
 Player_CheckProjectileHit:
-                lea     (unk_FFC380).w,a1  ; was: sub_14476
+                lea     (Ram_ProjectileSlots).w,a1  ; was: sub_14476
                 moveq   #2,d1
 
 Player_CheckProjectileHit_Loop:  ; was: loc_1447C
@@ -646,7 +646,7 @@ Player_CheckProjectileHit_Loop:  ; was: loc_1447C
                 tst.b   d0
                 beq.s   Player_CheckProjectileHit_Next
                 move.w  #4,$3C(a0)
-                move.b  #1,(byte_FFD26D).w
+                move.b  #1,(Ram_PlayerHitFlag).w
                 bra.s   Player_CheckProjectileHit_Return
 
 Player_CheckProjectileHit_Next:  ; was: loc_144A2

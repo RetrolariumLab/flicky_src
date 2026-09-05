@@ -7,7 +7,7 @@ Obj_GameOverText:
                 move.w  #$D8,$20(a0)
                 move.w  #$118,$24(a0)
                 move.l  #Obj_GameOverTextData,$C(a0)
-                move.b  #1,(byte_FFD27B).w
+                move.b  #1,(Ram_CutsceneFlag).w
 
 Obj_GameOverText_Return:  ; was: locret_16DCA
                 rts
@@ -23,4 +23,4 @@ Obj_TimeOverText:
 Obj_TimeOverText_Return:  ; was: locret_16DE6
                 rts
 
-Gfx_ScreenInitData: binclude "data/palettes/shared-compact.bin"
+Gfx_SharedPalette: binclude "data/palettes/shared-compact.bin"

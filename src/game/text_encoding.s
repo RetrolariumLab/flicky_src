@@ -68,18 +68,18 @@ Math_GetRandomByte:
 ; Calculates sum of random values modulo counter
 Math_CalcRandomSum:
                 movem.l d0-d1/d7,-(sp)  ; was: sub_10E58
-                clr.w   (word_FFE630).w
-                addq.w  #1,(word_FFE634).w
-                move.w  (word_FFE632).w,d7
+                clr.w   (Ram_DecompCodeTable).w
+                addq.w  #1,(Ram_RandomDivisor).w
+                move.w  (Ram_RandomCount).w,d7
                 subq.w  #1,d7
                 bcs.s   Math_CalcRandomSum_Done
 
 Math_CalcRandomSum_Loop:  ; was: loc_10E6C
                 bsr.s   Math_GetRandomByte
                 andi.l  #$FFFF,d1
-                divu.w  (word_FFE634).w,d1
+                divu.w  (Ram_RandomDivisor).w,d1
                 swap    d1
-                add.w   d1,(word_FFE630).w
+                add.w   d1,(Ram_DecompCodeTable).w
                 dbf     d7,Math_CalcRandomSum_Loop
 
 Math_CalcRandomSum_Done:  ; was: loc_10E82

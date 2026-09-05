@@ -3,32 +3,32 @@
 
 Ending_Init:
                 jsr     Sys_InitTitleScreen  ; was: sub_13110
-                clr.b   (byte_FFD88E).w
+                clr.b   (Ram_FontBankFlag).w
                 bsr.w   LoadTilesToVRAM_LoadFont
-                lea     (Gfx_ScreenInitData).l,a5
-                jsr     unk_FFFBBA
-                move.w  #$800,(word_FFF7E0).w
+                lea     (Gfx_SharedPalette).l,a5
+                jsr     j_Gfx_LoadPaletteCompact
+                move.w  #$800,(Ram_Palette).w
                 bsr.w   Ending_DrawGraphics
                 move    #$2700,sr
                 moveq   #2,d2
                 move.w  #$3BA,d0
                 move.w  #$125B,d1
                 lea     (Ending_CongratsArt).l,a0
-                jsr     unk_FFFB54
+                jsr     j_Sound_CopyToZ80RAM
                 move    #$2500,sr
                 move.b  #$81,d0
-                jsr     unk_FFFB66
-                clr.w   (word_FFFF92).w
-                jsr     unk_FFFB6C
-                jmp     unk_FFFB6C
+                jsr     j_Sound_QueueToBuffer
+                clr.w   (Ram_FrameCounter).w
+                jsr     j_Sound_QueueSFX
+                jmp     j_Sound_QueueSFX
 
 ; Ending sequence main loop with state dispatcher
 Ending_MainLoop:
-                move.w  (word_FFD29E).w,d0  ; was: sub_13162
+                move.w  (Ram_EndingState).w,d0  ; was: sub_13162
                 andi.w  #$7FFC,d0
                 jsr     Ending_StateTable(pc,d0.w)
                 bsr.w   Object_UpdateAll
-                jmp     unk_FFFB6C
+                jmp     j_Sound_QueueSFX
 
 Ending_StateTable:  ; was: loc_13176
                 bra.w   Ending_StateWait
@@ -38,14 +38,14 @@ Ending_StateTable:  ; was: loc_13176
 ; Ending state: wait then show congratulations
 Ending_StateWait:
                 bsr.w   Ending_BlinkText  ; was: sub_13182
-                cmpi.w  #$C8,(word_FFFF92).w
+                cmpi.w  #$C8,(Ram_FrameCounter).w
                 bne.s   Ending_StateWait_Return
-                move.w  #4,(word_FFD29E).w
-                move.w  #$8100,(word_FFD884).w
-                move.w  #$EEE,(word_FFF7E6).w
+                move.w  #4,(Ram_EndingState).w
+                move.w  #$8100,(Ram_TextTileBase).w
+                move.w  #$EEE,(Ram_PaletteEntry3).w
                 bsr.w   Ending_DrawCongrats
-                move.l  #$EFFFFFFF,(dword_FFFFB8).w
-                move.l  #$FFFFFFFF,(dword_FFFFBC).w
+                move.l  #$EFFFFFFF,(Ram_PaletteMaskHigh).w
+                move.l  #$FFFFFFFF,(Ram_PaletteMaskLow).w
                 bsr.w   Gfx_FadeInPalette
                 lea     (VDP_DATA).l,a0
                 move.l  #$40000003,(VDP_CTRL).l
@@ -77,15 +77,15 @@ Ending_SuperPlayerLabel: dc.b    $C3, $8A  ; was: byte_13200
 aYouAreASuperPl: dc.b    "YOU ARE A SUPER PLAYER.",0
 ; Ending state: scrolling credits sequence
 Ending_StateCredits:
-                bset    #7,(word_FFD29E).w  ; was: sub_1321A
+                bset    #7,(Ram_EndingState).w  ; was: sub_1321A
                 bne.s   Ending_StateCredits_Scroll
-                lea     (Gfx_ScreenInitData).l,a5
-                jsr     unk_FFFBBA
-                move.w  #$EEE,(word_FFF7E6).w
-                clr.l   (dword_FFFFB8).w
-                clr.l   (dword_FFFFBC).w
-                move.w  #$4000,(dword_FFD008+2).w
-                lea     (word_FFC000).w,a0
+                lea     (Gfx_SharedPalette).l,a5
+                jsr     j_Gfx_LoadPaletteCompact
+                move.w  #$EEE,(Ram_PaletteEntry3).w
+                clr.l   (Ram_PaletteMaskHigh).w
+                clr.l   (Ram_PaletteMaskLow).w
+                move.w  #$4000,(Ram_CameraVelocityY+2).w
+                lea     (Ram_ObjectSlots).w,a0
                 moveq   #0,d1
                 moveq   #4,d0
 
@@ -98,16 +98,16 @@ Ending_StateCredits_SpawnLoop:  ; was: loc_13248
 
 Ending_StateCredits_Scroll:  ; was: loc_1325A
                 bsr.w   Camera_UpdateScroll
-                addq.b  #1,(byte_FFD29D).w
-                cmpi.b  #$20,(byte_FFD29D).w
+                addq.b  #1,(Ram_CreditsScrollTimer).w
+                cmpi.b  #$20,(Ram_CreditsScrollTimer).w
                 bne.s   Ending_StateCredits_Return
-                clr.b   (byte_FFD29D).w
+                clr.b   (Ram_CreditsScrollTimer).w
                 bsr.w   Ending_DrawCreditsLine
-                addq.b  #1,(byte_FFD29C).w
-                cmpi.b  #$5D,(byte_FFD29C).w
+                addq.b  #1,(Ram_CreditsLine).w
+                cmpi.b  #$5D,(Ram_CreditsLine).w
                 bne.s   Ending_StateCredits_Return
-                move.w  #8,(word_FFD29E).w
-                lea     (word_FFC000).w,a0
+                move.w  #8,(Ram_EndingState).w
+                lea     (Ram_ObjectSlots).w,a0
                 move.w  #$44,(a0)
 
 Ending_StateCredits_Return:  ; was: locret_1328C
@@ -117,7 +117,7 @@ Ending_StateCredits_Return:  ; was: locret_1328C
 Ending_DrawCreditsLine:
                 moveq   #0,d0  ; was: sub_1328E
                 moveq   #0,d5
-                move.w  (dword_FFFFA4).w,d0
+                move.w  (Ram_CameraY).w,d0
                 andi.w  #$FF,d0
                 lsr.w   #3,d0
                 subq.w  #2,d0
@@ -137,7 +137,7 @@ Ending_DrawCreditsLine_ClearRowLoop:  ; was: loc_132BA
                 move.w  #0,(VDP_DATA).l
                 dbf     d1,Ending_DrawCreditsLine_ClearRowLoop
                 moveq   #0,d1
-                move.b  (byte_FFD29C).w,d1
+                move.b  (Ram_CreditsLine).w,d1
                 lsl.w   #1,d1
                 moveq   #$FFFFFFFF,d2
                 lea     Ending_CreditsLinePointers(pc),a6  ; "     STAFF"
@@ -269,12 +269,12 @@ aBo:            dc.b    "     BO",0
 aChallengeTheNe: dc.b    "CHALLENGE THE NEXT STAGE.",0
 ; Ending state: wait for start to restart game
 Ending_StateRestart:
-                btst    #7,(word_FFFF8E+1).w  ; was: sub_13492
+                btst    #7,(Ram_Joypad+1).w  ; was: sub_13492
                 beq.s   Ending_StateRestart_Return
                 bsr.w   Gfx_FadeInPalette
-                move.b  #1,(byte_FFD88E).w
+                move.b  #1,(Ram_FontBankFlag).w
                 bsr.w   LoadTilesToVRAM_LoadFont
-                move.w  #$18,(word_FFFFC0).w
+                move.w  #$18,(Ram_NextGameMode).w
                 move    #$2700,sr
                 bsr.w   Sound_InitDriver
                 move    #$2500,sr
@@ -313,7 +313,7 @@ Ending_CreditsAnimIndexTable: dc.w    4, 0, 0, 8, $10  ; was: word_1350C
 Ending_CreditsAppearLines: dc.w    $D17, $212B, $3D00  ; was: word_13516
 ; Credits character wait state: waits for scroll line
 Obj_CreditsWait:
-                move.b  (byte_FFD29C).w,d0  ; was: sub_1351C
+                move.b  (Ram_CreditsLine).w,d0  ; was: sub_1351C
                 cmp.b   $3A(a0),d0
                 bne.s   Obj_CreditsWait_Return
                 move.w  #4,$3C(a0)
@@ -377,6 +377,6 @@ Ending_GraphicsSizeTable: dc.b    0, 3, 0, 3, 0, 4, 0, 2, 0, 4  ; was: byte_135A
                 dc.b    0, 4, 0, 2, 0, 4, 0, 2, 0, 4
                 dc.b    0, 2, 0, 3, 0, 3, 0, 4, 0, 2
 Ending_GraphicsPositions: dc.w    $E132, $E4B2, $E642, $E64C, $E656, $E660, $E66A, $E674, $E446, $E146  ; was: word_135D4
-Ending_CongratsArt: binclude "data/other/data_word_135E8.bin"  ; was: word_135E8
+Ending_CongratsArt: binclude "data/other/data_EndingCongratsArt.bin"  ; was: word_135E8
 Ending_CongratsArt_End:  ; was: word_135E8_End
 ; Demo/attract mode initialization

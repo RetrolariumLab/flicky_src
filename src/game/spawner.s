@@ -11,15 +11,15 @@ Obj_Spawner:
                 addi.w  #$10,d6
                 move.w  d7,$30(a0)
                 move.w  d6,$24(a0)
-                tst.b   (byte_FFD26C).w
+                tst.b   (Ram_ActiveEnemyCount).w
                 beq.s   Obj_Spawner_Dispatch
-                move.w  (word_FFD294).w,$38(a0)
+                move.w  (Ram_SpawnerDelay).w,$38(a0)
 
 Obj_Spawner_Dispatch:  ; was: loc_1633E
                 move.l  #Spawner_AnimPointers,8(a0)
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Obj_Spawner_Return
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Spawner_Return
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
@@ -36,7 +36,7 @@ Spawner_StateTable:  ; was: loc_1635E
 Spawner_StateCountdown:
                 bset    #7,$3C(a0)  ; was: sub_16366
                 bne.s   Spawner_StateCountdown_Tick
-                addq.b  #1,(byte_FFD26C).w
+                addq.b  #1,(Ram_ActiveEnemyCount).w
                 bset    #1,2(a0)
 
 Spawner_StateCountdown_Tick:  ; was: loc_16378
@@ -147,7 +147,7 @@ Obj_ChickCountPopup:
                 move.w  ChickCountPopup_MappingPointers(pc,d0.w),d1
                 move.l  d1,$C(a0)
                 lsl.w   #2,d0
-                move.w  (word_FFD25C).w,d6
+                move.w  (Ram_ExitDoorY).w,d6
                 cmpi.w  #$F0,d6
                 bcs.s   Obj_ChickCountPopup_BelowDoor
                 sub.w   d0,d6

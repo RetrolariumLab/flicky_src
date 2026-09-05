@@ -5,17 +5,17 @@ Guide_Init:
                 moveq   #7,d1  ; was: sub_1228E
 
 Guide_Init_WaitLoop:  ; was: loc_12290
-                jsr     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
                 dbf     d1,Guide_Init_WaitLoop
                 bsr.w   Sys_InitTitleScreen
-                lea     (Gfx_ScreenInitData).l,a5
-                jsr     unk_FFFBBA
-                clr.l   (dword_FFD87E).w
-                clr.b   (byte_FFD887).w
+                lea     (Gfx_SharedPalette).l,a5
+                jsr     j_Gfx_LoadPaletteCompact
+                clr.l   (Ram_Score).w
+                clr.b   (Ram_ExtraLifeFlags).w
                 bsr.w   Level_LoadTileset
                 bsr.w   Level_LoadPalette
                 bsr.w   Guide_DrawText
-                lea     (word_FFC000).w,a0
+                lea     (Ram_ObjectSlots).w,a0
                 moveq   #0,d1
                 moveq   #$13,d0
 
@@ -26,25 +26,25 @@ Guide_Init_SpawnCharactersLoop:  ; was: loc_122C2
                 addq.w  #1,d1
                 dbf     d0,Guide_Init_SpawnCharactersLoop
                 bsr.w   Object_UpdateAll
-                jsr     unk_FFFB6C
-                jmp     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
+                jmp     j_Sound_QueueSFX
 
 ; Guide screen update: handles input and fade
 Guide_Update:
-                btst    #7,(word_FFFF8E+1).w  ; was: sub_122E0
+                btst    #7,(Ram_Joypad+1).w  ; was: sub_122E0
                 beq.s   Guide_Update_Return
-                move.w  #$18,(word_FFFFC0).w
-                move.b  (word_FFFF8E).w,d0
+                move.w  #$18,(Ram_NextGameMode).w
+                move.b  (Ram_Joypad).w,d0
                 bclr    #7,d0
                 cmpi.b  #$61,d0
                 bne.s   Guide_Update_Fade
-                move.w  #$10,(word_FFFFC0).w
+                move.w  #$10,(Ram_NextGameMode).w
 
 Guide_Update_Fade:  ; was: loc_12302
                 bsr.w   Gfx_FadeInPalette
 
 Guide_Update_Return:  ; was: loc_12306
-                jmp     unk_FFFB6C
+                jmp     j_Sound_QueueSFX
 
 ; Draws guide screen text and demo level graphics
 Guide_DrawText:
@@ -58,7 +58,7 @@ Guide_DrawText_Loop:  ; was: loc_1231E
                 movea.l (a0)+,a6
                 bsr.w   Text_DrawDoubleHeight
                 dbf     d0,Guide_DrawText_Loop
-                lea     (byte_FFD82E).w,a0
+                lea     (Ram_PlayerStartX).w,a0
                 moveq   #$E,d7
                 btst    #7,(IO_PCBVER+1).l
                 beq.s   Guide_DrawText_DrawScene

@@ -18,11 +18,11 @@ Obj_Snake:
                 clr.l   $2C(a0)
 
 Obj_Snake_Dispatch:  ; was: loc_15D8C
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Snake_Return
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Obj_Snake_Return
-                tst.b   (byte_FFD26D).w
+                tst.b   (Ram_PlayerHitFlag).w
                 bne.s   Obj_Snake_Return
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
@@ -89,7 +89,7 @@ Snake_DirectionTable:  ; was: loc_15E20
 Snake_MoveRight:
                 clr.w   6(a0)  ; was: sub_15E40
                 bclr    #7,2(a0)
-                move.l  (dword_FFD27C).w,$34(a0)
+                move.l  (Ram_SnakeSpeed).w,$34(a0)
                 clr.l   $2C(a0)
                 bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
@@ -142,7 +142,7 @@ Snake_MoveRight_StartTurn:  ; was: loc_15ED6
 Snake_MoveLeft:
                 move.w  #4,6(a0)  ; was: sub_15EE6
                 bset    #7,2(a0)
-                move.l  (dword_FFD27C).w,d0
+                move.l  (Ram_SnakeSpeed).w,d0
                 neg.l   d0
                 move.l  d0,$34(a0)
                 clr.l   $2C(a0)
@@ -200,7 +200,7 @@ Snake_MoveUp:
                 move.w  #8,6(a0)  ; was: sub_15F9E
                 bclr    #7,2(a0)
                 clr.l   $34(a0)
-                move.l  (dword_FFD27C).w,d0
+                move.l  (Ram_SnakeSpeed).w,d0
                 neg.l   d0
                 move.l  d0,$2C(a0)
                 bsr.w   Object_UpdatePosition
@@ -247,7 +247,7 @@ Snake_MoveDown:
                 move.w  #$C,6(a0)  ; was: sub_16036
                 bset    #7,2(a0)
                 clr.l   $34(a0)
-                move.l  (dword_FFD27C).w,$2C(a0)
+                move.l  (Ram_SnakeSpeed).w,$2C(a0)
                 bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
@@ -296,7 +296,7 @@ Snake_MoveDown_TurnLeft:  ; was: loc_160D6
                 bne.s   Snake_StateTurn_Continue
                 move.w  #$10,6(a0)
                 clr.l   $34(a0)
-                move.l  (dword_FFD27C).w,d0
+                move.l  (Ram_SnakeSpeed).w,d0
                 neg.l   d0
                 move.l  d0,$2C(a0)
                 bsr.w   Object_UpdatePosition
@@ -322,7 +322,7 @@ Snake_MoveDown_StartTurn:  ; was: loc_1610C
 Snake_StateTurn_Continue:  ; was: loc_16136
                 move.w  #$14,6(a0)
                 clr.l   $34(a0)
-                move.l  (dword_FFD27C).w,$2C(a0)
+                move.l  (Ram_SnakeSpeed).w,$2C(a0)
                 bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
@@ -351,7 +351,7 @@ Snake_StateHit:
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.w  #$18,6(a0)
-                subq.b  #1,(byte_FFD26C).w
+                subq.b  #1,(Ram_ActiveEnemyCount).w
                 clr.b   5(a0)
 
 Snake_StateHit_Move:  ; was: loc_161AA
@@ -378,10 +378,10 @@ Snake_StateDeath_Update:  ; was: loc_161E0
                 bsr.w   Anim_UpdateFrame
                 btst    #2,2(a0)
                 beq.s   Snake_StateDeath_Return
-                move.b  (dword_FFD888+2).w,d0
+                move.b  (Ram_RoundTime+2).w,d0
                 andi.b  #$F0,d0
                 bne.s   Snake_StateDeath_ClearSprites
-                lea     (unk_FFC7C0).w,a1
+                lea     (Ram_SnakeRespawnSlot).w,a1
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 move.w  d7,$30(a1)
@@ -396,7 +396,7 @@ Snake_StateDeath_Return:  ; was: locret_16216
 
 ; Snake collision with player hit detection
 Snake_CheckPlayerHit:
-                lea     (unk_FFC200).w,a1  ; was: sub_16218
+                lea     (Ram_SpawnerSlots).w,a1  ; was: sub_16218
                 moveq   #5,d0
 
 Snake_CheckPlayerHit_Loop:  ; was: loc_1621E
@@ -418,11 +418,11 @@ Snake_CheckPlayerHit_Loop:  ; was: loc_1621E
                 subq.b  #1,d0
                 lsl.w   #2,d0
                 move.l  Snake_HitScoreTable(pc,d0.w),d0
-                move.l  d0,(dword_FFD262).w
+                move.l  d0,(Ram_ScoreDelta).w
                 move.l  a1,-(sp)
                 bsr.w   Score_AddAndCheck
                 movea.l (sp)+,a1
-                lea     (unk_FFC0C0).w,a2
+                lea     (Ram_PopupSlots).w,a2
                 moveq   #3,d0
 
 Snake_CheckPlayerHit_PopupLoop:  ; was: loc_1626E

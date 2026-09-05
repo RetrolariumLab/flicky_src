@@ -3,8 +3,8 @@
 
 Input_ProcessJoypads:
                 bsr.w   InitJoypads  ; was: sub_DC0
-                lea     (unk_FFFF83).w,a0
-                move.w  (word_FFFF8E).w,d0
+                lea     (Ram_ButtonStates).w,a0
+                move.w  (Ram_Joypad).w,d0
                 moveq   #$E,d1
                 moveq   #6,d2
 
@@ -23,16 +23,16 @@ Input_ProcessJoypads_LowerBitLoop:  ; was: loc_DDE
                 dbf     d2,Input_ProcessJoypads_LowerBitLoop
                 andi.b  #$70,d0
                 sne     (a0)+
-                tst.b   (byte_FFFF87).w
+                tst.b   (Ram_ButtonRepeatEnable).w  ; !(UNKNOWN) RAM-003 nothing ever sets this
                 beq.s   Input_ProcessJoypads_Return
-                clr.b   (byte_FFFF86).w
+                clr.b   (Ram_ButtonRepeatFlag).w
 
 Input_ProcessJoypads_Return:  ; was: locret_DF8
                 rts
 
 InitJoypads:
                 bsr.w   RequestZ80Bus
-                lea     (word_FFFF8E).w,a0
+                lea     (Ram_Joypad).w,a0
                 lea     ((IO_CT1_DATA+1)).l,a1
                 bsr.s   Input_ReadPort
                 addq.w  #2,a1

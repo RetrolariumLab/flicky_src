@@ -1,6 +1,7 @@
 ; First Z80 driver image, function table, Japanese 1bpp font.
 ; ROM $001316-$00FFFF.
 
+; !(UNKNOWN) SND-001 the Z80 driver is copied verbatim, not disassembled
 z80_part1:      binclude "data/sound/data_z80_part1.bin"
 z80_part1_End:
 func_table:     dc.w    $39

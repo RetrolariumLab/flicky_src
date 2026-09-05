@@ -13,19 +13,19 @@ Level_Init:
 
 ; Fills map edges with solid collision type
 Collision_SetBoundaries:
-                lea     (unk_FFC800).w,a0  ; was: sub_1143A
+                lea     (Ram_CollisionMap).w,a0  ; was: sub_1143A
                 moveq   #$1F,d0
 
 Collision_SetBoundaries_TopRowLoop:  ; was: loc_11440
                 move.b  #$C,(a0)+
                 dbf     d0,Collision_SetBoundaries_TopRowLoop
-                lea     (unk_FFCB40).w,a0
+                lea     (Ram_CollisionMapEnd).w,a0
                 moveq   #$3F,d0
 
 Collision_SetBoundaries_BottomRowsLoop:  ; was: loc_1144E
                 move.b  #$C,(a0)+
                 dbf     d0,Collision_SetBoundaries_BottomRowsLoop
-                lea     (unk_FFC840).w,a0
+                lea     (Ram_CollisionMapRow1).w,a0
                 moveq   #$1F,d0
 
 Collision_SetBoundaries_TopEdgeLoop:  ; was: loc_1145C
@@ -37,7 +37,7 @@ Collision_SetBoundaries_TopEdgeLoop:  ; was: loc_1145C
 Collision_SetBoundaries_TopEdgeNext:  ; was: loc_1146C
                 addq.l  #1,a0
                 dbf     d0,Collision_SetBoundaries_TopEdgeLoop
-                lea     (unk_FFCB20).w,a0
+                lea     (Ram_CollisionMapLastRow).w,a0
                 moveq   #$1F,d0
 
 Collision_SetBoundaries_BottomEdgeLoop:  ; was: loc_11478
@@ -52,25 +52,25 @@ Collision_SetBoundaries_BottomEdgeNext:  ; was: loc_11482
 
 ; Spawns level objects from level data at (a6)
 Level_SpawnObjects:
-                lea     (byte_FFD82E).w,a0  ; was: sub_1148A
+                lea     (Ram_PlayerStartX).w,a0  ; was: sub_1148A
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)
                 moveq   #0,d4
                 moveq   #0,d0
                 bsr.w   Level_SpawnBackgroundLoop
-                lea     (byte_FFD830).w,a0
+                lea     (Ram_EntryArrowPos).w,a0
                 moveq   #0,d0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)+
                 moveq   #1,d4
                 bsr.w   Level_SpawnBackgroundLoop
-                lea     (unk_FFD832).w,a0
+                lea     (Ram_CatDoorPos).w,a0
                 moveq   #0,d0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)+
                 moveq   #1,d4
                 bsr.w   Level_SpawnBackgroundLoop
-                lea     (byte_FFD834).w,a0
+                lea     (Ram_ExitDoorGridX).w,a0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)
                 moveq   #2,d4
@@ -100,7 +100,7 @@ Level_SpawnObjects_Group5:  ; was: loc_114EC
                 bsr.s   Level_SpawnBackgroundLoop
 
 Level_SpawnObjects_Spawners:  ; was: loc_114F8
-                lea     (unk_FFC200).w,a0
+                lea     (Ram_SpawnerSlots).w,a0
                 moveq   #5,d0
 
 Level_SpawnObjects_SpawnerLoop:  ; was: loc_114FE
@@ -109,11 +109,11 @@ Level_SpawnObjects_SpawnerLoop:  ; was: loc_114FE
                 move.b  (a6)+,$3F(a0)
                 lea     $40(a0),a0
                 dbf     d0,Level_SpawnObjects_SpawnerLoop
-                lea     (unk_FFC480).w,a0
+                lea     (Ram_ChickSlots).w,a0
                 moveq   #0,d0
                 move.b  (a6)+,d0
                 beq.s   Level_SpawnObjects_SecondChickGroup
-                add.b   d0,(byte_FFD883).w
+                add.b   d0,(Ram_ChicksRemaining).w
                 subq.b  #1,d0
 
 Level_SpawnObjects_ChickLoop:  ; was: loc_11522
@@ -128,7 +128,7 @@ Level_SpawnObjects_SecondChickGroup:  ; was: loc_1153A
                 moveq   #0,d0
                 move.b  (a6)+,d0
                 beq.s   Level_SpawnObjects_Return
-                add.b   d0,(byte_FFD883).w
+                add.b   d0,(Ram_ChicksRemaining).w
                 subq.b  #1,d0
 
 Level_SpawnObjects_SecondChickLoop:  ; was: loc_11546
@@ -167,7 +167,7 @@ Collision_GetTileAtPos_WrapHigh:  ; was: loc_1158A
                 subi.w  #$100,d7
 
 Collision_GetTileAtPos_Lookup:  ; was: loc_11594
-                lea     (unk_FFC800).w,a1
+                lea     (Ram_CollisionMap).w,a1
                 move.l  #$FFFF,d4
                 and.l   d4,d7
                 and.l   d4,d6
@@ -198,7 +198,7 @@ Collision_GetTileAtObject_WrapHigh:  ; was: loc_115D2
 
 Collision_GetTileAtObject_Lookup:  ; was: loc_115DC
                 movem.l d6-d7,-(sp)
-                lea     (unk_FFC800).w,a1
+                lea     (Ram_CollisionMap).w,a1
                 move.l  #$FFFF,d4
                 and.l   d4,d7
                 and.l   d4,d6
@@ -223,7 +223,7 @@ Collision_SetSpecialTiles:
 Collision_SetSpecialTiles_Flag7Loop:  ; was: loc_11610
                 moveq   #0,d7
                 moveq   #0,d6
-                lea     (unk_FFC800).w,a0
+                lea     (Ram_CollisionMap).w,a0
                 move.b  (a6)+,d7
                 move.b  (a6)+,d6
                 adda.l  d7,a0
@@ -241,7 +241,7 @@ Collision_SetSpecialTiles_Flag76:  ; was: loc_1162A
 Collision_SetSpecialTiles_Flag76Loop:  ; was: loc_11632
                 moveq   #0,d7
                 moveq   #0,d6
-                lea     (unk_FFC800).w,a0
+                lea     (Ram_CollisionMap).w,a0
                 move.b  (a6)+,d7
                 move.b  (a6)+,d6
                 adda.l  d7,a0
@@ -260,7 +260,7 @@ Collision_SetSpecialTiles_Flag5:  ; was: loc_11650
 Collision_SetSpecialTiles_Flag5Loop:  ; was: loc_11658
                 moveq   #0,d7
                 moveq   #0,d6
-                lea     (unk_FFC800).w,a0
+                lea     (Ram_CollisionMap).w,a0
                 move.b  (a6)+,d7
                 move.b  (a6)+,d6
                 adda.l  d7,a0

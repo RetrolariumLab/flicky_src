@@ -2,21 +2,21 @@
 ; ROM $01130C-$011421.
 
 Camera_UpdateScroll:
-                move.l  (dword_FFD004).w,d0  ; was: sub_1130C
-                move.l  (dword_FFFFA8).w,d1
+                move.l  (Ram_CameraVelocityX).w,d0  ; was: sub_1130C
+                move.l  (Ram_CameraX).w,d1
                 add.l   d0,d1
-                move.l  d1,(dword_FFFFA8).w
-                move.l  (dword_FFD008).w,d0
-                move.l  (dword_FFFFA4).w,d1
+                move.l  d1,(Ram_CameraX).w
+                move.l  (Ram_CameraVelocityY).w,d0
+                move.l  (Ram_CameraY).w,d1
                 add.l   d0,d1
-                move.l  d1,(dword_FFFFA4).w
+                move.l  d1,(Ram_CameraY).w
                 rts
 
 ; Writes horizontal and vertical scroll to VDP registers
 Gfx_UpdateScrollRegs:
                 lea     (VDP_CTRL).l,a6  ; was: sub_1132A
                 lea     (VDP_DATA).l,a5
-                move.w  (dword_FFFFA8).w,d7
+                move.w  (Ram_CameraX).w,d7
                 neg.w   d7
                 move.w  #$8F20,(a6)
                 move.l  #$78400002,(VDP_CTRL).l
@@ -32,7 +32,7 @@ Gfx_UpdateScrollRegs_VScrollLoop:  ; was: loc_1135E
                 move.w  d7,(a5)
                 dbf     d0,Gfx_UpdateScrollRegs_VScrollLoop
                 move.w  #$8F02,(a6)
-                move.w  (dword_FFFFA4).w,d7
+                move.w  (Ram_CameraY).w,d7
                 move.l  #$40000010,(VDP_CTRL).l
                 move.w  d7,(a5)
                 rts
@@ -61,7 +61,7 @@ Anim_ProcessTimer_DrawFrame:  ; was: loc_113A0
 
 ; Clears 896-byte collision map at FFC800
 Collision_ClearMap:
-                lea     (unk_FFC800).w,a0  ; was: sub_113AC
+                lea     (Ram_CollisionMap).w,a0  ; was: sub_113AC
                 move.w  #$DF,d0
 
 Collision_ClearMap_Loop:  ; was: loc_113B4
@@ -71,16 +71,16 @@ Collision_ClearMap_Loop:  ; was: loc_113B4
 
 ; Clears camera position and velocity variables
 Camera_ClearScroll:
-                clr.l   (dword_FFFFA8).w  ; was: sub_113BC
-                clr.l   (dword_FFFFA4).w
-                clr.l   (dword_FFD004).w
-                clr.l   (dword_FFD008).w
+                clr.l   (Ram_CameraX).w  ; was: sub_113BC
+                clr.l   (Ram_CameraY).w
+                clr.l   (Ram_CameraVelocityX).w
+                clr.l   (Ram_CameraVelocityY).w
                 rts
 
 ; Sets collision value d4 at map position d6/d7
 Collision_SetTile:
                 movem.w d4/d6-d7/a6,-(sp)  ; was: sub_113CE
-                lea     (unk_FFC800).w,a6
+                lea     (Ram_CollisionMap).w,a6
                 lsl.w   #5,d6
                 add.w   d7,d6
                 move.b  d4,(a6,d6.w)
@@ -90,7 +90,7 @@ Collision_SetTile:
 ; Loads collision map from compressed data at (a6)
 Collision_LoadMap:
                 bsr.s   Collision_ClearMap  ; was: sub_113E4
-                lea     (unk_FFC840).w,a0
+                lea     (Ram_CollisionMapRow1).w,a0
 
 Collision_LoadMap_NextRun:  ; was: loc_113EA
                 moveq   #0,d7

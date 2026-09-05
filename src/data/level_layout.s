@@ -143,7 +143,7 @@ Level_SpecialTiles34: dc.w    $702, $1305, $C06, $1A09, $160C, $F0D, $1A1F, $1A0
                 dc.w    $1616, $191A, $1A0C, $1D13, 0
 Level_SpecialTiles35: dc.w    $40F, $C13, $1A18, $131F, $C04, $10C, $813, $D1A, $110C, $802  ; was: word_15B70
                 dc.w    $1203, $100B, $B0F, $120F, $1911, $1011, $1616, $900
-Lizard_JumpArcTable: binclude "data/other/data_dword_15B94.bin"  ; was: dword_15B94
+Lizard_JumpArcTable: binclude "data/other/data_LizardJumpArcTable.bin"  ; was: dword_15B94
 Lizard_JumpArcTable_End:  ; was: dword_15B94_End
 Lizard_JumpSpeedTable: dc.l    $10000  ; was: dword_15D14
                 dc.l    $14000

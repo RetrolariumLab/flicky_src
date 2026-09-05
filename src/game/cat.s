@@ -19,7 +19,7 @@ Obj_Cat_SetPosition:  ; was: loc_1485A
                 move.w  d6,$24(a0)
 
 Obj_Cat_Dispatch:  ; was: loc_14874
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Cat_Return
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
@@ -42,7 +42,7 @@ Cat_StateTable:  ; was: loc_1489A
 
 ; Cat state: patrolling and bouncing
 Cat_StatePatrol:
-                tst.b   (byte_FFD24F).w  ; was: sub_148AA
+                tst.b   (Ram_RoundEndingFlag).w  ; was: sub_148AA
                 bne.s   Cat_StatePatrol_Return
                 bset    #7,$3C(a0)
                 bne.s   Cat_StatePatrol_Bounce
@@ -57,7 +57,7 @@ Cat_StatePatrol_Bounce:  ; was: loc_148C6
                 move.b  #$30,$3B(a0)
 
 Cat_StatePatrol_CheckPlayer:  ; was: loc_148DA
-                lea     (word_FFC440).w,a1
+                lea     (Ram_PlayerObject).w,a1
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   Cat_StatePatrol_Animate
@@ -66,9 +66,9 @@ Cat_StatePatrol_CheckPlayer:  ; was: loc_148DA
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.w  #4,$3C(a0)
-                addq.b  #1,(byte_FFD27A).w
-                move.b  (byte_FFD27A).w,$38(a0)
-                move.l  #$10,(dword_FFD262).w
+                addq.b  #1,(Ram_ChickChainCount).w
+                move.b  (Ram_ChickChainCount).w,$38(a0)
+                move.l  #$10,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
 
 Cat_StatePatrol_Animate:  ; was: loc_1490E
@@ -86,10 +86,10 @@ Cat_StateFollowing:
                 clr.l   $2C(a0)
 
 Cat_StateFollowing_CheckHit:  ; was: loc_14928
-                tst.b   (byte_FFD26D).w
+                tst.b   (Ram_PlayerHitFlag).w
                 beq.s   Cat_StateFollowing_TrackChain
                 clr.b   $38(a0)
-                subq.b  #1,(byte_FFD27A).w
+                subq.b  #1,(Ram_ChickChainCount).w
                 move.w  #8,$3C(a0)
                 bra.w   Cat_StateFollowing_Animate
 
@@ -110,16 +110,16 @@ Cat_StateFollowing_TrackChain:  ; was: loc_14940
                 moveq   #0,d1
                 move.b  (a1),d1
                 move.w  d1,-(sp)
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Cat_StateFollowing_CheckDelivery
                 bsr.w   Chick_CheckEnemyHit
 
 Cat_StateFollowing_CheckDelivery:  ; was: loc_1497C
                 move.w  (sp)+,d1
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 beq.s   Cat_StateFollowing_CheckRoundEnd
-                lea     (word_FFC440).w,a1
-                move.w  dword_FFC470-word_FFC440(a1),d7
+                lea     (Ram_PlayerObject).w,a1
+                move.w  Ram_PlayerWorldX-Ram_PlayerObject(a1),d7
                 move.w  $24(a1),d6
                 cmp.w   $30(a0),d7
                 bne.s   Cat_StateFollowing_CheckRoundEnd
@@ -131,12 +131,12 @@ Cat_StateFollowing_CheckDelivery:  ; was: loc_1497C
                 movea.l (sp)+,a0
                 clr.w   (a0)
                 bsr.w   Chick_AwardPoints
-                subq.b  #1,(byte_FFD883).w
+                subq.b  #1,(Ram_ChicksRemaining).w
                 bne.s   Cat_StateFollowing_DeliverDelay
-                move.b  #1,(byte_FFD281).w
-                clr.w   (word_FFFF92).w
-                move.b  (dword_FFD888).w,(byte_FFD266).w
-                move.b  (dword_FFD888+1).w,(byte_FFD267).w
+                move.b  #1,(Ram_RoundClearFlag).w
+                clr.w   (Ram_FrameCounter).w
+                move.b  (Ram_RoundTime).w,(Ram_RoundMinutes).w
+                move.b  (Ram_RoundTime+1).w,(Ram_RoundSeconds).w
                 bsr.w   Score_CalcTimeBonus
 
 Cat_StateFollowing_DeliverDelay:  ; was: loc_149CE
@@ -144,25 +144,25 @@ Cat_StateFollowing_DeliverDelay:  ; was: loc_149CE
                 moveq   #2,d1
 
 Cat_StateFollowing_DelayLoop:  ; was: loc_149D2
-                jsr     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
                 dbf     d1,Cat_StateFollowing_DelayLoop
                 movea.l (sp)+,a0
                 clr.b   $38(a0)
-                subq.b  #1,(byte_FFD27A).w
+                subq.b  #1,(Ram_ChickChainCount).w
                 bne.s   Cat_StateFollowing_CheckRoundEnd
-                clr.b   (byte_FFD24F).w
+                clr.b   (Ram_RoundEndingFlag).w
                 move.l  a0,-(sp)
                 bsr.w   UI_AnimateBonus
                 movea.l (sp)+,a0
 
 Cat_StateFollowing_CheckRoundEnd:  ; was: loc_149F2
-                tst.b   (byte_FFD281).w
+                tst.b   (Ram_RoundClearFlag).w
                 beq.s   Cat_StateFollowing_Animate
-                move.b  #1,(byte_FFD24F).w
-                move.w  #$C,(word_FFD2A0).w
-                cmpi.b  #1,(byte_FFD88D).w
+                move.b  #1,(Ram_RoundEndingFlag).w
+                move.w  #$C,(Ram_GameState).w
+                cmpi.b  #1,(Ram_ExitReachedFlag).w
                 beq.s   Cat_StateFollowing_Animate
-                move.b  #1,(byte_FFD88F).w
+                move.b  #1,(Ram_SkipBonusFlag).w
 
 Cat_StateFollowing_Animate:  ; was: loc_14A12
                 bclr    #7,2(a0)
@@ -204,7 +204,7 @@ Chick_AwardPoints:
                 subq.b  #1,d0
                 lsl.w   #2,d0
                 move.l  Chick_DeliveryScoreTable(pc,d0.w),d0
-                move.l  d0,(dword_FFD262).w
+                move.l  d0,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
                 moveq   #0,d0
                 move.b  $38(a0),d0
@@ -217,8 +217,8 @@ Chick_AwardPoints:
                 movea.l d2,a2
                 move.w  #$20,(a2)
                 move.b  d1,$3A(a2)
-                lea     (word_FFC440).w,a1
-                move.w  dword_FFC470-word_FFC440(a1),d7
+                lea     (Ram_PlayerObject).w,a1
+                move.w  Ram_PlayerWorldX-Ram_PlayerObject(a1),d7
                 move.w  d7,$30(a2)
                 rts
 
@@ -233,7 +233,7 @@ Chick_DeliveryScoreTable: dc.l    $100  ; was: dword_14AC0
 Chick_PopupSlotTable: dc.w    $C100, $C140, $C180, $C1C0, $C100, $C140, $C180, $C1C0  ; was: word_14AE0
 ; Checks if chick chain hit by enemy
 Chick_CheckEnemyHit:
-                lea     (unk_FFC380).w,a1  ; was: sub_14AF0
+                lea     (Ram_ProjectileSlots).w,a1  ; was: sub_14AF0
                 moveq   #1,d0
 
 Chick_CheckEnemyHit_Loop:  ; was: loc_14AF6
@@ -244,14 +244,14 @@ Chick_CheckEnemyHit_Loop:  ; was: loc_14AF6
                 tst.b   d0
                 beq.s   Chick_CheckEnemyHit_Next
                 move.b  $38(a0),d0
-                lea     (unk_FFC480).w,a2
+                lea     (Ram_ChickSlots).w,a2
                 moveq   #7,d1
 
 Chick_CheckEnemyHit_DropLoop:  ; was: loc_14B12
                 cmp.b   $38(a2),d0
                 bhi.s   Chick_CheckEnemyHit_DropNext
                 clr.b   $38(a2)
-                subq.b  #1,(byte_FFD27A).w
+                subq.b  #1,(Ram_ChickChainCount).w
                 move.w  #8,$3C(a2)
 
 Chick_CheckEnemyHit_DropNext:  ; was: loc_14B26
@@ -469,8 +469,8 @@ Cat_WalkAltSpeedTable: dc.l    $C000  ; was: dword_14D32
                 dc.l    $13000
 ; Checks if player picked up cat/chick
 Cat_CheckPlayerPickup:
-                lea     (word_FFC440).w,a1  ; was: sub_14D52
-                move.w  word_FFC47C-word_FFC440(a1),d0
+                lea     (Ram_PlayerObject).w,a1  ; was: sub_14D52
+                move.w  Ram_PlayerState-Ram_PlayerObject(a1),d0
                 andi.w  #$7C,d0
                 bne.s   Cat_CheckPlayerPickup_Return
                 bsr.w   Collision_CheckObjectPair
@@ -481,8 +481,8 @@ Cat_CheckPlayerPickup:
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 move.w  #4,$3C(a0)
-                addq.b  #1,(byte_FFD27A).w
-                move.b  (byte_FFD27A).w,$38(a0)
+                addq.b  #1,(Ram_ChickChainCount).w
+                move.b  (Ram_ChickChainCount).w,$38(a0)
 
 Cat_CheckPlayerPickup_Return:  ; was: locret_14D84
                 rts
@@ -516,16 +516,16 @@ Cat_StateStunWalk_CheckPickup:  ; was: loc_14DD0
 
 ; Calculates time bonus from remaining time
 Score_CalcTimeBonus:
-                clr.l   (dword_FFD268).w  ; was: sub_14DD4
-                tst.b   (byte_FFD266).w
+                clr.l   (Ram_TimeBonus).w  ; was: sub_14DD4
+                tst.b   (Ram_RoundMinutes).w
                 bne.s   Score_CalcTimeBonus_Return
                 moveq   #0,d0
-                move.b  (byte_FFD267).w,d0
+                move.b  (Ram_RoundSeconds).w,d0
                 lsr.w   #4,d0
                 lsl.w   #2,d0
                 move.l  Score_TimeBonusTable(pc,d0.w),d0
-                move.l  d0,(dword_FFD268).w
-                move.l  d0,(dword_FFD262).w
+                move.l  d0,(Ram_TimeBonus).w
+                move.l  d0,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
 
 Score_CalcTimeBonus_Return:  ; was: locret_14DF8

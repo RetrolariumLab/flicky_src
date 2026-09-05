@@ -19,29 +19,29 @@ LoadFuncTable_Loop:  ; was: loc_862
 
 ; Initializes RAM areas, VDP registers, checks console version
 Sys_InitGameState:
-                lea     (unk_FFFF70).w,a6  ; was: sub_872
+                lea     (Ram_VDPRegisters).w,a6  ; was: sub_872
                 moveq   #0,d7
                 move.w  #$13,d6
 
 Sys_InitGameState_ClearVarsLoop:  ; was: loc_87C
                 move.l  d7,(a6)+
                 dbf     d6,Sys_InitGameState_ClearVarsLoop
-                lea     (word_FFF7E0).w,a6
+                lea     (Ram_Palette).w,a6
                 moveq   #0,d7
                 move.w  #$3F,d6
 
 Sys_InitGameState_ClearPaletteLoop:  ; was: loc_88C
                 move.l  d7,(a6)+
                 dbf     d6,Sys_InitGameState_ClearPaletteLoop
-                move.w  #4,(word_FFFF98).w
-                addq.w  #4,(word_FFFFC0).w
-                clr.l   (dword_FFF550).w
+                move.w  #4,(Ram_VBlankMode).w
+                addq.w  #4,(Ram_NextGameMode).w
+                clr.l   (Ram_SpriteTable).w
                 movem.w Sys_InitialStateValues(pc),d0-d5
-                movem.w d0-d5,(word_FFFFD8).w
+                movem.w d0-d5,(Ram_VDPPlaneAddrs).w
                 bsr.w   SetInitialVDPRegs
                 btst    #6,(IO_PCBVER+1).l
                 beq.s   Sys_InitGameState_WriteRegs
-                move.b  #$3C,(byte_FFFF71).w
+                move.b  #$3C,(Ram_VDPMode2).w
 
 Sys_InitGameState_WriteRegs:  ; was: loc_8C0
                 bsr.w   Gfx_WriteVDPRegs
@@ -216,8 +216,8 @@ DMA_SetupRegs:
 DMA_Commit:
                 move.w  d0,(a6)  ; was: sub_A66
                 swap    d0
-                move.w  d0,(word_FFFFAE).w
-                move.w  (word_FFFFAE).w,(a6)
+                move.w  d0,(Ram_DMACommandLow).w
+                move.w  (Ram_DMACommandLow).w,(a6)
                 rts
 
 ; Fills VRAM area at address d2 with zeros, length d0

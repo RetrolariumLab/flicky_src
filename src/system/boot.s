@@ -135,6 +135,7 @@ CheckSumOk:
                 bsr.w   Gfx_InitVDPRegister
                 cmpi.b  #0,d0
                 beq.s   Boot_SetupControllerPorts
+                ; !(UNUSED) CODE-001 the fall-through is three NOPs
                 nop
                 nop
                 nop
@@ -153,11 +154,11 @@ Boot_ClearWorkRAM:  ; was: loc_388
 Boot_ClearWorkRAM_Loop:  ; was: loc_394
                 move.l  d7,(a6)+
                 dbf     d6,Boot_ClearWorkRAM_Loop
-                move.l  #'init',(dword_FFFFFC).w
-                move.l  #$100000,(dword_FFCC00).w
+                move.l  #'init',(Ram_InitFlag).w
+                move.l  #$100000,(Ram_HighScore).w
 
 Boot_CheckInitFlag:  ; was: loc_3AA
-                cmpi.l  #'init',(dword_FFFFFC).w
+                cmpi.l  #'init',(Ram_InitFlag).w
                 bne.s   Boot_ClearWorkRAM
                 bsr.w   LoadFuncTable
                 bsr.w   SetInitialVDPRegs

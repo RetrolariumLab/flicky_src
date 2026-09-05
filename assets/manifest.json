@@ -61,40 +61,40 @@
       "sha1": "60682dbf065ad0b45dd82bd1bdd6aebdf8189b86"
     },
     {
-      "name": "word_135E8",
-      "path": "other/data_word_135E8.bin",
+      "name": "EndingCongratsArt",
+      "path": "other/data_EndingCongratsArt.bin",
       "region": "other",
       "address": "0x135E8",
       "size": 954,
       "sha1": "c6afcbf06c856122f88a5ab2be26aa2c30f35103"
     },
     {
-      "name": "word_13A82",
-      "path": "other/data_word_13A82.bin",
+      "name": "DemoInputStream0",
+      "path": "other/data_DemoInputStream0.bin",
       "region": "other",
       "address": "0x13A82",
       "size": 256,
       "sha1": "5c2ef0cc5b55999cdc2e0d3e4c95aa2ed87b2701"
     },
     {
-      "name": "word_13C52",
-      "path": "other/data_word_13C52.bin",
+      "name": "DemoInputStream2",
+      "path": "other/data_DemoInputStream2.bin",
       "region": "other",
       "address": "0x13C52",
       "size": 286,
       "sha1": "db6e2ad923515d86c191e4126bacb1247144a44c"
     },
     {
-      "name": "word_13D70",
-      "path": "other/data_word_13D70.bin",
+      "name": "DemoInputStream3",
+      "path": "other/data_DemoInputStream3.bin",
       "region": "other",
       "address": "0x13D70",
       "size": 256,
       "sha1": "8c3d3e99ec4dac8893d4e5fbeb1bf47a4b835fcf"
     },
     {
-      "name": "dword_15B94",
-      "path": "other/data_dword_15B94.bin",
+      "name": "LizardJumpArcTable",
+      "path": "other/data_LizardJumpArcTable.bin",
       "region": "other",
       "address": "0x15B94",
       "size": 384,

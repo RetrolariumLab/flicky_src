@@ -4,17 +4,17 @@
 Bonus_Init:
                 bsr.w   Sys_InitTitleScreen  ; was: sub_12F30
                 move.w  #$8F02,(VDP_CTRL).l
-                lea     (Gfx_ScreenInitData).l,a5
-                jsr     unk_FFFBBA
-                move.w  #$2C,(word_FFF82E).w
+                lea     (Gfx_SharedPalette).l,a5
+                jsr     j_Gfx_LoadPaletteCompact
+                move.w  #$2C,(Ram_BonusPaletteEntry).w
                 bsr.w   Collision_ClearMap
                 bsr.w   Level_LoadTileset
                 bsr.w   Level_LoadPalette
-                move.b  #1,(byte_FFD24E).w
-                move.b  #$14,(byte_FFD883).w
+                move.b  #1,(Ram_BonusRoundFlag).w
+                move.b  #$14,(Ram_ChicksRemaining).w
                 bsr.w   Level_DrawUpperGround
                 bsr.w   Level_DrawLowerGround
-                lea     (unk_FFCAA0).w,a0
+                lea     (Ram_CollisionMapBonusRow).w,a0
                 moveq   #$1F,d0
 
 Bonus_Init_FillCollisionLoop:  ; was: loc_12F72
@@ -38,9 +38,9 @@ Bonus_Init_FillGroundLoop:  ; was: loc_12F8C
                 bsr.w   UI_DrawRoundNumber
                 bsr.w   UI_DrawLives
                 move.b  #$81,d0
-                jsr     unk_FFFB66
-                jsr     unk_FFFB6C
-                jmp     unk_FFFB6C
+                jsr     j_Sound_QueueToBuffer
+                jsr     j_Sound_QueueSFX
+                jmp     j_Sound_QueueSFX
 
 Bonus_BonusLabel: dc.b    $C0, $D4  ; was: byte_12FCC
 aBonus:         dc.b    "BONUS",0
@@ -48,17 +48,17 @@ Bonus_RoundLabel: dc.b    $C0, $E0  ; was: byte_12FD4
 aRound_0:       dc.b    "ROUND",0
 ; Bonus round main loop with state dispatcher
 Bonus_MainLoop:
-                move.w  (word_FFD2A6).w,d0  ; was: sub_12FDC
+                move.w  (Ram_BonusState).w,d0  ; was: sub_12FDC
                 andi.w  #$7FFC,d0
                 jsr     Bonus_StateTable(pc,d0.w)
-                btst    #7,(word_FFFF8E+1).w
+                btst    #7,(Ram_Joypad+1).w
                 beq.s   Bonus_MainLoop_PostFrame
                 bsr.w   Game_Pause
 
 Bonus_MainLoop_PostFrame:  ; was: loc_12FF4
                 bsr.w   Score_CheckExtraLife
                 bsr.w   Sound_ChannelCooldown
-                jmp     unk_FFFB6C
+                jmp     j_Sound_QueueSFX
 
 Bonus_StateTable:  ; was: loc_13000
                 bra.w   Bonus_StatePlay
@@ -71,19 +71,19 @@ Bonus_StatePlay:
 
 ; Bonus round complete state
 Bonus_StateComplete:
-                bset    #7,(word_FFD2A6).w  ; was: sub_1300E
+                bset    #7,(Ram_BonusState).w  ; was: sub_1300E
                 bne.s   Bonus_StateComplete_Update
 
 Bonus_StateComplete_WaitForSound:  ; was: loc_13016
-                tst.b   (byte_FFD2A4).w
+                tst.b   (Ram_SoundBusyFlag).w
                 beq.s   Bonus_StateComplete_ShowResults
                 bsr.w   Sound_ChannelCooldown
-                jsr     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
                 bra.s   Bonus_StateComplete_WaitForSound
 
 Bonus_StateComplete_ShowResults:  ; was: loc_13026
                 move.b  #$82,d0
-                jsr     unk_FFFB66
+                jsr     j_Sound_QueueToBuffer
                 bsr.w   Bonus_DrawResultLabels
 
 Bonus_StateComplete_Update:  ; was: loc_13032
@@ -93,21 +93,21 @@ Bonus_StateComplete_Update:  ; was: loc_13032
 
 ; Sets up bonus round objects: player, cats, chicks
 Bonus_SetupObjects:
-                lea     (unk_FFC580).w,a0  ; was: sub_1303C
+                lea     (Ram_BonusPlayerObject).w,a0  ; was: sub_1303C
                 move.w  #$C,(a0)
                 move.w  #$D11,$3E(a0)
-                move.w  #$2C,(word_FFC040).w
-                lea     (unk_FFC640).w,a0
+                move.w  #$2C,(Ram_Object01).w
+                lea     (Ram_BonusCatOuterSlots).w,a0
                 move.w  #$30,(a0)
                 lea     $40(a0),a0
                 move.w  #$30,(a0)
                 move.b  #1,$16(a0)
-                lea     (unk_FFC5C0).w,a0
+                lea     (Ram_BonusCatInnerSlots).w,a0
                 move.w  #$34,(a0)
                 lea     $40(a0),a0
                 move.w  #$34,(a0)
                 move.b  #1,$16(a0)
-                lea     (unk_FFC080).w,a0
+                lea     (Ram_BonusChickSlots).w,a0
                 moveq   #0,d1
                 moveq   #$13,d0
 
@@ -123,24 +123,24 @@ Bonus_SetupObjects_NextChick:  ; was: loc_13098
                 addq.b  #1,d1
                 dbf     d0,Bonus_SetupObjects_ChickLoop
                 moveq   #0,d0
-                move.b  (word_FFD82C+1).w,d0
+                move.b  (Ram_RoundNumber+1).w,d0
                 moveq   #$30,d7
                 bsr.w   Math_ModuloLower
                 subq.b  #3,d0
                 lsr.w   #2,d0
                 lsl.w   #2,d0
                 lea     Bonus_ChickDelayPointers(pc),a0
-                move.l  (a0,d0.w),(dword_FFD282).w
+                move.l  (a0,d0.w),(Ram_BonusChickDelayPtr).w
                 lea     Bonus_ChickVelocityPointers(pc),a0
-                move.l  (a0,d0.w),(dword_FFD286).w
+                move.l  (a0,d0.w),(Ram_BonusChickVelocityPtr).w
                 lea     Bonus_ChickTrajIndexPointers(pc),a0
-                move.l  (a0,d0.w),(dword_FFD28A).w
+                move.l  (a0,d0.w),(Ram_BonusChickTrajPtr).w
                 rts
 
 ; Bonus round score display with blink and round advance
 Bonus_ScoreUpdate:
-                move.b  #1,(byte_FFD27B).w  ; was: sub_130D4
-                move.w  (word_FFFF92).w,d0
+                move.b  #1,(Ram_CutsceneFlag).w  ; was: sub_130D4
+                move.w  (Ram_FrameCounter).w,d0
                 cmpi.w  #$FA,d0
                 bhi.s   Bonus_ScoreUpdate_AdvanceRound
                 bsr.w   Text_CycleBlink
@@ -148,17 +148,17 @@ Bonus_ScoreUpdate:
                 rts
 
 Bonus_ScoreUpdate_AdvanceRound:  ; was: loc_130EE
-                addq.b  #1,(word_FFD82C+1).w
+                addq.b  #1,(Ram_RoundNumber+1).w
                 bne.s   Bonus_ScoreUpdate_IncrementBCD
-                addq.b  #1,(word_FFD82C+1).w
+                addq.b  #1,(Ram_RoundNumber+1).w
 
 Bonus_ScoreUpdate_IncrementBCD:  ; was: loc_130F8
-                move.b  (word_FFD82C).w,d0
+                move.b  (Ram_RoundNumber).w,d0
                 moveq   #1,d1
                 addi.b  #0,d0
                 abcd    d1,d0
-                move.b  d0,(word_FFD82C).w
-                move.w  #$18,(word_FFFFC0).w
+                move.b  d0,(Ram_RoundNumber).w
+                move.w  #$18,(Ram_NextGameMode).w
                 rts
 
 ; Game complete/congratulations screen initialization

@@ -4,8 +4,8 @@
 Obj_ExitDoor:
                 bset    #7,(a0)  ; was: sub_144DC
                 bne.s   Obj_ExitDoor_Dispatch
-                move.b  (byte_FFD834).w,d7
-                move.b  (byte_FFD835).w,d6
+                move.b  (Ram_ExitDoorGridX).w,d7
+                move.b  (Ram_ExitDoorGridY).w,d6
                 bsr.w   Math_GridToScreen
                 addq.w  #8,d7
                 addi.w  #$18,d6
@@ -40,7 +40,7 @@ ExitDoor_AnimOpen: dc.b    2, 8  ; was: byte_14528
 Obj_Chick:
                 bset    #7,(a0)  ; was: sub_1452E
                 bne.s   Obj_Chick_Dispatch
-                move.l  (dword_FFD828).w,d0
+                move.l  (Ram_ChickMappingPtr).w,d0
                 move.l  d0,$C(a0)
                 move.b  #$60,$13(a0)
                 moveq   #0,d7
@@ -54,11 +54,11 @@ Obj_Chick:
                 move.w  d6,$24(a0)
 
 Obj_Chick_Dispatch:  ; was: loc_1455E
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Chick_Return
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Obj_Chick_Return
-                tst.b   (byte_FFD26D).w
+                tst.b   (Ram_PlayerHitFlag).w
                 bne.s   Obj_Chick_Return
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
@@ -75,8 +75,8 @@ Chick_StateTable:  ; was: loc_1457C
 ; Chick state: idle waiting to be picked up
 Chick_StateIdle:
                 move.b  #1,5(a0)  ; was: sub_14588
-                lea     (word_FFC440).w,a1
-                tst.l   dword_FFC46C-word_FFC440(a1)
+                lea     (Ram_PlayerObject).w,a1
+                tst.l   Ram_PlayerVelocityY-Ram_PlayerObject(a1)
                 bmi.s   Chick_StateIdle_Move
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
@@ -85,7 +85,7 @@ Chick_StateIdle:
                 bne.s   Chick_StateIdle_Move
                 move.w  #4,$3C(a0)
                 move.b  #1,$3B(a1)
-                move.l  a0,(dword_FFD250).w
+                move.l  a0,(Ram_HeldChickObject).w
 
 Chick_StateIdle_Move:  ; was: loc_145B6
                 bsr.w   Object_UpdatePosition
@@ -102,8 +102,8 @@ Chick_StateFollowing:
 
 Chick_StateFollowing_Track:  ; was: loc_145D0
                 clr.b   5(a0)
-                lea     (word_FFC440).w,a1
-                move.l  dword_FFC470-word_FFC440(a1),d7
+                lea     (Ram_PlayerObject).w,a1
+                move.l  Ram_PlayerWorldX-Ram_PlayerObject(a1),d7
                 move.l  $24(a1),d6
                 tst.b   $38(a1)
                 beq.s   Chick_StateFollowing_OnGround
@@ -137,7 +137,7 @@ Chick_StateThrown:
                 move.l  #Chick_ThrownAnimPointers,8(a0)
                 clr.b   $3B(a0)
                 moveq   #0,d0
-                move.b  (word_FFD82C+1).w,d0
+                move.b  (Ram_RoundNumber+1).w,d0
 
 Chick_StateThrown_ReduceRound:  ; was: loc_1463C
                 cmpi.b  #$F,d0
@@ -164,8 +164,8 @@ Chick_StateThrown_CheckRange:  ; was: loc_1465C
 Chick_CheckOffscreen:
                 move.w  $20(a0),d7  ; was: sub_14662
                 move.w  d7,d6
-                lea     (word_FFC440).w,a1
-                move.w  word_FFC460-word_FFC440(a1),d5
+                lea     (Ram_PlayerObject).w,a1
+                move.w  Ram_PlayerScreenX-Ram_PlayerObject(a1),d5
                 move.w  d5,d4
                 sub.w   d7,d5
                 cmpi.w  #$7C,d5

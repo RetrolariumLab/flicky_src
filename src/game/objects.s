@@ -19,7 +19,7 @@ Object_UpdatePosition_ClampHigh:  ; was: loc_1107C
 Object_UpdatePosition_StoreWorldX:  ; was: loc_1108A
                 move.l  d2,$30(a0)
                 swap    d2
-                sub.w   (dword_FFFFA8).w,d2
+                sub.w   (Ram_CameraX).w,d2
 
 Object_UpdatePosition_WrapLow:  ; was: loc_11094
                 cmpi.w  #$80,d2
@@ -44,7 +44,7 @@ Object_UpdatePosition_Return:  ; was: locret_110B8
 ; Calculates screen position from world pos minus camera
 Object_CalcScreenPos:
                 move.l  $30(a0),d2  ; was: sub_110BA
-                sub.l   (dword_FFFFA8).w,d2
+                sub.l   (Ram_CameraX).w,d2
 
 Object_CalcScreenPos_WrapLow:  ; was: loc_110C2
                 cmpi.l  #$800000,d2
@@ -79,7 +79,7 @@ Object_ClearSlot_Loop:  ; was: loc_110F6
 Object_ClearAllSlots:
                 movem.l d5/a0,-(sp)  ; was: sub_110FE
                 move.w  #$1F,d5
-                lea     (word_FFC000).w,a0
+                lea     (Ram_ObjectSlots).w,a0
 
 Object_ClearAllSlots_Loop:  ; was: loc_1110A
                 bsr.s   Object_ClearSlot
@@ -180,32 +180,32 @@ Sprite_RenderObject_Return:  ; was: locret_111D2
 
 ; Updates main object slot and builds sprite list
 Object_UpdateMain:
-                lea     (word_FFC000).w,a0  ; was: sub_111D4
+                lea     (Ram_ObjectSlots).w,a0  ; was: sub_111D4
                 bsr.w   Object_CallHandler
                 bsr.w   Sprite_BuildTable
                 rts
 
 ; Updates all active objects and builds sprite table
 Object_UpdateAll:
-                tst.b   (byte_FFD24E).w  ; was: sub_111E2
+                tst.b   (Ram_BonusRoundFlag).w  ; was: sub_111E2
                 bne.s   Object_UpdateAll_BonusMode
-                lea     (word_FFC440).w,a0
+                lea     (Ram_PlayerObject).w,a0
                 bsr.w   Object_CallHandler
-                lea     (unk_FFC200).w,a0
+                lea     (Ram_SpawnerSlots).w,a0
                 moveq   #8,d0
 
 Object_UpdateAll_EnemyLoop:  ; was: loc_111F6
                 bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,Object_UpdateAll_EnemyLoop
-                lea     (unk_FFC480).w,a0
+                lea     (Ram_ChickSlots).w,a0
                 moveq   #$D,d0
 
 Object_UpdateAll_ChickLoop:  ; was: loc_11208
                 bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,Object_UpdateAll_ChickLoop
-                lea     (word_FFC000).w,a0
+                lea     (Ram_ObjectSlots).w,a0
                 moveq   #7,d0
 
 Object_UpdateAll_MainLoop:  ; was: loc_1121A
@@ -215,16 +215,16 @@ Object_UpdateAll_MainLoop:  ; was: loc_1121A
                 bra.s   Sprite_BuildTable
 
 Object_UpdateAll_BonusMode:  ; was: loc_11228
-                lea     (unk_FFC580).w,a0
+                lea     (Ram_BonusPlayerObject).w,a0
                 bsr.w   Object_CallHandler
-                lea     (word_FFC040).w,a0
+                lea     (Ram_Object01).w,a0
                 moveq   #$14,d0
 
 Object_UpdateAll_BonusLoop:  ; was: loc_11236
                 bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,Object_UpdateAll_BonusLoop
-                lea     (unk_FFC5C0).w,a0
+                lea     (Ram_BonusCatInnerSlots).w,a0
                 moveq   #3,d0
 
 Object_UpdateAll_BonusExtraLoop:  ; was: loc_11248
@@ -233,26 +233,26 @@ Object_UpdateAll_BonusExtraLoop:  ; was: loc_11248
                 dbf     d0,Object_UpdateAll_BonusExtraLoop
 
 Sprite_BuildTable:  ; was: loc_11254
-                move.w  #$F550,(word_FFD000).w
-                move.w  #1,(word_FFD002).w
-                lea     (word_FFC000).w,a0
+                move.w  #$F550,(Ram_SpriteTableCursor).w
+                move.w  #1,(Ram_SpriteLinkCounter).w
+                lea     (Ram_ObjectSlots).w,a0
                 moveq   #$1F,d7
 
 Sprite_BuildTable_SlotLoop:  ; was: loc_11266
                 move.w  d7,-(sp)
                 tst.w   (a0)
                 beq.s   Sprite_BuildTable_NextSlot
-                movea.w (word_FFD000).w,a2
-                move.w  (word_FFD002).w,d6
+                movea.w (Ram_SpriteTableCursor).w,a2
+                move.w  (Ram_SpriteLinkCounter).w,d6
                 bsr.w   Sprite_RenderObject
-                move.w  d6,(word_FFD002).w
-                move.w  a2,(word_FFD000).w
+                move.w  d6,(Ram_SpriteLinkCounter).w
+                move.w  a2,(Ram_SpriteTableCursor).w
 
 Sprite_BuildTable_NextSlot:  ; was: loc_11280
                 lea     $40(a0),a0
                 move.w  (sp)+,d7
                 dbf     d7,Sprite_BuildTable_SlotLoop
-                movea.w (word_FFD000).w,a2
+                movea.w (Ram_SpriteTableCursor).w,a2
                 cmpa.w  #$F550,a2
                 beq.s   Sprite_BuildTable_Empty
                 clr.b   -5(a2)

@@ -12,10 +12,10 @@ Math_GridToScreen:
 
 ; Adds BCD score and updates high score if exceeded
 Score_AddAndCheck:
-                tst.b   (byte_FFD2A5).w  ; was: sub_1168A
+                tst.b   (Ram_DemoModeFlag).w  ; was: sub_1168A
                 bne.s   Score_AddAndCheck_Return
-                lea     (byte_FFD266).w,a2
-                lea     (byte_FFD882).w,a1
+                lea     (Ram_RoundMinutes).w,a2
+                lea     (Ram_Lives).w,a1
                 moveq   #3,d0
                 move    #4,ccr
 
@@ -23,11 +23,11 @@ Score_AddAndCheck_AddLoop:  ; was: loc_1169E
                 abcd    -(a2),-(a1)
                 dbf     d0,Score_AddAndCheck_AddLoop
                 bsr.w   UI_DrawScore
-                move.l  (dword_FFD87E).w,d0
-                move.l  (dword_FFCC00).w,d1
+                move.l  (Ram_Score).w,d0
+                move.l  (Ram_HighScore).w,d1
                 cmp.l   d0,d1
                 bge.s   Score_AddAndCheck_Return
-                move.l  d0,(dword_FFCC00).w
+                move.l  d0,(Ram_HighScore).w
                 bsr.w   UI_DrawHighScore
 
 Score_AddAndCheck_Return:  ; was: locret_116BC
@@ -36,50 +36,50 @@ Score_AddAndCheck_Return:  ; was: locret_116BC
 ; Increments game time BCD counter with overflow
 Timer_IncrementTime:
                 moveq   #1,d1  ; was: sub_116BE
-                move.b  (dword_FFD888+2).w,d0
+                move.b  (Ram_RoundTime+2).w,d0
                 addi.b  #0,d0
                 abcd    d1,d0
-                move.b  d0,(dword_FFD888+2).w
+                move.b  d0,(Ram_RoundTime+2).w
                 cmpi.b  #$60,d0
                 bcs.s   Timer_IncrementTime_Return
-                clr.b   (dword_FFD888+2).w
-                move.b  (dword_FFD888+1).w,d0
+                clr.b   (Ram_RoundTime+2).w
+                move.b  (Ram_RoundTime+1).w,d0
                 addi.b  #0,d0
                 abcd    d1,d0
-                move.b  d0,(dword_FFD888+1).w
+                move.b  d0,(Ram_RoundTime+1).w
                 cmpi.b  #$60,d0
                 bcs.s   Timer_IncrementTime_Return
-                clr.b   (dword_FFD888+1).w
-                move.b  (dword_FFD888).w,d0
+                clr.b   (Ram_RoundTime+1).w
+                move.b  (Ram_RoundTime).w,d0
                 addi.b  #0,d0
                 abcd    d1,d0
-                move.b  d0,(dword_FFD888).w
+                move.b  d0,(Ram_RoundTime).w
 
 Timer_IncrementTime_Return:  ; was: locret_116FE
                 rts
 
 ; Copies cat spawn positions to object slots
 Level_SetCatPositions:
-                lea     (byte_FFD82E).w,a0  ; was: sub_11700
-                move.w  (a0)+,(word_FFC47E).w
-                move.w  (a0),(word_FFC3BE).w
-                move.w  (a0)+,(word_FFC6BE).w
-                move.w  (a0),(word_FFC3FE).w
-                move.w  (a0),(word_FFC6FE).w
-                move.w  (a0),(word_FFC43E).w
-                move.w  (a0),(word_FFC73E).w
+                lea     (Ram_PlayerStartX).w,a0  ; was: sub_11700
+                move.w  (a0)+,(Ram_PlayerGridPos).w
+                move.w  (a0),(Ram_CatSlot0_GridPos).w
+                move.w  (a0)+,(Ram_CatSlot3_GridPos).w
+                move.w  (a0),(Ram_CatSlot1_GridPos).w
+                move.w  (a0),(Ram_CatSlot4_GridPos).w
+                move.w  (a0),(Ram_CatSlot2_GridPos).w
+                move.w  (a0),(Ram_CatSlot5_GridPos).w
                 rts
 
 ; Copies enemy data FFC480 to backup area FFDE00
 Enemy_BackupToBuffer:
-                lea     (unk_FFC480).w,a3  ; was: sub_11722
-                lea     (unk_FFDE00).w,a4
+                lea     (Ram_ChickSlots).w,a3  ; was: sub_11722
+                lea     (Ram_EnemyBackup).w,a4
                 bra.s   Enemy_CopyBuffer
 
 ; Restores enemy data from FFDE00 to FFC480
 Enemy_RestoreFromBuffer:
-                lea     (unk_FFDE00).w,a3  ; was: sub_1172C
-                lea     (unk_FFC480).w,a4
+                lea     (Ram_EnemyBackup).w,a3  ; was: sub_1172C
+                lea     (Ram_ChickSlots).w,a4
 
 Enemy_CopyBuffer:  ; was: loc_11734
                 move.w  #$7F,d0
@@ -92,20 +92,20 @@ Enemy_CopyBuffer_Loop:  ; was: loc_11738
 ; Cycles tile base offset for text blink effect
 Text_CycleBlink:
                 moveq   #0,d0  ; was: sub_11740
-                move.b  (byte_FFD280).w,d0
+                move.b  (Ram_BlinkTimer).w,d0
                 addq.b  #1,d0
                 andi.b  #$F,d0
-                move.b  d0,(byte_FFD280).w
+                move.b  d0,(Ram_BlinkTimer).w
                 lsr.w   #2,d0
                 lsl.w   #1,d0
-                move.w  Text_BlinkTileBases(pc,d0.w),(word_FFD884).w
+                move.w  Text_BlinkTileBases(pc,d0.w),(Ram_TextTileBase).w
                 rts
 
 Text_BlinkTileBases: dc.w    $8100, $8000, $FFFF, $8000  ; was: word_1175C
-; Calculates (word_FFD82C+1) mod d7 with bcs
+; Calculates (Ram_RoundNumber+1) mod d7 with bcs
 Math_ModuloLower:
                 moveq   #0,d0  ; was: sub_11764
-                move.b  (word_FFD82C+1).w,d0
+                move.b  (Ram_RoundNumber+1).w,d0
 
 ; Alternate entry: reduce d0 modulo d7 without reloading d0 from the round
 ; counter. Game_StateBonusCheck and Game_CheckSkipBonus call in here.
@@ -118,10 +118,10 @@ Math_ModuloFromD0:  ; was: loc_1176A
 Math_ModuloLower_Return:  ; was: locret_11772
                 rts
 
-; Calculates (word_FFD82C+1) mod d7 with bls
+; Calculates (Ram_RoundNumber+1) mod d7 with bls
 Math_ModuloUpper:
                 moveq   #0,d0  ; was: sub_11774
-                move.b  (word_FFD82C+1).w,d0
+                move.b  (Ram_RoundNumber+1).w,d0
 
 Math_ModuloUpper_Loop:  ; was: loc_1177A
                 cmp.b   d7,d0
@@ -134,17 +134,17 @@ Math_ModuloUpper_Return:  ; was: locret_11782
 
 ; Copies palette to buffer and fades in
 Gfx_FadeInPalette:
-                lea     (word_FFF7E0).w,a0  ; was: sub_11784
-                lea     (unk_FFF860).w,a1
+                lea     (Ram_Palette).w,a0  ; was: sub_11784
+                lea     (Ram_PaletteBackup).w,a1
                 moveq   #$1F,d0
 
 Gfx_FadeInPalette_CopyLoop:  ; was: loc_1178E
                 move.l  (a0)+,(a1)+
                 dbf     d0,Gfx_FadeInPalette_CopyLoop
-                move.w  #$FFC0,(word_FFFFAC).w
+                move.w  #$FFC0,(Ram_FadeLevel).w
 
 Gfx_FadeInPalette_StepLoop:  ; was: loc_1179A
-                move.w  (word_FFFFAC).w,d2
+                move.w  (Ram_FadeLevel).w,d2
                 addq.w  #2,d2
                 beq.s   Gfx_FadeInPalette_Return
                 cmpi.w  #$40,d2
@@ -152,11 +152,11 @@ Gfx_FadeInPalette_StepLoop:  ; was: loc_1179A
                 subq.w  #2,d2
 
 Gfx_FadeInPalette_ApplyStep:  ; was: loc_117AA
-                move.w  d2,(word_FFFFAC).w
+                move.w  d2,(Ram_FadeLevel).w
                 moveq   #$FFFFFFC0,d3
-                jsr     unk_FFFBA8
-                jsr     unk_FFFB0C
-                jsr     unk_FFFB6C
+                jsr     j_Gfx_FadePalette
+                jsr     j_Gfx_ApplyPaletteMask
+                jsr     j_Sound_QueueSFX
                 bra.s   Gfx_FadeInPalette_StepLoop
 
 Gfx_FadeInPalette_Return:  ; was: locret_117BE

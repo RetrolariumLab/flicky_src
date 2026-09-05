@@ -18,11 +18,11 @@ Obj_Lizard:
                 clr.l   $2C(a0)
 
 Obj_Lizard_Dispatch:  ; was: loc_14EFA
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Lizard_UpdateFacing
-                tst.b   (byte_FFD24F).w
+                tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Obj_Lizard_UpdateFacing
-                tst.b   (byte_FFD26D).w
+                tst.b   (Ram_PlayerHitFlag).w
                 bne.s   Obj_Lizard_UpdateFacing
                 moveq   #$7C,d0
                 and.w   $3C(a0),d0
@@ -71,7 +71,7 @@ Lizard_StateWait_Update:  ; was: loc_14F80
                 bclr    #2,2(a0)
                 beq.s   Lizard_StateWait_Return
                 move.w  #8,$3C(a0)
-                lea     (word_FFC440).w,a1
+                lea     (Ram_PlayerObject).w,a1
                 move.w  $20(a0),d7
                 move.w  $20(a1),d6
                 clr.b   $39(a0)
@@ -80,9 +80,9 @@ Lizard_StateWait_Update:  ; was: loc_14F80
                 move.b  #1,$39(a0)
 
 Lizard_StateWait_CheckEarlyRound:  ; was: loc_14FB0
-                cmpi.w  #$30,(dword_FFD888).w
+                cmpi.w  #$30,(Ram_RoundTime).w
                 bhi.s   Lizard_StateWait_Return
-                cmpi.b  #$31,(word_FFD82C+1).w
+                cmpi.b  #$31,(Ram_RoundNumber+1).w
                 bhi.s   Lizard_StateWait_Return
                 clr.b   $39(a0)
                 tst.b   $16(a0)
@@ -109,8 +109,8 @@ Lizard_StateLocate_Compare:  ; was: loc_15004
                 bsr.w   Object_UpdatePosition
                 move.w  $20(a0),d7
                 move.w  $24(a0),d6
-                lea     (word_FFC440).w,a1
-                move.w  word_FFC460-word_FFC440(a1),d5
+                lea     (Ram_PlayerObject).w,a1
+                move.w  Ram_PlayerScreenX-Ram_PlayerObject(a1),d5
                 move.w  $24(a1),d4
                 cmp.w   d6,d4
                 beq.s   Lizard_StateLocate_SameRow
@@ -147,7 +147,7 @@ Lizard_StateChase:
                 bset    #7,$3C(a0)  ; was: sub_15068
                 bne.s   Lizard_StateChase_Move
                 move.b  #7,5(a0)
-                move.l  (dword_FFD296).w,$34(a0)
+                move.l  (Ram_LizardSpeed).w,$34(a0)
                 tst.b   $16(a0)
                 beq.s   Lizard_StateChase_ApplyFacing
                 move.l  #$14000,$34(a0)
@@ -211,7 +211,7 @@ Lizard_StateChase_SpecialFacingLeft:  ; was: loc_150F8
                 beq.s   Lizard_StateChase_Animate
 
 Lizard_StateChase_ComparePlayerRow:  ; was: loc_150FE
-                lea     (word_FFC440).w,a1
+                lea     (Ram_PlayerObject).w,a1
                 move.w  $24(a0),d6
                 cmp.w   $24(a1),d6
                 blt.s   Lizard_StateChase_Animate
@@ -230,7 +230,7 @@ Lizard_StateChase_Draw:  ; was: loc_15126
                 rts
 
 Lizard_StateChase_MaybeJump:  ; was: loc_15132
-                cmpi.w  #$30,(dword_FFD888).w
+                cmpi.w  #$30,(Ram_RoundTime).w
                 bls.s   Lizard_StateChase_Animate
                 move.w  $20(a1),d7
                 tst.b   $39(a0)
@@ -258,13 +258,13 @@ Lizard_StateJump:
                 beq.s   Lizard_StateJump_UseLevelArc
                 cmpi.b  #1,d0
                 beq.s   Lizard_StateJump_UseFixedArc
-                move.l  (dword_FFD276).w,$34(a0)
+                move.l  (Ram_LizardJumpSpeed).w,$34(a0)
                 move.l  #$FFFF8000,$2C(a0)
                 bra.s   Lizard_StateJump_ApplyFacing
 
 Lizard_StateJump_UseLevelArc:  ; was: loc_1518C
-                move.l  (dword_FFD26E).w,$34(a0)
-                move.l  (dword_FFD272).w,$2C(a0)
+                move.l  (Ram_LizardJumpVelX).w,$34(a0)
+                move.l  (Ram_LizardJumpVelY).w,$2C(a0)
                 bra.s   Lizard_StateJump_ApplyFacing
 
 Lizard_StateJump_UseFixedArc:  ; was: loc_1519A
@@ -384,12 +384,12 @@ Lizard_StateHit:
                 movea.l (sp)+,a0
                 tst.b   $16(a0)
                 bne.s   Lizard_StateHit_Setup
-                addi.l  #$1000,(dword_FFD296).w
+                addi.l  #$1000,(Ram_LizardSpeed).w
 
 Lizard_StateHit_Setup:  ; was: loc_152D6
                 clr.b   5(a0)
                 move.w  #8,6(a0)
-                subq.b  #1,(byte_FFD26C).w
+                subq.b  #1,(Ram_ActiveEnemyCount).w
 
 Lizard_StateHit_Move:  ; was: loc_152E4
                 bsr.w   Chick_UpdatePhysics
@@ -417,8 +417,8 @@ Lizard_StateTrack_Compare:  ; was: loc_15328
                 bsr.w   Object_UpdatePosition
                 move.w  $20(a0),d7
                 move.w  $24(a0),d6
-                lea     (word_FFC440).w,a1
-                move.w  word_FFC460-word_FFC440(a1),d5
+                lea     (Ram_PlayerObject).w,a1
+                move.w  Ram_PlayerScreenX-Ram_PlayerObject(a1),d5
                 move.w  $24(a1),d4
                 cmp.w   d6,d4
                 beq.s   Lizard_StateTrack_SameRow
@@ -477,10 +477,10 @@ Lizard_StateDeath_Update:  ; was: loc_153C8
                 bsr.w   Anim_UpdateFrame
                 btst    #2,2(a0)
                 beq.s   Lizard_StateDeath_Return
-                move.b  (dword_FFD888+2).w,d0
+                move.b  (Ram_RoundTime+2).w,d0
                 andi.b  #$F0,d0
                 bne.s   Lizard_StateDeath_ClearSprites
-                lea     (unk_FFC740).w,a1
+                lea     (Ram_LizardRespawnSlot).w,a1
                 tst.b   $16(a0)
                 beq.s   Lizard_StateDeath_SpawnAt
                 lea     $40(a1),a1
@@ -500,7 +500,7 @@ Lizard_StateDeath_Return:  ; was: locret_15408
 
 ; Lizard collision with player hit detection
 Lizard_CheckPlayerHit:
-                lea     (unk_FFC200).w,a1  ; was: sub_1540A
+                lea     (Ram_SpawnerSlots).w,a1  ; was: sub_1540A
                 moveq   #5,d0
 
 Lizard_CheckPlayerHit_Loop:  ; was: loc_15410
@@ -522,11 +522,11 @@ Lizard_CheckPlayerHit_Loop:  ; was: loc_15410
                 subq.b  #1,d0
                 lsl.w   #2,d0
                 move.l  Lizard_HitScoreTable(pc,d0.w),d0
-                move.l  d0,(dword_FFD262).w
+                move.l  d0,(Ram_ScoreDelta).w
                 move.l  a1,-(sp)
                 bsr.w   Score_AddAndCheck
                 movea.l (sp)+,a1
-                lea     (unk_FFC0C0).w,a2
+                lea     (Ram_PopupSlots).w,a2
                 moveq   #3,d0
 
 Lizard_CheckPlayerHit_PopupLoop:  ; was: loc_15460

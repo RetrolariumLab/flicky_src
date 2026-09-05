@@ -12,7 +12,7 @@ UI_GroundTileTable: dc.w    $220D, $2206, $2207, $2208, $2209, $220A, $220B, $22
 ; Writes ground tile from pointer table to VRAM
 UI_DrawGroundTilePtr:
                 lsl.w   #1,d4  ; was: sub_1193C
-                movea.l (dword_FFD800).w,a1
+                movea.l (Ram_GroundTilePtr).w,a1
                 move.w  (a1,d4.w),d4
                 bsr.w   Gfx_WriteTileAtOffset
                 rts
@@ -33,7 +33,7 @@ Level_DrawUpperGround_ColumnLoop:  ; was: loc_11954
 
 ; Draws single 4x2 upper ground block
 Level_DrawUpperGroundBlock:
-                lea     (dword_FFD808).w,a6  ; was: sub_11962
+                lea     (Ram_UpperGroundPtr).w,a6  ; was: sub_11962
                 movea.l (a6),a6
                 moveq   #3,d7
                 moveq   #1,d6
@@ -58,7 +58,7 @@ Level_DrawLowerGround_ColumnLoop:  ; was: loc_1197E
 
 ; Draws single 4x2 lower ground block
 Level_DrawLowerGroundBlock:
-                lea     (dword_FFD80C).w,a6  ; was: sub_1198C
+                lea     (Ram_LowerGroundPtr).w,a6  ; was: sub_1198C
                 movea.l (a6),a6
                 moveq   #3,d7
                 moveq   #1,d6
@@ -70,7 +70,7 @@ Level_DrawLowerGroundBlock:
 ; Fills background plane with repeated tile pattern
 Gfx_FillBackground:
                 move.l  #$60800003,(VDP_CTRL).l  ; was: sub_119A0
-                movea.l (dword_FFD804).w,a0
+                movea.l (Ram_BackgroundTilePtr).w,a0
                 move.w  (a0),d1
                 move.w  #$2FF,d0
 
@@ -81,7 +81,7 @@ Gfx_FillBackground_Loop:  ; was: loc_119B4
 
 ; Builds ground tilemap from collision flags
 Level_BuildGroundTilemap:
-                lea     (unk_FFC840).w,a0  ; was: sub_119C0
+                lea     (Ram_CollisionMapRow1).w,a0  ; was: sub_119C0
                 moveq   #0,d1
                 moveq   #0,d2
                 moveq   #0,d6
@@ -112,7 +112,7 @@ Level_BuildGroundTilemap_NextCell:  ; was: loc_11A00
                 move.w  d1,d2
                 addq.w  #2,d6
                 dbf     d0,Level_BuildGroundTilemap_CellLoop
-                lea     (unk_FFC840).w,a0
+                lea     (Ram_CollisionMapRow1).w,a0
                 moveq   #0,d5
                 move.w  #$E080,d5
                 moveq   #$1F,d0
@@ -267,8 +267,8 @@ Level_DrawCatDoor:
                 moveq   #0,d7  ; was: sub_11B60
                 moveq   #0,d6
                 moveq   #0,d5
-                move.b  (byte_FFD82E).w,d7
-                move.b  (byte_FFD82F).w,d6
+                move.b  (Ram_PlayerStartX).w,d7
+                move.b  (Ram_PlayerStartY).w,d6
                 move.w  #$E000,d5
                 bsr.w   Gfx_TilemapCoordToAddr
                 moveq   #2,d7
@@ -279,7 +279,7 @@ Level_DrawCatDoor:
 
 ; Draws player entry indicator above start pos
 Level_DrawEntryArrow:
-                lea     (byte_FFD82E).w,a0  ; was: sub_11B86
+                lea     (Ram_PlayerStartX).w,a0  ; was: sub_11B86
                 moveq   #0,d7
                 moveq   #0,d6
                 moveq   #0,d5

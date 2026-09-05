@@ -63,9 +63,9 @@ ANALYSIS_DIFF_COLOR ?= pink
 PROCEDURES_FILE = $(WORKFLOW_DIR)/unanalyzed_procedures.txt
 BATCH_COUNT ?= 40
 
-# Set to --strict-naming once milestone 3 has removed every address-derived
-# identifier; until then the linter reports the remaining count instead.
-STRICT_NAMING ?=
+# Milestone 3 removed every address-derived identifier, so the linter now
+# refuses any that come back.
+STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 

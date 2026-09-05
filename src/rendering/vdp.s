@@ -9,7 +9,7 @@ SetInitialVDPRegs:
                 lea     initial_vdp_regs(pc),a1
 
 Gfx_LoadVDPRegs_Copy:  ; was: loc_E4C
-                lea     (unk_FFFF70).w,a2
+                lea     (Ram_VDPRegisters).w,a2
                 moveq   #$12,d7
 
 Gfx_LoadVDPRegs_CopyLoop:  ; was: loc_E52
@@ -23,7 +23,7 @@ Gfx_AltVDPRegs: dc.b    4, $14, $30, $2C, 7, $54, 0, 0, 0, 0  ; was: byte_E6E
                 dc.b    $30, 0, $81, $2B, 0, 2, 1, 0, 0, 0
 ; Writes VDP registers 0-18 from RAM buffer
 Gfx_WriteVDPRegs:
-                lea     (unk_FFFF70).w,a1  ; was: sub_E82
+                lea     (Ram_VDPRegisters).w,a1  ; was: sub_E82
                 lea     (VDP_CTRL).l,a6
                 move.w  #$8000,d7
 
@@ -41,9 +41,9 @@ Gfx_ClearSpriteArea:
                 move.w  #$B000,d2  ; was: sub_EA2
                 move.w  #$5000,d0
                 bsr.w   Gfx_FillVRAMZero
-                clr.l   (dword_FFFFA4).w
-                clr.l   (dword_FFFFA8).w
-                lea     (dword_FFF550).w,a6
+                clr.l   (Ram_CameraY).w
+                clr.l   (Ram_CameraX).w
+                lea     (Ram_SpriteTable).w,a6
                 moveq   #0,d7
                 move.w  #$7F,d6
 
@@ -118,15 +118,15 @@ Gfx_TileToVDPCmd_FromAddress:  ; was: loc_F2A
 
 ; Waits for VBlank interrupt to complete
 Sys_WaitVBlank:
-                move.w  (word_FFFF98).w,(word_FFFF96).w  ; was: sub_F3C
+                move.w  (Ram_VBlankMode).w,(Ram_VBlankRequest).w  ; was: sub_F3C
 
 Sys_WaitVBlank_Loop:  ; was: loc_F42
-                tst.w   (word_FFFF96).w
+                tst.w   (Ram_VBlankRequest).w
                 bne.s   Sys_WaitVBlank_Loop
                 rts
 
 RandomNumber:
-                move.l  (dword_FFFFCA).w,d1
+                move.l  (Ram_RandomSeed).w,d1
                 bne.s   RandomNumber_Advance
                 move.l  #'*m6Z',d1
 
@@ -141,7 +141,7 @@ RandomNumber_Advance:  ; was: loc_F56
                 add.w   d1,d0
                 move.w  d0,d1
                 swap    d1
-                move.l  d1,(dword_FFFFCA).w
+                move.l  d1,(Ram_RandomSeed).w
                 rts
 
 ; Fades palette colors by factor d2 (0-64)
@@ -168,8 +168,8 @@ Gfx_FadePalette_Interpolate:  ; was: loc_F86
                 moveq   #0,d2
 
 Gfx_FadePalette_Apply:  ; was: loc_F92
-                lea     (word_FFF7E0).w,a0
-                lea     (unk_FFF860).w,a1
+                lea     (Ram_Palette).w,a0
+                lea     (Ram_PaletteBackup).w,a1
                 cmpi.w  #$40,d2
                 bne.s   Gfx_FadePalette_ScaleColours
                 moveq   #$1F,d4
@@ -209,9 +209,9 @@ Gfx_FadePalette_Done:  ; was: loc_FCE
 Gfx_ApplyPaletteMask:
                 cmpi.w  #$40,d0  ; was: sub_FD6
                 beq.s   Gfx_ApplyPaletteMask_Return
-                lea     (unk_FFF860).w,a0
-                lea     (word_FFF7E0).w,a1
-                movem.l (dword_FFFFB8).w,d0-d1
+                lea     (Ram_PaletteBackup).w,a0
+                lea     (Ram_Palette).w,a1
+                movem.l (Ram_PaletteMaskHigh).w,d0-d1
                 moveq   #$3F,d2
 
 Gfx_ApplyPaletteMask_Loop:  ; was: loc_FEC
@@ -233,8 +233,8 @@ Gfx_ApplyPaletteMask_Return:  ; was: locret_FFE
 
 ; Copies palette to backup buffer and clears
 Gfx_BackupPalette:
-                lea     (word_FFF7E0).w,a0  ; was: sub_1000
-                lea     (unk_FFF860).w,a1
+                lea     (Ram_Palette).w,a0  ; was: sub_1000
+                lea     (Ram_PaletteBackup).w,a1
                 moveq   #$1F,d0
 
 Gfx_BackupPalette_Loop:  ; was: loc_100A

@@ -34,7 +34,7 @@ UI_DrawHUDElements_NextItem:  ; was: loc_11C24
                 dbf     d1,UI_DrawHUDElements_ItemLoop
                 addq.w  #4,d0
                 dbf     d3,UI_DrawHUDElements_GroupLoop
-                tst.b   (byte_FFD830).w
+                tst.b   (Ram_EntryArrowPos).w
                 beq.s   UI_DrawHUDElements_Return
                 bsr.w   Level_DrawEntryArrow
 
@@ -43,7 +43,7 @@ UI_DrawHUDElements_Return:  ; was: locret_11C3A
 
 ; Animates player entry arrow indicator
 UI_AnimateEntryArrow:
-                lea     (unk_FFD258).w,a0  ; was: sub_11C3C
+                lea     (Ram_ArrowAnimState).w,a0  ; was: sub_11C3C
                 lea     UI_EntryArrowAnim(pc),a1
                 btst    #7,(IO_PCBVER+1).l
                 beq.s   UI_AnimateEntryArrow_Play
@@ -53,8 +53,8 @@ UI_AnimateEntryArrow_Play:  ; was: loc_11C52
                 moveq   #0,d7
                 moveq   #0,d6
                 moveq   #0,d5
-                move.b  (byte_FFD82E).w,d7
-                move.b  (byte_FFD82F).w,d6
+                move.b  (Ram_PlayerStartX).w,d7
+                move.b  (Ram_PlayerStartY).w,d6
                 subq.b  #1,d6
                 move.w  #$E000,d5
                 bsr.w   Gfx_TilemapCoordToAddr
@@ -129,14 +129,14 @@ UI_BonusAnim:   dc.b    5  ; was: byte_11D22
                 dc.l    UI_TimerData1
 ; Generic animation loop until completion flag
 UI_PlayAnimation:
-                move.b  #1,(byte_FFD27B).w  ; was: sub_11D38
-                lea     (unk_FFD254).w,a0
+                move.b  #1,(Ram_CutsceneFlag).w  ; was: sub_11D38
+                lea     (Ram_UIAnimState).w,a0
                 clr.l   (a0)
                 moveq   #0,d7
                 moveq   #0,d6
                 moveq   #0,d5
-                move.b  (byte_FFD82E).w,d7
-                move.b  (byte_FFD82F).w,d6
+                move.b  (Ram_PlayerStartX).w,d7
+                move.b  (Ram_PlayerStartY).w,d6
                 move.w  #$C000,d5
                 bsr.w   Gfx_TilemapCoordToAddr
                 moveq   #2,d7
@@ -149,19 +149,19 @@ UI_PlayAnimation_Loop:  ; was: loc_11D5E
                 bne.s   UI_PlayAnimation_Done
                 bsr.w   Object_UpdateAll
                 bsr.w   Timer_IncrementTime
-                jsr     unk_FFFB6C
+                jsr     j_Sound_QueueSFX
                 movem.l (sp)+,d5-d7/a0-a4
                 bra.s   UI_PlayAnimation_Loop
 
 UI_PlayAnimation_Done:  ; was: loc_11D7E
-                clr.b   (byte_FFD27B).w
+                clr.b   (Ram_CutsceneFlag).w
                 movem.l (sp)+,d5-d7/a0-a4
                 rts
 
 ; Draws life indicator icons based on lives count
 UI_DrawLives:
                 moveq   #0,d0  ; was: sub_11D88
-                move.b  (byte_FFD882).w,d0
+                move.b  (Ram_Lives).w,d0
                 beq.s   UI_DrawLives_Return
                 subq.w  #1,d0
                 beq.s   UI_DrawLives_Return
@@ -180,7 +180,7 @@ UI_DrawLives_Return:  ; was: locret_11DC0
 
 ; Draws current score BCD value
 UI_DrawScore:
-                lea     (dword_FFD87E).w,a6  ; was: sub_11DC2
+                lea     (Ram_Score).w,a6  ; was: sub_11DC2
                 moveq   #0,d5
                 move.w  #$C04A,d5
                 moveq   #3,d0
@@ -189,7 +189,7 @@ UI_DrawScore:
 
 ; Draws high score BCD value
 UI_DrawHighScore:
-                lea     (dword_FFCC00).w,a6  ; was: sub_11DD4
+                lea     (Ram_HighScore).w,a6  ; was: sub_11DD4
                 moveq   #0,d5
                 move.w  #$C068,d5
                 moveq   #3,d0
@@ -198,7 +198,7 @@ UI_DrawHighScore:
 
 ; Draws current round number with region check
 UI_DrawRoundNumber:
-                lea     (word_FFD82C).w,a6  ; was: sub_11DE6
+                lea     (Ram_RoundNumber).w,a6  ; was: sub_11DE6
                 moveq   #0,d5
                 move.w  #$C6BA,d5
                 btst    #6,(IO_PCBVER+1).l
@@ -242,7 +242,7 @@ UI_RoundLabelAlt: dc.b    $C7, $74  ; was: byte_11E4C
 aRd_0:          dc.b    "RD.",0
 ; Draws detailed score breakdown on results
 UI_DrawScoreBreakdown:
-                lea     (byte_FFD266).w,a6  ; was: sub_11E52
+                lea     (Ram_RoundMinutes).w,a6  ; was: sub_11E52
                 moveq   #0,d5
                 move.w  #$C160,d5
                 btst    #7,(IO_PCBVER+1).l
@@ -252,14 +252,14 @@ UI_DrawScoreBreakdown:
 UI_DrawScoreBreakdown_DrawSeconds:  ; was: loc_11E68
                 moveq   #0,d0
                 bsr.w   Text_DrawBCDNumber
-                lea     (byte_FFD267).w,a6
+                lea     (Ram_RoundSeconds).w,a6
                 moveq   #0,d5
                 move.w  #$C16C,d5
                 moveq   #0,d0
                 bsr.w   Text_DrawBCDNumber
-                tst.b   (byte_FFD266).w
+                tst.b   (Ram_RoundMinutes).w
                 bne.s   UI_DrawScoreBreakdown_Return
-                lea     (dword_FFD268).w,a6
+                lea     (Ram_TimeBonus).w,a6
                 moveq   #0,d5
                 move.w  #$C260,d5
                 moveq   #3,d0
@@ -297,7 +297,7 @@ UI_DrawScoreScreenLabels_DrawSecLabel:  ; was: loc_11ED4
 
 UI_DrawScoreScreenLabels_DrawBonusLabel:  ; was: loc_11EE6
                 bsr.w   Text_DrawString
-                tst.b   (byte_FFD266).w
+                tst.b   (Ram_RoundMinutes).w
                 bne.s   UI_DrawScoreScreenLabels_NoBonus
                 lea     UI_PtsLabel(pc),a6
                 bsr.w   Text_DrawString
@@ -338,19 +338,19 @@ aTimeBonus_0:   dc.b    "TIME BONUS",0
                 dc.b    0
 ; Draws bonus round chicks collected and score
 UI_DrawBonusRoundScore:
-                tst.b   (byte_FFD28E).w  ; was: sub_11F6C
+                tst.b   (Ram_BonusCaughtCount).w  ; was: sub_11F6C
                 beq.s   UI_DrawBonusRoundScore_Return
-                lea     (byte_FFD28F).w,a6
+                lea     (Ram_BonusCaughtBCD).w,a6
                 moveq   #0,d5
                 move.w  #$C248,d5
                 moveq   #0,d0
                 bsr.w   Text_DrawBCDNumber
-                lea     ((dword_FFD290+2)).w,a6
+                lea     ((Ram_BonusScore+2)).w,a6
                 moveq   #0,d5
                 move.w  #$C266,d5
                 moveq   #1,d0
                 bsr.w   Text_DrawBCDNumber
-                cmpi.b  #$14,(byte_FFD28E).w
+                cmpi.b  #$14,(Ram_BonusCaughtCount).w
                 bne.s   UI_DrawBonusRoundScore_Return
                 lea     UI_PerfectBonusValue(pc),a6
                 moveq   #0,d5

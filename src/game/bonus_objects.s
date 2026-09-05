@@ -16,7 +16,7 @@ Obj_StarBonus:
 Obj_StarBonus_Update:  ; was: loc_1651A
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
-                lea     (word_FFC440).w,a1
+                lea     (Ram_PlayerObject).w,a1
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   Obj_StarBonus_Countdown
@@ -24,7 +24,7 @@ Obj_StarBonus_Update:  ; was: loc_1651A
                 move.b  #$98,d0
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
-                lea     (unk_FFC0C0).w,a2
+                lea     (Ram_PopupSlots).w,a2
                 moveq   #3,d0
 
 Obj_StarBonus_PopupLoop:  ; was: loc_16540
@@ -36,12 +36,12 @@ Obj_StarBonus_PopupLoop:  ; was: loc_16540
                 subq.w  #8,d6
                 move.w  d6,$24(a2)
                 moveq   #0,d7
-                move.b  (byte_FFD27A).w,d7
+                move.b  (Ram_ChickChainCount).w,d7
                 move.b  d7,$3A(a2)
                 move.w  #$24,(a2)
                 lsl.w   #2,d7
                 move.l  Bonus_StarScoreTable(pc,d7.w),d7
-                move.l  d7,(dword_FFD262).w
+                move.l  d7,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
                 bra.s   Obj_StarBonus_Despawn
 
@@ -84,7 +84,7 @@ Obj_BonusCatOuter_SetPosition:  ; was: loc_165DE
                 clr.w   6(a0)
 
 Obj_BonusCatOuter_Update:  ; was: loc_165F0
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_BonusCatOuter_Return
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
@@ -109,7 +109,7 @@ Obj_BonusCatInner_SetPosition:  ; was: loc_16624
                 move.w  #4,6(a0)
 
 Obj_BonusCatInner_Update:  ; was: loc_16638
-                tst.b   (byte_FFD27B).w
+                tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_BonusCatInner_Return
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
@@ -119,8 +119,8 @@ Obj_BonusCatInner_Return:  ; was: locret_16646
 
 ; Bonus round held chick follows player
 Obj_BonusHeldChick:
-                lea     (unk_FFC580).w,a1  ; was: sub_16648
-                move.l  dword_FFC5B0-unk_FFC580(a1),d7
+                lea     (Ram_BonusPlayerObject).w,a1  ; was: sub_16648
+                move.l  Ram_BonusPlayerWorldX-Ram_BonusPlayerObject(a1),d7
                 move.l  $24(a1),d6
                 move.l  d7,$30(a0)
                 move.l  d6,$24(a0)
@@ -171,7 +171,7 @@ Obj_BonusChick:
                 bne.s   Obj_BonusChick_Dispatch
                 bset    #1,2(a0)
                 move.l  #Cat_AnimPointers,8(a0)
-                movea.l (dword_FFD282).w,a1
+                movea.l (Ram_BonusChickDelayPtr).w,a1
                 moveq   #0,d0
                 move.b  $38(a0),d0
                 lsl.w   #1,d0
@@ -209,7 +209,7 @@ BonusChick_StateWait:
 
 BonusChick_StateWait_Move:  ; was: loc_16756
                 bsr.w   Object_UpdatePosition
-                lea     (unk_FFC640).w,a1
+                lea     (Ram_BonusCatOuterSlots).w,a1
                 tst.b   $39(a0)
                 bne.s   BonusChick_StateWait_CheckCat
                 lea     $40(a1),a1
@@ -232,7 +232,7 @@ BonusChick_StateWait_Countdown:  ; was: loc_16778
 BonusChick_StateFly:
                 bset    #7,$3C(a0)  ; was: sub_16782
                 bne.s   BonusChick_StateFly_Move
-                movea.l (dword_FFD286).w,a1
+                movea.l (Ram_BonusChickVelocityPtr).w,a1
                 moveq   #0,d0
                 move.b  $38(a0),d0
                 lsl.w   #1,d0
@@ -294,15 +294,15 @@ BonusChick_StateFall_Move:  ; was: loc_16818
                 cmpi.w  #$180,$24(a0)
                 bcs.s   BonusChick_StateFall_Animate
                 bsr.w   Object_ClearSlot
-                subq.b  #1,(byte_FFD883).w
+                subq.b  #1,(Ram_ChicksRemaining).w
 
 BonusChick_StateFall_Animate:  ; was: loc_16834
                 bsr.w   Anim_UpdateFrame
-                tst.b   (byte_FFD883).w
+                tst.b   (Ram_ChicksRemaining).w
                 bne.s   BonusChick_StateFall_Return
-                clr.w   (word_FFFF92).w
-                move.b  #1,(byte_FFD281).w
-                move.w  #4,(word_FFD2A6).w
+                clr.w   (Ram_FrameCounter).w
+                move.b  #1,(Ram_RoundClearFlag).w
+                move.w  #4,(Ram_BonusState).w
                 bsr.w   Bonus_CalcScore
 
 BonusChick_StateFall_Return:  ; was: locret_16852
@@ -346,7 +346,7 @@ BonusChick_UpdateTraj_Return:  ; was: locret_16890
 BonusChick_LoadTraj:
                 moveq   #0,d0  ; was: sub_16892
                 move.b  $38(a0),d0
-                movea.l (dword_FFD28A).w,a1
+                movea.l (Ram_BonusChickTrajPtr).w,a1
                 move.b  (a1,d0.w),d0
                 lsl.w   #2,d0
                 lea     Bonus_TrajectoryPointers(pc),a1
@@ -376,7 +376,7 @@ BonusChick_LoadTraj_Store:  ; was: loc_168D8
 
 ; Bonus chick collision catch detection
 BonusChick_CheckCatch:
-                lea     (word_FFC040).w,a1  ; was: sub_168E2
+                lea     (Ram_Object01).w,a1  ; was: sub_168E2
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   BonusChick_CheckCatch_Return
@@ -385,13 +385,13 @@ BonusChick_CheckCatch:
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
                 bsr.w   Object_ClearSlot
-                subq.b  #1,(byte_FFD883).w
-                addq.b  #1,(byte_FFD28E).w
+                subq.b  #1,(Ram_ChicksRemaining).w
+                addq.b  #1,(Ram_BonusCaughtCount).w
                 moveq   #1,d0
-                move.b  (byte_FFD28F).w,d1
+                move.b  (Ram_BonusCaughtBCD).w,d1
                 addi.b  #0,d1
                 abcd    d0,d1
-                move.b  d1,(byte_FFD28F).w
+                move.b  d1,(Ram_BonusCaughtBCD).w
                 bsr.w   Bonus_DrawCaughtCount
 
 BonusChick_CheckCatch_Return:  ; was: locret_1691A
@@ -399,11 +399,11 @@ BonusChick_CheckCatch_Return:  ; was: locret_1691A
 
 ; Draws bonus round result text labels
 Bonus_DrawResultLabels:
-                tst.b   (byte_FFD28E).w  ; was: sub_1691C
+                tst.b   (Ram_BonusCaughtCount).w  ; was: sub_1691C
                 beq.s   Bonus_DrawResultLabels_NoBonus
                 lea     Bonus_PtsPerChickLabel(pc),a6
                 bsr.w   Text_DrawString
-                cmpi.b  #$14,(byte_FFD28E).w
+                cmpi.b  #$14,(Ram_BonusCaughtCount).w
                 bne.s   Bonus_DrawResultLabels_Return
                 lea     Bonus_PerfectLabel(pc),a6
                 bsr.w   Text_DrawString
@@ -430,14 +430,14 @@ aNoBonus_0:     dc.b    "NO BONUS",0
 ; Calculates bonus round score total
 Bonus_CalcScore:
                 moveq   #0,d0  ; was: sub_16988
-                move.b  (byte_FFD28E).w,d0
+                move.b  (Ram_BonusCaughtCount).w,d0
                 beq.s   Bonus_CalcScore_Return
                 subq.w  #1,d0
 
 Bonus_CalcScore_OuterLoop:  ; was: loc_16992
-                move.l  #$250,(dword_FFD262).w
-                lea     (byte_FFD266).w,a2
-                lea     (word_FFD294).w,a1
+                move.l  #$250,(Ram_ScoreDelta).w
+                lea     (Ram_RoundMinutes).w,a2
+                lea     (Ram_SpawnerDelay).w,a1
                 moveq   #3,d1
                 move    #4,ccr
 
@@ -445,12 +445,12 @@ Bonus_CalcScore_InnerLoop:  ; was: loc_169A8
                 abcd    -(a2),-(a1)
                 dbf     d1,Bonus_CalcScore_InnerLoop
                 dbf     d0,Bonus_CalcScore_OuterLoop
-                move.l  (dword_FFD290).w,d0
-                move.l  d0,(dword_FFD262).w
+                move.l  (Ram_BonusScore).w,d0
+                move.l  d0,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
-                cmpi.b  #$14,(byte_FFD28E).w
+                cmpi.b  #$14,(Ram_BonusCaughtCount).w
                 bne.s   Bonus_CalcScore_Return
-                move.l  #$10000,(dword_FFD262).w
+                move.l  #$10000,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
 
 Bonus_CalcScore_Return:  ; was: locret_169D2
@@ -459,7 +459,7 @@ Bonus_CalcScore_Return:  ; was: locret_169D2
 ; Draws caught chick count tiles in bonus round
 Bonus_DrawCaughtCount:
                 moveq   #0,d0  ; was: sub_169D4
-                move.b  (byte_FFD28E).w,d0
+                move.b  (Ram_BonusCaughtCount).w,d0
                 subq.w  #1,d0
                 move.l  #$414C0003,(VDP_CTRL).l
 
