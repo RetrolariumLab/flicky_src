@@ -1,80 +1,94 @@
 #!/usr/bin/env python3
-"""
-ROM Comparison Tool
+"""Compare an already built ROM with the reference cartridge dump."""
 
-Compares built ROM with original ROM to verify they are identical.
-"""
+from __future__ import annotations
 
-import sys
 import argparse
+import hashlib
+import json
+import sys
 from pathlib import Path
 
 
-def compare_files(file1, file2):
-    """Compare two binary files byte-by-byte."""
-    with open(file1, 'rb') as f1, open(file2, 'rb') as f2:
-        data1 = f1.read()
-        data2 = f2.read()
-
-    if len(data1) != len(data2):
-        return False, f"Size mismatch: {len(data1)} vs {len(data2)} bytes"
-
-    if data1 == data2:
-        return True, "Files are identical"
-
-    # Find first difference
-    for i, (b1, b2) in enumerate(zip(data1, data2)):
-        if b1 != b2:
-            return False, f"First difference at offset 0x{i:X}: 0x{b1:02X} vs 0x{b2:02X}"
-
-    return True, "Files are identical"
+def fail(message: str) -> None:
+    print(f"[ERROR] {message}", file=sys.stderr)
+    raise SystemExit(1)
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Compare built ROM with original')
-    parser.add_argument('--built', default='fbuilt.bin', help='Built ROM file')
-    parser.add_argument('--original', default='flicky.bin', help='Original ROM file')
-    parser.add_argument('--project-dir', default='.', help='Project directory')
+def sha1_of(data: bytes) -> str:
+    return hashlib.sha1(data).hexdigest()
 
+
+def report_differences(built: bytes, original: bytes, limit: int = 5) -> None:
+    if len(built) != len(original):
+        print(f"[ERROR] Size mismatch: {len(built)} vs {len(original)} bytes", file=sys.stderr)
+
+    shown = 0
+    total = 0
+    index = 0
+    span = min(len(built), len(original))
+    while index < span:
+        if built[index] == original[index]:
+            index += 1
+            continue
+        start = index
+        while index < span and built[index] != original[index]:
+            index += 1
+        total += index - start
+        if shown < limit:
+            print(
+                f"[ERROR] differs 0x{start:06X}-0x{index - 1:06X} ({index - start} bytes): "
+                f"built {built[start:min(start + 8, index)].hex(' ')} | "
+                f"original {original[start:min(start + 8, index)].hex(' ')}",
+                file=sys.stderr,
+            )
+            shown += 1
+    if shown == limit:
+        print("[ERROR] ... further differing regions not listed", file=sys.stderr)
+    print(f"[FAIL] {total} differing bytes of {span}", file=sys.stderr)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--built", default="fbuilt.bin", help="Built ROM image")
+    parser.add_argument("--original", default="Flicky (UE) [!].bin", help="Reference ROM")
+    parser.add_argument("--manifest", default="assets/manifest.json", help="Asset manifest")
     args = parser.parse_args()
 
-    project_dir = Path(args.project_dir).resolve()
-    built_file = project_dir / args.built
-    original_file = project_dir / args.original
+    built_path = Path(args.built)
+    original_path = Path(args.original)
 
-    # Check files exist
-    if not built_file.exists():
-        print(f"Error: Built ROM not found: {built_file}")
-        print("Run 'make build' first")
-        return 1
+    if not built_path.is_file():
+        fail(f"Built ROM not found: {built_path}. Run 'make build' first.")
+    if not original_path.is_file():
+        fail(
+            f"Reference ROM not found: {original_path}. "
+            "Place the original cartridge dump in the project root."
+        )
 
-    if not original_file.exists():
-        print(f"Error: Original ROM not found: {original_file}")
-        return 1
+    manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+    expected = manifest["reference_rom"]["sha1"]
 
-    # Compare files
-    identical, message = compare_files(built_file, original_file)
+    original = original_path.read_bytes()
+    actual = sha1_of(original)
+    if actual != expected:
+        fail(
+            f"{original_path.name} is not the supported revision.\n"
+            f"        expected SHA1 {expected}\n"
+            f"        actual   SHA1 {actual}"
+        )
 
-    if identical:
-        print("=" * 60)
-        print("SUCCESS: ROMs are identical!")
-        print("=" * 60)
-        print(f"  Built:    {built_file.name} ({built_file.stat().st_size:,} bytes)")
-        print(f"  Original: {original_file.name} ({original_file.stat().st_size:,} bytes)")
-        print()
-        print("[OK] Assembly source matches original ROM perfectly")
-        print("[OK] All procedure renames preserve binary output")
+    built = built_path.read_bytes()
+    print(f"[INFO] built    {built_path.name}: {len(built)} bytes, SHA1 {sha1_of(built)}")
+    print(f"[INFO] original {original_path.name}: {len(original)} bytes, SHA1 {actual}")
+
+    if built == original:
+        print("[OK] Byte-identical ROM reproduced from source")
         return 0
-    else:
-        print("=" * 60)
-        print("MISMATCH: ROMs differ!")
-        print("=" * 60)
-        print(f"  Built:    {built_file.name} ({built_file.stat().st_size:,} bytes)")
-        print(f"  Original: {original_file.name} ({original_file.stat().st_size:,} bytes)")
-        print()
-        print(f"Difference: {message}")
-        return 1
+
+    report_differences(built, original)
+    return 1
 
 
-if __name__ == '__main__':
-    sys.exit(main())
+if __name__ == "__main__":
+    raise SystemExit(main())

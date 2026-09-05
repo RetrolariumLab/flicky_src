@@ -1,26 +1,28 @@
 #!/usr/bin/env python3
-"""
-Clean Project Script
+"""Remove generated build and analysis artifacts from this repository."""
 
-Removes build artifacts and temporary files.
-"""
+from __future__ import annotations
 
+import glob
 import os
 import shutil
-import glob
 
-
-# Files/folders to remove
+# Files and directories to remove.
+#
+# Extracted data segments under data/ are deliberately NOT listed. They are
+# regenerated only by "make split", which needs the reference ROM; deleting
+# them here would break the build for anyone who no longer has the dump at
+# hand. Ordinary cleaning must never destroy them.
 TARGETS = [
-    'data/artnem',
-    'data/arteni',
-    'data/artunc',
-    'data/other',
-    'data/sound',
+    'fbuilt.bin',
+    'flicky.p',
+    'flicky.lst',
+    'flicky.map',
+    'flicky.asm',
+    'temp.asm',
+    'build',
     'language.dat',
     'Gens.cfg',
-    'flicky.p',
-    'fbuilt.bin',
     'rename_log.txt',
 ]
 
@@ -28,6 +30,7 @@ TARGETS = [
 GLOBS = [
     'flicky_backup_*.s',
     'tools/*.exe',
+    'tools/*.o',
 ]
 
 # Patterns to find recursively in all directories
@@ -38,51 +41,38 @@ RECURSIVE_PATTERNS = [
 ]
 
 
-def remove_path(path):
-    """Remove file or directory."""
-    if os.path.isfile(path):
+def remove(path: str) -> bool:
+    """Remove one file or directory. Returns True if something was removed."""
+    if not os.path.exists(path):
+        return False
+    if os.path.isdir(path):
+        shutil.rmtree(path, ignore_errors=True)
+    else:
         os.remove(path)
-        print(f"  Removed file: {path}")
-        return True
-    elif os.path.isdir(path):
-        shutil.rmtree(path)
-        print(f"  Removed dir:  {path}")
-        return True
-    return False
+    print(f"[INFO] removed {path}")
+    return True
 
 
-def main():
-    print("Cleaning project...")
+def main() -> int:
     removed = 0
 
-    # Remove fixed targets
     for target in TARGETS:
-        if os.path.exists(target):
-            if remove_path(target):
-                removed += 1
+        removed += remove(target)
 
-    # Remove glob patterns
     for pattern in GLOBS:
-        for path in glob.glob(pattern, recursive=True):
-            if remove_path(path):
-                removed += 1
-
-    # Remove recursive patterns
-    for pattern in RECURSIVE_PATTERNS:
-        # Search in all directories using **
-        for path in glob.glob(f'**/{pattern}', recursive=True):
-            if remove_path(path):
-                removed += 1
-        # Also check root directory
         for path in glob.glob(pattern):
-            if os.path.exists(path) and remove_path(path):
-                removed += 1
+            removed += remove(path)
 
-    if removed == 0:
-        print("  Nothing to clean")
+    for pattern in RECURSIVE_PATTERNS:
+        for path in glob.glob(f"**/{pattern}", recursive=True):
+            removed += remove(path)
+
+    if removed:
+        print(f"[OK] removed {removed} build artifact(s); extracted data left untouched")
     else:
-        print(f"\nRemoved {removed} item(s)")
+        print("[OK] nothing to clean")
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

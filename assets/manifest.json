@@ -1,0 +1,392 @@
+{
+  "schema_version": 1,
+  "reference_rom": {
+    "name": "Flicky (UE) [!]",
+    "filename": "Flicky (UE) [!].bin",
+    "platform": "Sega Mega Drive / Genesis",
+    "size": 131072,
+    "sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
+    "sha256": "4DF1A91E08376AE773A6EB8E5ABE310F94CA39D8F81583B91A9477FEDCB68C11",
+    "md5": "805CC0B3724F041126A57A4D956FD251",
+    "crc32": "4291C8AB",
+    "padding_byte": "0xFF"
+  },
+  "assets": [
+    {
+      "name": "SegaPalette",
+      "path": "other/data_SegaPalette.bin",
+      "region": "other",
+      "address": "0x4F6",
+      "size": 20,
+      "sha1": "81de098fa7d1d41a7569ec4bc5430a8dde9a7678"
+    },
+    {
+      "name": "SegaEnigma",
+      "path": "arteni/data_SegaEnigma.bin",
+      "region": "arteni",
+      "address": "0x510",
+      "size": 10,
+      "sha1": "c293e2260e158f285da440b44099fee222566d67"
+    },
+    {
+      "name": "SegaTiles",
+      "path": "artnem/data_SegaTiles.bin",
+      "region": "artnem",
+      "address": "0x51A",
+      "size": 828,
+      "sha1": "70f08ec50c181638b0f8390f0cf4af9a46e45dd3"
+    },
+    {
+      "name": "z80_part1",
+      "path": "sound/data_z80_part1.bin",
+      "region": "sound",
+      "address": "0x1316",
+      "size": 4070,
+      "sha1": "325b37d1788486bd569ff21c8d97e323e27c0f0c"
+    },
+    {
+      "name": "Jap1BPPTiles",
+      "path": "artunc/data_Jap1BPPTiles.bin",
+      "region": "artunc",
+      "address": "0x2372",
+      "size": 1432,
+      "sha1": "ae07a423e23baabf30a24660f9ef09ac5639955a"
+    },
+    {
+      "name": "z80_part2",
+      "path": "sound/data_z80_part2.bin",
+      "region": "sound",
+      "address": "0x101D4",
+      "size": 2816,
+      "sha1": "60682dbf065ad0b45dd82bd1bdd6aebdf8189b86"
+    },
+    {
+      "name": "word_135E8",
+      "path": "other/data_word_135E8.bin",
+      "region": "other",
+      "address": "0x135E8",
+      "size": 954,
+      "sha1": "c6afcbf06c856122f88a5ab2be26aa2c30f35103"
+    },
+    {
+      "name": "word_13A82",
+      "path": "other/data_word_13A82.bin",
+      "region": "other",
+      "address": "0x13A82",
+      "size": 256,
+      "sha1": "5c2ef0cc5b55999cdc2e0d3e4c95aa2ed87b2701"
+    },
+    {
+      "name": "word_13C52",
+      "path": "other/data_word_13C52.bin",
+      "region": "other",
+      "address": "0x13C52",
+      "size": 286,
+      "sha1": "db6e2ad923515d86c191e4126bacb1247144a44c"
+    },
+    {
+      "name": "word_13D70",
+      "path": "other/data_word_13D70.bin",
+      "region": "other",
+      "address": "0x13D70",
+      "size": 256,
+      "sha1": "8c3d3e99ec4dac8893d4e5fbeb1bf47a4b835fcf"
+    },
+    {
+      "name": "dword_15B94",
+      "path": "other/data_dword_15B94.bin",
+      "region": "other",
+      "address": "0x15B94",
+      "size": 384,
+      "sha1": "1750cb7190ea31e03f35e3f85fd1c6e76b8abbd4"
+    },
+    {
+      "name": "LevelTiles",
+      "path": "artnem/data_LevelTiles.bin",
+      "region": "artnem",
+      "address": "0x16E58",
+      "size": 6052,
+      "sha1": "81ead5b2cc3592fb35f21910b0c84d5c298b3401"
+    },
+    {
+      "name": "Latin1BPPTiles",
+      "path": "artunc/data_Latin1BPPTiles.bin",
+      "region": "artunc",
+      "address": "0x185FC",
+      "size": 344,
+      "sha1": "c1751d20153e8b1e90448fe1a19d0b5af32d71d8"
+    },
+    {
+      "name": "ExitTiles",
+      "path": "artnem/data_ExitTiles.bin",
+      "region": "artnem",
+      "address": "0x18754",
+      "size": 128,
+      "sha1": "a05bf55f69f76cece05860a5944f78ceaca87c28"
+    },
+    {
+      "name": "SpritesTiles",
+      "path": "artnem/data_SpritesTiles.bin",
+      "region": "artnem",
+      "address": "0x187D4",
+      "size": 4458,
+      "sha1": "b9681cf68007381dd7cf8314aed52c4a70fea203"
+    },
+    {
+      "name": "ScoresTiles",
+      "path": "artnem/data_ScoresTiles.bin",
+      "region": "artnem",
+      "address": "0x1993E",
+      "size": 1456,
+      "sha1": "8fc5563d960acd9e3f7c13ec476f51a586bdf050"
+    },
+    {
+      "name": "FlickyLogoTiles",
+      "path": "artnem/data_FlickyLogoTiles.bin",
+      "region": "artnem",
+      "address": "0x19EEE",
+      "size": 680,
+      "sha1": "1d6251005044a9f5e36d57ce5b6fef1daac0db89"
+    },
+    {
+      "path": "palettes/accent-00.bin",
+      "size": 8,
+      "sha1": "a63576a0e43ce6a4245faad03861412d530e45bc",
+      "name": "palette_accent_00",
+      "region": "palettes",
+      "address": "0x12A1C"
+    },
+    {
+      "path": "palettes/accent-01.bin",
+      "size": 8,
+      "sha1": "b101f317a01190f22c7a4ce6bf13667156e4533c",
+      "name": "palette_accent_01",
+      "region": "palettes",
+      "address": "0x12A24"
+    },
+    {
+      "path": "palettes/accent-02.bin",
+      "size": 8,
+      "sha1": "eb7ddaa86d384b4b10d2e59ecf858b9332221410",
+      "name": "palette_accent_02",
+      "region": "palettes",
+      "address": "0x12A2C"
+    },
+    {
+      "path": "palettes/accent-03.bin",
+      "size": 8,
+      "sha1": "5cb97c7f9056edd48bce84c84bb7699a0c69ae3d",
+      "name": "palette_accent_03",
+      "region": "palettes",
+      "address": "0x12A34"
+    },
+    {
+      "path": "palettes/accent-04.bin",
+      "size": 8,
+      "sha1": "c58d75e259421c0cfdfbc602a8f2144de432dcc0",
+      "name": "palette_accent_04",
+      "region": "palettes",
+      "address": "0x12A3C"
+    },
+    {
+      "path": "palettes/accent-05.bin",
+      "size": 8,
+      "sha1": "c3ca902a091f439344abeb5c02beeb8c75a73f79",
+      "name": "palette_accent_05",
+      "region": "palettes",
+      "address": "0x12A44"
+    },
+    {
+      "path": "palettes/accent-06.bin",
+      "size": 8,
+      "sha1": "04bf4ca7b42c437b901b25cead6faca31724f91d",
+      "name": "palette_accent_06",
+      "region": "palettes",
+      "address": "0x12A4C"
+    },
+    {
+      "path": "palettes/accent-07.bin",
+      "size": 8,
+      "sha1": "f7268602910fdf5bb2bddf6570062e7d3b578075",
+      "name": "palette_accent_07",
+      "region": "palettes",
+      "address": "0x12A54"
+    },
+    {
+      "path": "palettes/accent-08.bin",
+      "size": 8,
+      "sha1": "57684b59ec7b153cb40cacc36c028e9838246ac3",
+      "name": "palette_accent_08",
+      "region": "palettes",
+      "address": "0x12A5C"
+    },
+    {
+      "path": "palettes/accent-09.bin",
+      "size": 8,
+      "sha1": "a16b0f9174ca344ffda2d1ad2224b0d2c6a55009",
+      "name": "palette_accent_09",
+      "region": "palettes",
+      "address": "0x12A64"
+    },
+    {
+      "path": "palettes/accent-10.bin",
+      "size": 8,
+      "sha1": "78f9d6d64436c29f466900e0a7d907d508c9d195",
+      "name": "palette_accent_10",
+      "region": "palettes",
+      "address": "0x12A6C"
+    },
+    {
+      "path": "palettes/accent-11.bin",
+      "size": 8,
+      "sha1": "544ab37e50fb6f390c71f14fa8da53a24d80cf6d",
+      "name": "palette_accent_11",
+      "region": "palettes",
+      "address": "0x12A74"
+    },
+    {
+      "path": "palettes/accent-12.bin",
+      "size": 8,
+      "sha1": "36c9923b64142af7a9d95a4a996995aaa83ae2c4",
+      "name": "palette_accent_12",
+      "region": "palettes",
+      "address": "0x12A7C"
+    },
+    {
+      "path": "palettes/accent-13.bin",
+      "size": 8,
+      "sha1": "7c82a09c305af3f0b89e4d8f5a87106ee7400187",
+      "name": "palette_accent_13",
+      "region": "palettes",
+      "address": "0x12A84"
+    },
+    {
+      "path": "palettes/accent-14.bin",
+      "size": 8,
+      "sha1": "754e9b2e2ff38c18fcbb09ff2213e83dd6e829d2",
+      "name": "palette_accent_14",
+      "region": "palettes",
+      "address": "0x12A8C"
+    },
+    {
+      "path": "palettes/level-00.bin",
+      "size": 32,
+      "sha1": "22d6cd62bdc322fb6a88e53d6cdbeb8bc391d343",
+      "name": "palette_level_00",
+      "region": "palettes",
+      "address": "0x1287E"
+    },
+    {
+      "path": "palettes/level-01.bin",
+      "size": 32,
+      "sha1": "27abe34a29450c252bdc07c0c6509bd5faa0ae84",
+      "name": "palette_level_01",
+      "region": "palettes",
+      "address": "0x1289E"
+    },
+    {
+      "path": "palettes/level-02.bin",
+      "size": 32,
+      "sha1": "68afd8e77a695ed7b442d98302453e1ac2b6f6c6",
+      "name": "palette_level_02",
+      "region": "palettes",
+      "address": "0x128BE"
+    },
+    {
+      "path": "palettes/level-03.bin",
+      "size": 32,
+      "sha1": "bc4bdfa13a6dc52907e5879a1e6e7312c6506078",
+      "name": "palette_level_03",
+      "region": "palettes",
+      "address": "0x128DE"
+    },
+    {
+      "path": "palettes/level-04.bin",
+      "size": 32,
+      "sha1": "65c087a565da87598962393f5f7b2f588c79508a",
+      "name": "palette_level_04",
+      "region": "palettes",
+      "address": "0x128FE"
+    },
+    {
+      "path": "palettes/level-05.bin",
+      "size": 32,
+      "sha1": "9ed8580f4a1490f850457a70b2e52202ac96b39c",
+      "name": "palette_level_05",
+      "region": "palettes",
+      "address": "0x1291E"
+    },
+    {
+      "path": "palettes/level-06.bin",
+      "size": 32,
+      "sha1": "0f78dbba94fde71820f4be6103620a5a29e38b92",
+      "name": "palette_level_06",
+      "region": "palettes",
+      "address": "0x1293E"
+    },
+    {
+      "path": "palettes/level-07.bin",
+      "size": 32,
+      "sha1": "cdf8d6e8ce1e3edd5612fa443b9652b28b612576",
+      "name": "palette_level_07",
+      "region": "palettes",
+      "address": "0x1295E"
+    },
+    {
+      "path": "palettes/level-08.bin",
+      "size": 32,
+      "sha1": "54c01ba61b25ad7f1c6b63496cf8deb6259991ea",
+      "name": "palette_level_08",
+      "region": "palettes",
+      "address": "0x1297E"
+    },
+    {
+      "path": "palettes/level-09.bin",
+      "size": 32,
+      "sha1": "7a9def11033790ff8bb79a148e0d4e42ffe8775a",
+      "name": "palette_level_09",
+      "region": "palettes",
+      "address": "0x1299E"
+    },
+    {
+      "path": "palettes/level-10.bin",
+      "size": 32,
+      "sha1": "b9a95c5143798f896e4caacd5259c6fb162fc331",
+      "name": "palette_level_10",
+      "region": "palettes",
+      "address": "0x129BE"
+    },
+    {
+      "path": "palettes/level-11.bin",
+      "size": 32,
+      "sha1": "acba115eadf1746837a1125b2bc1b4853b49c31c",
+      "name": "palette_level_11",
+      "region": "palettes",
+      "address": "0x129DE"
+    },
+    {
+      "path": "palettes/sega-fade.bin",
+      "size": 40,
+      "sha1": "6694d47504d531ef5684d978d527c35d4bf0b54b",
+      "name": "palette_sega_fade",
+      "region": "palettes",
+      "address": "0x4B4"
+    },
+    {
+      "path": "palettes/shared-compact.bin",
+      "size": 112,
+      "sha1": "b87c2c6c8876ddec4f3064762d7efefeeafdc7e5",
+      "name": "palette_shared_compact",
+      "region": "palettes",
+      "address": "0x16DE8"
+    },
+    {
+      "path": "palettes/title-logo.bin",
+      "size": 16,
+      "sha1": "5807429052854fa38001c89917aeece3bd42ae4b",
+      "name": "palette_title_logo",
+      "region": "palettes",
+      "address": "0x1210C"
+    }
+  ]
+}

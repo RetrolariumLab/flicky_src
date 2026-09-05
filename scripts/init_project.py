@@ -1,96 +1,105 @@
 #!/usr/bin/env python3
-"""
-Initialize Flicky project from original ROM.
+"""Initialize the project: validate the reference ROM, extract data, verify the build."""
 
-Steps:
-1. Check original ROM exists
-2. Extract data segments from original ROM
-3. Build ROM from source
-4. Create reference ROM (copy of first build)
-"""
+from __future__ import annotations
 
-import os
-import sys
-import shutil
 import argparse
+import hashlib
+import json
 import subprocess
+import sys
+from pathlib import Path
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Initialize Flicky project')
-    parser.add_argument('--orig-rom', required=True, help='Original ROM file')
-    parser.add_argument('--ref-rom', required=True, help='Reference ROM file (output)')
-    parser.add_argument('--data-dir', required=True, help='Data directory')
-    parser.add_argument('--data-addrs', required=True, help='Data addresses file')
-    parser.add_argument('--source', required=True, help='Assembly source file')
-    parser.add_argument('--output', required=True, help='Output ROM file')
-    parser.add_argument('--as-bin', required=True, help='AS assembler binary')
-    parser.add_argument('--p2bin', required=True, help='P2BIN converter')
-    parser.add_argument('--as-args', default='', help='AS assembler arguments')
+def fail(message: str) -> None:
+    print(f"[ERROR] {message}", file=sys.stderr)
+    raise SystemExit(1)
 
+
+def step(number: int, total: int, title: str) -> None:
+    print(f"\n[RUN] Step {number}/{total}: {title}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--orig-rom", default="Flicky (UE) [!].bin", help="Reference ROM")
+    parser.add_argument("--manifest", default="assets/manifest.json", help="Asset manifest")
+    parser.add_argument("--data-dir", default="data", help="Data directory")
+    parser.add_argument("--data-addrs", default="data/data_addrs.txt", help="Segment addresses")
+    parser.add_argument("--source", default="flicky.s", help="Assembly source")
+    parser.add_argument("--output", default="fbuilt.bin", help="Output ROM")
+    parser.add_argument("--as-bin", default="bin/asw.exe", help="AS assembler")
+    parser.add_argument("--p2bin", default="bin/p2bin.exe", help="p2bin converter")
+    parser.add_argument("--as-args", default="-maxerrors 2", help="AS arguments")
     args = parser.parse_args()
 
-    # Step 1: Check original ROM exists
-    if not os.path.exists(args.orig_rom):
-        print()
-        print('ERROR: Original ROM not found!')
-        print()
-        print('Please place the original ROM file in the project root:')
-        print(f'  {args.orig_rom}')
-        print()
-        return 1
+    scripts_dir = Path(__file__).resolve().parent
+    rom_path = Path(args.orig_rom)
 
-    print('=== Initializing project ===')
-    print()
+    step(1, 3, "Validating the reference ROM")
+    if not rom_path.is_file():
+        fail(
+            f"Reference ROM not found: {rom_path}\n"
+            "        Place a legally obtained cartridge dump in the project root."
+        )
+    manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+    reference = manifest["reference_rom"]
+    data = rom_path.read_bytes()
+    digest = hashlib.sha1(data).hexdigest()
+    if digest != reference["sha1"]:
+        fail(
+            f"{rom_path.name} is not the supported revision.\n"
+            f"        expected SHA1 {reference['sha1']} ({reference['name']})\n"
+            f"        actual   SHA1 {digest}"
+        )
+    print(f"[OK] {rom_path.name}: {len(data)} bytes, SHA1 {digest}")
 
-    # Step 2: Extract data segments
-    print('Step 1: Extracting data from original ROM...')
-    scripts_dir = os.path.dirname(os.path.abspath(__file__))
-    split_script = os.path.join(scripts_dir, 'split_data_from_rom.py')
-
-    result = subprocess.run([
-        sys.executable, split_script,
-        '--rom-file', args.orig_rom,
-        '--output', args.data_dir,
-        '--addrs', args.data_addrs
-    ])
-
+    step(2, 3, "Extracting data segments from the reference ROM")
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(scripts_dir / "split_data_from_rom.py"),
+            "--rom-file", str(rom_path),
+            "--output", args.data_dir,
+            "--addrs", args.data_addrs,
+        ]
+    )
     if result.returncode != 0:
-        print('ERROR: Failed to extract data!')
-        return 1
-    print()
+        fail("Data extraction failed")
 
-    # Step 3: Build ROM from source
-    print('Step 2: Building ROM from source...')
-    build_script = os.path.join(scripts_dir, 'build_rom.py')
-
-    result = subprocess.run([
-        sys.executable, build_script,
-        '--source', args.source,
-        '--output', args.output,
-        '--as-bin', args.as_bin,
-        '--p2bin', args.p2bin,
-        '--as-args', args.as_args
-    ])
-
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(scripts_dir / "check_assets.py"),
+            "--manifest", args.manifest,
+            "--asset-dir", args.data_dir,
+        ]
+    )
     if result.returncode != 0:
-        print('ERROR: Failed to build ROM!')
-        return 1
-    print()
+        fail("Extracted segments do not match the manifest")
 
-    # Step 4: Create reference ROM (copy of first build)
-    print('Step 3: Creating reference ROM...')
-    shutil.copy2(args.output, args.ref_rom)
-    print(f'  {args.output} -> {args.ref_rom}')
-    print()
+    step(3, 3, "Building and verifying the ROM")
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(scripts_dir / "build_rom.py"),
+            "--source", args.source,
+            "--output", args.output,
+            "--manifest", args.manifest,
+            "--original-rom", str(rom_path),
+            "--as-bin", args.as_bin,
+            "--p2bin", args.p2bin,
+            "--as-args", args.as_args,
+            "--verify",
+        ]
+    )
+    if result.returncode != 0:
+        fail("The build does not reproduce the reference ROM")
 
-    print('=== Project initialized successfully! ===')
-    print()
-    print('Reference ROM created. You can now:')
-    print('  make build   - Build ROM from source')
-    print('  make compare - Compare with reference')
+    print("\n[OK] Project initialized. The source reproduces the reference ROM byte for byte.")
+    print("[INFO] Next: 'make verify' after every change; 'make help' lists the workflow.")
     return 0
 
 
-if __name__ == '__main__':
-    sys.exit(main())
+if __name__ == "__main__":
+    raise SystemExit(main())

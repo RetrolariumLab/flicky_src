@@ -1,0 +1,28 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# AS assembler sources. Labels sit at column zero; operands are aligned to
+# column 17 (16 leading spaces). See docs/assembly_style.md.
+[*.{s,inc}]
+indent_style = space
+indent_size = 16
+tab_width = 16
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+[*.{c,h}]
+indent_style = space
+indent_size = 4
+
+[{Makefile,*.mk}]
+indent_style = tab
+
+[*.md]
+trim_trailing_whitespace = false

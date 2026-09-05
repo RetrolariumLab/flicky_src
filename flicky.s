@@ -225,10 +225,9 @@ checksum_loop:
                 add.w   (a0)+,d0
                 dbf     d2,checksum_loop
                 dbf     d1,checksum_loop
-                bra.w   CheckSumOk       ; Checksum verification disabled for analysis
-                nop                      ; (padding to maintain ROM structure)
-                nop
-                nop
+                cmp.w   (Checksum).w,d0
+                beq.s   CheckSumOk
+                bra.w   CheckSumError
 
 CheckSumOk:
                 btst    #6,(IO_EXT_CTRL+1).l
