@@ -11,7 +11,7 @@
   },
   "release_kind": "preservation",
   "tag": "source-reconstruction-1.0",
-  "status": "development",
+  "status": "tag-ready",
   "predecessor": null,
   "predecessor_note": "First release of this project. The delta below is the whole reachable history, 5243c89 to the release commit.",
   "reference": {
