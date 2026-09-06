@@ -203,5 +203,34 @@ class Pruning(unittest.TestCase):
             )
 
 
+class CaptureProvenance(unittest.TestCase):
+    def test_it_records_the_emulator_and_the_rom(self):
+        # The emulator is pinned by commit rather than hash, so the capture has
+        # to say which binary it actually came from.
+        with tempfile.TemporaryDirectory() as tmp:
+            gens = Path(tmp) / "Gens.exe"
+            gens.write_bytes(b"an emulator build")
+            rom = Path(tmp) / "fbuilt.bin"
+            rom.write_bytes(b"a rom")
+            info = run_runtime_scenarios.capture_provenance(
+                gens, rom, Path("scenarios/runtime_scenarios.json")
+            )
+        self.assertEqual(info["emulator"]["size"], len(b"an emulator build"))
+        self.assertRegex(info["emulator"]["sha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(info["rom"]["sha1"], r"^[0-9a-f]{40}$")
+
+    def test_the_recorded_hash_changes_with_the_binary(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rom = Path(tmp) / "fbuilt.bin"
+            rom.write_bytes(b"a rom")
+            digests = set()
+            for content in (b"build one", b"build two"):
+                gens = Path(tmp) / "Gens.exe"
+                gens.write_bytes(content)
+                digests.add(run_runtime_scenarios.capture_provenance(
+                    gens, rom, Path("x.json"))["emulator"]["sha256"])
+        self.assertEqual(len(digests), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -204,8 +204,14 @@ def main() -> int:
     if args.summary:
         summary = Path(args.summary)
         summary.parent.mkdir(parents=True, exist_ok=True)
+        # The capture's own provenance travels with the result, so a summary
+        # always says which emulator build and which ROM produced it.
+        info = capture_root / "capture_info.json"
+        payload: dict = {"results": results}
+        if info.is_file():
+            payload["capture"] = json.loads(info.read_text(encoding="utf-8"))
         summary.write_text(
-            json.dumps({"results": results}, indent=2) + "\n", encoding="utf-8", newline=""
+            json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline=""
         )
 
     if failures:

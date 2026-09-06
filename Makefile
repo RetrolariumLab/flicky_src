@@ -52,6 +52,7 @@ RUNTIME_SCENARIOS ?= scenarios/runtime_scenarios.json
 RUNTIME_DIR ?= build/runtime
 RUNTIME_SUMMARY ?= build/runtime_scenarios.json
 RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
+TOOLCHAIN_MANIFEST ?= config/toolchain.json
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -83,9 +84,13 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify init split check-assets compare lint format tools unpack-data \n        roundtrip-formats symbols trace trace-runtime validate-runtime \n        test release-audit release-check clean \
+.PHONY: all build verify verify-toolchain init split check-assets \
+        compare lint format tools unpack-data \
+        roundtrip-formats symbols trace trace-runtime validate-runtime \
+        test release-audit release-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
-        prepare-batch rename build-gens stop help _require-assets _require-movie
+        prepare-batch rename build-gens stop help \
+        _require-assets _require-movie _require-toolchain
 
 all: build
 
@@ -94,14 +99,14 @@ all: build
 # ---------------------------------------------------------------------------
 
 # Assemble and report byte identity as a warning.
-build: _require-assets
+build: _require-assets _require-toolchain
 	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
 		--source $(SRC) --output $(ROM) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # The permanent gate: any difference from the reference ROM fails the build.
-verify: _require-assets
+verify: _require-assets _require-toolchain
 	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
 		--source $(SRC) --output $(ROM) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
@@ -129,6 +134,13 @@ check-assets:
 _require-assets:
 	@$(PYTHON) $(SCRIPTS_DIR)/check_assets.py \
 		--manifest $(ASSET_MANIFEST) --asset-dir $(DATA_DIR)
+
+# The assembler is checked before it is used, not after the ROM disagrees.
+verify-toolchain:
+	@$(PYTHON) $(SCRIPTS_DIR)/verify_toolchain.py --config $(TOOLCHAIN_MANIFEST)
+
+_require-toolchain:
+	@$(PYTHON) $(SCRIPTS_DIR)/verify_toolchain.py --config $(TOOLCHAIN_MANIFEST)
 
 # Compare an existing build without reassembling.
 compare:
@@ -163,6 +175,8 @@ release-audit:
 # The complete acceptance gate, in increasing cost. Recursive $(MAKE) calls
 # keep the order explicit even under a parallel build.
 release-check:
+	$(MAKE) verify-toolchain
+	$(MAKE) check-assets
 	$(MAKE) lint
 	$(MAKE) test
 	$(MAKE) roundtrip-formats
@@ -318,6 +332,7 @@ help:
 	@echo "  make clean                     Remove build artifacts"
 	@echo ""
 	@echo "Validation:"
+	@echo "  make verify-toolchain          Hash-check the vendored assembler"
 	@echo "  make lint                      Style, naming and repository checks"
 	@echo "  make format                    Apply the deterministic fixes, then lint"
 	@echo "  make test                      Unit tests for the Python tooling"

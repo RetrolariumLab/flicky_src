@@ -40,6 +40,26 @@ def check_inputs(spec: dict, rom: Path) -> None:
             fail(f"movie {name} does not match the SHA-1 the scenarios pin")
 
 
+def capture_provenance(gens: Path, rom: Path, scenarios: Path) -> dict:
+    """Record which binaries produced a capture.
+
+    The emulator is pinned by upstream commit rather than by hash, because it is
+    cross-built locally and a MinGW PE has no stable one. That makes it worth
+    writing down the hash of the build that actually ran: the commit says which
+    source, this says which binary, and a capture nobody can attribute is not
+    evidence.
+    """
+    return {
+        "emulator": {
+            "path": str(gens),
+            "size": gens.stat().st_size,
+            "sha256": hashlib.sha256(gens.read_bytes()).hexdigest(),
+        },
+        "rom": {"path": str(rom), "sha1": sha1_of(rom)},
+        "scenarios": str(scenarios),
+    }
+
+
 def prune_to_window(directory: Path, first: int, last: int) -> tuple[int, int]:
     """Delete captures outside the scenario's frame range.
 
@@ -92,6 +112,14 @@ def main() -> int:
             fail(f"no scenario with id {args.only}")
 
     output_root = Path(args.output_dir)
+    output_root.mkdir(parents=True, exist_ok=True)
+    provenance = capture_provenance(gens, Path(args.rom), Path(args.scenarios))
+    (output_root / "capture_info.json").write_text(
+        json.dumps(provenance, indent=2) + "\n", encoding="utf-8", newline=""
+    )
+    print(f"[INFO] emulator sha256 {provenance['emulator']['sha256'][:16]}..., "
+          f"recorded in {output_root / 'capture_info.json'}")
+
     capture = spec["capture"]
     failures = 0
 
