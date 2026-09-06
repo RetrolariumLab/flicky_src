@@ -89,7 +89,7 @@
       "version": "docker-mingw-build",
       "role": "Replays the recorded movies for the runtime evidence layer",
       "source": "https://github.com/oranguthang/gens_automation.git",
-      "source_commit": "852b6a8406a8f1c901f751f134bb9bab9b63f56b",
+      "source_commit": "a97abb671a0a17f3c1541372ed08683a586d72c2",
       "provenance": "source-built",
       "verification": "make verify-toolchain",
       "identity": "source_commit",
