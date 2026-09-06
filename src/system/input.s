@@ -1,14 +1,14 @@
-; Joypad initialization and polling.
-; ROM $000DC0-$000E41.
+; Joypad initialization and polling
+; ROM $000DC0-$000E41
 
 Input_ProcessJoypads:
-                bsr.w   InitJoypads  ; was: sub_DC0
+                bsr.w   InitJoypads                     ; was: sub_DC0
                 lea     (Ram_ButtonStates).w,a0
                 move.w  (Ram_Joypad).w,d0
                 moveq   #$E,d1
                 moveq   #6,d2
 
-Input_ProcessJoypads_UpperBitLoop:  ; was: loc_DD0
+Input_ProcessJoypads_UpperBitLoop:                      ; was: loc_DD0
                 btst    d1,d0
                 sne     (a0)+
                 subq.b  #1,d1
@@ -16,18 +16,18 @@ Input_ProcessJoypads_UpperBitLoop:  ; was: loc_DD0
                 moveq   #6,d1
                 moveq   #2,d2
 
-Input_ProcessJoypads_LowerBitLoop:  ; was: loc_DDE
+Input_ProcessJoypads_LowerBitLoop:                      ; was: loc_DDE
                 btst    d1,d0
                 sne     (a0)+
                 subq.b  #1,d1
                 dbf     d2,Input_ProcessJoypads_LowerBitLoop
                 andi.b  #$70,d0
                 sne     (a0)+
-                tst.b   (Ram_ButtonRepeatEnable).w  ; !(UNKNOWN) RAM-003 nothing ever sets this
+                tst.b   (Ram_ButtonRepeatEnable).w      ; !(UNKNOWN) RAM-003 nothing ever sets this
                 beq.s   Input_ProcessJoypads_Return
                 clr.b   (Ram_ButtonRepeatFlag).w
 
-Input_ProcessJoypads_Return:  ; was: locret_DF8
+Input_ProcessJoypads_Return:                            ; was: locret_DF8
                 rts
 
 InitJoypads:
@@ -41,7 +41,7 @@ InitJoypads:
 
 ; Reads controller port with 6-button protocol
 Input_ReadPort:
-                move.b  #0,(a1)  ; was: sub_E12
+                move.b  #0,(a1)                         ; was: sub_E12
                 nop
                 nop
                 move.b  (a1),d0

@@ -18,21 +18,49 @@ a byte is wrong by definition.
 
 ## Layout
 
-- A label starts at column zero and ends with `:`.
-- Instructions, directives and data live at **column 17** (16 leading spaces),
-  whether they follow a label on the same line or stand alone.
+Four columns, and every one of them is on an eight-column grid:
 
-Both label forms are in use and both are correct. A label on its own line marks
-an entry point that the following block belongs to; a label sharing its line
-with data marks the datum itself.
+| Column | What sits there |
+| ---: | --- |
+| 0 | Labels, and the names in `equ`, `set` and `macro` definitions |
+| 16 | The mnemonic or directive |
+| 24 | Its operand |
+| 56 | Inline comments |
 
 ```asm
 Gfx_ClearSpriteArea:
-                move.w  #$B000,d2
+                move.w  #$B000,d2                       ; sprite table base
                 moveq   #0,d0
-
-Checksum:       dc.w $B7E0
 ```
+
+A mnemonic that fills the field keeps a single space rather than pushing its
+operand out of line: `movea.l d1,a6`, not `movea.l  d1,a6`.
+
+Both label forms are in use and both are correct. A label on its own line marks
+an entry point that the following block belongs to; a label sharing its line
+with a directive marks the datum itself.
+
+### Where a shared column comes from
+
+A label that carries a directive does not simply pad to column 16 -- most
+labels here are longer than that. Instead, **a run of consecutive label lines
+shares one column**, the first tab stop that clears the longest name in the
+run:
+
+```asm
+Z80_CommandBlock:               equ     $A01C04         ; was: unk_A01C04
+Z80_MusicCommand:               equ     $A01C09         ; was: byte_A01C09
+Z80_SFXSlot0:                   equ     $A01C0A         ; was: byte_A01C0A
+```
+
+That is what makes `src/memory/ram.inc` read as a table of 194 addresses rather
+than as a column that steps between 16 and 24 line by line.
+
+A run is broken by a blank line, a comment or an instruction, so a long data
+label cannot drag an unrelated table to the right. A **bare label is
+transparent**: `src/data/art.s` alternates `Name: binclude ...` with `Name_End:`,
+and treating those end markers as separators would leave every include in a run
+of its own.
 
 - Inside a `macro` / `endm` block the body is indented one further level.
 
@@ -44,10 +72,12 @@ Checksum:       dc.w $B7E0
 
 ## Comments
 
-- One space after `;`.
-- Exactly two spaces before an inline comment. Inline comments are **not**
-  aligned to a shared column: alignment turns an edit to one line into a diff
-  across the whole block.
+- One space after `;`, and no period ending a comment.
+- Inline comments start at **column 56**. A line whose code already reaches
+  that column keeps two spaces and simply sticks out -- the alternative is
+  letting one long data table row push every comment in the file to the right.
+- A whole-line comment is indented in multiples of four.
+- A banner of repeated `;`, `-` or `=` is left exactly as written.
 - Prefer comments that explain intent, invariants, state transitions, data
   formats or hardware consequences. A comment that restates the instruction in
   English earns nothing.
@@ -55,7 +85,7 @@ Checksum:       dc.w $B7E0
 ```asm
 ; Clear the sprite attribute table and the sprite bookkeeping variables
 Gfx_ClearSpriteArea:
-                move.w  #$B000,d2  ; sprite table base in VRAM
+                move.w  #$B000,d2                       ; sprite table base
 ```
 
 - A renamed symbol keeps its original disassembly name as provenance on the
@@ -63,7 +93,14 @@ Gfx_ClearSpriteArea:
 
 ```asm
 Sys_GameEntryPoint:
-                move    #$2700,sr  ; was: sub_10000
+                move    #$2700,sr                       ; was: sub_10000
+```
+
+A renamed label keeps its marker on the label line rather than above it, and
+the comment column applies there like anywhere else:
+
+```asm
+Game_MainLoop_PostFrame:                                ; was: loc_12B5E
 ```
 
 ## Procedure contracts
@@ -99,6 +136,20 @@ Apply the deterministic fixes, then re-check:
 make format
 ```
 
-`make format` only normalizes whitespace, tabs, label layout and directive case.
-Semantic names, comments, contracts and data are a review responsibility; the
-formatter will not touch them.
+`make format` normalizes whitespace, tabs, label and comment columns, and the
+one comment detail it is allowed to rewrite: the space after `;` and a trailing
+period. Semantic names, comment *content*, contracts and data are a review
+responsibility; the formatter will not touch them.
+
+Two invariants make the formatter safe to run on the whole tree:
+
+- **It never changes the line count.** Formatting is whitespace and comment
+  text; adding or dropping a line would mean it is rewriting the program.
+- **It never reflows an operand.** Collapsing whitespace inside one once
+  rewrote the ROM header and moved 48,105 bytes, so the operand is copied
+  verbatim. The comment splitter is quote-aware for the same reason: the source
+  contains `dc.b "; 250 PTS.=      PTS.",0`, and splitting on the first
+  semicolon would turn that string into a comment.
+
+`make verify` is the arbiter either way. Reformatting all 47 sources for this
+style left the ROM byte-identical.

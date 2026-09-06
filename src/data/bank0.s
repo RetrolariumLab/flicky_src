@@ -1,5 +1,5 @@
-; First Z80 driver image, function table, Japanese 1bpp font.
-; ROM $001316-$00FFFF.
+; First Z80 driver image, function table, Japanese 1bpp font
+; ROM $001316-$00FFFF
 
 ; !(UNKNOWN) SND-001 the Z80 driver is copied verbatim, not disassembled
 z80_part1:      binclude "data/sound/data_z80_part1.bin"
@@ -65,6 +65,6 @@ func_table:     dc.w    $39
                 dc.w    Gfx_LoadFullTilemap
 Jap1BPPTiles:   binclude "data/artunc/data_Jap1BPPTiles.bin"
 Jap1BPPTiles_End:
-empty_block_1:  ; dc.b [$D6F6]$FF
+empty_block_1:                                          ; dc.b [$D6F6]$FF
                 org     $10000
 ; Main game entry point after Sega screen

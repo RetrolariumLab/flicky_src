@@ -310,7 +310,8 @@ rename:
 	@$(PYTHON) $(SCRIPTS_DIR)/rename_procedures.py \
 		--source $(SRC) --database $(WORKFLOW_DIR)/rename_batch.csv \
 		--report $(WORKFLOW_DIR)/analysis_report_$$(cat $(WORKFLOW_DIR)/.movie).csv
-	@echo "Renames applied. Review the diff, then run: make verify"
+	@echo "Renames applied. A new name can change a shared label column,"
+	@echo "so run: make format && make verify"
 
 # ---------------------------------------------------------------------------
 # Emulator checkout

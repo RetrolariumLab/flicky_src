@@ -1,288 +1,288 @@
-; Trailing data tables and the ROM tail.
-; ROM $01A196-$01FFFF.
+; Trailing data tables and the ROM tail
+; ROM $01A196-$01FFFF
 
-Level_BackgroundTileData0: dc.b    $22, 0  ; was: byte_1A196
-Level_BackgroundTileData1: dc.b    $22, 1  ; was: byte_1A198
-Level_BackgroundTileData2: dc.b    $22, 2  ; was: byte_1A19A
-Level_BackgroundTileData3: dc.b    $22, 3  ; was: byte_1A19C
-Level_BackgroundTileData4: dc.b    $22, 4  ; was: byte_1A19E
-Level_BackgroundTileData5: dc.b    0, 0  ; was: byte_1A1A0
-Level_UpperGroundData0: dc.w    $222B, $222C, $222D, $222E, $222F, $2230, $2231, $2232  ; was: word_1A1A2
-Level_UpperGroundData1: dc.w    $2233, $2234, $2235, $2236, $2237, $2238, $2239, $223A  ; was: word_1A1B2
-Level_UpperGroundData2: dc.w    $223B, $223C, $223D, $223E, $223F, $2240, $2241, $2242  ; was: word_1A1C2
-Level_UpperGroundData3: dc.w    $2243, $2244, $2245, $2246, $2247, $2248, $2249, $224A  ; was: word_1A1D2
-Level_UpperGroundData4: dc.w    $224B, $224C, $224D, $224E, $224F, $2250, $2251, $2252  ; was: word_1A1E2
-Level_UpperGroundData5: dc.w    $2253, $2205, $2205, $2205, $2254, $2255, $2256, $2257  ; was: word_1A1F2
-Level_LowerGroundData0: dc.w    $2258, $2258, $2258, $2258, $2258, $2258, $2258, $2258  ; was: word_1A202
-Level_LowerGroundData1: dc.w    $2259, $225A, $225B, $225C, $225D, $225E, $225F, $2260  ; was: word_1A212
-Level_LowerGroundData2: dc.w    $2261, $2262, $2263, $2264, $2265, $2240, $2241, $2266  ; was: word_1A222
-Level_LowerGroundData3: dc.w    $2267, $2268, $2269, $226A, $226B, $226C, $226D, $226E  ; was: word_1A232
-Level_LowerGroundData4: dc.w    $226F, $2270, $2271, $2272, $2273, $2274, $2275, $2276  ; was: word_1A242
-Level_LowerGroundData5: dc.w    $2277, $2277, $2277, $2277, $2278, $2279, $227A, $227B  ; was: word_1A252
-UI_EntryArrowData0: dc.w    $29E, $29F, $2A0  ; was: word_1A262
-UI_EntryArrowData2: dc.w    $2A1, $2A2, $2A3  ; was: word_1A268
-UI_EntryArrowData1: dc.w    $2A4, $2A5, $2A6  ; was: word_1A26E
-Level_BgObject0Data: dc.w    $62A7, $62A8, $62A9, $62AA, $62AB, $62AC, $62AD, $62AE, $62AF  ; was: word_1A274
-Level_BgObject2Data: dc.w    $62B0, $62B1, $62B2, $62B3, $62B4, $62B5  ; was: word_1A286
-Level_BgObject1Data: dc.w    $629A, $629B, $629C, $629D  ; was: word_1A292
-Level_BgObject3Data0: dc.w    $627C, $627D, $627E, $627F, $6280, $6281  ; was: word_1A29A
-Level_BgObject3Data1: dc.w    $6282, $6283, $6284, $6285, $6286, $6287  ; was: word_1A2A6
-Level_BgObject3Data2: dc.w    $6288, $6289, $628A, $628B, $628C, $628D  ; was: word_1A2B2
-Level_BgObject3Data3: dc.w    $628E, $628F, $6290, $6291, $6292, $6293  ; was: word_1A2BE
-Level_BgObject3Data4: dc.w    $6294, $6295, $6296, $6297, $6298, $6299  ; was: word_1A2CA
-Level_GroundTileData0: dc.w    $2200, $2215, $2216, $2217, $2218, $2217, $2216, $2217  ; was: word_1A2D6
-Level_GroundTileData1: dc.w    $2201, $2219, $221A, $221B, $221C, $221B, $221A, $221B  ; was: word_1A2E6
-Level_GroundTileData2: dc.w    $2202, $221D, $221E, $221F, $2220, $221F, $221E, $221F  ; was: word_1A2F6
-Level_GroundTileData3: dc.w    $2203, $2221, $2222, $2223, $2224, $2223, $2222, $2223  ; was: word_1A306
-Level_GroundTileData4: dc.w    $2204, $2225, $2226, $2227, $2228, $2227, $2226, $2227  ; was: word_1A316
-Level_GroundTileData5: dc.w    $2205, $2229, $2205, $2205, $222A, $2205, $2205, $2205  ; was: word_1A326
-Ending_GraphicsMap1: dc.w    $2B6, $2B7, $2B8, $2B9, $2BA, $2BB, $2BC, $2BD  ; was: word_1A336
+Level_BackgroundTileData0:      dc.b    $22, 0          ; was: byte_1A196
+Level_BackgroundTileData1:      dc.b    $22, 1          ; was: byte_1A198
+Level_BackgroundTileData2:      dc.b    $22, 2          ; was: byte_1A19A
+Level_BackgroundTileData3:      dc.b    $22, 3          ; was: byte_1A19C
+Level_BackgroundTileData4:      dc.b    $22, 4          ; was: byte_1A19E
+Level_BackgroundTileData5:      dc.b    0, 0            ; was: byte_1A1A0
+Level_UpperGroundData0:         dc.w    $222B, $222C, $222D, $222E, $222F, $2230, $2231, $2232  ; was: word_1A1A2
+Level_UpperGroundData1:         dc.w    $2233, $2234, $2235, $2236, $2237, $2238, $2239, $223A  ; was: word_1A1B2
+Level_UpperGroundData2:         dc.w    $223B, $223C, $223D, $223E, $223F, $2240, $2241, $2242  ; was: word_1A1C2
+Level_UpperGroundData3:         dc.w    $2243, $2244, $2245, $2246, $2247, $2248, $2249, $224A  ; was: word_1A1D2
+Level_UpperGroundData4:         dc.w    $224B, $224C, $224D, $224E, $224F, $2250, $2251, $2252  ; was: word_1A1E2
+Level_UpperGroundData5:         dc.w    $2253, $2205, $2205, $2205, $2254, $2255, $2256, $2257  ; was: word_1A1F2
+Level_LowerGroundData0:         dc.w    $2258, $2258, $2258, $2258, $2258, $2258, $2258, $2258  ; was: word_1A202
+Level_LowerGroundData1:         dc.w    $2259, $225A, $225B, $225C, $225D, $225E, $225F, $2260  ; was: word_1A212
+Level_LowerGroundData2:         dc.w    $2261, $2262, $2263, $2264, $2265, $2240, $2241, $2266  ; was: word_1A222
+Level_LowerGroundData3:         dc.w    $2267, $2268, $2269, $226A, $226B, $226C, $226D, $226E  ; was: word_1A232
+Level_LowerGroundData4:         dc.w    $226F, $2270, $2271, $2272, $2273, $2274, $2275, $2276  ; was: word_1A242
+Level_LowerGroundData5:         dc.w    $2277, $2277, $2277, $2277, $2278, $2279, $227A, $227B  ; was: word_1A252
+UI_EntryArrowData0:             dc.w    $29E, $29F, $2A0  ; was: word_1A262
+UI_EntryArrowData2:             dc.w    $2A1, $2A2, $2A3  ; was: word_1A268
+UI_EntryArrowData1:             dc.w    $2A4, $2A5, $2A6  ; was: word_1A26E
+Level_BgObject0Data:            dc.w    $62A7, $62A8, $62A9, $62AA, $62AB, $62AC, $62AD, $62AE, $62AF  ; was: word_1A274
+Level_BgObject2Data:            dc.w    $62B0, $62B1, $62B2, $62B3, $62B4, $62B5  ; was: word_1A286
+Level_BgObject1Data:            dc.w    $629A, $629B, $629C, $629D  ; was: word_1A292
+Level_BgObject3Data0:           dc.w    $627C, $627D, $627E, $627F, $6280, $6281  ; was: word_1A29A
+Level_BgObject3Data1:           dc.w    $6282, $6283, $6284, $6285, $6286, $6287  ; was: word_1A2A6
+Level_BgObject3Data2:           dc.w    $6288, $6289, $628A, $628B, $628C, $628D  ; was: word_1A2B2
+Level_BgObject3Data3:           dc.w    $628E, $628F, $6290, $6291, $6292, $6293  ; was: word_1A2BE
+Level_BgObject3Data4:           dc.w    $6294, $6295, $6296, $6297, $6298, $6299  ; was: word_1A2CA
+Level_GroundTileData0:          dc.w    $2200, $2215, $2216, $2217, $2218, $2217, $2216, $2217  ; was: word_1A2D6
+Level_GroundTileData1:          dc.w    $2201, $2219, $221A, $221B, $221C, $221B, $221A, $221B  ; was: word_1A2E6
+Level_GroundTileData2:          dc.w    $2202, $221D, $221E, $221F, $2220, $221F, $221E, $221F  ; was: word_1A2F6
+Level_GroundTileData3:          dc.w    $2203, $2221, $2222, $2223, $2224, $2223, $2222, $2223  ; was: word_1A306
+Level_GroundTileData4:          dc.w    $2204, $2225, $2226, $2227, $2228, $2227, $2226, $2227  ; was: word_1A316
+Level_GroundTileData5:          dc.w    $2205, $2229, $2205, $2205, $222A, $2205, $2205, $2205  ; was: word_1A326
+Ending_GraphicsMap1:            dc.w    $2B6, $2B7, $2B8, $2B9, $2BA, $2BB, $2BC, $2BD  ; was: word_1A336
                 dc.w    $2BE, $2BF, $2C0, $2C1, $2C2, $2C3, $2C4
-Ending_GraphicsMap0: dc.w    $2C5, $2C6, $2C7, $205, $2C8, $2C9, $2CA, $2CB  ; was: word_1A354
+Ending_GraphicsMap0:    dc.w    $2C5, $2C6, $2C7, $205, $2C8, $2C9, $2CA, $2CB  ; was: word_1A354
                 dc.w    $2CC, $2CD, $2CE, $2CF, $2D0, $2D1, $2D2, $2D3
-Ending_GraphicsMap2: dc.w    $205, $205, $2D4, $2D5, $2D6, $2D7, $2D8, $2D9  ; was: word_1A374
+Ending_GraphicsMap2:    dc.w    $205, $205, $2D4, $2D5, $2D6, $2D7, $2D8, $2D9  ; was: word_1A374
                 dc.w    $2DA, $2DB, $2DC, $2DD, $2DE, $205, $205
-Level_BgObject5Data1: dc.w    $2DF, $2E0, $2E1, $205, $2E2, $2E3, $2E4, $205  ; was: word_1A392
+Level_BgObject5Data1:   dc.w    $2DF, $2E0, $2E1, $205, $2E2, $2E3, $2E4, $205  ; was: word_1A392
                 dc.w    $2E5, $2E6, $2E7, $205, $205, $205, $205, $205
-Level_BgObject5Data2: dc.w    $2E8, $2E9, $2EA, $205, $2EB, $2EC, $2ED, $205  ; was: word_1A3B2
+Level_BgObject5Data2:   dc.w    $2E8, $2E9, $2EA, $205, $2EB, $2EC, $2ED, $205  ; was: word_1A3B2
                 dc.w    $2EE, $2EF, $2F0, $205, $205, $205, $205, $205
-Level_BgObject4Data2: dc.w    $2F1, $2F2, $2F3, $2F4, $2F5, $2F6, $2F7, $2F8  ; was: word_1A3D2
+Level_BgObject4Data2:   dc.w    $2F1, $2F2, $2F3, $2F4, $2F5, $2F6, $2F7, $2F8  ; was: word_1A3D2
                 dc.w    $2F9, $2FA, $205, $205, $205, $205, $205
-Level_BgObject5Data3: dc.w    $2FB, $2FC, $2FD, $2FE, $2FF, $300, $301, $302  ; was: word_1A3F0
+Level_BgObject5Data3:   dc.w    $2FB, $2FC, $2FD, $2FE, $2FF, $300, $301, $302  ; was: word_1A3F0
                 dc.w    $303, $304, $305, $306, $307, $308, $309, $30A
-Level_BgObject4Data4: dc.w    $30B, $30C, $30D, $30E, $30F, $310, $311, $312  ; was: word_1A410
+Level_BgObject4Data4:   dc.w    $30B, $30C, $30D, $30E, $30F, $310, $311, $312  ; was: word_1A410
                 dc.w    $313, $314, $315, $316, $317, $318, $319
-Level_BgObject5Data4: dc.w    $31A, $31B, $31C, $31D, $31E, $31F, $320, $321  ; was: word_1A42E
+Level_BgObject5Data4:   dc.w    $31A, $31B, $31C, $31D, $31E, $31F, $320, $321  ; was: word_1A42E
                 dc.w    $322, $323, $324, $325, $326, $327, $328, $329
-Level_BgObject4Data3: dc.w    $32A, $32A, $32A, 0, 0, 0, $32A, $32A  ; was: word_1A44E
+Level_BgObject4Data3:   dc.w    $32A, $32A, $32A, 0, 0, 0, $32A, $32A  ; was: word_1A44E
                 dc.w    $32A, $32A, $32A, $32A, $32A, $32A, 0
-UI_TimerData1:  dc.w    $632B, $632C, $632D, $632E, $632F, $6330, $6331, $6332, $6333  ; was: word_1A46C
-UI_TimerData2:  dc.w    $6334, $6335, $6336, $6337, $6335, $6338, $6339, $6335, $633A  ; was: word_1A47E
-UI_TimerData0:  dc.w    $633B, $6205, $633C, $633D, $6205, $633E, $633F, $6205, $6340  ; was: word_1A490
-UI_CatCountReverseData3: dc.w    $6341, $6205, $6342, $6343, $6205, $6344, $6345, $6205, $6346  ; was: word_1A4A2
-Level_DrawCatDoorData: dc.w    $347, $348, $349, $34A, $34B, $34C, $34D, $34E, $34F, $351, $4350  ; was: word_1A4B4
-UI_Draw1UPAndHILabelsData0: dc.w    $8352, $8353, $8354, $8353  ; was: word_1A4CA
-UI_Draw1UPAndHILabelsData1: dc.w    $8355, $8356, $8353, 0, 0, $2A, $F8, 0, 0, $300, $F8  ; was: word_1A4D2
-Chick_ThrownAnim0Data0: dc.w    4, $F804, $6456, $F8F8  ; was: word_1A4E8
-Chick_ThrownAnim0Data3: dc.w    4, $F804, $7456, $F8F8  ; was: word_1A4F0
-Chick_ThrownAnim0Data1: dc.w    4, $F401, $6458, $FCFC  ; was: word_1A4F8
-Chick_ThrownAnim0Data5: dc.w    4, $F401, $6C58, $FCFC  ; was: word_1A500
-Chick_ThrownAnim0Data2: dc.w    4, $F401, $7458, $FCFC  ; was: word_1A508
-Chick_ThrownAnim0Data4: dc.w    4, $F401, $7C58, $FCFC  ; was: word_1A510
-Chick_ThrownAnim1Data0: dc.w    4, $F804, $645A, $F8F8  ; was: word_1A518
-Chick_ThrownAnim1Data3: dc.w    4, $F804, $745A, $F8F8  ; was: word_1A520
-Chick_ThrownAnim1Data1: dc.w    4, $F401, $645C, $FCFC  ; was: word_1A528
-Chick_ThrownAnim1Data5: dc.w    4, $F401, $6C5C, $FCFC  ; was: word_1A530
-Chick_ThrownAnim1Data2: dc.w    4, $F401, $745C, $FCFC  ; was: word_1A538
-Chick_ThrownAnim1Data4: dc.w    4, $F401, $7C5C, $FCFC  ; was: word_1A540
-Chick_ThrownAnim2Data0: dc.w    4, $F804, $645E, $F8F8  ; was: word_1A548
-Chick_ThrownAnim2Data3: dc.w    4, $F804, $745E, $F8F8  ; was: word_1A550
-Chick_ThrownAnim2Data1: dc.w    4, $F401, $6460, $FCFC  ; was: word_1A558
-Chick_ThrownAnim2Data5: dc.w    4, $F401, $6C60, $FCFC  ; was: word_1A560
-Chick_ThrownAnim2Data2: dc.w    4, $F401, $7460, $FCFC  ; was: word_1A568
-Chick_ThrownAnim2Data4: dc.w    4, $F401, $7C60, $FCFC  ; was: word_1A570
-Chick_ThrownAnim3Data0: dc.w    4, $F804, $6462, $F8F8  ; was: word_1A578
-Chick_ThrownAnim3Data3: dc.w    4, $F804, $7462, $F8F8  ; was: word_1A580
-Chick_ThrownAnim3Data1: dc.w    4, $F401, $6464, $FCFC  ; was: word_1A588
-Chick_ThrownAnim3Data5: dc.w    4, $F401, $6C64, $FCFC  ; was: word_1A590
-Chick_ThrownAnim3Data2: dc.w    4, $F401, $7464, $FCFC  ; was: word_1A598
-Chick_ThrownAnim3Data4: dc.w    4, $F401, $7C64, $FCFC  ; was: word_1A5A0
-Chick_ThrownAnim4Data0: dc.w    4, $F804, $6466, $F8F8  ; was: word_1A5A8
-Chick_ThrownAnim4Data3: dc.w    4, $F804, $7466, $F8F8  ; was: word_1A5B0
-Chick_ThrownAnim4Data1: dc.w    4, $F401, $6468, $FCFC  ; was: word_1A5B8
-Chick_ThrownAnim4Data5: dc.w    4, $F401, $6C68, $FCFC  ; was: word_1A5C0
-Chick_ThrownAnim4Data2: dc.w    4, $F401, $7468, $FCFC  ; was: word_1A5C8
-Chick_ThrownAnim4Data4: dc.w    4, $F401, $7C68, $FCFC  ; was: word_1A5D0
-Chick_ThrownAnim5Data0: dc.w    4, $F804, $646A, $F8F8  ; was: word_1A5D8
-Chick_ThrownAnim5Data3: dc.w    4, $F804, $746A, $F8F8  ; was: word_1A5E0
-Chick_ThrownAnim5Data1: dc.w    4, $F401, $646C, $FCFC  ; was: word_1A5E8
-Chick_ThrownAnim5Data5: dc.w    4, $F401, $6C6C, $FCFC  ; was: word_1A5F0
-Chick_ThrownAnim5Data2: dc.w    4, $F401, $746C, $FCFC  ; was: word_1A5F8
-Chick_ThrownAnim5Data4: dc.w    4, $F401, $7C6C, $FCFC  ; was: word_1A600
-Chick_ThrownAnim6Data0: dc.w    4, $F804, $646E, $F8F8  ; was: word_1A608
-Chick_ThrownAnim6Data3: dc.w    4, $F804, $746E, $F8F8  ; was: word_1A610
-Chick_ThrownAnim6Data1: dc.w    4, $F401, $6470, $FCFC  ; was: word_1A618
-Chick_ThrownAnim6Data5: dc.w    4, $F401, $6C70, $FCFC  ; was: word_1A620
-Chick_ThrownAnim6Data2: dc.w    4, $F401, $7470, $FCFC  ; was: word_1A628
-Chick_ThrownAnim6Data4: dc.w    4, $F401, $7C70, $FCFC  ; was: word_1A630
-Chick_ThrownAnim7Data0: dc.w    4, $F804, $6472, $F8F8  ; was: word_1A638
-Chick_ThrownAnim7Data3: dc.w    4, $F804, $7472, $F8F8  ; was: word_1A640
-Chick_ThrownAnim7Data1: dc.w    4, $F401, $6474, $FCFC  ; was: word_1A648
-Chick_ThrownAnim7Data5: dc.w    4, $F401, $6C74, $FCFC  ; was: word_1A650
-Chick_ThrownAnim7Data2: dc.w    4, $F401, $7474, $FCFC  ; was: word_1A658
-Chick_ThrownAnim7Data4: dc.w    4, $F401, $7C74, $FCFC  ; was: word_1A660
-Chick_ThrownAnim8Data0: dc.w    4, $F804, $6476, $F8F8  ; was: word_1A668
-Chick_ThrownAnim8Data3: dc.w    4, $F804, $7476, $F8F8  ; was: word_1A670
-Chick_ThrownAnim8Data1: dc.w    4, $F401, $6478, $FCFC  ; was: word_1A678
-Chick_ThrownAnim8Data5: dc.w    4, $F401, $6C78, $FCFC  ; was: word_1A680
-Chick_ThrownAnim8Data2: dc.w    4, $F401, $7478, $FCFC  ; was: word_1A688
-Chick_ThrownAnim8Data4: dc.w    4, $F401, $7C78, $FCFC  ; was: word_1A690
-Chick_ThrownAnim9Data0: dc.w    4, $F804, $647A, $F8F8  ; was: word_1A698
-Chick_ThrownAnim9Data3: dc.w    4, $F804, $747A, $F8F8  ; was: word_1A6A0
-Chick_ThrownAnim9Data1: dc.w    4, $F401, $647C, $FCFC  ; was: word_1A6A8
-Chick_ThrownAnim9Data5: dc.w    4, $F401, $6C7C, $FCFC  ; was: word_1A6B0
-Chick_ThrownAnim9Data2: dc.w    4, $F401, $747C, $FCFC  ; was: word_1A6B8
-Chick_ThrownAnim9Data4: dc.w    4, $F401, $7C7C, $FCFC  ; was: word_1A6C0
-Chick_ThrownAnim10Data0: dc.w    4, $F804, $647E, $F8F8  ; was: word_1A6C8
-Chick_ThrownAnim10Data3: dc.w    4, $F804, $747E, $F8F8  ; was: word_1A6D0
-Chick_ThrownAnim10Data1: dc.w    4, $F401, $6480, $FCFC  ; was: word_1A6D8
-Chick_ThrownAnim10Data5: dc.w    4, $F401, $6C80, $FCFC  ; was: word_1A6E0
-Chick_ThrownAnim10Data2: dc.w    4, $F401, $7480, $FCFC  ; was: word_1A6E8
-Chick_ThrownAnim10Data4: dc.w    4, $F401, $7C80, $FCFC  ; was: word_1A6F0
-Chick_ThrownAnim11Data0: dc.w    4, $F804, $6482, $F8F8  ; was: word_1A6F8
-Chick_ThrownAnim11Data3: dc.w    4, $F804, $7482, $F8F8  ; was: word_1A700
-Chick_ThrownAnim11Data1: dc.w    4, $F401, $6484, $FCFC  ; was: word_1A708
-Chick_ThrownAnim11Data5: dc.w    4, $F401, $6C84, $FCFC  ; was: word_1A710
-Chick_ThrownAnim11Data2: dc.w    4, $F401, $7484, $FCFC  ; was: word_1A718
-Chick_ThrownAnim11Data4: dc.w    4, $F401, $7C84, $FCFC  ; was: word_1A720
-Chick_ThrownAnim12Data0: dc.w    4, $F804, $6486, $F8F8  ; was: word_1A728
-Chick_ThrownAnim12Data3: dc.w    4, $F804, $7486, $F8F8  ; was: word_1A730
-Chick_ThrownAnim12Data1: dc.w    4, $F401, $6488, $FCFC  ; was: word_1A738
-Chick_ThrownAnim12Data5: dc.w    4, $F401, $6C88, $FCFC  ; was: word_1A740
-Chick_ThrownAnim12Data2: dc.w    4, $F401, $7488, $FCFC  ; was: word_1A748
-Chick_ThrownAnim12Data4: dc.w    4, $F401, $7C88, $FCFC  ; was: word_1A750
-Chick_ThrownAnim13Data0: dc.w    4, $F804, $648A, $F8F8  ; was: word_1A758
-Chick_ThrownAnim13Data3: dc.w    4, $F804, $748A, $F8F8  ; was: word_1A760
-Chick_ThrownAnim13Data1: dc.w    4, $F401, $648C, $FCFC  ; was: word_1A768
-Chick_ThrownAnim13Data5: dc.w    4, $F401, $6C8C, $FCFC  ; was: word_1A770
-Chick_ThrownAnim13Data2: dc.w    4, $F401, $748C, $FCFC  ; was: word_1A778
-Chick_ThrownAnim13Data4: dc.w    4, $F401, $7C8C, $FCFC  ; was: word_1A780
-Chick_ThrownAnim14Data0: dc.w    4, $F804, $648E, $F8F8  ; was: word_1A788
-Chick_ThrownAnim14Data3: dc.w    4, $F804, $748E, $F8F8  ; was: word_1A790
-Chick_ThrownAnim14Data1: dc.w    4, $F401, $6490, $FCFC  ; was: word_1A798
-Chick_ThrownAnim14Data5: dc.w    4, $F401, $6C90, $FCFC  ; was: word_1A7A0
-Chick_ThrownAnim14Data2: dc.w    4, $F401, $7490, $FCFC  ; was: word_1A7A8
-Chick_ThrownAnim14Data4: dc.w    4, $F401, $7C90, $FCFC  ; was: word_1A7B0
-Cat_WalkFrame0: dc.w    3, $F005, $4436, $F8F8  ; was: word_1A7B8
-Cat_WalkFrame1: dc.w    3, $F005, $443A, $F8F8  ; was: word_1A7C0
-Cat_WalkFrame2: dc.w    3, $F005, $4C36, $F8F8  ; was: word_1A7C8
-Cat_WalkFrame3: dc.w    3, $F005, $4C3A, $F8F8  ; was: word_1A7D0
-Cat_IdleFrame0: dc.w    6, $F005, $443E, $F8F8  ; was: word_1A7D8
-Cat_IdleFrame1: dc.w    6, $F005, $4442, $F8F8  ; was: word_1A7E0
-Cat_CarriedFrame0: dc.w    6, $F005, $4446, $F8F8  ; was: word_1A7E8
-Cat_CarriedFrame1: dc.w    6, $F005, $444A, $F8F8  ; was: word_1A7F0
-Cat_CarriedFrame2: dc.w    6, $F005, $444E, $F8F8  ; was: word_1A7F8
-Cat_StunnedFrame0: dc.w    6, $F001, $4452, $FCFC  ; was: word_1A800
-Cat_StunnedFrame1: dc.w    6, $F001, $4454, $FCFC  ; was: word_1A808
-Cat_StunnedFrame2: dc.w    6, $F001, $4C52, $FCFC  ; was: word_1A810
-Cat_WalkAltFrame0: dc.w    3, $F005, $4492, $F8F8  ; was: word_1A818
-Cat_WalkAltFrame1: dc.w    3, $F005, $4496, $F8F8  ; was: word_1A820
-Cat_WalkAltFrame2: dc.w    3, $F005, $4C92, $F8F8  ; was: word_1A828
-Cat_WalkAltFrame3: dc.w    3, $F005, $4C96, $F8F8  ; was: word_1A830
-Cat_IdleAltFrame0: dc.w    6, $F005, $449A, $F8F8  ; was: word_1A838
-Cat_IdleAltFrame1: dc.w    6, $F005, $449E, $F8F8  ; was: word_1A840
-Cat_CarriedAltFrame0: dc.w    6, $F005, $44A2, $F8F8  ; was: word_1A848
-Cat_CarriedAltFrame1: dc.w    6, $F005, $44A6, $F8F8  ; was: word_1A850
-Cat_CarriedAltFrame2: dc.w    6, $F005, $44AA, $F8F8  ; was: word_1A858
-Cat_StunnedAltFrame0: dc.w    6, $F001, $44AE, $FCFC  ; was: word_1A860
-Cat_StunnedAltFrame1: dc.w    6, $F001, $44B0, $FCFC  ; was: word_1A868
-Cat_StunnedAltFrame2: dc.w    6, $F001, $4CAE, $FCFC  ; was: word_1A870
-Player_DeathFrame0: dc.w    $FF, $F005, $4400, $F8F8  ; was: word_1A878
-Player_DeathFrame1: dc.w    $FF, $F005, $4404, $F8F8  ; was: word_1A880
-Player_DeathFrame2: dc.b    0, $FF, $F0, 5, $44, 8, $F8, $F8  ; was: byte_1A888
-Player_DeathFrame3: dc.w    $FF, $F005, $440C, $F8F8  ; was: word_1A890
-Guide_CharacterMap6: dc.w    0, $E806, $4410, $F8F8  ; was: word_1A898
-Player_UpdateAnim_BrakingData: dc.w    1, $F005, $4416, $F8F8  ; was: word_1A8A0
-Guide_CharacterMap11: dc.b    0, 0  ; was: byte_1A8A8
+UI_TimerData1:                  dc.w    $632B, $632C, $632D, $632E, $632F, $6330, $6331, $6332, $6333  ; was: word_1A46C
+UI_TimerData2:                  dc.w    $6334, $6335, $6336, $6337, $6335, $6338, $6339, $6335, $633A  ; was: word_1A47E
+UI_TimerData0:                  dc.w    $633B, $6205, $633C, $633D, $6205, $633E, $633F, $6205, $6340  ; was: word_1A490
+UI_CatCountReverseData3:        dc.w    $6341, $6205, $6342, $6343, $6205, $6344, $6345, $6205, $6346  ; was: word_1A4A2
+Level_DrawCatDoorData:          dc.w    $347, $348, $349, $34A, $34B, $34C, $34D, $34E, $34F, $351, $4350  ; was: word_1A4B4
+UI_Draw1UPAndHILabelsData0:     dc.w    $8352, $8353, $8354, $8353  ; was: word_1A4CA
+UI_Draw1UPAndHILabelsData1:     dc.w    $8355, $8356, $8353, 0, 0, $2A, $F8, 0, 0, $300, $F8  ; was: word_1A4D2
+Chick_ThrownAnim0Data0:         dc.w    4, $F804, $6456, $F8F8  ; was: word_1A4E8
+Chick_ThrownAnim0Data3:         dc.w    4, $F804, $7456, $F8F8  ; was: word_1A4F0
+Chick_ThrownAnim0Data1:         dc.w    4, $F401, $6458, $FCFC  ; was: word_1A4F8
+Chick_ThrownAnim0Data5:         dc.w    4, $F401, $6C58, $FCFC  ; was: word_1A500
+Chick_ThrownAnim0Data2:         dc.w    4, $F401, $7458, $FCFC  ; was: word_1A508
+Chick_ThrownAnim0Data4:         dc.w    4, $F401, $7C58, $FCFC  ; was: word_1A510
+Chick_ThrownAnim1Data0:         dc.w    4, $F804, $645A, $F8F8  ; was: word_1A518
+Chick_ThrownAnim1Data3:         dc.w    4, $F804, $745A, $F8F8  ; was: word_1A520
+Chick_ThrownAnim1Data1:         dc.w    4, $F401, $645C, $FCFC  ; was: word_1A528
+Chick_ThrownAnim1Data5:         dc.w    4, $F401, $6C5C, $FCFC  ; was: word_1A530
+Chick_ThrownAnim1Data2:         dc.w    4, $F401, $745C, $FCFC  ; was: word_1A538
+Chick_ThrownAnim1Data4:         dc.w    4, $F401, $7C5C, $FCFC  ; was: word_1A540
+Chick_ThrownAnim2Data0:         dc.w    4, $F804, $645E, $F8F8  ; was: word_1A548
+Chick_ThrownAnim2Data3:         dc.w    4, $F804, $745E, $F8F8  ; was: word_1A550
+Chick_ThrownAnim2Data1:         dc.w    4, $F401, $6460, $FCFC  ; was: word_1A558
+Chick_ThrownAnim2Data5:         dc.w    4, $F401, $6C60, $FCFC  ; was: word_1A560
+Chick_ThrownAnim2Data2:         dc.w    4, $F401, $7460, $FCFC  ; was: word_1A568
+Chick_ThrownAnim2Data4:         dc.w    4, $F401, $7C60, $FCFC  ; was: word_1A570
+Chick_ThrownAnim3Data0:         dc.w    4, $F804, $6462, $F8F8  ; was: word_1A578
+Chick_ThrownAnim3Data3:         dc.w    4, $F804, $7462, $F8F8  ; was: word_1A580
+Chick_ThrownAnim3Data1:         dc.w    4, $F401, $6464, $FCFC  ; was: word_1A588
+Chick_ThrownAnim3Data5:         dc.w    4, $F401, $6C64, $FCFC  ; was: word_1A590
+Chick_ThrownAnim3Data2:         dc.w    4, $F401, $7464, $FCFC  ; was: word_1A598
+Chick_ThrownAnim3Data4:         dc.w    4, $F401, $7C64, $FCFC  ; was: word_1A5A0
+Chick_ThrownAnim4Data0:         dc.w    4, $F804, $6466, $F8F8  ; was: word_1A5A8
+Chick_ThrownAnim4Data3:         dc.w    4, $F804, $7466, $F8F8  ; was: word_1A5B0
+Chick_ThrownAnim4Data1:         dc.w    4, $F401, $6468, $FCFC  ; was: word_1A5B8
+Chick_ThrownAnim4Data5:         dc.w    4, $F401, $6C68, $FCFC  ; was: word_1A5C0
+Chick_ThrownAnim4Data2:         dc.w    4, $F401, $7468, $FCFC  ; was: word_1A5C8
+Chick_ThrownAnim4Data4:         dc.w    4, $F401, $7C68, $FCFC  ; was: word_1A5D0
+Chick_ThrownAnim5Data0:         dc.w    4, $F804, $646A, $F8F8  ; was: word_1A5D8
+Chick_ThrownAnim5Data3:         dc.w    4, $F804, $746A, $F8F8  ; was: word_1A5E0
+Chick_ThrownAnim5Data1:         dc.w    4, $F401, $646C, $FCFC  ; was: word_1A5E8
+Chick_ThrownAnim5Data5:         dc.w    4, $F401, $6C6C, $FCFC  ; was: word_1A5F0
+Chick_ThrownAnim5Data2:         dc.w    4, $F401, $746C, $FCFC  ; was: word_1A5F8
+Chick_ThrownAnim5Data4:         dc.w    4, $F401, $7C6C, $FCFC  ; was: word_1A600
+Chick_ThrownAnim6Data0:         dc.w    4, $F804, $646E, $F8F8  ; was: word_1A608
+Chick_ThrownAnim6Data3:         dc.w    4, $F804, $746E, $F8F8  ; was: word_1A610
+Chick_ThrownAnim6Data1:         dc.w    4, $F401, $6470, $FCFC  ; was: word_1A618
+Chick_ThrownAnim6Data5:         dc.w    4, $F401, $6C70, $FCFC  ; was: word_1A620
+Chick_ThrownAnim6Data2:         dc.w    4, $F401, $7470, $FCFC  ; was: word_1A628
+Chick_ThrownAnim6Data4:         dc.w    4, $F401, $7C70, $FCFC  ; was: word_1A630
+Chick_ThrownAnim7Data0:         dc.w    4, $F804, $6472, $F8F8  ; was: word_1A638
+Chick_ThrownAnim7Data3:         dc.w    4, $F804, $7472, $F8F8  ; was: word_1A640
+Chick_ThrownAnim7Data1:         dc.w    4, $F401, $6474, $FCFC  ; was: word_1A648
+Chick_ThrownAnim7Data5:         dc.w    4, $F401, $6C74, $FCFC  ; was: word_1A650
+Chick_ThrownAnim7Data2:         dc.w    4, $F401, $7474, $FCFC  ; was: word_1A658
+Chick_ThrownAnim7Data4:         dc.w    4, $F401, $7C74, $FCFC  ; was: word_1A660
+Chick_ThrownAnim8Data0:         dc.w    4, $F804, $6476, $F8F8  ; was: word_1A668
+Chick_ThrownAnim8Data3:         dc.w    4, $F804, $7476, $F8F8  ; was: word_1A670
+Chick_ThrownAnim8Data1:         dc.w    4, $F401, $6478, $FCFC  ; was: word_1A678
+Chick_ThrownAnim8Data5:         dc.w    4, $F401, $6C78, $FCFC  ; was: word_1A680
+Chick_ThrownAnim8Data2:         dc.w    4, $F401, $7478, $FCFC  ; was: word_1A688
+Chick_ThrownAnim8Data4:         dc.w    4, $F401, $7C78, $FCFC  ; was: word_1A690
+Chick_ThrownAnim9Data0:         dc.w    4, $F804, $647A, $F8F8  ; was: word_1A698
+Chick_ThrownAnim9Data3:         dc.w    4, $F804, $747A, $F8F8  ; was: word_1A6A0
+Chick_ThrownAnim9Data1:         dc.w    4, $F401, $647C, $FCFC  ; was: word_1A6A8
+Chick_ThrownAnim9Data5:         dc.w    4, $F401, $6C7C, $FCFC  ; was: word_1A6B0
+Chick_ThrownAnim9Data2:         dc.w    4, $F401, $747C, $FCFC  ; was: word_1A6B8
+Chick_ThrownAnim9Data4:         dc.w    4, $F401, $7C7C, $FCFC  ; was: word_1A6C0
+Chick_ThrownAnim10Data0:        dc.w    4, $F804, $647E, $F8F8  ; was: word_1A6C8
+Chick_ThrownAnim10Data3:        dc.w    4, $F804, $747E, $F8F8  ; was: word_1A6D0
+Chick_ThrownAnim10Data1:        dc.w    4, $F401, $6480, $FCFC  ; was: word_1A6D8
+Chick_ThrownAnim10Data5:        dc.w    4, $F401, $6C80, $FCFC  ; was: word_1A6E0
+Chick_ThrownAnim10Data2:        dc.w    4, $F401, $7480, $FCFC  ; was: word_1A6E8
+Chick_ThrownAnim10Data4:        dc.w    4, $F401, $7C80, $FCFC  ; was: word_1A6F0
+Chick_ThrownAnim11Data0:        dc.w    4, $F804, $6482, $F8F8  ; was: word_1A6F8
+Chick_ThrownAnim11Data3:        dc.w    4, $F804, $7482, $F8F8  ; was: word_1A700
+Chick_ThrownAnim11Data1:        dc.w    4, $F401, $6484, $FCFC  ; was: word_1A708
+Chick_ThrownAnim11Data5:        dc.w    4, $F401, $6C84, $FCFC  ; was: word_1A710
+Chick_ThrownAnim11Data2:        dc.w    4, $F401, $7484, $FCFC  ; was: word_1A718
+Chick_ThrownAnim11Data4:        dc.w    4, $F401, $7C84, $FCFC  ; was: word_1A720
+Chick_ThrownAnim12Data0:        dc.w    4, $F804, $6486, $F8F8  ; was: word_1A728
+Chick_ThrownAnim12Data3:        dc.w    4, $F804, $7486, $F8F8  ; was: word_1A730
+Chick_ThrownAnim12Data1:        dc.w    4, $F401, $6488, $FCFC  ; was: word_1A738
+Chick_ThrownAnim12Data5:        dc.w    4, $F401, $6C88, $FCFC  ; was: word_1A740
+Chick_ThrownAnim12Data2:        dc.w    4, $F401, $7488, $FCFC  ; was: word_1A748
+Chick_ThrownAnim12Data4:        dc.w    4, $F401, $7C88, $FCFC  ; was: word_1A750
+Chick_ThrownAnim13Data0:        dc.w    4, $F804, $648A, $F8F8  ; was: word_1A758
+Chick_ThrownAnim13Data3:        dc.w    4, $F804, $748A, $F8F8  ; was: word_1A760
+Chick_ThrownAnim13Data1:        dc.w    4, $F401, $648C, $FCFC  ; was: word_1A768
+Chick_ThrownAnim13Data5:        dc.w    4, $F401, $6C8C, $FCFC  ; was: word_1A770
+Chick_ThrownAnim13Data2:        dc.w    4, $F401, $748C, $FCFC  ; was: word_1A778
+Chick_ThrownAnim13Data4:        dc.w    4, $F401, $7C8C, $FCFC  ; was: word_1A780
+Chick_ThrownAnim14Data0:        dc.w    4, $F804, $648E, $F8F8  ; was: word_1A788
+Chick_ThrownAnim14Data3:        dc.w    4, $F804, $748E, $F8F8  ; was: word_1A790
+Chick_ThrownAnim14Data1:        dc.w    4, $F401, $6490, $FCFC  ; was: word_1A798
+Chick_ThrownAnim14Data5:        dc.w    4, $F401, $6C90, $FCFC  ; was: word_1A7A0
+Chick_ThrownAnim14Data2:        dc.w    4, $F401, $7490, $FCFC  ; was: word_1A7A8
+Chick_ThrownAnim14Data4:        dc.w    4, $F401, $7C90, $FCFC  ; was: word_1A7B0
+Cat_WalkFrame0:                 dc.w    3, $F005, $4436, $F8F8  ; was: word_1A7B8
+Cat_WalkFrame1:                 dc.w    3, $F005, $443A, $F8F8  ; was: word_1A7C0
+Cat_WalkFrame2:                 dc.w    3, $F005, $4C36, $F8F8  ; was: word_1A7C8
+Cat_WalkFrame3:                 dc.w    3, $F005, $4C3A, $F8F8  ; was: word_1A7D0
+Cat_IdleFrame0:                 dc.w    6, $F005, $443E, $F8F8  ; was: word_1A7D8
+Cat_IdleFrame1:                 dc.w    6, $F005, $4442, $F8F8  ; was: word_1A7E0
+Cat_CarriedFrame0:              dc.w    6, $F005, $4446, $F8F8  ; was: word_1A7E8
+Cat_CarriedFrame1:              dc.w    6, $F005, $444A, $F8F8  ; was: word_1A7F0
+Cat_CarriedFrame2:              dc.w    6, $F005, $444E, $F8F8  ; was: word_1A7F8
+Cat_StunnedFrame0:              dc.w    6, $F001, $4452, $FCFC  ; was: word_1A800
+Cat_StunnedFrame1:              dc.w    6, $F001, $4454, $FCFC  ; was: word_1A808
+Cat_StunnedFrame2:              dc.w    6, $F001, $4C52, $FCFC  ; was: word_1A810
+Cat_WalkAltFrame0:              dc.w    3, $F005, $4492, $F8F8  ; was: word_1A818
+Cat_WalkAltFrame1:              dc.w    3, $F005, $4496, $F8F8  ; was: word_1A820
+Cat_WalkAltFrame2:              dc.w    3, $F005, $4C92, $F8F8  ; was: word_1A828
+Cat_WalkAltFrame3:              dc.w    3, $F005, $4C96, $F8F8  ; was: word_1A830
+Cat_IdleAltFrame0:              dc.w    6, $F005, $449A, $F8F8  ; was: word_1A838
+Cat_IdleAltFrame1:              dc.w    6, $F005, $449E, $F8F8  ; was: word_1A840
+Cat_CarriedAltFrame0:           dc.w    6, $F005, $44A2, $F8F8  ; was: word_1A848
+Cat_CarriedAltFrame1:           dc.w    6, $F005, $44A6, $F8F8  ; was: word_1A850
+Cat_CarriedAltFrame2:           dc.w    6, $F005, $44AA, $F8F8  ; was: word_1A858
+Cat_StunnedAltFrame0:           dc.w    6, $F001, $44AE, $FCFC  ; was: word_1A860
+Cat_StunnedAltFrame1:           dc.w    6, $F001, $44B0, $FCFC  ; was: word_1A868
+Cat_StunnedAltFrame2:           dc.w    6, $F001, $4CAE, $FCFC  ; was: word_1A870
+Player_DeathFrame0:             dc.w    $FF, $F005, $4400, $F8F8  ; was: word_1A878
+Player_DeathFrame1:             dc.w    $FF, $F005, $4404, $F8F8  ; was: word_1A880
+Player_DeathFrame2:             dc.b    0, $FF, $F0, 5, $44, 8, $F8, $F8  ; was: byte_1A888
+Player_DeathFrame3:             dc.w    $FF, $F005, $440C, $F8F8  ; was: word_1A890
+Guide_CharacterMap6:            dc.w    0, $E806, $4410, $F8F8  ; was: word_1A898
+Player_UpdateAnim_BrakingData:  dc.w    1, $F005, $4416, $F8F8  ; was: word_1A8A0
+Guide_CharacterMap11:           dc.b    0, 0            ; was: byte_1A8A8
                 dc.w    $E806, $441A, $F8F8
-Player_WalkFrame1: dc.b    0, 0  ; was: byte_1A8B0
+Player_WalkFrame1:      dc.b    0, 0                    ; was: byte_1A8B0
                 dc.w    $E806, $4420, $F8F8
-Player_FlyFrame0: dc.b    0, 1  ; was: byte_1A8B8
+Player_FlyFrame0:       dc.b    0, 1                    ; was: byte_1A8B8
                 dc.w    $F005, $4426, $F8F8
-Player_FlyFrame1: dc.b    0, 1  ; was: byte_1A8C0
+Player_FlyFrame1:       dc.b    0, 1                    ; was: byte_1A8C0
                 dc.w    $F005, $442A, $F8F8
-Player_BrakeFrame0: dc.b    0, 2  ; was: byte_1A8C8
+Player_BrakeFrame0:     dc.b    0, 2                    ; was: byte_1A8C8
                 dc.w    $F005, $442E, $F8F8
-Guide_CharacterMap8: dc.w    2, $F005, $4432, $F8F8  ; was: word_1A8D0
-StarBonus_SpinFrame0: dc.w    7, $F800, $4B2, $FCFC  ; was: word_1A8D8
-StarBonus_SpinFrame1: dc.w    7, $F800, $4B3, $FCFC  ; was: word_1A8E0
-StarBonus_SpinFrame2: dc.w    7, $F800, $4B4, $FCFC  ; was: word_1A8E8
-StarBonus_SpinFrame3: dc.w    7, $F800, $686, $FCFC  ; was: word_1A8F0
-Lizard_WaitFrame0: dc.w    8, $F005, $44B5, $F8F8  ; was: word_1A8F8
-Lizard_WaitFrame1: dc.w    8, $F005, $44B9, $F8F8  ; was: word_1A900
-Lizard_WaitFrame2: dc.w    8, $F005, $44BD, $F8F8  ; was: word_1A908
-Lizard_WaitFrame3: dc.w    8, $F005, $44C1, $F8F8  ; was: word_1A910
-Lizard_StateLocateData: dc.w    $105, $E802, $44C5, $FCFC, $F001, $44C8, $F404  ; was: word_1A918
-Lizard_RunFrame1: dc.w    $205, $E802, $44CA, $FCFC, $F001, $44CD, $F404, $F000, $44CF, $4F4  ; was: word_1A926
-Lizard_RunFrame2: dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404  ; was: word_1A93A
-Lizard_RunFrame3: dc.w    $105, $E806, $44D5, $FCF4, $F800, $44DB, $F404  ; was: word_1A94E
-Lizard_RunFrame4: dc.w    $205, $E802, $44DC, $FCFC, $F001, $44DF, $4F4, $F800, $44E1, $F404  ; was: word_1A95C
-Lizard_StateJump_SelectFrameData0: dc.w    $112, $EB06, $44E2, $FCF4, $FB00, $44E8, $F404  ; was: word_1A970
-Lizard_StateJump_SelectFrameData1: dc.w    $212, $EB05, $44E9, $FCF4, $F301, $44ED, $F404, $FB00, $44EF, $FCFC  ; was: word_1A97E
-Lizard_JumpFrame0: dc.w    $FF, $E806, $44F0, $F8F8  ; was: word_1A992
-Guide_CharacterMap10: dc.w    $2FF, $EE05, $44F6, $FAF6, $F600, $44FA, $F206, $FE00, $44FB, $FAFE  ; was: word_1A99A
-Lizard_JumpFrame2: dc.w    $FF, $F409, $44FC, $F4F4  ; was: word_1A9AE
-Lizard_JumpFrame3: dc.w    $2FF, $E802, $4502, $FAFE, $F000, $54FA, $F206, $F001, $54F8, $2F6  ; was: word_1A9B6
-Lizard_JumpFrame4: dc.w    $FF, $EB06, $54F0, $F8F8  ; was: word_1A9CA
-Lizard_JumpFrame5: dc.w    $2FF, $E802, $4D02, $FEFA, $F001, $5CF8, $F602, $F000, $5CFA, $6F2  ; was: word_1A9D2
-Lizard_JumpFrame6: dc.w    $FF, $F409, $4CFC, $F4F4  ; was: word_1A9E6
-Lizard_JumpFrame7: dc.w    $2FF, $EE05, $4CF6, $F6FA, $F600, $4CFA, $6F2, $FE00, $4CFB, $FEFA  ; was: word_1A9EE
-Lizard_StunnedFrame0: dc.w    5, $E806, $4505, $F8F8  ; was: word_1AA02
-Lizard_StunnedFrame1: dc.w    5, $E806, $44F0, $F8F8  ; was: word_1AA0A
-Lizard_StunnedFrame2: dc.w    5, $E806, $4D05, $F8F8  ; was: word_1AA12
-BonusCat_InnerFrame0: dc.w    $205, $DC02, $44CA, $FCFC, $E401, $44CD, $F404, $E400, $44CF, $4F4  ; was: word_1AA1A
-BonusCat_InnerFrame1: dc.w    $205, $DE02, $44CA, $FCFC, $E601, $44CD, $F404, $E600, $44CF, $4F4  ; was: word_1AA2E
-BonusCat_InnerFrame2: dc.w    $205, $E402, $44CA, $FCFC, $EC01, $44CD, $F404, $EC00, $44CF, $4F4  ; was: word_1AA42
-BonusCat_InnerFrame3: dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404  ; was: word_1AA56
-BonusCat_InnerFrame4: dc.w    $205, $EA02, $44D0, $FCFC, $F200, $44D3, $4F4, $FA00, $44D4, $F404  ; was: word_1AA6A
-Lizard_DeathFrame0: dc.w    $FF, $F800, $450B, $FCFC  ; was: word_1AA7E
-Lizard_DeathFrame1: dc.w    $FF, $F800, $450C, $FCFC  ; was: word_1AA86
-Lizard_DeathFrame2: dc.w    $FF, $F800, $450D, $FCFC  ; was: word_1AA8E
-BonusCat_OuterFrame0: dc.w    $110, $F008, $650E, $F0F8, $F808, $6511, $F8F0  ; was: word_1AA96
-BonusCat_OuterFrame1: dc.w    $110, $F008, $6514, $F0F8, $F808, $6517, $F8F0  ; was: word_1AAA4
-BonusCat_OuterFrame2: dc.w    $10, $F00D, $651A, $F0F0  ; was: word_1AAB2
-BonusCat_OuterFrame3: dc.w    $110, $F008, $6D14, $F8F0, $F808, $6D17, $F0F8  ; was: word_1AABA
-BonusCat_OuterFrame4: dc.w    $110, $F008, $6D0E, $F8F0, $F808, $6D11, $F0F8  ; was: word_1AAC8
-Obj_BonusHeldChick_UpdateData0: dc.w    $111, $F004, $522, $F8F8, $F800, $524, $F800  ; was: word_1AAD6
-Obj_BonusHeldChick_UpdateData1: dc.w    $11, $F005, $525, $F8F8  ; was: word_1AAE4
-Spawner_AppearFrame0: dc.w    0, $F300, $529, $FDFB  ; was: word_1AAEC
-Spawner_AppearFrame1: dc.w    0, $F300, $52A, $FDFB  ; was: word_1AAF4
-Spawner_AppearFrame2: dc.w    0, $F300, $52B, $FDFB  ; was: word_1AAFC
-Spawner_AppearFrame3: dc.w    0, $F300, $52B, $FDFB  ; was: word_1AB04
-Spawner_AppearFrame4: dc.w    0, $F300, $52C, $FDFB  ; was: word_1AB0C
-Spawner_AppearFrame5: dc.w    0, $F300, $52D, $FDFB  ; was: word_1AB14
-Spawner_AppearFrame6: dc.w    0, $F300, $52E, $FDFB  ; was: word_1AB1C
-ChickCountPopup_Map0: dc.w    $FF, $F808, $640, $F4F4  ; was: word_1AB24
-ScorePopup_Map0: dc.b    0, $FF, $F8, 8, 6, $43, $F4, $F4  ; was: byte_1AB2C
-ChickCountPopup_Map2: dc.w    $FF, $F808, $646, $F4F4  ; was: word_1AB34
-ScorePopup_Map1: dc.w    $FF, $F808, $649, $F4F4  ; was: word_1AB3C
-ChickCountPopup_Map4: dc.w    $FF, $F808, $64C, $F4F4  ; was: word_1AB44
-ScorePopup_Map2: dc.w    $FF, $F808, $64F, $F4F4  ; was: word_1AB4C
-ChickCountPopup_Map5: dc.w    $FF, $F808, $652, $F2F6  ; was: word_1AB54
-ChickCountPopup_Map6: dc.w    $FF, $F808, $655, $F2F6  ; was: word_1AB5C
-BonusScorePopup_Map8: dc.w    $FF, $F808, $658, $F2F6  ; was: word_1AB64
-ChickCountPopup_Map7: dc.w    $FF, $F808, $65B, $F2F6  ; was: word_1AB6C
-Snake_StateSpawnData: dc.w    9, $F001, $465E, $FCFC  ; was: word_1AB74
-Snake_RightFrame0: dc.w    $A, $F804, $4660, $F8F8  ; was: word_1AB7C
-Snake_RightFrame1: dc.w    $A, $F804, $4662, $F8F8  ; was: word_1AB84
-Snake_RightFrame2: dc.w    $A, $F804, $4664, $F8F8  ; was: word_1AB8C
-Snake_LeftFrame0: dc.w    $B, 4, $4666, $F8F8  ; was: word_1AB94
-Snake_LeftFrame1: dc.w    $B, 4, $4668, $F8F8  ; was: word_1AB9C
-Snake_LeftFrame2: dc.w    $B, 4, $466A, $F8F8  ; was: word_1ABA4
-Snake_UpFrame0: dc.w    $C, $F801, $466C, $F800  ; was: word_1ABAC
-Snake_UpFrame1: dc.w    $C, $F801, $466E, $F800  ; was: word_1ABB4
-Snake_DownFrame0: dc.w    $D, $F801, $566C, $F800  ; was: word_1ABBC
-Snake_DownFrame1: dc.w    $D, $F801, $566E, $F800  ; was: word_1ABC4
-Snake_MoveRight_TurnUpData: dc.w    $1FF, $F001, $4670, $F800, $F800, $4672, $F008  ; was: word_1ABCC
-Snake_MoveUp_TurnRightData: dc.w    $1FF, 4, $4673, $F000, $800, $4675, $F800  ; was: word_1ABDA
-Snake_MoveLeft_TurnDownData: dc.w    $1FF, 4, $4676, $F0, $800, $5E70, $F8  ; was: word_1ABE8
-Snake_MoveDown_TurnRightData: dc.w    $1FF, $F001, $4678, $F8, $F800, $5E73, $8F0  ; was: word_1ABF6
-Snake_MoveRight_TurnDownData: dc.w    $1FF, $F804, $467A, $F8F8, 0, $467C, $F8  ; was: word_1AC04
-Snake_MoveUp_StartTurnData: dc.w    $1FF, $F801, $467D, $F8, 0, $467F, $F800  ; was: word_1AC12
-Snake_MoveLeft_TurnUpData: dc.w    $1FF, $F801, $5E7B, $F800, 0, $5E7A, $F8  ; was: word_1AC20
-Snake_MoveUp_TurnLeftData: dc.w    $1FF, $F804, $4680, $F8F8  ; was: word_1AC2E
+Guide_CharacterMap8:                    dc.w    2, $F005, $4432, $F8F8  ; was: word_1A8D0
+StarBonus_SpinFrame0:                   dc.w    7, $F800, $4B2, $FCFC  ; was: word_1A8D8
+StarBonus_SpinFrame1:                   dc.w    7, $F800, $4B3, $FCFC  ; was: word_1A8E0
+StarBonus_SpinFrame2:                   dc.w    7, $F800, $4B4, $FCFC  ; was: word_1A8E8
+StarBonus_SpinFrame3:                   dc.w    7, $F800, $686, $FCFC  ; was: word_1A8F0
+Lizard_WaitFrame0:                      dc.w    8, $F005, $44B5, $F8F8  ; was: word_1A8F8
+Lizard_WaitFrame1:                      dc.w    8, $F005, $44B9, $F8F8  ; was: word_1A900
+Lizard_WaitFrame2:                      dc.w    8, $F005, $44BD, $F8F8  ; was: word_1A908
+Lizard_WaitFrame3:                      dc.w    8, $F005, $44C1, $F8F8  ; was: word_1A910
+Lizard_StateLocateData:                 dc.w    $105, $E802, $44C5, $FCFC, $F001, $44C8, $F404  ; was: word_1A918
+Lizard_RunFrame1:                       dc.w    $205, $E802, $44CA, $FCFC, $F001, $44CD, $F404, $F000, $44CF, $4F4  ; was: word_1A926
+Lizard_RunFrame2:                       dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404  ; was: word_1A93A
+Lizard_RunFrame3:                       dc.w    $105, $E806, $44D5, $FCF4, $F800, $44DB, $F404  ; was: word_1A94E
+Lizard_RunFrame4:                       dc.w    $205, $E802, $44DC, $FCFC, $F001, $44DF, $4F4, $F800, $44E1, $F404  ; was: word_1A95C
+Lizard_StateJump_SelectFrameData0:      dc.w    $112, $EB06, $44E2, $FCF4, $FB00, $44E8, $F404  ; was: word_1A970
+Lizard_StateJump_SelectFrameData1:      dc.w    $212, $EB05, $44E9, $FCF4, $F301, $44ED, $F404, $FB00, $44EF, $FCFC  ; was: word_1A97E
+Lizard_JumpFrame0:                      dc.w    $FF, $E806, $44F0, $F8F8  ; was: word_1A992
+Guide_CharacterMap10:                   dc.w    $2FF, $EE05, $44F6, $FAF6, $F600, $44FA, $F206, $FE00, $44FB, $FAFE  ; was: word_1A99A
+Lizard_JumpFrame2:                      dc.w    $FF, $F409, $44FC, $F4F4  ; was: word_1A9AE
+Lizard_JumpFrame3:                      dc.w    $2FF, $E802, $4502, $FAFE, $F000, $54FA, $F206, $F001, $54F8, $2F6  ; was: word_1A9B6
+Lizard_JumpFrame4:                      dc.w    $FF, $EB06, $54F0, $F8F8  ; was: word_1A9CA
+Lizard_JumpFrame5:                      dc.w    $2FF, $E802, $4D02, $FEFA, $F001, $5CF8, $F602, $F000, $5CFA, $6F2  ; was: word_1A9D2
+Lizard_JumpFrame6:                      dc.w    $FF, $F409, $4CFC, $F4F4  ; was: word_1A9E6
+Lizard_JumpFrame7:                      dc.w    $2FF, $EE05, $4CF6, $F6FA, $F600, $4CFA, $6F2, $FE00, $4CFB, $FEFA  ; was: word_1A9EE
+Lizard_StunnedFrame0:                   dc.w    5, $E806, $4505, $F8F8  ; was: word_1AA02
+Lizard_StunnedFrame1:                   dc.w    5, $E806, $44F0, $F8F8  ; was: word_1AA0A
+Lizard_StunnedFrame2:                   dc.w    5, $E806, $4D05, $F8F8  ; was: word_1AA12
+BonusCat_InnerFrame0:                   dc.w    $205, $DC02, $44CA, $FCFC, $E401, $44CD, $F404, $E400, $44CF, $4F4  ; was: word_1AA1A
+BonusCat_InnerFrame1:                   dc.w    $205, $DE02, $44CA, $FCFC, $E601, $44CD, $F404, $E600, $44CF, $4F4  ; was: word_1AA2E
+BonusCat_InnerFrame2:                   dc.w    $205, $E402, $44CA, $FCFC, $EC01, $44CD, $F404, $EC00, $44CF, $4F4  ; was: word_1AA42
+BonusCat_InnerFrame3:                   dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404  ; was: word_1AA56
+BonusCat_InnerFrame4:                   dc.w    $205, $EA02, $44D0, $FCFC, $F200, $44D3, $4F4, $FA00, $44D4, $F404  ; was: word_1AA6A
+Lizard_DeathFrame0:                     dc.w    $FF, $F800, $450B, $FCFC  ; was: word_1AA7E
+Lizard_DeathFrame1:                     dc.w    $FF, $F800, $450C, $FCFC  ; was: word_1AA86
+Lizard_DeathFrame2:                     dc.w    $FF, $F800, $450D, $FCFC  ; was: word_1AA8E
+BonusCat_OuterFrame0:                   dc.w    $110, $F008, $650E, $F0F8, $F808, $6511, $F8F0  ; was: word_1AA96
+BonusCat_OuterFrame1:                   dc.w    $110, $F008, $6514, $F0F8, $F808, $6517, $F8F0  ; was: word_1AAA4
+BonusCat_OuterFrame2:                   dc.w    $10, $F00D, $651A, $F0F0  ; was: word_1AAB2
+BonusCat_OuterFrame3:                   dc.w    $110, $F008, $6D14, $F8F0, $F808, $6D17, $F0F8  ; was: word_1AABA
+BonusCat_OuterFrame4:                   dc.w    $110, $F008, $6D0E, $F8F0, $F808, $6D11, $F0F8  ; was: word_1AAC8
+Obj_BonusHeldChick_UpdateData0:         dc.w    $111, $F004, $522, $F8F8, $F800, $524, $F800  ; was: word_1AAD6
+Obj_BonusHeldChick_UpdateData1:         dc.w    $11, $F005, $525, $F8F8  ; was: word_1AAE4
+Spawner_AppearFrame0:                   dc.w    0, $F300, $529, $FDFB  ; was: word_1AAEC
+Spawner_AppearFrame1:                   dc.w    0, $F300, $52A, $FDFB  ; was: word_1AAF4
+Spawner_AppearFrame2:                   dc.w    0, $F300, $52B, $FDFB  ; was: word_1AAFC
+Spawner_AppearFrame3:                   dc.w    0, $F300, $52B, $FDFB  ; was: word_1AB04
+Spawner_AppearFrame4:                   dc.w    0, $F300, $52C, $FDFB  ; was: word_1AB0C
+Spawner_AppearFrame5:                   dc.w    0, $F300, $52D, $FDFB  ; was: word_1AB14
+Spawner_AppearFrame6:                   dc.w    0, $F300, $52E, $FDFB  ; was: word_1AB1C
+ChickCountPopup_Map0:                   dc.w    $FF, $F808, $640, $F4F4  ; was: word_1AB24
+ScorePopup_Map0:                        dc.b    0, $FF, $F8, 8, 6, $43, $F4, $F4  ; was: byte_1AB2C
+ChickCountPopup_Map2:                   dc.w    $FF, $F808, $646, $F4F4  ; was: word_1AB34
+ScorePopup_Map1:                        dc.w    $FF, $F808, $649, $F4F4  ; was: word_1AB3C
+ChickCountPopup_Map4:                   dc.w    $FF, $F808, $64C, $F4F4  ; was: word_1AB44
+ScorePopup_Map2:                        dc.w    $FF, $F808, $64F, $F4F4  ; was: word_1AB4C
+ChickCountPopup_Map5:                   dc.w    $FF, $F808, $652, $F2F6  ; was: word_1AB54
+ChickCountPopup_Map6:                   dc.w    $FF, $F808, $655, $F2F6  ; was: word_1AB5C
+BonusScorePopup_Map8:                   dc.w    $FF, $F808, $658, $F2F6  ; was: word_1AB64
+ChickCountPopup_Map7:                   dc.w    $FF, $F808, $65B, $F2F6  ; was: word_1AB6C
+Snake_StateSpawnData:                   dc.w    9, $F001, $465E, $FCFC  ; was: word_1AB74
+Snake_RightFrame0:                      dc.w    $A, $F804, $4660, $F8F8  ; was: word_1AB7C
+Snake_RightFrame1:                      dc.w    $A, $F804, $4662, $F8F8  ; was: word_1AB84
+Snake_RightFrame2:                      dc.w    $A, $F804, $4664, $F8F8  ; was: word_1AB8C
+Snake_LeftFrame0:                       dc.w    $B, 4, $4666, $F8F8  ; was: word_1AB94
+Snake_LeftFrame1:                       dc.w    $B, 4, $4668, $F8F8  ; was: word_1AB9C
+Snake_LeftFrame2:                       dc.w    $B, 4, $466A, $F8F8  ; was: word_1ABA4
+Snake_UpFrame0:                         dc.w    $C, $F801, $466C, $F800  ; was: word_1ABAC
+Snake_UpFrame1:                         dc.w    $C, $F801, $466E, $F800  ; was: word_1ABB4
+Snake_DownFrame0:                       dc.w    $D, $F801, $566C, $F800  ; was: word_1ABBC
+Snake_DownFrame1:                       dc.w    $D, $F801, $566E, $F800  ; was: word_1ABC4
+Snake_MoveRight_TurnUpData:             dc.w    $1FF, $F001, $4670, $F800, $F800, $4672, $F008  ; was: word_1ABCC
+Snake_MoveUp_TurnRightData:             dc.w    $1FF, 4, $4673, $F000, $800, $4675, $F800  ; was: word_1ABDA
+Snake_MoveLeft_TurnDownData:            dc.w    $1FF, 4, $4676, $F0, $800, $5E70, $F8  ; was: word_1ABE8
+Snake_MoveDown_TurnRightData:           dc.w    $1FF, $F001, $4678, $F8, $F800, $5E73, $8F0  ; was: word_1ABF6
+Snake_MoveRight_TurnDownData:           dc.w    $1FF, $F804, $467A, $F8F8, 0, $467C, $F8  ; was: word_1AC04
+Snake_MoveUp_StartTurnData:             dc.w    $1FF, $F801, $467D, $F8, 0, $467F, $F800  ; was: word_1AC12
+Snake_MoveLeft_TurnUpData:              dc.w    $1FF, $F801, $5E7B, $F800, 0, $5E7A, $F8  ; was: word_1AC20
+Snake_MoveUp_TurnLeftData:              dc.w    $1FF, $F804, $4680, $F8F8  ; was: word_1AC2E
                 dc.w    0, $5E7D, $F800
-Snake_TurnAFrame0: dc.w    $E, $F801, $4682, $FCFC  ; was: word_1AC3C
-Snake_TurnAFrame1: dc.w    $E, $F801, $4E82, $FCFC  ; was: word_1AC44
-Snake_MoveRight_StartTurnData: dc.w    9, $F001, $4684, $FCFC  ; was: word_1AC4C
-Snake_TurnBFrame0: dc.w    $E, $F801, $5682, $FCFC  ; was: word_1AC54
-Snake_TurnBFrame1: dc.w    $E, $F801, $5E82, $FCFC  ; was: word_1AC5C
-Snake_MoveLeft_StartTurnData: dc.w    $F, 1, $5684, $FCFC  ; was: word_1AC64
-Snake_SpawnFrame0: dc.w    $1FF, $F604, $467A, $F6FA, $FE00, $467C, $FEFA  ; was: word_1AC6C
-Snake_SpawnFrame1: dc.w    $1FF, $F001, $467D, $FCFC, $F800, $467F, $F404  ; was: word_1AC7A
-Snake_SpawnFrame2: dc.w    $1FF, $F001, $5E7B, $FCFC, $F800, $5E7A, $4F4  ; was: word_1AC88
-Snake_SpawnFrame3: dc.w    $1FF, $F304, $4680, $FBF5, $FB00, $5E7D, $FBFD  ; was: word_1AC96
-Obj_GameOverTextData: dc.w    $8FF  ; was: word_1ACA4
+Snake_TurnAFrame0:              dc.w    $E, $F801, $4682, $FCFC  ; was: word_1AC3C
+Snake_TurnAFrame1:              dc.w    $E, $F801, $4E82, $FCFC  ; was: word_1AC44
+Snake_MoveRight_StartTurnData:  dc.w    9, $F001, $4684, $FCFC  ; was: word_1AC4C
+Snake_TurnBFrame0:              dc.w    $E, $F801, $5682, $FCFC  ; was: word_1AC54
+Snake_TurnBFrame1:              dc.w    $E, $F801, $5E82, $FCFC  ; was: word_1AC5C
+Snake_MoveLeft_StartTurnData:   dc.w    $F, 1, $5684, $FCFC  ; was: word_1AC64
+Snake_SpawnFrame0:              dc.w    $1FF, $F604, $467A, $F6FA, $FE00, $467C, $FEFA  ; was: word_1AC6C
+Snake_SpawnFrame1:              dc.w    $1FF, $F001, $467D, $FCFC, $F800, $467F, $F404  ; was: word_1AC7A
+Snake_SpawnFrame2:              dc.w    $1FF, $F001, $5E7B, $FCFC, $F800, $5E7A, $4F4  ; was: word_1AC88
+Snake_SpawnFrame3:              dc.w    $1FF, $F304, $4680, $FBF5, $FB00, $5E7D, $FBFD  ; was: word_1AC96
+Obj_GameOverTextData:           dc.w    $8FF            ; was: word_1ACA4
                 dc.w    0, $8047, $F8
                 dc.w    0, $8041, $8F0
                 dc.w    0, $804D, $10E8
@@ -292,7 +292,7 @@ Obj_GameOverTextData: dc.w    $8FF  ; was: word_1ACA4
                 dc.w    0, $8056, $30C8
                 dc.w    0, $8045, $38C0
                 dc.w    0, $8052, $40B8
-Obj_TitleCursorData: dc.w    $DFF  ; was: word_1ACDC
+Obj_TitleCursorData:    dc.w    $DFF                    ; was: word_1ACDC
                 dc.w    0, $8050, $C830
                 dc.w    0, $8055, $D028
                 dc.w    0, $8053, $D820
@@ -307,21 +307,21 @@ Obj_TitleCursorData: dc.w    $DFF  ; was: word_1ACDC
                 dc.w    0, $8054, $38C0
                 dc.w    0, $804F, $40B8
                 dc.w    0, $804E, $48B0
-Obj_TimeOverTextData: dc.w    $4FF  ; was: word_1AD32
+Obj_TimeOverTextData:   dc.w    $4FF                    ; was: word_1AD32
                 dc.w    0, $8050, $F8
                 dc.w    0, $8041, $8F0
                 dc.w    0, $8055, $10E8
                 dc.w    0, $8053, $18E0
                 dc.w    0, $8045, $20D8
-Title_StaticMap0: dc.w    $FF, $E00B, $6740, $F4F4  ; was: word_1AD52
-Title_StaticMap1: dc.w    $FF, $E80A, $674C, $F4F4  ; was: word_1AD5A
-Title_StaticMap2: dc.w    $FF, $E806, $6755, $F8F8  ; was: word_1AD62
-Title_StaticMap3: dc.w    $FF, $E80A, $675B, $F4F4  ; was: word_1AD6A
-Title_StaticMap4: dc.w    $FF, $E80A, $6764, $F4F4  ; was: word_1AD72
-Title_StaticMap5: dc.w    $FF, $E00B, $676D, $F4F4  ; was: word_1AD7A
-ExitDoor_OpenFrame0: dc.w    $FF, $E806, $4687, $F8F8  ; was: word_1AD82
-ExitDoor_OpenFrame1: dc.w    $FF, $E806, $468D, $F8F8  ; was: word_1AD8A
-Level_DataPointers: dc.w    Level_Data0-Sys_GameEntryPoint  ; was: off_1AD92
+Title_StaticMap0:       dc.w    $FF, $E00B, $6740, $F4F4  ; was: word_1AD52
+Title_StaticMap1:       dc.w    $FF, $E80A, $674C, $F4F4  ; was: word_1AD5A
+Title_StaticMap2:       dc.w    $FF, $E806, $6755, $F8F8  ; was: word_1AD62
+Title_StaticMap3:       dc.w    $FF, $E80A, $675B, $F4F4  ; was: word_1AD6A
+Title_StaticMap4:       dc.w    $FF, $E80A, $6764, $F4F4  ; was: word_1AD72
+Title_StaticMap5:       dc.w    $FF, $E00B, $676D, $F4F4  ; was: word_1AD7A
+ExitDoor_OpenFrame0:    dc.w    $FF, $E806, $4687, $F8F8  ; was: word_1AD82
+ExitDoor_OpenFrame1:    dc.w    $FF, $E806, $468D, $F8F8  ; was: word_1AD8A
+Level_DataPointers:     dc.w    Level_Data0-Sys_GameEntryPoint  ; was: off_1AD92
                 dc.w    Level_Data1-Sys_GameEntryPoint
                 dc.w    Level_Data1-Sys_GameEntryPoint
                 dc.w    Level_Data2-Sys_GameEntryPoint
@@ -684,6 +684,6 @@ Level_Data35:   dc.b    5, $C4, 5, $C4, 9, $C4, 5, $C4, $47, $C4  ; was: byte_1B
                 dc.b    0, $B, 4, 3, 3, $C, 3, 7, $B, $E
                 dc.b    $11, 4, $11, $11, $18, $B, $13, 3, $1C, 3
                 dc.b    0, 0
-empty_block_2:  ; dc.b [$465F]$FF
+empty_block_2:                                          ; dc.b [$465F]$FF
                 org     $1FFFF
-RomEndData:     dc.b    $FF  ; was: byte_1FFFF
+RomEndData:     dc.b    $FF                             ; was: byte_1FFFF

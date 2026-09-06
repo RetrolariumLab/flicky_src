@@ -1,8 +1,8 @@
-; Ending sequence and credits.
-; ROM $013110-$0139A1.
+; Ending sequence and credits
+; ROM $013110-$0139A1
 
 Ending_Init:
-                jsr     Sys_InitTitleScreen  ; was: sub_13110
+                jsr     Sys_InitTitleScreen             ; was: sub_13110
                 clr.b   (Ram_FontBankFlag).w
                 bsr.w   LoadTilesToVRAM_LoadFont
                 lea     (Gfx_SharedPalette).l,a5
@@ -24,20 +24,20 @@ Ending_Init:
 
 ; Ending sequence main loop with state dispatcher
 Ending_MainLoop:
-                move.w  (Ram_EndingState).w,d0  ; was: sub_13162
+                move.w  (Ram_EndingState).w,d0          ; was: sub_13162
                 andi.w  #$7FFC,d0
                 jsr     Ending_StateTable(pc,d0.w)
                 bsr.w   Object_UpdateAll
                 jmp     j_Sound_QueueSFX
 
-Ending_StateTable:  ; was: loc_13176
+Ending_StateTable:                                      ; was: loc_13176
                 bra.w   Ending_StateWait
                 bra.w   Ending_StateCredits
                 bra.w   Ending_StateRestart
 
 ; Ending state: wait then show congratulations
 Ending_StateWait:
-                bsr.w   Ending_BlinkText  ; was: sub_13182
+                bsr.w   Ending_BlinkText                ; was: sub_13182
                 cmpi.w  #$C8,(Ram_FrameCounter).w
                 bne.s   Ending_StateWait_Return
                 move.w  #4,(Ram_EndingState).w
@@ -51,33 +51,33 @@ Ending_StateWait:
                 move.l  #$40000003,(VDP_CTRL).l
                 move.w  #$3FF,d0
 
-Ending_StateWait_ClearPlaneLoop:  ; was: loc_131CC
+Ending_StateWait_ClearPlaneLoop:                        ; was: loc_131CC
                 move.w  #0,(a0)
                 dbf     d0,Ending_StateWait_ClearPlaneLoop
 
-Ending_StateWait_Return:  ; was: locret_131D4
+Ending_StateWait_Return:                                ; was: locret_131D4
                 rts
 
 ; Cycles text blink effect for ending screen
 Ending_BlinkText:
-                bsr.w   Text_CycleBlink  ; was: sub_131D6
+                bsr.w   Text_CycleBlink                 ; was: sub_131D6
 
 ; Draws congratulations messages on ending
 Ending_DrawCongrats:
-                lea     Ending_CongratsLabel(pc),a6  ; was: sub_131DA
+                lea     Ending_CongratsLabel(pc),a6     ; was: sub_131DA
                 bsr.w   Text_DrawString
                 lea     Ending_SuperPlayerLabel(pc),a6
                 bsr.w   Text_DrawString
                 rts
 
-Ending_CongratsLabel: dc.b    $C2, $90  ; was: byte_131EC
-Ending_CongratulationsText: dc.b    "CONGRATULATIONS!",0
+Ending_CongratsLabel:           dc.b    $C2, $90        ; was: byte_131EC
+Ending_CongratulationsText:     dc.b    "CONGRATULATIONS!",0
                 dc.b    0
-Ending_SuperPlayerLabel: dc.b    $C3, $8A  ; was: byte_13200
-Ending_YouAreASuperText: dc.b    "YOU ARE A SUPER PLAYER.",0
+Ending_SuperPlayerLabel:        dc.b    $C3, $8A        ; was: byte_13200
+Ending_YouAreASuperText:        dc.b    "YOU ARE A SUPER PLAYER.",0
 ; Ending state: scrolling credits sequence
 Ending_StateCredits:
-                bset    #7,(Ram_EndingState).w  ; was: sub_1321A
+                bset    #7,(Ram_EndingState).w          ; was: sub_1321A
                 bne.s   Ending_StateCredits_Scroll
                 lea     (Gfx_SharedPalette).l,a5
                 jsr     j_Gfx_LoadPaletteCompact
@@ -89,14 +89,14 @@ Ending_StateCredits:
                 moveq   #0,d1
                 moveq   #4,d0
 
-Ending_StateCredits_SpawnLoop:  ; was: loc_13248
+Ending_StateCredits_SpawnLoop:                          ; was: loc_13248
                 move.w  #$50,(a0)
                 move.w  d1,$38(a0)
                 lea     $40(a0),a0
                 addq.w  #1,d1
                 dbf     d0,Ending_StateCredits_SpawnLoop
 
-Ending_StateCredits_Scroll:  ; was: loc_1325A
+Ending_StateCredits_Scroll:                             ; was: loc_1325A
                 bsr.w   Camera_UpdateScroll
                 addq.b  #1,(Ram_CreditsScrollTimer).w
                 cmpi.b  #$20,(Ram_CreditsScrollTimer).w
@@ -110,12 +110,12 @@ Ending_StateCredits_Scroll:  ; was: loc_1325A
                 lea     (Ram_ObjectSlots).w,a0
                 move.w  #$44,(a0)
 
-Ending_StateCredits_Return:  ; was: locret_1328C
+Ending_StateCredits_Return:                             ; was: locret_1328C
                 rts
 
 ; Draws single credits line during scroll
 Ending_DrawCreditsLine:
-                moveq   #0,d0  ; was: sub_1328E
+                moveq   #0,d0                           ; was: sub_1328E
                 moveq   #0,d5
                 move.w  (Ram_CameraY).w,d0
                 andi.w  #$FF,d0
@@ -124,7 +124,7 @@ Ending_DrawCreditsLine:
                 bpl.s   Ending_DrawCreditsLine_Wrap
                 addi.w  #$20,d0
 
-Ending_DrawCreditsLine_Wrap:  ; was: loc_132A4
+Ending_DrawCreditsLine_Wrap:                            ; was: loc_132A4
                 lsl.w   #6,d0
                 addi.w  #-$3FF8,d0
                 move.w  d0,d5
@@ -133,7 +133,7 @@ Ending_DrawCreditsLine_Wrap:  ; was: loc_132A4
                 move.l  d5,(VDP_CTRL).l
                 moveq   #$1F,d1
 
-Ending_DrawCreditsLine_ClearRowLoop:  ; was: loc_132BA
+Ending_DrawCreditsLine_ClearRowLoop:                    ; was: loc_132BA
                 move.w  #0,(VDP_DATA).l
                 dbf     d1,Ending_DrawCreditsLine_ClearRowLoop
                 moveq   #0,d1
@@ -146,7 +146,7 @@ Ending_DrawCreditsLine_ClearRowLoop:  ; was: loc_132BA
                 bsr.w   Text_DrawString_Loop
                 rts
 
-Ending_CreditsLinePointers: dc.w    Ending_StaffText-Sys_GameEntryPoint  ; was: off_132E0
+Ending_CreditsLinePointers:     dc.w    Ending_StaffText-Sys_GameEntryPoint  ; was: off_132E0
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
@@ -240,36 +240,36 @@ Ending_CreditsLinePointers: dc.w    Ending_StaffText-Sys_GameEntryPoint  ; was: 
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
                 dc.w    Ending_BlankLine-Sys_GameEntryPoint
-Ending_BlankLine: dc.b    0, 0  ; was: byte_1339C
-Ending_StaffText: dc.b    "     STAFF",0
+Ending_BlankLine:       dc.b    0, 0                    ; was: byte_1339C
+Ending_StaffText:       dc.b    "     STAFF",0
                 dc.b    0
-Ending_DirectorText: dc.b    "    DIRECTOR",0
+Ending_DirectorText:    dc.b    "    DIRECTOR",0
                 dc.b    0
-Ending_KFuzzyText: dc.b    "     K.FUZZY",0
+Ending_KFuzzyText:      dc.b    "     K.FUZZY",0
                 dc.b    0
-Ending_DesignerText: dc.b    "    DESIGNER",0
+Ending_DesignerText:    dc.b    "    DESIGNER",0
                 dc.b    0
-Ending_YumiText: dc.b    "     YUMI",0
-Ending_ProgrammerText: dc.b    "    PROGRAMMER",0
+Ending_YumiText:        dc.b    "     YUMI",0
+Ending_ProgrammerText:  dc.b    "    PROGRAMMER",0
                 dc.b    0
-Ending_OSamuText: dc.b    "     O.SAMU",0
+Ending_OSamuText:       dc.b    "     O.SAMU",0
 Ending_SoundDesignText: dc.b    "    SOUND DESIGN",0
                 dc.b    0
-Ending_TSMusicText: dc.b    "     T@S MUSIC",0
+Ending_TSMusicText:     dc.b    "     T@S MUSIC",0
                 dc.b    0
-Ending_AndText: dc.b    "      AND",0
-Ending_SpecialThanksText: dc.b    "    SPECIAL THANKS",0
+Ending_AndText:                 dc.b    "      AND",0
+Ending_SpecialThanksText:       dc.b    "    SPECIAL THANKS",0
                 dc.b    0
-Ending_ArcadeFlickyStaffText: dc.b    "     ARCADE FLICKY STAFF",0
+Ending_ArcadeFlickyStaffText:   dc.b    "     ARCADE FLICKY STAFF",0
                 dc.b    0
 Ending_TestPlayersText: dc.b    "     TEST PLAYERS",0
-Ending_LeeText: dc.b    "     LEE",0
+Ending_LeeText:         dc.b    "     LEE",0
                 dc.b    0
-Ending_BoText:  dc.b    "     BO",0
-Ending_ChallengeTheNextStageText: dc.b    "CHALLENGE THE NEXT STAGE.",0
+Ending_BoText:                          dc.b    "     BO",0
+Ending_ChallengeTheNextStageText:       dc.b    "CHALLENGE THE NEXT STAGE.",0
 ; Ending state: wait for start to restart game
 Ending_StateRestart:
-                btst    #7,(Ram_Joypad+1).w  ; was: sub_13492
+                btst    #7,(Ram_Joypad+1).w             ; was: sub_13492
                 beq.s   Ending_StateRestart_Return
                 bsr.w   Gfx_FadeInPalette
                 move.b  #1,(Ram_FontBankFlag).w
@@ -279,12 +279,12 @@ Ending_StateRestart:
                 bsr.w   Sound_InitDriver
                 move    #$2500,sr
 
-Ending_StateRestart_Return:  ; was: locret_134BA
+Ending_StateRestart_Return:                             ; was: locret_134BA
                 rts
 
 ; Credits character object appearing during scroll
 Obj_CreditsCharacter:
-                bset    #7,(a0)  ; was: sub_134BC
+                bset    #7,(a0)                         ; was: sub_134BC
                 bne.s   Obj_CreditsCharacter_Dispatch
                 bset    #1,2(a0)
                 move.w  $38(a0),d0
@@ -294,58 +294,58 @@ Obj_CreditsCharacter:
                 lsl.w   #1,d0
                 move.l  Ending_CreditsAnimPointers(pc,d0.w),8(a0)
 
-Obj_CreditsCharacter_Dispatch:  ; was: loc_134E2
+Obj_CreditsCharacter_Dispatch:                          ; was: loc_134E2
                 move.w  $3C(a0),d0
                 andi.w  #$7FFC,d0
                 jsr     Ending_CreditsStateTable(pc,d0.w)
                 rts
 
-Ending_CreditsStateTable:  ; was: loc_134F0
+Ending_CreditsStateTable:                               ; was: loc_134F0
                 bra.w   Obj_CreditsWait
                 bra.w   Obj_CreditsFlyUp
 
-Ending_CreditsAnimPointers: dc.l    Player_AnimPointers  ; was: off_134F8
+Ending_CreditsAnimPointers:     dc.l    Player_AnimPointers  ; was: off_134F8
                 dc.l    Cat_AnimPointers
                 dc.l    Cat_AnimPointersAlt
                 dc.l    Lizard_AnimPointers
                 dc.l    Snake_AnimPointers
-Ending_CreditsAnimIndexTable: dc.w    4, 0, 0, 8, $10  ; was: word_1350C
-Ending_CreditsAppearLines: dc.w    $D17, $212B, $3D00  ; was: word_13516
+Ending_CreditsAnimIndexTable:   dc.w    4, 0, 0, 8, $10  ; was: word_1350C
+Ending_CreditsAppearLines:      dc.w    $D17, $212B, $3D00  ; was: word_13516
 ; Credits character wait state: waits for scroll line
 Obj_CreditsWait:
-                move.b  (Ram_CreditsLine).w,d0  ; was: sub_1351C
+                move.b  (Ram_CreditsLine).w,d0          ; was: sub_1351C
                 cmp.b   $3A(a0),d0
                 bne.s   Obj_CreditsWait_Return
                 move.w  #4,$3C(a0)
 
-Obj_CreditsWait_Return:  ; was: locret_1352C
+Obj_CreditsWait_Return:                                 ; was: locret_1352C
                 rts
 
 ; Credits character fly state: exits upward
 Obj_CreditsFlyUp:
-                bset    #7,$3C(a0)  ; was: sub_1352E
+                bset    #7,$3C(a0)                      ; was: sub_1352E
                 bne.s   Obj_CreditsFlyUp_Move
                 move.w  #$E4,$30(a0)
                 move.w  #$178,$24(a0)
                 move.l  #$FFFFC000,$2C(a0)
                 bclr    #1,2(a0)
 
-Obj_CreditsFlyUp_Move:  ; was: loc_13550
+Obj_CreditsFlyUp_Move:                                  ; was: loc_13550
                 bsr.w   Object_UpdatePosition
                 cmpi.w  #$78,$24(a0)
                 bgt.s   Obj_CreditsFlyUp_Animate
                 bsr.w   Object_ClearSlot
 
-Obj_CreditsFlyUp_Animate:  ; was: loc_13560
+Obj_CreditsFlyUp_Animate:                               ; was: loc_13560
                 bsr.w   Anim_UpdateFrame
                 rts
 
 ; Draws congratulations screen tilemaps
 Ending_DrawGraphics:
-                moveq   #9,d0  ; was: sub_13566
+                moveq   #9,d0                           ; was: sub_13566
                 moveq   #0,d1
 
-Ending_DrawGraphics_Loop:  ; was: loc_1356A
+Ending_DrawGraphics_Loop:                               ; was: loc_1356A
                 moveq   #0,d5
                 movem.l d0-d1,-(sp)
                 lsl.w   #1,d1
@@ -372,11 +372,11 @@ Ending_GraphicsMappingPointers: dc.w    Ending_GraphicsMap0-Sys_GameEntryPoint  
                 dc.w    Ending_GraphicsMap2-Sys_GameEntryPoint
                 dc.w    Ending_GraphicsMap0-Sys_GameEntryPoint
                 dc.w    Ending_GraphicsMap1-Sys_GameEntryPoint
-Ending_GraphicsSizeTable: dc.b    0, 3, 0, 3, 0, 4, 0, 2, 0, 4  ; was: byte_135AC
+Ending_GraphicsSizeTable:       dc.b    0, 3, 0, 3, 0, 4, 0, 2, 0, 4  ; was: byte_135AC
                 dc.b    0, 2, 0, 4, 0, 2, 0, 4, 0, 2
                 dc.b    0, 4, 0, 2, 0, 4, 0, 2, 0, 4
                 dc.b    0, 2, 0, 3, 0, 3, 0, 4, 0, 2
-Ending_GraphicsPositions: dc.w    $E132, $E4B2, $E642, $E64C, $E656, $E660, $E66A, $E674, $E446, $E146  ; was: word_135D4
-Ending_CongratsArt: binclude "data/other/data_EndingCongratsArt.bin"  ; was: word_135E8
-Ending_CongratsArt_End:  ; was: word_135E8_End
+Ending_GraphicsPositions:       dc.w    $E132, $E4B2, $E642, $E64C, $E656, $E660, $E66A, $E674, $E446, $E146  ; was: word_135D4
+Ending_CongratsArt:             binclude "data/other/data_EndingCongratsArt.bin"  ; was: word_135E8
+Ending_CongratsArt_End:                                 ; was: word_135E8_End
 ; Demo/attract mode initialization

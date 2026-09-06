@@ -1,15 +1,15 @@
-; Game-state init, DMA helpers and VRAM fills.
-; ROM $000856-$000AD3.
+; Game-state init, DMA helpers and VRAM fills
+; ROM $000856-$000AD3
 
 Int_UnusedHandler:
-                rte  ; was: nullsub_1
+                rte                                     ; was: nullsub_1
 
 LoadFuncTable:
                 lea     func_table(pc),a0
                 lea     (EXT).w,a1
                 move.w  (a0)+,d0
 
-LoadFuncTable_Loop:  ; was: loc_862
+LoadFuncTable_Loop:                                     ; was: loc_862
                 move.w  #$4EF9,(a1)+
                 moveq   #0,d1
                 move.w  (a0)+,d1
@@ -19,18 +19,18 @@ LoadFuncTable_Loop:  ; was: loc_862
 
 ; Initializes RAM areas, VDP registers, checks console version
 Sys_InitGameState:
-                lea     (Ram_VDPRegisters).w,a6  ; was: sub_872
+                lea     (Ram_VDPRegisters).w,a6         ; was: sub_872
                 moveq   #0,d7
                 move.w  #$13,d6
 
-Sys_InitGameState_ClearVarsLoop:  ; was: loc_87C
+Sys_InitGameState_ClearVarsLoop:                        ; was: loc_87C
                 move.l  d7,(a6)+
                 dbf     d6,Sys_InitGameState_ClearVarsLoop
                 lea     (Ram_Palette).w,a6
                 moveq   #0,d7
                 move.w  #$3F,d6
 
-Sys_InitGameState_ClearPaletteLoop:  ; was: loc_88C
+Sys_InitGameState_ClearPaletteLoop:                     ; was: loc_88C
                 move.l  d7,(a6)+
                 dbf     d6,Sys_InitGameState_ClearPaletteLoop
                 move.w  #4,(Ram_VBlankMode).w
@@ -43,7 +43,7 @@ Sys_InitGameState_ClearPaletteLoop:  ; was: loc_88C
                 beq.s   Sys_InitGameState_WriteRegs
                 move.b  #$3C,(Ram_VDPMode2).w
 
-Sys_InitGameState_WriteRegs:  ; was: loc_8C0
+Sys_InitGameState_WriteRegs:                            ; was: loc_8C0
                 bsr.w   Gfx_WriteVDPRegs
                 move.l  #$C0000000,(a6)
                 move.w  #0,-4(a6)
@@ -52,7 +52,7 @@ Sys_InitGameState_WriteRegs:  ; was: loc_8C0
 Sys_InitialStateValues: dc.w    $BE00, $B800, $B000, $C000, $E000, $40  ; was: word_8D4
 ; DMA VRAM fill with >$400 byte chunking
 DMA_FillVRAMLarge:
-                movem.w d0-d2,-(sp)  ; was: sub_8E0
+                movem.w d0-d2,-(sp)                     ; was: sub_8E0
                 move.w  #$400,d0
                 bsr.s   DMA_FillVRAM_Run
                 movem.w (sp)+,d0-d2
@@ -64,13 +64,13 @@ DMA_FillVRAMLarge:
 
 ; DMA fill setup: initializes d1=0
 DMA_FillVRAMSetup:
-                moveq   #0,d1  ; was: sub_8FE
+                moveq   #0,d1                           ; was: sub_8FE
 
-DMA_FillVRAM_CheckSize:  ; was: loc_900
+DMA_FillVRAM_CheckSize:                                 ; was: loc_900
                 cmpi.w  #$400,d0
                 bhi.s   DMA_FillVRAMLarge
 
-DMA_FillVRAM_Run:  ; was: loc_906
+DMA_FillVRAM_Run:                                       ; was: loc_906
                 lea     (VDP_CTRL).l,a6
                 subq.w  #1,d0
                 swap    d1
@@ -99,7 +99,7 @@ DMA_FillVRAM_Run:  ; was: loc_906
 
 ; DMA copy with >$200 byte chunking
 DMA_CopyLarge:
-                movem.w d0-d2,-(sp)  ; was: sub_954
+                movem.w d0-d2,-(sp)                     ; was: sub_954
                 move.w  #$200,d0
                 bsr.s   DMA_Copy_Run
                 movem.w (sp)+,d0-d2
@@ -112,10 +112,10 @@ DMA_CopyLarge:
 
 ; DMA copy size check entry point
 DMA_CopyCheck:
-                cmpi.w  #$200,d0  ; was: sub_976
+                cmpi.w  #$200,d0                        ; was: sub_976
                 bhi.s   DMA_CopyLarge
 
-DMA_Copy_Run:  ; was: loc_97C
+DMA_Copy_Run:                                           ; was: loc_97C
                 lea     (VDP_CTRL).l,a6
                 swap    d1
                 move.w  #$8F01,(a6)
@@ -149,14 +149,14 @@ DMA_Copy_Run:  ; was: loc_97C
 
 ; Waits for DMA completion via VDP status
 DMA_WaitComplete:
-                move.w  (a6),d0  ; was: sub_9D8
+                move.w  (a6),d0                         ; was: sub_9D8
                 andi.w  #2,d0
                 bne.s   DMA_WaitComplete
                 rts
 
 ; DMA to VRAM with large chunk handling
 DMA_ToVRAMLarge:
-                movem.w d0-d2,-(sp)  ; was: sub_9E2
+                movem.w d0-d2,-(sp)                     ; was: sub_9E2
                 move.w  #$400,d0
                 bsr.s   DMA_ToVRAM_Run
                 movem.w (sp)+,d0-d2
@@ -169,23 +169,23 @@ DMA_ToVRAMLarge:
 
 ; DMA transfer to CRAM (palette)
 DMA_ToCRAM:
-                bsr.s   DMA_SetupRegs  ; was: sub_A04
+                bsr.s   DMA_SetupRegs                   ; was: sub_A04
                 ori.w   #$C000,d0
                 bra.s   DMA_Commit
 
 ; DMA to VRAM size check entry point
 DMA_ToVRAMCheck:
-                cmpi.w  #$400,d0  ; was: sub_A0C
+                cmpi.w  #$400,d0                        ; was: sub_A0C
                 bhi.s   DMA_ToVRAMLarge
 
-DMA_ToVRAM_Run:  ; was: loc_A12
+DMA_ToVRAM_Run:                                         ; was: loc_A12
                 bsr.s   DMA_SetupRegs
                 ori.w   #$4000,d0
                 bra.s   DMA_Commit
 
 ; Sets up DMA registers 93-96
 DMA_SetupRegs:
-                lea     (VDP_CTRL).l,a6  ; was: sub_A1A
+                lea     (VDP_CTRL).l,a6                 ; was: sub_A1A
                 lsr.w   #1,d0
                 swap    d1
                 move.w  d0,d1
@@ -214,7 +214,7 @@ DMA_SetupRegs:
 
 ; Commits DMA command to VDP
 DMA_Commit:
-                move.w  d0,(a6)  ; was: sub_A66
+                move.w  d0,(a6)                         ; was: sub_A66
                 swap    d0
                 move.w  d0,(Ram_DMACommandLow).w
                 move.w  (Ram_DMACommandLow).w,(a6)
@@ -222,11 +222,11 @@ DMA_Commit:
 
 ; Fills VRAM area at address d2 with zeros, length d0
 Gfx_FillVRAMZero:
-                moveq   #0,d1  ; was: sub_A74
+                moveq   #0,d1                           ; was: sub_A74
 
 ; Fills VRAM area at d2 with value d1, length d0
 Gfx_FillVRAMValue:
-                movem.l d3/a5,-(sp)  ; was: loc_A76
+                movem.l d3/a5,-(sp)                     ; was: loc_A76
                 lea     (VDP_CTRL).l,a6
                 lea     VDP_DATA-VDP_CTRL(a6),a5
                 move.b  d1,d3
@@ -249,7 +249,7 @@ Gfx_FillVRAMValue:
                 lsr.w   #3,d1
                 bra.s   Gfx_FillVRAMValue_BlockCheck
 
-Gfx_FillVRAMValue_Block8Loop:  ; was: loc_AAE
+Gfx_FillVRAMValue_Block8Loop:                           ; was: loc_AAE
                 move.l  d3,(a5)
                 move.l  d3,(a5)
                 move.l  d3,(a5)
@@ -259,15 +259,15 @@ Gfx_FillVRAMValue_Block8Loop:  ; was: loc_AAE
                 move.l  d3,(a5)
                 move.l  d3,(a5)
 
-Gfx_FillVRAMValue_BlockCheck:  ; was: loc_ABE
+Gfx_FillVRAMValue_BlockCheck:                           ; was: loc_ABE
                 dbf     d1,Gfx_FillVRAMValue_Block8Loop
                 andi.w  #7,d0
                 bra.s   Gfx_FillVRAMValue_TailCheck
 
-Gfx_FillVRAMValue_TailLoop:  ; was: loc_AC8
+Gfx_FillVRAMValue_TailLoop:                             ; was: loc_AC8
                 move.l  d3,(a5)
 
-Gfx_FillVRAMValue_TailCheck:  ; was: loc_ACA
+Gfx_FillVRAMValue_TailCheck:                            ; was: loc_ACA
                 dbf     d0,Gfx_FillVRAMValue_TailLoop
                 movem.l (sp)+,d3/a5
                 rts

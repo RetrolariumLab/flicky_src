@@ -1,5 +1,5 @@
-; Reset entry, hardware bring-up, checksum verification.
-; ROM $000200-$000401.
+; Reset entry, hardware bring-up, checksum verification
+; ROM $000200-$000401
 
 ErrorTrap:
                 nop
@@ -140,24 +140,24 @@ CheckSumOk:
                 nop
                 nop
 
-Boot_SetupControllerPorts:  ; was: loc_374
+Boot_SetupControllerPorts:                              ; was: loc_374
                 moveq   #$40,d0
                 move.b  d0,(IO_CT1_CTRL+1).l
                 move.b  d0,(IO_CT2_CTRL+1).l
                 move.b  d0,(IO_EXT_CTRL+1).l
 
-Boot_ClearWorkRAM:  ; was: loc_388
+Boot_ClearWorkRAM:                                      ; was: loc_388
                 lea     (M68K_RAM).l,a6
                 moveq   #0,d7
                 move.w  #$3FFF,d6
 
-Boot_ClearWorkRAM_Loop:  ; was: loc_394
+Boot_ClearWorkRAM_Loop:                                 ; was: loc_394
                 move.l  d7,(a6)+
                 dbf     d6,Boot_ClearWorkRAM_Loop
                 move.l  #'init',(Ram_InitFlag).w
                 move.l  #$100000,(Ram_HighScore).w
 
-Boot_CheckInitFlag:  ; was: loc_3AA
+Boot_CheckInitFlag:                                     ; was: loc_3AA
                 cmpi.l  #'init',(Ram_InitFlag).w
                 bne.s   Boot_ClearWorkRAM
                 bsr.w   LoadFuncTable
@@ -169,7 +169,7 @@ Boot_CheckInitFlag:  ; was: loc_3AA
                 lea     (M68K_RAM).l,a1
                 move.w  #$2FFF,d0
 
-Boot_CopyGameToRAM_Loop:  ; was: loc_3D8
+Boot_CopyGameToRAM_Loop:                                ; was: loc_3D8
                 move.l  (a0)+,(a1)+
                 dbf     d0,Boot_CopyGameToRAM_Loop
                 jmp     M68K_RAM

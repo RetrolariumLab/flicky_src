@@ -1,7 +1,7 @@
-; Exception vector table and ROM header.
-; ROM $000000-$0001FF.
+; Exception vector table and ROM header
+; ROM $000000-$0001FF
 
-Sys_VectorTable: dc.l    Ram_VDPRegisters  ; was: off_0
+Sys_VectorTable:        dc.l    Ram_VDPRegisters        ; was: off_0
                 dc.l    EntryPoint
                 dc.l    ErrorTrap
                 dc.l    ErrorTrap
