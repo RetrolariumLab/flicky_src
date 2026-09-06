@@ -40,6 +40,27 @@ def check_inputs(spec: dict, rom: Path) -> None:
             fail(f"movie {name} does not match the SHA-1 the scenarios pin")
 
 
+def prune_to_window(directory: Path, first: int, last: int) -> tuple[int, int]:
+    """Delete captures outside the scenario's frame range.
+
+    A movie can only be replayed from its start, so the emulator writes every
+    frame from zero up to `last_frame`. Only the window says anything about the
+    scene the scenario names, and the rest is bulk: the girl-in-window scenario
+    asserts 17 frames and would otherwise leave 1,679 on disk. Dropping them
+    keeps a full capture around 100 MB instead of well over a gigabyte.
+    """
+    removed = freed = 0
+    for path in directory.iterdir():
+        if path.suffix not in (".png", ".genstate") or not path.stem.isdigit():
+            continue
+        if first <= int(path.stem) <= last:
+            continue
+        freed += path.stat().st_size
+        path.unlink()
+        removed += 1
+    return removed, freed
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scenarios", default="scenarios/runtime_scenarios.json")
@@ -50,15 +71,16 @@ def main() -> int:
     args = parser.parse_args()
 
     spec = json.loads(Path(args.scenarios).read_text(encoding="utf-8"))
-    if spec.get("schema_version") != 1:
+    if spec.get("schema_version") != 2:
         fail("unsupported scenarios schema_version")
 
     gens = Path(args.gens)
     if not gens.is_file():
         fail(
             f"instrumented Gens build not found: {gens}\n"
-            "        Build it with 'make build-gens'. It needs Visual Studio 2022;\n"
-            "        without it this evidence layer cannot run and no capture is produced."
+            "        Build it with 'make build-gens', which cross-compiles it in\n"
+            "        Docker and needs no Visual Studio. Without the emulator this\n"
+            "        evidence layer cannot run and no capture is produced."
         )
 
     check_inputs(spec, Path(args.rom))
@@ -100,7 +122,18 @@ def main() -> int:
             print(f"[ERROR] {scenario['id']}: no frames captured", file=sys.stderr)
             failures += 1
             continue
-        print(f"[OK] {scenario['id']}: {len(produced)} frames in {target}")
+
+        removed, freed = prune_to_window(
+            target, scenario["first_frame"], scenario["last_frame"]
+        )
+        kept = sorted(target.glob("*.png"))
+        if not kept:
+            print(f"[ERROR] {scenario['id']}: nothing captured inside frames "
+                  f"{scenario['first_frame']}-{scenario['last_frame']}", file=sys.stderr)
+            failures += 1
+            continue
+        note = f", dropped {removed} outside the window ({freed // (1024 * 1024)} MB)"
+        print(f"[OK] {scenario['id']}: {len(kept)} frames in {target}{note}")
 
     if failures:
         print(f"[FAIL] {failures} scenario(s) did not capture", file=sys.stderr)

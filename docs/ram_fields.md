@@ -275,3 +275,21 @@ the first 64 KiB after the code has been copied to RAM.
 | `Ram_TilemapRowStride` | `$FFFFE2` |
 | `Ram_TilemapGradientBase` | `$FFFFE4` |
 | `Ram_InitFlag` | `$FFFFFC` |
+
+## Fields with an observed encoding
+
+Six of these are asserted by name in `scenarios/runtime_scenarios.json` and
+checked against replays of the two recorded movies, so their contents are
+observed rather than inferred. Three carry an encoding worth stating here;
+[`runtime_evidence.md`](runtime_evidence.md) has the full tables and the values
+each scenario saw.
+
+| Symbol | Encoding |
+| --- | --- |
+| `Ram_NextGameMode` | Byte offset into `Sys_GameModeTable`, whose entries are `bra.w`, so it steps by four: `$04` `Title_Update`, `$24` `Game_MainLoop`, `$2C` `Bonus_MainLoop`, `$34` `Ending_MainLoop`, `$44` `Sys_ModeSegaScreen` |
+| `Ram_GameState` | The same, one level down, into `Game_StateTable` under `andi.w #$7FFC`. Bit 15 latches that the state's entry code has run, so play reads `$0000` and the round-complete screen `$8004` |
+| `Ram_RoundNumber` | The round twice over: high byte the BCD the HUD prints, low byte the plain index the code counts with. Round 26 is `$261A`; `Demo_Init` writes the pair from `Demo_RoundDisplayTable` and `Demo_RoundIndexTable` |
+
+`Ram_InitFlag` is the useful landmark when reading a state dump by hand: the
+boot code writes the ASCII `init` there, which makes it the cheapest check that
+a reader has the byte order right.

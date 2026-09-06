@@ -1,5 +1,11 @@
 ; Attract-mode demo playback.
 ; ROM $0139A2-$013E6F.
+;
+; !(OBS) The longplay presses start before the attract demos begin, so this file
+; is only reached by the demos recording. Replaying it holds Ram_Score at zero
+; across the whole demo while chicks are caught, which is how the two round
+; tables below were told apart: the index one feeds Ram_RoundNumber+1 and the
+; display one the BCD byte the HUD prints.
 
 Demo_Init:
                 jsr     Sys_InitTitleScreen  ; was: sub_139A2
@@ -7,8 +13,8 @@ Demo_Init:
                 jsr     j_Gfx_LoadPaletteCompact
                 move.w  (Ram_DemoIndex).w,d0
                 andi.w  #3,d0
-                move.b  Demo_RoundHighTable(pc,d0.w),(Ram_RoundNumber+1).w
-                move.b  Demo_RoundLowTable(pc,d0.w),(Ram_RoundNumber).w
+                move.b  Demo_RoundIndexTable(pc,d0.w),(Ram_RoundNumber+1).w
+                move.b  Demo_RoundDisplayTable(pc,d0.w),(Ram_RoundNumber).w
                 lsl.w   #1,d0
                 move.w  Demo_InputStreamPointers(pc,d0.w),(Ram_DemoStreamPtr).w
                 moveq   #$FFFFFFFF,d1
@@ -26,8 +32,8 @@ Demo_Init:
                 bsr.w   Game_CalcDifficulty
                 jmp     j_Sound_QueueSFX
 
-Demo_RoundHighTable: dc.b    1, $A, $14, $18  ; was: byte_13A08
-Demo_RoundLowTable: dc.b    1, $10, $20, $24  ; was: byte_13A0C
+Demo_RoundIndexTable: dc.b    1, $A, $14, $18  ; was: byte_13A08
+Demo_RoundDisplayTable: dc.b    1, $10, $20, $24  ; was: byte_13A0C
 Demo_InputStreamPointers: dc.w    Demo_InputStream0-Sys_GameEntryPoint  ; was: off_13A10
                 dc.w    Demo_InputStream1-Sys_GameEntryPoint
                 dc.w    Demo_InputStream2-Sys_GameEntryPoint

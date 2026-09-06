@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "rom_sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
   "movies": {
     "longplay": {
@@ -15,6 +15,17 @@
     "interval": 20,
     "frameskip": 0
   },
+  "symbols": {
+    "source": "src/memory/ram.inc",
+    "sizes": {
+      "Ram_GameState": 2,
+      "Ram_RoundNumber": 2,
+      "Ram_Lives": 1,
+      "Ram_ChicksRemaining": 1,
+      "Ram_Score": 4,
+      "Ram_NextGameMode": 2
+    }
+  },
   "scenarios": [
     {
       "id": "longplay-sega-screen",
@@ -22,7 +33,19 @@
       "method": "natural play",
       "first_frame": 20,
       "last_frame": 300,
-      "expects": "Sega screen"
+      "expects": "Sega screen",
+      "expect_state": {
+        "holds": {
+          "Ram_GameState": "$0000",
+          "Ram_Lives": "$00",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$00000000"
+        },
+        "reaches": {
+          "Ram_NextGameMode": "$0044",
+          "Ram_RoundNumber": "$0101"
+        }
+      }
     },
     {
       "id": "longplay-title-screen",
@@ -30,7 +53,19 @@
       "method": "natural play",
       "first_frame": 320,
       "last_frame": 440,
-      "expects": "Title screen"
+      "expects": "Title screen",
+      "expect_state": {
+        "holds": {
+          "Ram_NextGameMode": "$0004",
+          "Ram_RoundNumber": "$0101",
+          "Ram_GameState": "$0000",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$00000000"
+        },
+        "reaches": {
+          "Ram_Lives": "$03"
+        }
+      }
     },
     {
       "id": "longplay-guide-screen",
@@ -38,7 +73,19 @@
       "method": "natural play",
       "first_frame": 460,
       "last_frame": 680,
-      "expects": "Guide screen"
+      "expects": "Guide screen",
+      "expect_state": {
+        "holds": {
+          "Ram_RoundNumber": "$0101",
+          "Ram_Lives": "$03",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$00000000",
+          "Ram_GameState": "$0000"
+        },
+        "reaches": {
+          "Ram_NextGameMode": "$000C"
+        }
+      }
     },
     {
       "id": "longplay-round-1",
@@ -46,7 +93,18 @@
       "method": "natural play",
       "first_frame": 700,
       "last_frame": 1380,
-      "expects": "Round 1"
+      "expects": "Round 1",
+      "expect_state": {
+        "holds": {
+          "Ram_RoundNumber": "$0101",
+          "Ram_Lives": "$03",
+          "Ram_GameState": "$0000"
+        },
+        "reaches": {
+          "Ram_NextGameMode": "$0024",
+          "Ram_ChicksRemaining": "$06"
+        }
+      }
     },
     {
       "id": "longplay-chickens-counting",
@@ -54,7 +112,19 @@
       "method": "natural play",
       "first_frame": 1400,
       "last_frame": 1440,
-      "expects": "Chickens counting"
+      "expects": "Chickens counting",
+      "expect_state": {
+        "holds": {
+          "Ram_NextGameMode": "$0024",
+          "Ram_RoundNumber": "$0101",
+          "Ram_Lives": "$03",
+          "Ram_GameState": "$0000"
+        },
+        "reaches": {
+          "Ram_ChicksRemaining": "$03",
+          "Ram_Score": "$00000660"
+        }
+      }
     },
     {
       "id": "longplay-score-screen",
@@ -62,7 +132,18 @@
       "method": "natural play",
       "first_frame": 1460,
       "last_frame": 1700,
-      "expects": "Score screen"
+      "expects": "Score screen",
+      "expect_state": {
+        "holds": {
+          "Ram_GameState": "$8004",
+          "Ram_NextGameMode": "$0024",
+          "Ram_RoundNumber": "$0101",
+          "Ram_Lives": "$03",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$00022560"
+        },
+        "reaches": {}
+      }
     },
     {
       "id": "longplay-round-3-bonus",
@@ -70,7 +151,18 @@
       "method": "natural play",
       "first_frame": 3180,
       "last_frame": 4240,
-      "expects": "Round 3 (bonus)"
+      "expects": "Round 3 (bonus)",
+      "expect_state": {
+        "holds": {
+          "Ram_RoundNumber": "$0303",
+          "Ram_Lives": "$04",
+          "Ram_GameState": "$0000"
+        },
+        "reaches": {
+          "Ram_NextGameMode": "$002C",
+          "Ram_ChicksRemaining": "$14"
+        }
+      }
     },
     {
       "id": "longplay-girl-in-window-appeared",
@@ -78,7 +170,18 @@
       "method": "natural play",
       "first_frame": 33260,
       "last_frame": 33600,
-      "expects": "Girl in window appeared"
+      "expects": "Girl in window appeared",
+      "expect_state": {
+        "holds": {
+          "Ram_RoundNumber": "$261A",
+          "Ram_Lives": "$08",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_NextGameMode": "$0024"
+        },
+        "reaches": {
+          "Ram_GameState": "$8008"
+        }
+      }
     },
     {
       "id": "longplay-credits",
@@ -86,7 +189,18 @@
       "method": "natural play",
       "first_frame": 62800,
       "last_frame": 66980,
-      "expects": "Credits"
+      "expects": "Credits",
+      "expect_state": {
+        "holds": {
+          "Ram_NextGameMode": "$0034",
+          "Ram_RoundNumber": "$4931",
+          "Ram_Lives": "$08",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$02862440",
+          "Ram_GameState": "$0000"
+        },
+        "reaches": {}
+      }
     },
     {
       "id": "demos-sega-screen",
@@ -94,7 +208,19 @@
       "method": "natural play",
       "first_frame": 20,
       "last_frame": 300,
-      "expects": "Sega screen"
+      "expects": "Sega screen",
+      "expect_state": {
+        "holds": {
+          "Ram_GameState": "$0000",
+          "Ram_Lives": "$00",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$00000000"
+        },
+        "reaches": {
+          "Ram_NextGameMode": "$0044",
+          "Ram_RoundNumber": "$0101"
+        }
+      }
     },
     {
       "id": "demos-title-screen",
@@ -102,7 +228,19 @@
       "method": "natural play",
       "first_frame": 320,
       "last_frame": 1380,
-      "expects": "Title screen"
+      "expects": "Title screen",
+      "expect_state": {
+        "holds": {
+          "Ram_NextGameMode": "$0004",
+          "Ram_RoundNumber": "$0101",
+          "Ram_GameState": "$0000",
+          "Ram_ChicksRemaining": "$00",
+          "Ram_Score": "$00000000"
+        },
+        "reaches": {
+          "Ram_Lives": "$03"
+        }
+      }
     },
     {
       "id": "demos-demo-play-round-1",
@@ -110,7 +248,18 @@
       "method": "natural play",
       "first_frame": 1400,
       "last_frame": 3380,
-      "expects": "Demo play Round 1"
+      "expects": "Demo play Round 1",
+      "expect_state": {
+        "holds": {
+          "Ram_RoundNumber": "$0101",
+          "Ram_GameState": "$0000",
+          "Ram_Score": "$00000000"
+        },
+        "reaches": {
+          "Ram_NextGameMode": "$003C",
+          "Ram_ChicksRemaining": "$06"
+        }
+      }
     }
   ]
 }

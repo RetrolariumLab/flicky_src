@@ -75,5 +75,7 @@ make lint
 make verify
 ```
 
-Once milestones 5 through 8 land, `make release-check` runs those plus the data
-round trips, the unit tests, the runtime evidence and the release audit.
+`make release-check` runs those plus the data round trips, the unit tests, the
+runtime evidence and the release audit. It is the full gate and it is slow --
+the runtime layer replays 67,000 frames -- so run the two above while working
+and the whole gate before proposing.

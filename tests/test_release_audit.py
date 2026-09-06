@@ -16,6 +16,8 @@ CONTRACT = json.loads(
 
 class MilestoneParsing(unittest.TestCase):
     def test_status_is_read_from_the_heading(self):
+        # A fixture, not the roadmap: the parser has to report whatever word the
+        # heading carries, not assume every milestone is complete.
         text = "### 3. Semantic naming - Complete\n### 7. Runtime evidence - Blocked\n"
         found = dict(release_audit.MILESTONE_RE.findall(text))
         self.assertEqual(found["3"], "Complete")
@@ -28,10 +30,11 @@ class MilestoneParsing(unittest.TestCase):
 
     def test_a_contradiction_is_caught(self):
         contract = dict(CONTRACT)
-        contract["complete_milestones"] = CONTRACT["complete_milestones"] + [7]
+        contract["complete_milestones"] = [n for n in CONTRACT["complete_milestones"] if n != 7]
+        contract["open_milestones"] = {"7": "claimed open while the roadmap says complete"}
         errors: list[str] = []
         release_audit.check_milestones(contract, errors)
-        self.assertTrue(any("milestone 7" in error for error in errors))
+        self.assertTrue(any("milestone 7" in error for error in errors), errors)
 
 
 class Agreement(unittest.TestCase):
@@ -57,11 +60,25 @@ class Agreement(unittest.TestCase):
 
 
 class Contract(unittest.TestCase):
-    def test_runtime_captures_are_declared_as_not_produced(self):
-        # The one thing 1.0 does not claim. If this ever flips to true the
-        # roadmap and the release document have to change with it.
-        self.assertFalse(CONTRACT["evidence"]["runtime_captures_produced"])
-        self.assertIn("7", CONTRACT["open_milestones"])
+    def test_runtime_captures_are_claimed_and_the_roadmap_agrees(self):
+        # Claiming runtime evidence commits the roadmap and the scenarios to it:
+        # the flag, the milestone status and the declared count move together.
+        self.assertTrue(CONTRACT["evidence"]["runtime_captures_produced"])
+        self.assertNotIn("7", CONTRACT["open_milestones"])
+        self.assertIn(7, CONTRACT["complete_milestones"])
+
+    def test_the_declared_expectation_count_matches_the_scenarios(self):
+        spec = json.loads(
+            (ROOT / "scenarios" / "runtime_scenarios.json").read_text(encoding="utf-8")
+        )
+        declared = sum(
+            len(scenario["expect_state"]["holds"]) + len(scenario["expect_state"]["reaches"])
+            for scenario in spec["scenarios"]
+        )
+        self.assertEqual(declared, CONTRACT["evidence"]["runtime_state_expectations"])
+
+    def test_the_gate_runs_the_capture(self):
+        self.assertIn("trace", CONTRACT["release_commands"])
 
     def test_the_reference_hashes_match_the_asset_manifest(self):
         assets = json.loads((ROOT / "assets" / "manifest.json").read_text(encoding="utf-8"))

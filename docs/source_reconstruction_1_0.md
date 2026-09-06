@@ -42,21 +42,22 @@ extracted from it, or any build output.
 | The memory map is known | 194 named work RAM fields in [`ram_fields.md`](ram_fields.md), raw addresses rejected outside `src/memory/` |
 | Authored data is understood | 8 of 17 segments round-trip byte for byte; the rest declare a weaker claim in `config/data_formats.json` |
 | Uncertainty is explicit | 7 entries in [`unknowns.md`](unknowns.md), each referenced from the source, checked both ways by lint |
-| The tooling itself is checked | 75 unit tests over the formatter, the linters, the codecs, the symbol export and this audit |
+| Behaviour is observed, not assumed | 12 movie replays under the emulator, 68 expectations about work RAM checked against the captures |
+| The tooling itself is checked | 98 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
 | The contract holds together | `make release-audit` cross-checks the manifests, milestones, documents, targets, toolchain and full git history |
 
 ## What this release does not cover
 
-**Runtime evidence.** Twelve scenarios are declared and the runner and
-validator are written, but no capture has been produced: the instrumented Gens
-build requires Visual Studio 2022, which was not available on the machine this
-reconstruction was assembled on. Milestone 7 stays open, the contract records
-`runtime_captures_produced: false`, and a unit test fails if that flag is ever
-flipped without the roadmap changing with it.
+**Frame-by-frame image comparison.** The runtime layer checks state, not
+pixels. It reads work RAM out of the state dumps and asserts declared values,
+which catches an emulated game that diverges; it does not compare screenshots
+unless given a reference capture with `--reference-dir`, and no such reference
+is tracked. Rendering is therefore covered only where it shows up in memory.
 
-This matters because no check in this release observes behaviour. `make verify`
-proves the bytes are right today; only a replay would prove they still do what
-they used to after a change to the tooling or the data extraction.
+**What a replay can conclude.** Reaching `Bonus_MainLoop` proves the bonus
+round runs and that `Ram_NextGameMode` selects it. It does not prove
+`Ram_BonusCaughtCount` counts what its name says. The runtime layer narrows
+where a wrong name could hide; it does not by itself confirm one.
 
 **The Z80 sound driver.** Both images are copied verbatim and never
 disassembled ([SND-001](unknowns.md)).
@@ -80,8 +81,10 @@ make release-check
 ```
 
 runs, in order: `lint`, `test`, `roundtrip-formats`, `verify`, `symbols`,
-`release-audit`. Cheap text checks come first so a typo fails in a second
-rather than after a full assemble.
+`trace`, `release-audit`. Cheap text checks come first so a typo fails in a
+second rather than after a full assemble; `trace` is last before the audit
+because it is much the slowest -- it replays 67,000 frames -- and needs the
+emulator from `make build-gens`.
 
 Everything it writes goes under the ignored `build/` directory, regenerated
 each time, so a stale local artifact cannot mask a regression.
@@ -102,5 +105,7 @@ only after the tag and behind a separate entrypoint and output. The
 preservation build stays the default and `make verify` stays the permanent
 gate.
 
-The first thing 2.0 should do is close milestone 7 on a machine that can build
-the emulator, because it is the only claim this release could not make.
+The runtime layer is the natural place to grow next: a tracked reference
+capture would turn the frame comparison on, and scenarios reaching states the
+two movies never visit would need the `controlled` method the schema already
+allows for.

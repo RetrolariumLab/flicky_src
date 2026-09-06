@@ -15,10 +15,10 @@ itself. `flicky.s` is no longer a source file: it is an index of 43
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-This is Source Reconstruction 1.0. Milestones 0 through 6 and 8 are complete:
-the data formats have codecs, the symbol map is exported for debuggers, and
-`make release-check` audits the whole release contract. Milestone 7, runtime
-evidence, is declared but not captured -- see
+This is Source Reconstruction 1.0, all nine milestones complete: the data
+formats have codecs, the symbol map is exported for debuggers, twelve scenarios
+replay under the emulator and are checked against 68 declared facts about work
+RAM, and `make release-check` audits the whole release contract. See
 [`docs/source_reconstruction_1_0.md`](docs/source_reconstruction_1_0.md) for
 what the release claims and what it does not.
 
@@ -121,10 +121,11 @@ Automated procedure analysis stubs a routine with an early return, rebuilds and
 diffs emulator screenshots against a reference capture. It needs the
 instrumented Gens build from
 [gens_automation](https://github.com/oranguthang/gens_automation) as a sibling
-checkout.
+checkout; `make build-gens` cross-compiles it in Docker, so Visual Studio is
+optional.
 
 ```bash
-make build-gens                 # Clone and build it into ../gens_automation
+make build-gens                 # Clone it to ../gens_automation and cross-build in Docker
 make reference MOVIE=longplay   # Capture the reference frames
 make find-unanalyzed            # List procedures still to analyze
 make analyze MOVIE=longplay     # Stub and diff
@@ -161,9 +162,9 @@ for the Japanese variants carry a `JP` suffix.
   segments round-trip exactly; the six Nemesis ones only round-trip
   semantically, and Enigma has no encoder at all. Tracked as DATA-002; see
   [`docs/data_formats.md`](docs/data_formats.md).
-- **No runtime evidence has been captured.** The scenarios exist but the
-  instrumented emulator could not be built here, so nothing in this release
-  observes behaviour rather than bytes. See
+- **The runtime layer checks state, not pixels.** The twelve replays assert
+  declared values of work RAM, which catches a game that diverges; comparing
+  screenshots needs a reference capture, and none is tracked. See
   [`docs/runtime_evidence.md`](docs/runtime_evidence.md).
 - Four further open questions are listed in
   [`docs/unknowns.md`](docs/unknowns.md).

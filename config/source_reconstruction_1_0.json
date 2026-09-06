@@ -21,7 +21,8 @@
     "exact_round_trips": 8,
     "semantic_round_trips": 6,
     "runtime_scenarios": 12,
-    "runtime_captures_produced": false
+    "runtime_captures_produced": true,
+    "runtime_state_expectations": 68
   },
   "required_documents": [
     "README.md",
@@ -42,11 +43,9 @@
     "bin/README.md",
     "movies/README.md"
   ],
-  "release_commands": ["lint", "test", "roundtrip-formats", "verify", "symbols", "release-audit"],
-  "complete_milestones": [0, 1, 2, 3, 4, 5, 6, 8],
-  "open_milestones": {
-    "7": "Runtime evidence: declared but not captured, no emulator build available"
-  },
+  "release_commands": ["lint", "test", "roundtrip-formats", "verify", "symbols", "trace", "release-audit"],
+  "complete_milestones": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "open_milestones": {},
   "prohibited_tracked_extensions": [".bin", ".p", ".gen", ".sym"],
   "prohibited_tracked_prefixes": ["data/artnem/", "data/arteni/", "data/artunc/", "data/sound/", "data/other/", "build/"]
 }

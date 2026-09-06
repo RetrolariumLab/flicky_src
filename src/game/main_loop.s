@@ -57,7 +57,10 @@ Game_SetupLevel_CountAndDraw:  ; was: loc_12B20
                 bsr.w   UI_DrawLives
                 rts
 
-; Main gameplay loop with state dispatcher
+; Main gameplay loop with state dispatcher.
+; !(OBS) The mask keeps bit 15, which the states set through bset to record that
+; their entry code has run, out of the index. Captures of the score screen read
+; $8004, not $0004, which is Game_StateRoundComplete already entered.
 Game_MainLoop:
                 move.w  (Ram_GameState).w,d0  ; was: sub_12B46
                 andi.w  #$7FFC,d0

@@ -57,6 +57,10 @@ RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 GENS_DIR ?= ../gens_automation
 GENS_EXE ?= $(GENS_DIR)/Output/Gens.exe
 GENS_REPO ?= https://github.com/oranguthang/gens_automation.git
+# Its Docker cross-build, which needs no Visual Studio. Override both to build
+# with MSBuild instead: GENS_MAKEFILE=Makefile GENS_TARGET=release
+GENS_MAKEFILE ?= Makefile.docker
+GENS_TARGET ?= win-i386
 
 # Analysis configuration
 WORKFLOW_DIR ?= workflow
@@ -164,6 +168,7 @@ release-check:
 	$(MAKE) roundtrip-formats
 	$(MAKE) verify
 	$(MAKE) symbols
+	$(MAKE) trace
 	$(MAKE) release-audit
 
 # Deterministic whitespace, label-layout and case normalization, then re-check.
@@ -290,7 +295,7 @@ rename:
 
 build-gens:
 	@$(PYTHON) -c "import os, subprocess; d = '$(GENS_DIR)'; os.path.isdir(d) or subprocess.run(['git', 'clone', '$(GENS_REPO)', d], check=True)"
-	@$(MAKE) -C $(GENS_DIR)
+	@$(MAKE) -C $(GENS_DIR) -f $(GENS_MAKEFILE) $(GENS_TARGET)
 
 stop:
 	-@taskkill //F //IM Gens.exe 2>/dev/null || true
@@ -325,6 +330,7 @@ help:
 	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
 	@echo "  make symbols                   Export build/flicky.sym for debuggers"
 	@echo "  make trace                     Capture and validate runtime scenarios"
+	@echo "  make validate-runtime          Re-check an existing capture"
 	@echo ""
 	@echo "Analysis (MOVIE=longplay|demos):"
 	@echo "  make reference MOVIE=longplay  Capture reference screenshots and dumps"
@@ -338,7 +344,7 @@ help:
 	@echo "  make rename                    Apply workflow/rename_batch.csv"
 	@echo ""
 	@echo "Emulator:"
-	@echo "  make build-gens                Clone and build Gens ($(GENS_DIR))"
+	@echo "  make build-gens                Clone and cross-build Gens in Docker ($(GENS_DIR))"
 	@echo "  make stop                      Kill running emulator processes"
 	@echo ""
 	@echo "Toolchain: $(TOOLS_DIR)  (override with PLATFORM=<subfolder>)"

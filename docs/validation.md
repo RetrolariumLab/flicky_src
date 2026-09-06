@@ -31,8 +31,10 @@ codecs, the audit -- so a bug in the checks does not quietly pass everything.
 it, requiring the original bytes back. It catches a codec that decodes
 plausibly but cannot reproduce what it read.
 
-**`make trace`** runs the ROM. It is the only layer that observes behaviour
-rather than bytes, and the only one that needs an emulator build.
+**`make trace`** replays the two recorded movies under the emulator and checks
+declared values of work RAM at each scenario's frames. It is the only layer
+that observes behaviour rather than bytes, and the only one that needs an
+emulator build -- `make build-gens` cross-compiles it in Docker.
 
 ## The rule
 

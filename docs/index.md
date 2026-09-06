@@ -20,7 +20,7 @@
 | [`unknowns.md`](unknowns.md) | What is still unresolved, and the experiment that would settle it |
 | [`data_formats.md`](data_formats.md) | What each extracted segment is and how well it is understood |
 | [`debugger_workflow.md`](debugger_workflow.md) | Exporting symbols and using them on a trace |
-| [`runtime_evidence.md`](runtime_evidence.md) | The declared scenarios, and why none have been captured |
+| [`runtime_evidence.md`](runtime_evidence.md) | The twelve replays, what they observe, and how the dumps are read |
 | [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | The workflow, from a fresh clone to a reviewed change |
 
 ## Reading order
@@ -55,16 +55,16 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 ## Current status
 
-Source Reconstruction 1.0. Milestones 0 through 6 and 8 are complete: the
-byte-identity gate compares against the cartridge dump, the source is modular
-and consistently styled, every symbol is semantic, the subsystems and the
-memory map are documented, the authored data formats have codecs, the symbol
-map is exported, and `make release-check` audits the whole contract.
+Source Reconstruction 1.0, all nine milestones complete: the byte-identity
+gate compares against the cartridge dump, the source is modular and
+consistently styled, every symbol is semantic, the subsystems and the memory
+map are documented, the authored data formats have codecs, the symbol map is
+exported, twelve scenarios replay under the emulator with 68 checked
+expectations about work RAM, and `make release-check` audits the whole
+contract.
 
-Milestone 7, runtime evidence, is declared but **not captured** -- the
-instrumented emulator could not be built here. See
-[`runtime_evidence.md`](runtime_evidence.md) and
-[`source_reconstruction_1_0.md`](source_reconstruction_1_0.md), which states
-what the release does and does not claim.
+See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe
+and [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for what the
+release does and does not claim.
 
 Seven questions are open in [`unknowns.md`](unknowns.md).

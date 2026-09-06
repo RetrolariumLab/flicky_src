@@ -154,23 +154,25 @@ after the fact.
 
 *Exit criterion:* the map is exported and every configured symbol resolves.
 
-### 7. Runtime evidence - Blocked
+### 7. Runtime evidence - Complete
 
-Twelve scenarios are declared in `scenarios/runtime_scenarios.json`, pinned to
-the ROM and movie SHA-1, and both the runner and the validator are written and
-behave correctly when their inputs are missing.
+Twelve scenarios in `scenarios/runtime_scenarios.json`, pinned to the ROM and
+movie SHA-1, captured with the emulator cross-built by
+`make build-gens`. 68 declared expectations about work RAM hold across the
+captured windows.
 
-**No capture has been produced.** The instrumented Gens build this layer
-depends on requires Visual Studio 2022, which is not installed on the machine
-this reconstruction was assembled on, so the emulator could not be built. The
-tooling stops with a clear error rather than reporting a vacuous pass, and
-milestone 7 stays open.
+The evidence is state, not pixels. Each scenario names fields of work RAM that
+must `hold` across its whole frame range or be `reached` inside it, resolved
+through the symbols in `src/memory/ram.inc`. That turns each scene label into a
+machine-checkable claim: the score screen is the frames where
+`Ram_GameState` is `$8004`, which the source shows is `Game_StateRoundComplete`;
+the bonus round is where `Ram_NextGameMode` is `$002C`, which is
+`Bonus_MainLoop`. Every one of the twelve human-written scene labels turned out
+to match the game mode the emulator actually reached.
 
-This is the one milestone the 1.0 release does not cover; see
-[`runtime_evidence.md`](runtime_evidence.md) and the release contract.
-
-*Exit criterion:* the scenarios capture and validate on a machine that can
-build the emulator.
+*Exit criterion:* every scenario captures, and every declared expectation is
+checked against the captured state -- met, and `make release-check` now runs
+the capture as part of the gate.
 
 ### 8. Automated release audit - Complete
 
