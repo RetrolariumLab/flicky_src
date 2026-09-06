@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "target": {
+    "platform": "Sega Mega Drive / Genesis",
+    "cpu": "Motorola 68000",
+    "cartridge_size": 131072,
+    "translation_unit": "single",
+    "entrypoint": "flicky.s",
+    "entrypoint_note": "AS assembles one translation unit, so there is no linker and no linker script. The include order in flicky.s is the ROM layout: moving an include moves code in the output."
+  },
+  "memory_regions": [
+    {
+      "id": "rom",
+      "start": "0x000000",
+      "end": "0x01FFFF",
+      "size": 131072,
+      "access": "read-only",
+      "owner": "flicky.s"
+    },
+    {
+      "id": "work_ram",
+      "start": "0xFF0000",
+      "end": "0xFFFFFF",
+      "size": 65536,
+      "access": "read-write",
+      "owner": "src/memory/ram.inc",
+      "note": "Mirrored throughout $FF0000-$FFFFFF"
+    },
+    {
+      "id": "z80_ram",
+      "start": "0xA00000",
+      "end": "0xA01FFF",
+      "size": 8192,
+      "access": "read-write via bus request",
+      "owner": "src/memory/hardware.inc"
+    },
+    {
+      "id": "io_and_vdp",
+      "start": "0xA10000",
+      "end": "0xC0001F",
+      "access": "memory-mapped registers",
+      "owner": "src/memory/hardware.inc",
+      "note": "Addresses are named there; make lint rejects raw ones elsewhere"
+    }
+  ],
+  "rom_image": {
+    "size": 131072,
+    "padding_byte": "0xFF",
+    "padding_tool": "p2bin -p=FF",
+    "vector_table": {
+      "start": "0x000000",
+      "end": "0x0000FF",
+      "symbol": "Sys_VectorTable",
+      "owner": "src/system/vectors_and_header.s",
+      "note": "64 longs; entry 1 holds the initial PC and points at EntryPoint"
+    },
+    "header": {
+      "start": "0x000100",
+      "end": "0x0001FF",
+      "symbol": "CopyRights",
+      "owner": "src/system/vectors_and_header.s"
+    },
+    "gaps": [
+      {
+        "start": "0x01B9A0",
+        "end": "0x01FFFE",
+        "size": 18015,
+        "filled_by": "p2bin -p=FF",
+        "note": "Not the tail of the image: RomEndData emits $FF at 0x01FFFF, so this is a gap the converter fills, and a p2bin default of $00 would corrupt every byte of it"
+      }
+    ],
+    "landmarks": [
+      {
+        "symbol": "Sys_VectorTable",
+        "address": "0x000000",
+        "role": "Exception vector table"
+      },
+      {
+        "symbol": "CopyRights",
+        "address": "0x000100",
+        "role": "Start of the cartridge header"
+      },
+      {
+        "symbol": "Checksum",
+        "address": "0x00018E",
+        "role": "Header checksum word, verified at boot by src/system/boot.s"
+      },
+      {
+        "symbol": "RomStart",
+        "address": "0x0001A0",
+        "role": "Declared ROM start"
+      },
+      {
+        "symbol": "RomEnd",
+        "address": "0x0001A4",
+        "role": "Declared ROM end, points at RomEndData"
+      },
+      {
+        "symbol": "ErrorTrap",
+        "address": "0x000200",
+        "role": "Unhandled exception halt"
+      },
+      {
+        "symbol": "EntryPoint",
+        "address": "0x000206",
+        "role": "Reset entry"
+      },
+      {
+        "symbol": "Sys_GameEntryPoint",
+        "address": "0x010000",
+        "role": "Game entry; fixed, because data/sound/z80_part2.bin hard-codes pointers to it (SND-001)"
+      },
+      {
+        "symbol": "RomEndData",
+        "address": "0x01FFFF",
+        "role": "Last byte of the image"
+      }
+    ]
+  },
+  "shared_definitions": [
+    {
+      "file": "src/macros/macros.inc",
+      "emits_bytes": false
+    },
+    {
+      "file": "src/memory/hardware.inc",
+      "emits_bytes": false
+    },
+    {
+      "file": "src/memory/constants.inc",
+      "emits_bytes": false
+    },
+    {
+      "file": "src/memory/ram.inc",
+      "emits_bytes": false
+    }
+  ],
+  "modules": [
+    {
+      "file": "src/system/vectors_and_header.s",
+      "subsystem": "system",
+      "start": "0x000000",
+      "end": "0x0001FF"
+    },
+    {
+      "file": "src/system/boot.s",
+      "subsystem": "system",
+      "start": "0x000200",
+      "end": "0x000401"
+    },
+    {
+      "file": "src/system/sega_screen.s",
+      "subsystem": "system",
+      "start": "0x000402",
+      "end": "0x000855"
+    },
+    {
+      "file": "src/system/dma.s",
+      "subsystem": "system",
+      "start": "0x000856",
+      "end": "0x000AD3"
+    },
+    {
+      "file": "src/compression/nemesis_enigma.s",
+      "subsystem": "compression",
+      "start": "0x000AD4",
+      "end": "0x000DBF"
+    },
+    {
+      "file": "src/system/input.s",
+      "subsystem": "system",
+      "start": "0x000DC0",
+      "end": "0x000E41"
+    },
+    {
+      "file": "src/rendering/vdp.s",
+      "subsystem": "rendering",
+      "start": "0x000E42",
+      "end": "0x001013"
+    },
+    {
+      "file": "src/sound/z80_driver.s",
+      "subsystem": "sound",
+      "start": "0x001014",
+      "end": "0x001195"
+    },
+    {
+      "file": "src/rendering/tilemap.s",
+      "subsystem": "rendering",
+      "start": "0x001196",
+      "end": "0x001315"
+    },
+    {
+      "file": "src/data/bank0.s",
+      "subsystem": "data",
+      "start": "0x001316",
+      "end": "0x00FFFF"
+    },
+    {
+      "file": "src/system/game_entry.s",
+      "subsystem": "system",
+      "start": "0x010000",
+      "end": "0x0101D3"
+    },
+    {
+      "file": "src/data/z80_sound.s",
+      "subsystem": "data",
+      "start": "0x0101D4",
+      "end": "0x010CD3"
+    },
+    {
+      "file": "src/sound/engine.s",
+      "subsystem": "sound",
+      "start": "0x010CD4",
+      "end": "0x010D6D"
+    },
+    {
+      "file": "src/rendering/rle.s",
+      "subsystem": "rendering",
+      "start": "0x010D6E",
+      "end": "0x010DE7"
+    },
+    {
+      "file": "src/game/text_encoding.s",
+      "subsystem": "game",
+      "start": "0x010DE8",
+      "end": "0x010E87"
+    },
+    {
+      "file": "src/system/vblank.s",
+      "subsystem": "system",
+      "start": "0x010E88",
+      "end": "0x010F23"
+    },
+    {
+      "file": "src/rendering/text.s",
+      "subsystem": "rendering",
+      "start": "0x010F24",
+      "end": "0x01105B"
+    },
+    {
+      "file": "src/game/objects.s",
+      "subsystem": "game",
+      "start": "0x01105C",
+      "end": "0x01130B"
+    },
+    {
+      "file": "src/game/camera_collision.s",
+      "subsystem": "game",
+      "start": "0x01130C",
+      "end": "0x011421"
+    },
+    {
+      "file": "src/game/level.s",
+      "subsystem": "game",
+      "start": "0x011422",
+      "end": "0x011673"
+    },
+    {
+      "file": "src/game/scoring.s",
+      "subsystem": "game",
+      "start": "0x011674",
+      "end": "0x0117BF"
+    },
+    {
+      "file": "src/game/collision_pairs.s",
+      "subsystem": "game",
+      "start": "0x0117C0",
+      "end": "0x01190F"
+    },
+    {
+      "file": "src/rendering/level_draw.s",
+      "subsystem": "rendering",
+      "start": "0x011910",
+      "end": "0x011BC1"
+    },
+    {
+      "file": "src/rendering/hud.s",
+      "subsystem": "rendering",
+      "start": "0x011BC2",
+      "end": "0x011FAF"
+    },
+    {
+      "file": "src/game/title.s",
+      "subsystem": "game",
+      "start": "0x011FB0",
+      "end": "0x01228D"
+    },
+    {
+      "file": "src/game/guide.s",
+      "subsystem": "game",
+      "start": "0x01228E",
+      "end": "0x0125BD"
+    },
+    {
+      "file": "src/game/round_select.s",
+      "subsystem": "game",
+      "start": "0x0125BE",
+      "end": "0x012655"
+    },
+    {
+      "file": "src/game/round_setup.s",
+      "subsystem": "game",
+      "start": "0x012656",
+      "end": "0x012A93"
+    },
+    {
+      "file": "src/game/main_loop.s",
+      "subsystem": "game",
+      "start": "0x012A94",
+      "end": "0x012F2F"
+    },
+    {
+      "file": "src/game/bonus.s",
+      "subsystem": "game",
+      "start": "0x012F30",
+      "end": "0x01310F"
+    },
+    {
+      "file": "src/game/ending.s",
+      "subsystem": "game",
+      "start": "0x013110",
+      "end": "0x0139A1"
+    },
+    {
+      "file": "src/game/demo.s",
+      "subsystem": "game",
+      "start": "0x0139A2",
+      "end": "0x013E6F"
+    },
+    {
+      "file": "src/game/player.s",
+      "subsystem": "game",
+      "start": "0x013E70",
+      "end": "0x0144DB"
+    },
+    {
+      "file": "src/game/chick.s",
+      "subsystem": "game",
+      "start": "0x0144DC",
+      "end": "0x01483D"
+    },
+    {
+      "file": "src/game/cat.s",
+      "subsystem": "game",
+      "start": "0x01483E",
+      "end": "0x014EC5"
+    },
+    {
+      "file": "src/game/lizard.s",
+      "subsystem": "game",
+      "start": "0x014EC6",
+      "end": "0x015507"
+    },
+    {
+      "file": "src/data/level_layout.s",
+      "subsystem": "data",
+      "start": "0x015508",
+      "end": "0x015D57"
+    },
+    {
+      "file": "src/game/snake.s",
+      "subsystem": "game",
+      "start": "0x015D58",
+      "end": "0x016311"
+    },
+    {
+      "file": "src/game/spawner.s",
+      "subsystem": "game",
+      "start": "0x016312",
+      "end": "0x0164EB"
+    },
+    {
+      "file": "src/game/bonus_objects.s",
+      "subsystem": "game",
+      "start": "0x0164EC",
+      "end": "0x016DA9"
+    },
+    {
+      "file": "src/game/game_over.s",
+      "subsystem": "game",
+      "start": "0x016DAA",
+      "end": "0x016E57"
+    },
+    {
+      "file": "src/data/art.s",
+      "subsystem": "data",
+      "start": "0x016E58",
+      "end": "0x01A195"
+    },
+    {
+      "file": "src/data/tables.s",
+      "subsystem": "data",
+      "start": "0x01A196",
+      "end": "0x01FFFF"
+    }
+  ]
+}

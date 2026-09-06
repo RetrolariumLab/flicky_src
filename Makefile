@@ -53,6 +53,8 @@ RUNTIME_DIR ?= build/runtime
 RUNTIME_SUMMARY ?= build/runtime_scenarios.json
 RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
+ROM_LAYOUT ?= config/rom_layout.json
+LISTING ?= flicky.lst
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -84,7 +86,7 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify verify-toolchain init split check-assets \
+.PHONY: all build verify verify-toolchain verify-layout init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         test release-audit release-check clean \
@@ -142,6 +144,12 @@ verify-toolchain:
 _require-toolchain:
 	@$(PYTHON) $(SCRIPTS_DIR)/verify_toolchain.py --config $(TOOLCHAIN_MANIFEST)
 
+# AS has no linker, so the include order in flicky.s is the ROM layout itself.
+# This makes that layout a declaration the build has to agree with.
+verify-layout:
+	@$(PYTHON) $(SCRIPTS_DIR)/verify_layout.py \
+		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
+
 # Compare an existing build without reassembling.
 compare:
 	@$(PYTHON) $(SCRIPTS_DIR)/compare_roms.py \
@@ -181,6 +189,7 @@ release-check:
 	$(MAKE) test
 	$(MAKE) roundtrip-formats
 	$(MAKE) verify
+	$(MAKE) verify-layout
 	$(MAKE) symbols
 	$(MAKE) trace
 	$(MAKE) release-audit
@@ -333,6 +342,7 @@ help:
 	@echo ""
 	@echo "Validation:"
 	@echo "  make verify-toolchain          Hash-check the vendored assembler"
+	@echo "  make verify-layout             Check the ROM layout contract"
 	@echo "  make lint                      Style, naming and repository checks"
 	@echo "  make format                    Apply the deterministic fixes, then lint"
 	@echo "  make test                      Unit tests for the Python tooling"
