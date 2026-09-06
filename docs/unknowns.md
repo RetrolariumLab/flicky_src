@@ -85,18 +85,36 @@ reused, even after the entry is resolved.
 ### DATA-001 Z80 sound data holds pointers that assume a fixed ROM address
 
 - **Status:** open
-- **Confidence:** high
+- **Confidence:** high, and the symptom is now measured rather than predicted
 - **Location:** `src/data/z80_sound.s`, `src/sound/engine.s`
 - **Evidence:** `Sound_LoadZ80Table` converts ROM addresses to Z80-relative
-  offsets with `suba.l #Sys_GameEntryPoint,a0`, which only works because
+  offsets with `suba.l #Sys_GameEntryPoint,a0`, which only holds while
   `Sys_GameEntryPoint` sits at exactly `$10000`. The offsets baked into
-  `data/sound/data_z80_part2.bin` are not recomputed by the build, so inserting
-  padding anywhere before `$10000` shifts the code without shifting the data
-  and the game hangs at specific points.
+  `data/sound/data_z80_part2.bin` are not recomputed by the build.
+- **Observed:** A build with both padding gaps removed puts
+  `Sys_GameEntryPoint` at `$00290A`, 55,030 bytes lower, and shrinks the image
+  to 58,013 bytes. The 68000 side is entirely unaffected: the recorded longplay
+  replays all 67,000 frames and reaches the credits with the same round, lives
+  and score, `$02862440`, and VRAM and CRAM are byte-identical to the reference
+  at the frames compared. Of 185 named work RAM fields, 173 match and the 12
+  that differ are all the high word of a ROM pointer, `$0001` against `$0000`,
+  which is the shorter image and not a fault.
+
+  The Z80 side is where it breaks, and quietly. 2,649 of 8,192 bytes of Z80 RAM
+  differ, and the pointer table the reference holds at `$1000` --
+  `14 10 42 10 7d 10 b0 10`, Z80 addresses `$1014`, `$1042`, `$107D`, `$10B0` --
+  is all zeroes in the moved build. The sound data is never copied.
+- **Correction:** this entry previously predicted that the game "hangs at
+  specific points". It does not. It plays to the end with identical scoring and
+  identical video, and only the audio is lost. The failure is silent, which is
+  worse for anyone relocating this code and expecting a crash to tell them.
+  The entry also blamed inserting padding; removing it breaks the same way, so
+  the constraint is that `Sys_GameEntryPoint` must not move at all.
 - **Experiment:** Decode the pointer fields inside the extracted Z80 blob and
   express them as expressions the assembler computes, the way the rest of the
   source does. Until then the constraint is a real one and belongs in
-  `README.md` as a known gap.
+  `README.md` as a known gap. The check for any such attempt is the Z80 RAM
+  pointer table above, not whether the game boots.
 
 ### DATA-002 Nemesis and Enigma cannot be re-encoded byte for byte
 
