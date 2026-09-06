@@ -2,7 +2,7 @@
 ; ROM $0117C0-$01190F
 
 Collision_CheckObjectPair:
-                tst.w   (a1)                            ; was: sub_117C0
+                tst.w   (a1)
                 beq.w   Collision_CheckObjectPair_Miss
                 moveq   #0,d0
                 moveq   #0,d1
@@ -30,27 +30,27 @@ Collision_CheckObjectPair:
                 bgt.s   Collision_CheckObjectPair_TestXCase2
                 bra.s   Collision_CheckObjectPair_TestY
 
-Collision_CheckObjectPair_TestXCase2:                   ; was: loc_11812
+Collision_CheckObjectPair_TestXCase2:
                 cmp.w   d2,d5
                 blt.s   Collision_CheckObjectPair_TestXCase3
                 cmp.w   d3,d5
                 bgt.s   Collision_CheckObjectPair_TestXCase3
                 bra.s   Collision_CheckObjectPair_TestY
 
-Collision_CheckObjectPair_TestXCase3:                   ; was: loc_1181C
+Collision_CheckObjectPair_TestXCase3:
                 cmp.w   d4,d2
                 blt.s   Collision_CheckObjectPair_TestXCase4
                 cmp.w   d5,d2
                 bgt.s   Collision_CheckObjectPair_TestXCase4
                 bra.s   Collision_CheckObjectPair_TestY
 
-Collision_CheckObjectPair_TestXCase4:                   ; was: loc_11826
+Collision_CheckObjectPair_TestXCase4:
                 cmp.w   d4,d3
                 blt.s   Collision_CheckObjectPair_Miss
                 cmp.w   d5,d3
                 bgt.s   Collision_CheckObjectPair_Miss
 
-Collision_CheckObjectPair_TestY:                        ; was: loc_1182E
+Collision_CheckObjectPair_TestY:
                 move.w  $24(a0),d3
                 add.w   Collision_BoxTopTable(pc,d0.w),d3
                 move.w  d3,d2
@@ -65,41 +65,41 @@ Collision_CheckObjectPair_TestY:                        ; was: loc_1182E
                 bgt.s   Collision_CheckObjectPair_TestYCase2
                 bra.s   Collision_CheckObjectPair_Hit
 
-Collision_CheckObjectPair_TestYCase2:                   ; was: loc_11854
+Collision_CheckObjectPair_TestYCase2:
                 cmp.w   d2,d5
                 blt.s   Collision_CheckObjectPair_TestYCase3
                 cmp.w   d3,d5
                 bgt.s   Collision_CheckObjectPair_TestYCase3
                 bra.s   Collision_CheckObjectPair_Hit
 
-Collision_CheckObjectPair_TestYCase3:                   ; was: loc_1185E
+Collision_CheckObjectPair_TestYCase3:
                 cmp.w   d4,d2
                 blt.s   Collision_CheckObjectPair_TestYCase4
                 cmp.w   d5,d2
                 bgt.s   Collision_CheckObjectPair_TestYCase4
                 bra.s   Collision_CheckObjectPair_Hit
 
-Collision_CheckObjectPair_TestYCase4:                   ; was: loc_11868
+Collision_CheckObjectPair_TestYCase4:
                 cmp.w   d4,d3
                 blt.s   Collision_CheckObjectPair_Miss
                 cmp.w   d5,d3
                 bgt.s   Collision_CheckObjectPair_Miss
 
-Collision_CheckObjectPair_Hit:                          ; was: loc_11870
+Collision_CheckObjectPair_Hit:
                 moveq   #1,d0
                 rts
 
-Collision_CheckObjectPair_Miss:                         ; was: loc_11874
+Collision_CheckObjectPair_Miss:
                 moveq   #0,d0
                 rts
 
 ; Bounding boxes, eight bytes per object type, indexed by (type * 8):
 ; left offset, width, top offset, height. The four labels below are the field
 ; bases; the code indexes each of them by the type to reach the right entry
-Collision_BoxLeftTable:         dc.w    $FFFF           ; was: word_11878
-Collision_BoxWidthTable:        dc.w    2               ; was: word_1187A
-Collision_BoxTopTable:          dc.w    $FFEE           ; was: word_1187C
-Collision_BoxHeightTable:       dc.w    $12             ; was: word_1187E
+Collision_BoxLeftTable:     dc.w    $FFFF
+Collision_BoxWidthTable:    dc.w    2
+Collision_BoxTopTable:      dc.w    $FFEE
+Collision_BoxHeightTable:   dc.w    $12
                 dc.l    $FFFF0002
                 dc.l    $FFF00010
                 dc.l    $FFFC0008

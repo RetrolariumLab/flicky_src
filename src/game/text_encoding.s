@@ -2,7 +2,7 @@
 ; ROM $010DE8-$010E87
 
 Text_CharToTileIndex:
-                movem.l d0-d1,-(sp)                     ; was: sub_10DE8
+                movem.l d0-d1,-(sp)
                 clr.w   d5
                 subi.w  #$20,d4
                 bcc.s   Text_CharToTileIndex_Printable
@@ -12,11 +12,11 @@ Text_CharToTileIndex:
                 moveq   #1,d5
                 bra.s   Text_CharToTileIndex_Finish
 
-Text_CharToTileIndex_Punctuation:                       ; was: loc_10E02
+Text_CharToTileIndex_Punctuation:
                 addi.w  #$C0,d4
                 bra.s   Text_CharToTileIndex_Finish
 
-Text_CharToTileIndex_Printable:                         ; was: loc_10E08
+Text_CharToTileIndex_Printable:
                 moveq   #$40,d0
                 cmp.w   d0,d4
                 bcs.s   Text_CharToTileIndex_Finish
@@ -28,7 +28,7 @@ Text_CharToTileIndex_Printable:                         ; was: loc_10E08
                 sub.w   d0,d4
                 moveq   #$77,d1
 
-Text_CharToTileIndex_CheckRange:                        ; was: loc_10E1C
+Text_CharToTileIndex_CheckRange:
                 cmpi.w  #$37,d4
                 bcs.s   Text_CharToTileIndex_AddBase
                 moveq   #1,d5
@@ -39,42 +39,42 @@ Text_CharToTileIndex_CheckRange:                        ; was: loc_10E1C
                 addq.w  #5,d4
                 bra.s   Text_CharToTileIndex_AdjustBank
 
-Text_CharToTileIndex_ThirdBank:                         ; was: loc_10E34
+Text_CharToTileIndex_ThirdBank:
                 moveq   #2,d5
 
-Text_CharToTileIndex_AdjustBank:                        ; was: loc_10E36
+Text_CharToTileIndex_AdjustBank:
                 subi.w  #$32,d4
 
-Text_CharToTileIndex_AddBase:                           ; was: loc_10E3A
+Text_CharToTileIndex_AddBase:
                 add.w   d1,d4
 
-Text_CharToTileIndex_Finish:                            ; was: loc_10E3C
+Text_CharToTileIndex_Finish:
                 addi.w  #$40,d4
                 tst.w   d5
                 beq.s   Text_CharToTileIndex_Return
                 addi.w  #$AD,d5
 
-Text_CharToTileIndex_Return:                            ; was: loc_10E48
+Text_CharToTileIndex_Return:
                 addi.w  #$40,d5
                 movem.l (sp)+,d0-d1
                 rts
 
 ; Gets random byte via trap 0 and rotate
 Math_GetRandomByte:
-                trap    #0                              ; ErrorTrap  ; was: sub_10E52
+                trap    #0                              ; Sys_ErrorTrap
                 ror.l   #8,d1
                 rts
 
 ; Calculates sum of random values modulo counter
 Math_CalcRandomSum:
-                movem.l d0-d1/d7,-(sp)                  ; was: sub_10E58
+                movem.l d0-d1/d7,-(sp)
                 clr.w   (Ram_DecompCodeTable).w
                 addq.w  #1,(Ram_RandomDivisor).w
                 move.w  (Ram_RandomCount).w,d7
                 subq.w  #1,d7
                 bcs.s   Math_CalcRandomSum_Done
 
-Math_CalcRandomSum_Loop:                                ; was: loc_10E6C
+Math_CalcRandomSum_Loop:
                 bsr.s   Math_GetRandomByte
                 andi.l  #$FFFF,d1
                 divu.w  (Ram_RandomDivisor).w,d1
@@ -82,7 +82,7 @@ Math_CalcRandomSum_Loop:                                ; was: loc_10E6C
                 add.w   d1,(Ram_DecompCodeTable).w
                 dbf     d7,Math_CalcRandomSum_Loop
 
-Math_CalcRandomSum_Done:                                ; was: loc_10E82
+Math_CalcRandomSum_Done:
                 movem.l (sp)+,d0-d1/d7
                 rts
 

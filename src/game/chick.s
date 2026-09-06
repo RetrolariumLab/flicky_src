@@ -2,7 +2,7 @@
 ; ROM $0144DC-$01483D
 
 Obj_ExitDoor:
-                bset    #7,(a0)                         ; was: sub_144DC
+                bset    #7,(a0)
                 bne.s   Obj_ExitDoor_Dispatch
                 move.b  (Ram_ExitDoorGridX).w,d7
                 move.b  (Ram_ExitDoorGridY).w,d6
@@ -13,32 +13,32 @@ Obj_ExitDoor:
                 move.w  d6,$24(a0)
                 move.l  #ExitDoor_AnimPointers,8(a0)
 
-Obj_ExitDoor_Dispatch:                                  ; was: loc_14504
+Obj_ExitDoor_Dispatch:
                 move.w  $3C(a0),d0
                 andi.w  #$7FFC,d0
                 jsr     ExitDoor_StateTable(pc,d0.w)
                 bsr.w   Object_UpdatePosition
                 rts
 
-ExitDoor_StateTable:                                    ; was: loc_14516
+ExitDoor_StateTable:
                 bra.w   Obj_ExitDoorAnim
                 bra.w   Obj_ExitDoorIdle
 
 ; Exit door animation state
 Obj_ExitDoorAnim:
-                bsr.w   Anim_UpdateFrame                ; was: sub_1451E
+                bsr.w   Anim_UpdateFrame
 
 ; Exit door idle state (shared RTS)
 Obj_ExitDoorIdle:
-                rts                                     ; was: nullsub_3
+                rts
 
-ExitDoor_AnimPointers:  dc.l    ExitDoor_AnimOpen       ; was: off_14524
-ExitDoor_AnimOpen:      dc.b    2, 8                    ; was: byte_14528
+ExitDoor_AnimPointers:  dc.l    ExitDoor_AnimOpen
+ExitDoor_AnimOpen:      dc.b    2, 8
                 dc.w    ExitDoor_OpenFrame0-Sys_GameEntryPoint
                 dc.w    ExitDoor_OpenFrame1-Sys_GameEntryPoint
 ; Chick main object: collectable that follows player
 Obj_Chick:
-                bset    #7,(a0)                         ; was: sub_1452E
+                bset    #7,(a0)
                 bne.s   Obj_Chick_Dispatch
                 move.l  (Ram_ChickMappingPtr).w,d0
                 move.l  d0,$C(a0)
@@ -53,7 +53,7 @@ Obj_Chick:
                 move.w  d7,$30(a0)
                 move.w  d6,$24(a0)
 
-Obj_Chick_Dispatch:                                     ; was: loc_1455E
+Obj_Chick_Dispatch:
                 tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Chick_Return
                 tst.b   (Ram_RoundEndingFlag).w
@@ -64,17 +64,17 @@ Obj_Chick_Dispatch:                                     ; was: loc_1455E
                 and.w   $3C(a0),d0
                 jsr     Chick_StateTable(pc,d0.w)
 
-Obj_Chick_Return:                                       ; was: locret_1457A
+Obj_Chick_Return:
                 rts
 
-Chick_StateTable:                                       ; was: loc_1457C
+Chick_StateTable:
                 bra.w   Chick_StateIdle
                 bra.w   Chick_StateFollowing
                 bra.w   Chick_StateThrown
 
 ; Chick state: idle waiting to be picked up
 Chick_StateIdle:
-                move.b  #1,5(a0)                        ; was: sub_14588
+                move.b  #1,5(a0)
                 lea     (Ram_PlayerObject).w,a1
                 tst.l   Ram_PlayerVelocityY-Ram_PlayerObject(a1)
                 bmi.s   Chick_StateIdle_Move
@@ -87,20 +87,20 @@ Chick_StateIdle:
                 move.b  #1,$3B(a1)
                 move.l  a0,(Ram_HeldChickObject).w
 
-Chick_StateIdle_Move:                                   ; was: loc_145B6
+Chick_StateIdle_Move:
                 bsr.w   Object_UpdatePosition
                 rts
 
 ; Chick state: following player after pickup
 Chick_StateFollowing:
-                bset    #7,$3C(a0)                      ; was: sub_145BC
+                bset    #7,$3C(a0)
                 bne.s   Chick_StateFollowing_Track
                 move.l  a0,-(sp)
                 move.b  #$92,d0
                 bsr.w   Sound_PlayNoteIfActive
                 movea.l (sp)+,a0
 
-Chick_StateFollowing_Track:                             ; was: loc_145D0
+Chick_StateFollowing_Track:
                 clr.b   5(a0)
                 lea     (Ram_PlayerObject).w,a1
                 move.l  Ram_PlayerWorldX-Ram_PlayerObject(a1),d7
@@ -110,16 +110,16 @@ Chick_StateFollowing_Track:                             ; was: loc_145D0
                 addi.l  #$60000,d6
                 bra.s   Chick_StateFollowing_Store
 
-Chick_StateFollowing_OnGround:                          ; was: loc_145EE
+Chick_StateFollowing_OnGround:
                 tst.b   $39(a1)
                 bne.s   Chick_StateFollowing_FacingLeft
                 addi.l  #$80000,d7
                 bra.s   Chick_StateFollowing_Store
 
-Chick_StateFollowing_FacingLeft:                        ; was: loc_145FC
+Chick_StateFollowing_FacingLeft:
                 subi.l  #$80000,d7
 
-Chick_StateFollowing_Store:                             ; was: loc_14602
+Chick_StateFollowing_Store:
                 move.l  d7,$30(a0)
                 move.l  d6,$24(a0)
                 bsr.w   Object_UpdatePosition
@@ -127,7 +127,7 @@ Chick_StateFollowing_Store:                             ; was: loc_14602
 
 ; Chick state: thrown and bouncing
 Chick_StateThrown:
-                bset    #7,$3C(a0)                      ; was: sub_14610
+                bset    #7,$3C(a0)
                 bne.s   Chick_StateThrown_Move
                 move.l  a0,-(sp)
                 move.b  #$96,d0
@@ -139,30 +139,30 @@ Chick_StateThrown:
                 moveq   #0,d0
                 move.b  (Ram_RoundNumber+1).w,d0
 
-Chick_StateThrown_ReduceRound:                          ; was: loc_1463C
+Chick_StateThrown_ReduceRound:
                 cmpi.b  #$F,d0
                 bls.s   Chick_StateThrown_SelectAnim
                 subi.b  #$F,d0
                 bra.s   Chick_StateThrown_ReduceRound
 
-Chick_StateThrown_SelectAnim:                           ; was: loc_14648
+Chick_StateThrown_SelectAnim:
                 subq.b  #1,d0
                 lsl.w   #2,d0
                 move.w  d0,6(a0)
 
-Chick_StateThrown_Move:                                 ; was: loc_14650
+Chick_StateThrown_Move:
                 bsr.w   Chick_UpdatePhysics
                 tst.l   $34(a0)
                 bne.s   Chick_StateThrown_CheckRange
                 clr.w   (a0)
 
-Chick_StateThrown_CheckRange:                           ; was: loc_1465C
+Chick_StateThrown_CheckRange:
                 bsr.w   Chick_CheckOffscreen
                 rts
 
 ; Chick checks if too far from player
 Chick_CheckOffscreen:
-                move.w  $20(a0),d7                      ; was: sub_14662
+                move.w  $20(a0),d7
                 move.w  d7,d6
                 lea     (Ram_PlayerObject).w,a1
                 move.w  Ram_PlayerScreenX-Ram_PlayerObject(a1),d5
@@ -175,22 +175,22 @@ Chick_CheckOffscreen:
                 bge.s   Chick_CheckOffscreen_Despawn
                 bra.s   Chick_CheckOffscreen_Return
 
-Chick_CheckOffscreen_Despawn:                           ; was: loc_14684
+Chick_CheckOffscreen_Despawn:
                 clr.w   (a0)
 
-Chick_CheckOffscreen_Return:                            ; was: locret_14686
+Chick_CheckOffscreen_Return:
                 rts
 
 ; Chick physics: movement and collision
 Chick_UpdatePhysics:
-                move.l  $34(a0),d7                      ; was: sub_14688
+                move.l  $34(a0),d7
                 move.l  $2C(a0),d6
                 bclr    #7,2(a0)
                 tst.l   d7
                 bpl.s   Chick_UpdatePhysics_Animate
                 bset    #7,2(a0)
 
-Chick_UpdatePhysics_Animate:                            ; was: loc_146A0
+Chick_UpdatePhysics_Animate:
                 bsr.w   Anim_UpdateFrame
                 tst.b   $38(a0)
                 bne.s   Chick_UpdatePhysics_ApplyGravity
@@ -199,16 +199,16 @@ Chick_UpdatePhysics_Animate:                            ; was: loc_146A0
                 addi.l  #$800,d7
                 bra.s   Chick_UpdatePhysics_Decelerated
 
-Chick_UpdatePhysics_DecelerateRight:                    ; was: loc_146B6
+Chick_UpdatePhysics_DecelerateRight:
                 subi.l  #$800,d7
 
-Chick_UpdatePhysics_Decelerated:                        ; was: loc_146BC
+Chick_UpdatePhysics_Decelerated:
                 bra.s   Chick_UpdatePhysics_Move
 
-Chick_UpdatePhysics_ApplyGravity:                       ; was: loc_146BE
+Chick_UpdatePhysics_ApplyGravity:
                 addi.l  #$1000,d6
 
-Chick_UpdatePhysics_Move:                               ; was: loc_146C4
+Chick_UpdatePhysics_Move:
                 move.l  d7,$34(a0)
                 move.l  d6,$2C(a0)
                 bsr.w   Object_UpdatePosition
@@ -226,10 +226,10 @@ Chick_UpdatePhysics_Move:                               ; was: loc_146C4
                 clr.w   $26(a0)
                 bra.s   Chick_UpdatePhysics_CheckWalls
 
-Chick_UpdatePhysics_Airborne:                           ; was: loc_146FA
+Chick_UpdatePhysics_Airborne:
                 move.b  #1,$38(a0)
 
-Chick_UpdatePhysics_CheckWalls:                         ; was: loc_14700
+Chick_UpdatePhysics_CheckWalls:
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 subq.w  #4,d6
@@ -241,20 +241,20 @@ Chick_UpdatePhysics_CheckWalls:                         ; was: loc_14700
                 beq.s   Chick_UpdatePhysics_LeftReturn
                 neg.l   $34(a0)
 
-Chick_UpdatePhysics_LeftReturn:                         ; was: locret_1471E
+Chick_UpdatePhysics_LeftReturn:
                 rts
 
-Chick_UpdatePhysics_TestRight:                          ; was: loc_14720
+Chick_UpdatePhysics_TestRight:
                 addq.w  #4,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   Chick_UpdatePhysics_RightReturn
                 neg.l   $34(a0)
 
-Chick_UpdatePhysics_RightReturn:                        ; was: locret_1472E
+Chick_UpdatePhysics_RightReturn:
                 rts
 
-Chick_ThrownAnimPointers:       dc.l    Chick_ThrownAnim0  ; was: off_14730
+Chick_ThrownAnimPointers:   dc.l    Chick_ThrownAnim0
                 dc.l    Chick_ThrownAnim1
                 dc.l    Chick_ThrownAnim2
                 dc.l    Chick_ThrownAnim3
@@ -269,105 +269,105 @@ Chick_ThrownAnimPointers:       dc.l    Chick_ThrownAnim0  ; was: off_14730
                 dc.l    Chick_ThrownAnim12
                 dc.l    Chick_ThrownAnim13
                 dc.l    Chick_ThrownAnim14
-Chick_ThrownAnim0:      dc.b    6, 1                    ; was: byte_1476C
+Chick_ThrownAnim0:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim0Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim0Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim0Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim0Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim0Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim0Data5-Sys_GameEntryPoint
-Chick_ThrownAnim1:      dc.b    6, 1                    ; was: byte_1477A
+Chick_ThrownAnim1:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim1Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim1Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim1Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim1Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim1Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim1Data5-Sys_GameEntryPoint
-Chick_ThrownAnim2:      dc.b    6, 1                    ; was: byte_14788
+Chick_ThrownAnim2:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim2Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim2Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim2Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim2Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim2Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim2Data5-Sys_GameEntryPoint
-Chick_ThrownAnim3:      dc.b    6, 1                    ; was: byte_14796
+Chick_ThrownAnim3:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim3Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim3Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim3Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim3Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim3Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim3Data5-Sys_GameEntryPoint
-Chick_ThrownAnim4:      dc.b    6, 1                    ; was: byte_147A4
+Chick_ThrownAnim4:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim4Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim4Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim4Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim4Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim4Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim4Data5-Sys_GameEntryPoint
-Chick_ThrownAnim5:      dc.b    6, 1                    ; was: byte_147B2
+Chick_ThrownAnim5:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim5Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim5Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim5Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim5Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim5Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim5Data5-Sys_GameEntryPoint
-Chick_ThrownAnim6:      dc.b    6, 1                    ; was: byte_147C0
+Chick_ThrownAnim6:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim6Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim6Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim6Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim6Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim6Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim6Data5-Sys_GameEntryPoint
-Chick_ThrownAnim7:      dc.b    6, 1                    ; was: byte_147CE
+Chick_ThrownAnim7:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim7Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim7Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim7Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim7Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim7Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim7Data5-Sys_GameEntryPoint
-Chick_ThrownAnim8:      dc.b    6, 1                    ; was: byte_147DC
+Chick_ThrownAnim8:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim8Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim8Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim8Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim8Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim8Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim8Data5-Sys_GameEntryPoint
-Chick_ThrownAnim9:      dc.b    6, 1                    ; was: byte_147EA
+Chick_ThrownAnim9:  dc.b    6, 1
                 dc.w    Chick_ThrownAnim9Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim9Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim9Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim9Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim9Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim9Data5-Sys_GameEntryPoint
-Chick_ThrownAnim10:     dc.b    6, 1                    ; was: byte_147F8
+Chick_ThrownAnim10: dc.b    6, 1
                 dc.w    Chick_ThrownAnim10Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim10Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim10Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim10Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim10Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim10Data5-Sys_GameEntryPoint
-Chick_ThrownAnim11:     dc.b    6, 1                    ; was: byte_14806
+Chick_ThrownAnim11: dc.b    6, 1
                 dc.w    Chick_ThrownAnim11Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim11Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim11Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim11Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim11Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim11Data5-Sys_GameEntryPoint
-Chick_ThrownAnim12:     dc.b    6, 1                    ; was: byte_14814
+Chick_ThrownAnim12: dc.b    6, 1
                 dc.w    Chick_ThrownAnim12Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim12Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim12Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim12Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim12Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim12Data5-Sys_GameEntryPoint
-Chick_ThrownAnim13:     dc.b    6, 1                    ; was: byte_14822
+Chick_ThrownAnim13: dc.b    6, 1
                 dc.w    Chick_ThrownAnim13Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim13Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim13Data2-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim13Data3-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim13Data4-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim13Data5-Sys_GameEntryPoint
-Chick_ThrownAnim14:     dc.b    6, 1                    ; was: byte_14830
+Chick_ThrownAnim14: dc.b    6, 1
                 dc.w    Chick_ThrownAnim14Data0-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim14Data1-Sys_GameEntryPoint
                 dc.w    Chick_ThrownAnim14Data2-Sys_GameEntryPoint

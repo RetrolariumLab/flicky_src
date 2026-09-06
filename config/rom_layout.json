@@ -52,7 +52,7 @@
       "end": "0x0000FF",
       "symbol": "Sys_VectorTable",
       "owner": "src/system/vectors_and_header.s",
-      "note": "64 longs; entry 1 holds the initial PC and points at EntryPoint"
+      "note": "64 longs; entry 1 holds the initial PC and points at Boot_EntryPoint"
     },
     "header": {
       "start": "0x000100",
@@ -66,7 +66,7 @@
         "end": "0x01FFFE",
         "size": 18015,
         "filled_by": "p2bin -p=FF",
-        "note": "Not the tail of the image: RomEndData emits $FF at 0x01FFFF, so this is a gap the converter fills, and a p2bin default of $00 would corrupt every byte of it"
+        "note": "Not the tail of the image: Sys_RomEndData emits $FF at 0x01FFFF, so this is a gap the converter fills, and a p2bin default of $00 would corrupt every byte of it"
       }
     ],
     "landmarks": [
@@ -93,15 +93,15 @@
       {
         "symbol": "RomEnd",
         "address": "0x0001A4",
-        "role": "Declared ROM end, points at RomEndData"
+        "role": "Declared ROM end, points at Sys_RomEndData"
       },
       {
-        "symbol": "ErrorTrap",
+        "symbol": "Sys_ErrorTrap",
         "address": "0x000200",
         "role": "Unhandled exception halt"
       },
       {
-        "symbol": "EntryPoint",
+        "symbol": "Boot_EntryPoint",
         "address": "0x000206",
         "role": "Reset entry"
       },
@@ -111,7 +111,7 @@
         "role": "Game entry; fixed, because data/sound/z80_part2.bin hard-codes pointers to it (SND-001)"
       },
       {
-        "symbol": "RomEndData",
+        "symbol": "Sys_RomEndData",
         "address": "0x01FFFF",
         "role": "Last byte of the image"
       }

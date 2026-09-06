@@ -29,7 +29,7 @@ would be expected.
 
 ## Boot
 
-`EntryPoint` brings up the hardware -- security register, VDP, Z80, PSG, work
+`Boot_EntryPoint` brings up the hardware -- security register, VDP, Z80, PSG, work
 RAM, CRAM, VSRAM -- then verifies the cartridge checksum against the value in
 the header and jumps to `CheckSumError` if it does not match. `Boot_CheckInitFlag`
 tests a magic longword so a soft reset skips the RAM clear. Finally the whole
@@ -37,7 +37,7 @@ first 48 KiB of the second bank is copied to work RAM and executed from there,
 which is what makes `Sys_GameEntryPoint` at `$10000` the fixed point everything
 else is measured from.
 
-`LoadFuncTable` builds the trampoline block described in
+`Sys_LoadFuncTable` builds the trampoline block described in
 [`ram_fields.md`](ram_fields.md) so the relocated code can still reach the
 routines that stayed in the first bank.
 

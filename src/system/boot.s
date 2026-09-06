@@ -1,82 +1,82 @@
 ; Reset entry, hardware bring-up, checksum verification
 ; ROM $000200-$000401
 
-ErrorTrap:
+Sys_ErrorTrap:
                 nop
                 nop
-                bra.s   ErrorTrap
-EntryPoint:
+                bra.s   Sys_ErrorTrap
+Boot_EntryPoint:
                 tst.l   (IO_CT1_CTRL).l
-                bne.s   port_A_ok
+                bne.s   Boot_PortAOk
                 tst.w   (IO_EXT_CTRL).l
 
-port_A_ok:
-                bne.s   skip_setup
-                lea     SetupValues(pc),a5
+Boot_PortAOk:
+                bne.s   Boot_SkipSetup
+                lea     Boot_SetupValues(pc),a5
                 movem.w (a5)+,d5-d7
                 movem.l (a5)+,a0-a4
                 move.b  -$10FF(a1),d0
                 andi.b  #$F,d0
-                beq.s   skip_security
+                beq.s   Boot_SkipSecurity
                 move.l  #'SEGA',$2F00(a1)
 
-skip_security:
+Boot_SkipSecurity:
                 move.w  (a4),d0
                 moveq   #0,d0
                 movea.l d0,a6
                 move    a6,usp
                 moveq   #$17,d1
 
-vdp_init_loop:
+Boot_VDPInitLoop:
                 move.b  (a5)+,d5
                 move.w  d5,(a4)
                 add.w   d7,d5
-                dbf     d1,vdp_init_loop
+                dbf     d1,Boot_VDPInitLoop
                 move.l  (a5)+,(a4)
                 move.w  d0,(a3)
                 move.w  d7,(a1)
                 move.w  d7,(a2)
 
-wait_for_z80:
+Boot_WaitForZ80:
                 btst    d0,(a1)
-                bne.s   wait_for_z80
+                bne.s   Boot_WaitForZ80
                 moveq   #$25,d2
 
-z80_init_loop:
+Boot_Z80InitLoop:
                 move.b  (a5)+,(a0)+
-                dbf     d2,z80_init_loop
+                dbf     d2,Boot_Z80InitLoop
                 move.w  d0,(a2)
                 move.w  d0,(a1)
                 move.w  d7,(a2)
 
-clr_ram_loop:
+Boot_ClearRAMLoop:
                 move.l  d0,-(a6)
-                dbf     d6,clr_ram_loop
+                dbf     d6,Boot_ClearRAMLoop
                 move.l  (a5)+,(a4)
                 move.l  (a5)+,(a4)
                 moveq   #$1F,d3
 
-clr_cram_loop:
+Boot_ClearCRAMLoop:
                 move.l  d0,(a3)
-                dbf     d3,clr_cram_loop
+                dbf     d3,Boot_ClearCRAMLoop
                 move.l  (a5)+,(a4)
                 moveq   #$13,d4
 
-clr_vsram_loop:
+Boot_ClearVSRAMLoop:
                 move.l  d0,(a3)
-                dbf     d4,clr_vsram_loop
+                dbf     d4,Boot_ClearVSRAMLoop
                 moveq   #3,d5
 
-psg_init_loop:
+Boot_PSGInitLoop:
                 move.b  (a5)+,$11(a3)
-                dbf     d5,psg_init_loop
+                dbf     d5,Boot_PSGInitLoop
                 move.w  d0,(a2)
                 movem.l (a6),d0-d7/a0-a6
                 move    #$2700,sr
 
-skip_setup:
-                bra.s   GameProgram
-SetupValues:
+Boot_SkipSetup:
+                bra.s   Sys_GameProgram
+Boot_SetupValues:
                 dc.w    $8000
                 dc.w    $3FFF
                 dc.w    $100
@@ -99,19 +99,19 @@ SetupValues:
                 dc.l    $40000010
                 dc.b    $9F,$BF,$DF,$FF
 
-GameProgram:
+Sys_GameProgram:
                 tst.w   (VDP_CTRL).l
                 move    #$2700,sr
                 move.b  (IO_PCBVER+1).l,d0
                 andi.b  #$F,d0
-                beq.s   checksum_check
+                beq.s   Boot_ChecksumCheck
                 move.l  #'SEGA',(IO_TMSS).l
 
-checksum_check:
+Boot_ChecksumCheck:
                 movea.l #RomEnd,a0
                 move.l  (a0),d1
                 addq.l  #1,d1
-                movea.l #ErrorTrap,a0
+                movea.l #Sys_ErrorTrap,a0
                 sub.l   a0,d1
                 asr.l   #1,d1
                 move.w  d1,d2
@@ -119,15 +119,15 @@ checksum_check:
                 swap    d1
                 moveq   #0,d0
 
-checksum_loop:
+Boot_ChecksumLoop:
                 add.w   (a0)+,d0
-                dbf     d2,checksum_loop
-                dbf     d1,checksum_loop
+                dbf     d2,Boot_ChecksumLoop
+                dbf     d1,Boot_ChecksumLoop
                 cmp.w   (Checksum).w,d0
-                beq.s   CheckSumOk
-                bra.w   CheckSumError
+                beq.s   Boot_ChecksumOk
+                bra.w   Boot_ChecksumError
 
-CheckSumOk:
+Boot_ChecksumOk:
                 btst    #6,(IO_EXT_CTRL+1).l
                 bne.s   Boot_CheckInitFlag
                 move    #$2700,sr
@@ -140,50 +140,50 @@ CheckSumOk:
                 nop
                 nop
 
-Boot_SetupControllerPorts:                              ; was: loc_374
+Boot_SetupControllerPorts:
                 moveq   #$40,d0
                 move.b  d0,(IO_CT1_CTRL+1).l
                 move.b  d0,(IO_CT2_CTRL+1).l
                 move.b  d0,(IO_EXT_CTRL+1).l
 
-Boot_ClearWorkRAM:                                      ; was: loc_388
+Boot_ClearWorkRAM:
                 lea     (M68K_RAM).l,a6
                 moveq   #0,d7
                 move.w  #$3FFF,d6
 
-Boot_ClearWorkRAM_Loop:                                 ; was: loc_394
+Boot_ClearWorkRAM_Loop:
                 move.l  d7,(a6)+
                 dbf     d6,Boot_ClearWorkRAM_Loop
                 move.l  #'init',(Ram_InitFlag).w
                 move.l  #$100000,(Ram_HighScore).w
 
-Boot_CheckInitFlag:                                     ; was: loc_3AA
+Boot_CheckInitFlag:
                 cmpi.l  #'init',(Ram_InitFlag).w
                 bne.s   Boot_ClearWorkRAM
-                bsr.w   LoadFuncTable
-                bsr.w   SetInitialVDPRegs
+                bsr.w   Sys_LoadFuncTable
+                bsr.w   Gfx_SetInitialVDPRegs
                 bsr.w   Gfx_WriteVDPRegs
                 bsr.w   Gfx_ClearVRAMAndCRAM
-                bsr.w   LoadZ80Driver
+                bsr.w   Sound_LoadZ80Driver
                 lea     (Sys_GameEntryPoint).l,a0
                 lea     (M68K_RAM).l,a1
                 move.w  #$2FFF,d0
 
-Boot_CopyGameToRAM_Loop:                                ; was: loc_3D8
+Boot_CopyGameToRAM_Loop:
                 move.l  (a0)+,(a1)+
                 dbf     d0,Boot_CopyGameToRAM_Loop
                 jmp     M68K_RAM
 
-CheckSumError:
+Boot_ChecksumError:
                 bsr.w   Gfx_ClearVRAMAndCRAM
                 move.l  #$C0000000,(VDP_CTRL).l
                 moveq   #$3F,d7
 
-fill_red_screen:
+Boot_FillRedScreen:
                 move.w  #$E,(VDP_DATA).l
-                dbf     d7,fill_red_screen
+                dbf     d7,Boot_FillRedScreen
 
-endless_loop:
-                bra.s   endless_loop
+Boot_EndlessLoop:
+                bra.s   Boot_EndlessLoop
 
 ; Clears CRAM (palette) and VRAM with zeros

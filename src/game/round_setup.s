@@ -2,7 +2,7 @@
 ; ROM $012656-$012A93
 
 Game_InitRound:
-                bsr.w   Sys_InitTitleScreen             ; was: sub_12656
+                bsr.w   Sys_InitTitleScreen
                 lea     (Gfx_SharedPalette).l,a5
                 jsr     j_Gfx_LoadPaletteCompact
                 clr.l   (Ram_RoundTime).w
@@ -11,20 +11,20 @@ Game_InitRound:
 
 ; Short delay before round based on round mod 4
 Game_PreRoundDelay:
-                move.w  #$20,(Ram_NextGameMode).w       ; was: sub_1266E
+                move.w  #$20,(Ram_NextGameMode).w
                 move.b  (Ram_RoundNumber+1).w,d0
                 andi.b  #3,d0
                 cmpi.b  #3,d0
                 bne.s   Game_PreRoundDelay_Wait
                 move.w  #$28,(Ram_NextGameMode).w
 
-Game_PreRoundDelay_Wait:                                ; was: loc_12688
+Game_PreRoundDelay_Wait:
                 jsr     j_Sound_QueueSFX
                 rts
 
 ; Loads level tileset based on round number
 Level_LoadTileset:
-                moveq   #$18,d7                         ; was: sub_1268E
+                moveq   #$18,d7
                 bsr.w   Math_ModuloLower
                 lsr.w   #2,d0
                 lsl.w   #2,d0
@@ -66,31 +66,31 @@ Level_LoadTileset:
                 move.l  #Level_BgObject2Data,(Ram_BgObject2Ptr).w
                 rts
 
-Level_BackgroundTilePointers:   dc.l    Level_BackgroundTileData0  ; was: off_12728
+Level_BackgroundTilePointers:   dc.l    Level_BackgroundTileData0
                 dc.l    Level_BackgroundTileData1
                 dc.l    Level_BackgroundTileData2
                 dc.l    Level_BackgroundTileData3
                 dc.l    Level_BackgroundTileData4
                 dc.l    Level_BackgroundTileData5
-Level_GroundTilePointers:       dc.l    Level_GroundTileData0  ; was: off_12740
+Level_GroundTilePointers:   dc.l    Level_GroundTileData0
                 dc.l    Level_GroundTileData1
                 dc.l    Level_GroundTileData2
                 dc.l    Level_GroundTileData3
                 dc.l    Level_GroundTileData4
                 dc.l    Level_GroundTileData5
-Level_UpperGroundPointers:      dc.l    Level_UpperGroundData0  ; was: off_12758
+Level_UpperGroundPointers:  dc.l    Level_UpperGroundData0
                 dc.l    Level_UpperGroundData1
                 dc.l    Level_UpperGroundData2
                 dc.l    Level_UpperGroundData3
                 dc.l    Level_UpperGroundData4
                 dc.l    Level_UpperGroundData5
-Level_LowerGroundPointers:      dc.l    Level_LowerGroundData0  ; was: off_12770
+Level_LowerGroundPointers:  dc.l    Level_LowerGroundData0
                 dc.l    Level_LowerGroundData1
                 dc.l    Level_LowerGroundData2
                 dc.l    Level_LowerGroundData3
                 dc.l    Level_LowerGroundData4
                 dc.l    Level_LowerGroundData5
-Level_BgObject3Pointers:        dc.l    Level_BgObject3Data0  ; was: off_12788
+Level_BgObject3Pointers:    dc.l    Level_BgObject3Data0
                 dc.l    Level_BgObject3Data1
                 dc.l    Level_BgObject3Data2
                 dc.l    Level_BgObject3Data3
@@ -102,19 +102,19 @@ Level_BgObject3Pointers:        dc.l    Level_BgObject3Data0  ; was: off_12788
                 dc.l    Level_BgObject3Data1
                 dc.l    Level_BgObject3Data2
                 dc.l    Level_BgObject3Data0
-Level_BgObject4Pointers:        dc.l    Ending_GraphicsMap1  ; was: off_127B8
+Level_BgObject4Pointers:    dc.l    Ending_GraphicsMap1
                 dc.l    Ending_GraphicsMap1
                 dc.l    Ending_GraphicsMap2
                 dc.l    Level_BgObject4Data2
                 dc.l    Level_BgObject4Data3
                 dc.l    Level_BgObject4Data4
-Level_BgObject5Pointers:        dc.l    Ending_GraphicsMap0  ; was: off_127D0
+Level_BgObject5Pointers:    dc.l    Ending_GraphicsMap0
                 dc.l    Ending_GraphicsMap0
                 dc.l    Level_BgObject5Data1
                 dc.l    Level_BgObject5Data2
                 dc.l    Level_BgObject5Data3
                 dc.l    Level_BgObject5Data4
-Level_ChickMappingPointers:     dc.l    Chick_ThrownAnim0Data0  ; was: off_127E8
+Level_ChickMappingPointers: dc.l    Chick_ThrownAnim0Data0
                 dc.l    Chick_ThrownAnim1Data0
                 dc.l    Chick_ThrownAnim2Data0
                 dc.l    Chick_ThrownAnim3Data0
@@ -131,7 +131,7 @@ Level_ChickMappingPointers:     dc.l    Chick_ThrownAnim0Data0  ; was: off_127E8
                 dc.l    Chick_ThrownAnim14Data0
 ; Loads level palette based on round number
 Level_LoadPalette:
-                moveq   #$30,d7                         ; was: sub_12824
+                moveq   #$30,d7
                 bsr.w   Math_ModuloLower
                 lsr.w   #2,d0
                 lsl.w   #1,d0
@@ -142,7 +142,7 @@ Level_LoadPalette:
                 lea     (Ram_LevelPalette).w,a1
                 moveq   #7,d0
 
-Level_LoadPalette_CopyLoop:                             ; was: loc_12840
+Level_LoadPalette_CopyLoop:
                 move.l  (a0)+,(a1)+
                 dbf     d0,Level_LoadPalette_CopyLoop
                 moveq   #$F,d7
@@ -158,7 +158,7 @@ Level_LoadPalette_CopyLoop:                             ; was: loc_12840
                 move.l  (a0)+,(a1)+
                 rts
 
-Level_PalettePointers:  dc.w    Level_Palette0-Sys_GameEntryPoint  ; was: off_12866
+Level_PalettePointers:  dc.w    Level_Palette0-Sys_GameEntryPoint
                 dc.w    Level_Palette1-Sys_GameEntryPoint
                 dc.w    Level_Palette2-Sys_GameEntryPoint
                 dc.w    Level_Palette3-Sys_GameEntryPoint
@@ -182,7 +182,7 @@ Level_Palette8:                 binclude "data/palettes/level-08.bin"
 Level_Palette9:                 binclude "data/palettes/level-09.bin"
 Level_Palette10:                binclude "data/palettes/level-10.bin"
 Level_Palette11:                binclude "data/palettes/level-11.bin"
-Level_AccentPalettePointers:    dc.w    Level_AccentPalette0-Sys_GameEntryPoint  ; was: off_129FE
+Level_AccentPalettePointers:    dc.w    Level_AccentPalette0-Sys_GameEntryPoint
                 dc.w    Level_AccentPalette1-Sys_GameEntryPoint
                 dc.w    Level_AccentPalette2-Sys_GameEntryPoint
                 dc.w    Level_AccentPalette3-Sys_GameEntryPoint

@@ -41,8 +41,9 @@ class NormalizeLine(unittest.TestCase):
         self.assertEqual(line, "Sys_VectorTable: dc.l    Foo")
 
     def test_without_a_column_a_label_takes_the_next_tab_stop(self):
+        # 17 characters, so the next stop past the minimum of 16 is 20.
         line = asm_style.normalize_line("Nem_BitMaskTable: dc.w 1", 0)
-        self.assertEqual(line, "Nem_BitMaskTable:".ljust(24) + "dc.w    1")
+        self.assertEqual(line, "Nem_BitMaskTable:".ljust(20) + "dc.w    1")
 
     def test_equ_keeps_its_name_in_the_label_field(self):
         self.assertEqual(
@@ -106,7 +107,7 @@ class LabelColumns(unittest.TestCase):
         lines = ["Short: equ 1", "AnEvenMuchLongerName: equ 2", "Mid: equ 3"]
         columns = asm_style.label_columns(lines, 16)
         self.assertEqual(len(set(columns)), 1)
-        self.assertEqual(columns[0], 24)
+        self.assertEqual(columns[0], 24)  # 20 characters, so the stop after 20
 
     def test_a_bare_label_does_not_break_a_run(self):
         # art.s alternates `Name: binclude ...` with `Name_End:`; treating the

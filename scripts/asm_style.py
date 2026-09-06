@@ -29,8 +29,11 @@ MNEMONIC_FIELD = 8
 # comment in the file to follow the longest data table row.
 COMMENT_COLUMN = 56
 # A label that carries a directive steps to the next tab stop, so the directive
-# column stays on 16, 24, 32 rather than landing wherever the name happens to end.
-LABEL_TAB = 8
+# column lands on a grid rather than wherever the name happens to end. Four
+# rather than eight: the column is shared across a run either way, so the wider
+# step only pads further right -- measured at 9.6 spaces per label line against
+# 7.4.
+LABEL_TAB = 4
 # Whole-line comments are indented in multiples of this.
 COMMENT_INDENT_STEP = 4
 

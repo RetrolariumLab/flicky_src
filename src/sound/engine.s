@@ -2,10 +2,10 @@
 ; ROM $010CD4-$010D6D
 
 Gfx_InitCRAMAndClearVDP:
-                move.l  #$C0000000,(VDP_CTRL).l         ; was: sub_10CD4
+                move.l  #$C0000000,(VDP_CTRL).l
                 moveq   #$3F,d0
 
-Gfx_InitCRAMAndClearVDP_ClearLoop:                      ; was: loc_10CE0
+Gfx_InitCRAMAndClearVDP_ClearLoop:
                 move.w  #0,(VDP_DATA).l
                 dbf     d0,Gfx_InitCRAMAndClearVDP_ClearLoop
                 moveq   #0,d2
@@ -14,8 +14,8 @@ Gfx_InitCRAMAndClearVDP_ClearLoop:                      ; was: loc_10CE0
 
 ; Loads Z80 sound driver and initializes audio system
 Sound_InitDriver:
-                jsr     j_LoadZ80Driver                 ; was: sub_10CF6
-                lea     (z80_part2).l,a1
+                jsr     j_Sound_LoadZ80Driver
+                lea     (Data_Z80Driver2).l,a1
                 bsr.s   Sound_LoadZ80Table
                 bsr.s   Sound_LoadZ80Table
                 moveq   #8,d0
@@ -26,35 +26,35 @@ Sound_InitDriver:
                 clr.w   (Ram_SoundQueueCount).w
                 rts
 
-Sound_InitCommandData:  dc.b    0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0  ; was: byte_10D1A
+Sound_InitCommandData:  dc.b    0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0
 ; Loads Z80 data using table pointer in a1
 Sound_LoadZ80Table:
-                moveq   #2,d2                           ; was: sub_10D24
+                moveq   #2,d2
                 movem.w (a1)+,d0-d1/a0
                 suba.l  #Sys_GameEntryPoint,a0          ; !(UNKNOWN) DATA-001 offsets assume $10000
                 jmp     j_Sound_CopyToZ80RAM
 
 ; Sends note/command to Z80 sound driver
 Sound_PlayNote:
-                move.l  a0,-(sp)                        ; was: sub_10D34
+                move.l  a0,-(sp)
                 jsr     j_Sound_RequestZ80Bus
                 move.b  d0,(Z80_MusicCommand).l
-                jsr     j_ReleaseZ80Bus
+                jsr     j_Sound_ReleaseZ80Bus
                 movea.l (sp)+,a0
                 rts
 
 ; Plays note only if sound channel is active
 Sound_PlayNoteIfActive:
-                tst.b   (Ram_SoundBusyFlag).w           ; was: sub_10D48
+                tst.b   (Ram_SoundBusyFlag).w
                 bne.s   Sound_PlayNoteIfActive_Return
                 bsr.s   Sound_PlayNote
 
-Sound_PlayNoteIfActive_Return:                          ; was: locret_10D50
+Sound_PlayNoteIfActive_Return:
                 rts
 
 ; Counts down sound channel cooldown timer
 Sound_ChannelCooldown:
-                tst.b   (Ram_SoundBusyFlag).w           ; was: sub_10D52
+                tst.b   (Ram_SoundBusyFlag).w
                 beq.s   Sound_ChannelCooldown_Return
                 addq.w  #1,(Ram_SoundCooldown).w
                 cmpi.w  #$1E,(Ram_SoundCooldown).w
@@ -62,7 +62,7 @@ Sound_ChannelCooldown:
                 clr.w   (Ram_SoundCooldown).w
                 clr.b   (Ram_SoundBusyFlag).w
 
-Sound_ChannelCooldown_Return:                           ; was: locret_10D6C
+Sound_ChannelCooldown_Return:
                 rts
 
 ; Converts offset d0 to VDP VRAM write command format

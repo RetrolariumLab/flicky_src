@@ -114,7 +114,7 @@ is for, keeping the original as provenance on the definition line, and record
 what could not be settled.
 
 The RAM-resident jump table at `$FFFA70` resolved exactly against
-`func_table`, which named 58 trampolines and explained the frame-advance idiom
+`Sys_FuncTable`, which named 58 trampolines and explained the frame-advance idiom
 used throughout the source.
 
 *Exit criterion:* `make lint --strict-naming` passes.
