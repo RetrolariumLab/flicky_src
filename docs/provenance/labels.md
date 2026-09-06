@@ -1,0 +1,113 @@
+# Provenance of Labels and Data
+
+Where every name and every extracted byte in this repository came from. This is
+deliberately separate from [`naming.md`](../naming.md), which says what the
+names mean now: a reader deciding how much to trust a symbol needs to know its
+origin, not just its current spelling.
+
+## The three generations of names
+
+**Generation 1 — the disassembler.** The project began as a machine
+disassembly. Every label was address-derived: `sub_12B46`, `loc_12B5E`,
+`byte_13A08`, `word_FFD82C`. These names carry no claim at all; they are the
+address written twice.
+
+**Generation 2 — procedure naming.** An earlier pass, before this release,
+named a few hundred procedures by reading them. Those names carry the same
+`; was:` marker as generation 3 and cannot be told apart by inspection; both
+were re-reviewed during the 1.0 naming pass. The source carries 1,782 markers
+in total.
+
+**Generation 3 — the 1.0 semantic pass.** All 1,488 remaining
+disassembler-generated identifiers were replaced across 1,979 definitions.
+`make lint --strict-naming` now rejects any identifier containing four or more
+hex digits, so generation 1 cannot come back.
+
+## Reading a name's origin from the source
+
+Every renamed symbol keeps its predecessor inline:
+
+```asm
+Game_MainLoop_PostFrame:  ; was: loc_12B5E
+```
+
+The `; was:` marker is the provenance record. It means the symbol at this
+address used to be called that, so an old note, an old trace or an old
+disassembly listing can still be matched against the current source. The marker
+records the *previous* name, not necessarily the original one, where a symbol
+was renamed twice.
+
+A symbol with no `; was:` marker was introduced by this reconstruction and never
+existed in a disassembler's output.
+
+## How much a name is worth
+
+A name is a claim, and the claims here are not all equally strong.
+
+| Basis | What it means | Example |
+| --- | --- | --- |
+| Structural | The code's shape settles it: a jump table entry, a vector, a loop counter | `Sys_GameModeTable` |
+| Cross-referenced | Another named thing forces the reading | The `j_` trampolines, resolved through `func_table` below |
+| Observed | The runtime layer saw the value behave this way | `Ram_NextGameMode`, `Ram_GameState` |
+| Interpretive | A reading of what the code does, unconfirmed by anything else | Most object and enemy helpers |
+| Neutral | Deliberately says little, because nothing settles it | `Ram_SharedState*` entries in `unknowns.md` |
+
+Where nothing settles a name it stays neutral and gets a registry entry in
+[`unknowns.md`](../unknowns.md) rather than an invented one. An interpretive
+name that later turns out wrong is a rename; an invented name presented as
+settled is a lie in the record.
+
+## Two resolutions worth recording
+
+**The RAM-resident jump table at `$FFFA70`.** `LoadFuncTable` copies a table of
+entry points into work RAM as `jmp` instructions and the game calls through
+them. The source in ROM is `func_table`: a count word of `$39` followed by 58
+destination words. Walking the copy loop against that table gives each RAM
+address its real destination, and 17 of them are named `j_*` after the
+procedure they reach. That is why the `j_` prefix is not a guess here — the
+destination is named because the table says so, not because the code looked
+similar.
+
+**`Demo_Init`'s round tables.** These were named `Demo_RoundHighTable` and
+`Demo_RoundLowTable` on the assumption that they fed the high and low bytes of
+`Ram_RoundNumber`. The runtime layer showed the opposite: the "high" table is
+written to `Ram_RoundNumber+1`, the low byte. They are now
+`Demo_RoundIndexTable` and `Demo_RoundDisplayTable`, named after what they are
+observed to contain. See [`runtime_evidence.md`](../runtime_evidence.md).
+
+## Data provenance
+
+**The seventeen extracted segments.** Every `binclude` payload under `data/`
+comes from the cartridge dump, cut at the offsets in `data/data_addrs.txt` by
+`scripts/split_data_from_rom.py`. None is tracked: `assets/manifest.json` holds
+the path, ROM address, size and SHA-1 of each, and `make check-assets` refuses
+to build against a segment that does not match. `make split` is the only command
+that writes to `data/`.
+
+The offsets in `data_addrs.txt` were derived from the disassembly itself — they
+are the addresses of the `binclude` sites — so they are a fact about the source,
+not an external claim.
+
+**The two movie recordings.** `movies/flicky_longplay.gmv` and
+`movies/flicky_demos.gmv` contain controller input and nothing else: no game
+code, no data, no video. Both are pinned by SHA-1 in
+`scenarios/runtime_scenarios.json`, and the capture refuses to run against a
+different file. Their scene indexes in `movies/*_description.txt` were written
+by watching the recordings; the runtime layer since confirmed all twelve
+against the game mode the emulator actually reached.
+
+**The cartridge dump itself** is never tracked. `assets/manifest.json` records
+its name, size, SHA-1, MD5, CRC32 and SHA-256, and `scripts/release_audit.py`
+walks every reachable git object to prove no payload was ever committed.
+
+## The Z80 driver is not reconstructed
+
+`data/sound/data_z80_part1.bin` and `data_z80_part2.bin` are executable Z80
+code, copied verbatim and never disassembled. They are the one place where this
+repository holds code as an opaque blob, which is why the release manifest
+excludes them by name as `z80_sound_driver_source` rather than passing over it.
+
+They are not unconstrained: each has an owning module, a declared ROM range in
+`config/rom_layout.json`, and a hash in `assets/manifest.json`. The second image
+also hard-codes pointers to `$10000`, which is why `Sys_GameEntryPoint` cannot
+move. That is tracked as SND-001 in [`unknowns.md`](../unknowns.md).

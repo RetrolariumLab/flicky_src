@@ -183,12 +183,30 @@ reachable history.
 
 *Exit criterion:* `make release-check` passes end to end.
 
-### 9. Source Reconstruction 1.0 - Planned
+### 9. Shared release contract - Complete
+
+The release manifest was rewritten to the shape
+`retrolarium.source_reconstruction_release_contract` edition 3 defines: scope in
+and out, delta, profiles, runtime coverage, artifacts, aggregate gates, layout
+deviations, licensing and provenance, plus a per-requirement status with
+evidence that has to resolve to a real file, target or scenario.
+
+Two of its requirements had nothing behind them and now do. The toolchain is
+checked against recorded SHA-256 hashes *before* the assembler runs rather than
+after the ROM disagrees, and the emulator is pinned by upstream commit because a
+locally cross-built MinGW binary has no stable hash. The ROM layout moved out of
+prose into `config/rom_layout.json` and is checked against three separate ground
+truths -- the assembler's own listing, its symbol table and the built image.
+
+*Exit criterion:* `make release-audit` verifies the manifest against reality,
+not just against itself.
+
+### 10. Source Reconstruction 1.0 - Planned
 
 Tag the reviewed state once the audit passes on that exact commit with a clean
 worktree.
 
-### 10. Behaviour-changing variants - Not started
+### 11. Behaviour-changing variants - Not started
 
 Fixed-layout hacks and bug fixes belong to a separate entrypoint and a separate
 output. The preservation build stays the default and the gate stays permanent.

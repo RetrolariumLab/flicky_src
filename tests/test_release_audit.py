@@ -59,6 +59,76 @@ class Agreement(unittest.TestCase):
         self.assertEqual(errors, [])
 
 
+class ContractShape(unittest.TestCase):
+    """The manifest has to be the shape the shared release contract defines."""
+
+    def test_it_names_the_shared_contract_and_edition(self):
+        block = CONTRACT["contract"]
+        self.assertEqual(block["schema"], release_audit.CONTRACT_SCHEMA)
+        self.assertEqual(block["version"], release_audit.CONTRACT_VERSION)
+        self.assertEqual(block["release_line"], CONTRACT["release"]["version"])
+
+    def test_the_tag_follows_the_template(self):
+        self.assertEqual(CONTRACT["tag"], f"source-reconstruction-{CONTRACT['release']['version']}")
+
+    def test_a_first_release_records_a_null_predecessor_rather_than_omitting_it(self):
+        # Omitting the field and having no predecessor look identical otherwise.
+        self.assertIn("predecessor", CONTRACT)
+        self.assertIsNone(CONTRACT["predecessor"])
+
+    def test_every_required_field_is_present(self):
+        for field in ("release_kind", "status", "included_scope", "excluded_scope",
+                      "delta", "requirements", "profiles", "runtime_coverage",
+                      "toolchain", "artifacts", "aggregate_gates",
+                      "layout_deviations", "licensing", "provenance"):
+            self.assertIn(field, CONTRACT)
+
+    def test_requirement_statuses_are_from_the_allowed_set(self):
+        for name, entry in CONTRACT["requirements"].items():
+            self.assertIn(entry["status"], release_audit.REQUIREMENT_STATUSES, name)
+
+    def test_a_partial_requirement_points_at_its_exclusion(self):
+        # A requirement may fall short, but then the manifest has to say where
+        # the shortfall is recorded rather than leaving it as a bare status.
+        excluded = {entry["id"] for entry in CONTRACT["excluded_scope"]}
+        self.assertIn("z80_sound_driver_source", excluded)
+        self.assertEqual(CONTRACT["requirements"]["source_boundary"]["status"], "partial")
+
+    def test_the_accepted_profile_has_identity_and_coverage(self):
+        profile = CONTRACT["profiles"][0]
+        self.assertEqual(profile["status"], "supported")
+        self.assertEqual(profile["identity"], "byte-identical")
+        covered = {row["profile_id"] for row in CONTRACT["runtime_coverage"]}
+        self.assertIn(profile["id"], covered)
+
+    def test_licensing_separates_the_game_from_the_tooling(self):
+        by_category = {entry["category"]: entry for entry in CONTRACT["licensing"]}
+        self.assertEqual(
+            by_category["reconstructed_game_source"]["license_id_or_status"],
+            "license_not_granted",
+        )
+        self.assertEqual(by_category["own_project_tools"]["license_id_or_status"], "licensed")
+        self.assertFalse(CONTRACT["provenance"]["private_inputs_tracked"])
+
+    def test_every_layout_deviation_names_an_equivalent_control(self):
+        for entry in CONTRACT["layout_deviations"]:
+            self.assertTrue(entry["equivalent_control"], entry["rule_id"])
+
+    def test_the_gate_runs_the_declared_commands_in_the_declared_order(self):
+        # check_make_targets compares the release-check recipe against
+        # release_commands, so the contract cannot claim a layer the gate skips.
+        errors: list[str] = []
+        release_audit.check_make_targets(CONTRACT, errors)
+        self.assertEqual(errors, [])
+
+    def test_a_reordered_gate_is_caught(self):
+        contract = dict(CONTRACT)
+        contract["release_commands"] = list(reversed(CONTRACT["release_commands"]))
+        errors: list[str] = []
+        release_audit.check_make_targets(contract, errors)
+        self.assertTrue(any("different sequence" in error for error in errors), errors)
+
+
 class Contract(unittest.TestCase):
     def test_runtime_captures_are_claimed_and_the_roadmap_agrees(self):
         # Claiming runtime evidence commits the roadmap and the scenarios to it:
