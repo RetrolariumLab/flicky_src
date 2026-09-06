@@ -79,3 +79,31 @@ make verify
 runtime evidence and the release audit. It is the full gate and it is slow --
 the runtime layer replays 67,000 frames -- so run the two above while working
 and the whole gate before proposing.
+
+## Commit messages
+
+The project follows the shared release contract's rules, because the history is
+part of the evidence: a reader tracing why a byte moved has only the commit that
+moved it.
+
+- **English, title and body.** The documentation language is a separate choice;
+  commit messages are not.
+- **The title says what was completed**, and does not end with a full stop.
+  `Fix`, `Update`, `Changes` and `WIP` say nothing and are not accepted.
+- **Two or three substantial paragraphs** after a blank line: what changed and
+  which subsystems it touched; why, and which contracts or evidence it adds or
+  preserves; and for a release commit, which aggregate gates passed and what the
+  release does and does not cover.
+- **The body describes the actual diff.** Do not write `Complete Source
+  Reconstruction X.Y` before the manifest, the documentation and the full gate
+  are all ready.
+- **One commit, one comprehensible task.** A mechanical move may be combined
+  with the import or path fixes it requires, when splitting them would leave the
+  tree broken in between.
+- **Attribution is truthful.** A trailer naming a tool goes on a commit that
+  tool actually helped prepare, and nowhere else.
+
+History is only rewritten before it is published, never in place on `main`, and
+never without agreeing the new shape first. The same applies to the release tag:
+it moves only while it is unpublished, and a published tag is corrected by a new
+version rather than by moving it.

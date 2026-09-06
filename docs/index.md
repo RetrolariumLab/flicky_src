@@ -7,8 +7,11 @@
 | [`roadmap.md`](roadmap.md) | What this project is for, what is done, what is next |
 | [`source_layout.md`](source_layout.md) | Where the code lives and why it is split that way |
 | [`subsystems.md`](subsystems.md) | What the program does and who calls whom |
+| [`build.md`](build.md) | How the build works, what to supply, and what each failure means |
 | [`validation.md`](validation.md) | Which check proves what |
 | [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
+| [`provenance/labels.md`](provenance/labels.md) | Where every name and every extracted byte came from |
+| [`adr/`](adr/0001-as-assembler.md) | The decisions that would be expensive to reverse |
 
 ## Working on the source
 
@@ -55,7 +58,7 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 ## Current status
 
-Source Reconstruction 1.0, all nine milestones complete: the byte-identity
+Source Reconstruction 1.0, all ten milestones complete: the byte-identity
 gate compares against the cartridge dump, the source is modular and
 consistently styled, every symbol is semantic, the subsystems and the memory
 map are documented, the authored data formats have codecs, the symbol map is

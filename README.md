@@ -15,7 +15,7 @@ itself. `flicky.s` is no longer a source file: it is an index of 43
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-This is Source Reconstruction 1.0, all nine milestones complete: the data
+This is Source Reconstruction 1.0, all ten milestones complete: the data
 formats have codecs, the symbol map is exported for debuggers, twelve scenarios
 replay under the emulator and are checked against 68 declared facts about work
 RAM, and `make release-check` audits the whole release contract. See
@@ -58,10 +58,18 @@ flicky_src/
 |   |-- windows_i386/       # asw.exe, p2bin.exe, message catalogs
 |   |-- linux_x86_64/       # asl, p2bin, message catalogs
 |   `-- README.md           # Provenance, hashes, why -p=FF matters
+|-- config/                 # Build and release contracts
+|   |-- rom_layout.json     # Memory map, landmarks, padding gap, module ranges
+|   |-- toolchain.json      # Toolchain hashes, pinned commits, supported hosts
+|   `-- source_reconstruction_1_0.json   # The release manifest
 |-- data/                   # Extracted binary segments (ignored, from make split)
 |-- docs/                   # See docs/index.md
+|   |-- adr/                # Decisions that would be expensive to reverse
+|   `-- provenance/         # Where names and extracted bytes came from
 |-- movies/                 # Gens input recordings and their scene indexes
+|-- scenarios/              # Runtime scenarios and their state expectations
 |-- scripts/                # Build, validation and analysis tooling
+|-- tests/                  # Unit tests for the tooling
 |-- src/
 |   |-- compression/        # Nemesis and Enigma decompressors
 |   |-- data/               # Binary includes and the large data tables
@@ -95,6 +103,8 @@ make help           # Everything, including the analysis workflow
 make test           # Unit tests for the Python tooling
 make roundtrip-formats   # Decode and re-encode the authored data
 make symbols        # Export build/flicky.sym for debuggers
+make verify-toolchain  # Hash-check the vendored assembler before it runs
+make verify-layout     # Check the ROM layout against config/rom_layout.json
 make release-check  # The complete acceptance gate
 ```
 

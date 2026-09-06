@@ -1,11 +1,13 @@
 # Validation
 
-Five layers, in increasing cost and decreasing frequency. They check different
+Seven layers, in increasing cost and decreasing frequency. They check different
 things and none of them substitutes for another.
 
 ```bash
+make verify-toolchain     # the assembler is the one this release was built with
 make lint                 # style, naming, documentation, evidence registry
 make verify               # byte identity with the reference ROM -- the gate
+make verify-layout        # the ROM layout is the one config/rom_layout.json declares
 make test                 # focused unit tests for the Python tooling
 make roundtrip-formats    # decode and re-encode the authored data formats
 make trace                # emulator evidence for gameplay transactions
@@ -13,6 +15,12 @@ make release-check        # everything above, in order
 ```
 
 ## What each layer can tell you
+
+**`make verify-toolchain`** hashes the vendored assembler and its message
+catalogs against `config/toolchain.json` and refuses to go on if they differ. It
+runs before the assembler rather than after, so a swapped binary is reported by
+name instead of appearing as an unexplained byte difference. `build` and
+`verify` both depend on it.
 
 **`make lint`** reads text. It knows that a label sits at column zero, that no
 symbol carries a ROM address, that every evidence tag resolves to a registry
@@ -30,6 +38,13 @@ codecs, the audit -- so a bug in the checks does not quietly pass everything.
 **`make roundtrip-formats`** decodes each authored data segment and re-encodes
 it, requiring the original bytes back. It catches a codec that decodes
 plausibly but cannot reproduce what it read.
+
+**`make verify-layout`** checks `config/rom_layout.json` against three separate
+ground truths: module ranges against the addresses the assembler recorded for
+every `include` in its listing, landmark symbols against its symbol table, and
+the padding gap against the built image. AS has no linker, so this is what owns
+the memory layout. A moved module fails here by name before `make verify`
+reports it as an offset.
 
 **`make trace`** replays the two recorded movies under the emulator and checks
 declared values of work RAM at each scenario's frames. It is the only layer

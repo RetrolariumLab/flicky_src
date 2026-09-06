@@ -43,7 +43,10 @@ extracted from it, or any build output.
 | Authored data is understood | 8 of 17 segments round-trip byte for byte; the rest declare a weaker claim in `config/data_formats.json` |
 | Uncertainty is explicit | 7 entries in [`unknowns.md`](unknowns.md), each referenced from the source, checked both ways by lint |
 | Behaviour is observed, not assumed | 12 movie replays under the emulator, 68 expectations about work RAM checked against the captures |
-| The tooling itself is checked | 98 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
+| The toolchain is the declared one | SHA-256 for every vendored binary in `config/toolchain.json`, checked by `make verify-toolchain` before the assembler runs |
+| The ROM layout is declared, not implied | `config/rom_layout.json` holds 43 module ranges, 9 landmarks and the padding gap; `make verify-layout` checks all three against the build |
+| The release contract is machine-checked | The manifest follows `retrolarium.source_reconstruction_release_contract` v3, and `make release-audit` resolves every requirement's evidence to a real file, target or scenario |
+| The tooling itself is checked | 129 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
 | The contract holds together | `make release-audit` cross-checks the manifests, milestones, documents, targets, toolchain and full git history |
 
 ## What this release does not cover
@@ -80,11 +83,16 @@ entry and do not reuse its identifier.
 make release-check
 ```
 
-runs, in order: `lint`, `test`, `roundtrip-formats`, `verify`, `symbols`,
-`trace`, `release-audit`. Cheap text checks come first so a typo fails in a
-second rather than after a full assemble; `trace` is last before the audit
-because it is much the slowest -- it replays 67,000 frames -- and needs the
-emulator from `make build-gens`.
+runs, in order: `verify-toolchain`, `check-assets`, `lint`, `test`,
+`roundtrip-formats`, `verify`, `verify-layout`, `symbols`, `trace`,
+`release-audit`. The order is the one the shared release contract recommends and
+`release_audit.py` checks that the Makefile recipe matches the sequence declared
+in the manifest, so the contract cannot claim a layer the gate skips.
+
+Cheap checks come first: the toolchain and asset hashes settle in a second, text
+checks a second after that, and a typo fails long before a full assemble.
+`trace` is last before the audit because it is much the slowest -- it replays
+67,000 frames -- and needs the emulator from `make build-gens`.
 
 Everything it writes goes under the ignored `build/` directory, regenerated
 each time, so a stale local artifact cannot mask a regression.
