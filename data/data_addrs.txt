@@ -1,6 +1,6 @@
 # Flicky ROM binary data segments
 # Format: name,start,end,subdir
-# Generated from flicky.lst
+# Generated from main.lst
 #
 # Categories:
 #   arteni/   - Enigma-compressed tilemaps

@@ -22,7 +22,7 @@ extracted from it, or any build output.
 
 ## The stable contract
 
-- `flicky.s` includes 43 address-ordered modules as one AS translation unit.
+- `src/main.s` includes 43 address-ordered modules as one AS translation unit.
 - `make verify` requires the build to equal the reference dump byte for byte.
 - Every symbol is semantic; `make lint` refuses an address-derived name.
 - Work RAM, hardware ports and the RAM-resident jump table are named in

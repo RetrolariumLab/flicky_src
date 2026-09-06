@@ -64,6 +64,7 @@ class Checks(unittest.TestCase):
 
     def test_a_moved_module_is_reported_by_name(self):
         layout = {
+            "target": {"entrypoint": "src/main.s"},
             "rom_image": {"size": 0x100, "landmarks": []},
             "shared_definitions": [],
             "modules": [
@@ -72,7 +73,7 @@ class Checks(unittest.TestCase):
             ],
         }
         with_tempfile = Path(__file__).with_name("_layout_listing.tmp")
-        with_tempfile.write_text(self.listing([(0, "src/a.s"), (0x90, "src/b.s")]),
+        with_tempfile.write_text(self.listing([(0, "a.s"), (0x90, "b.s")]),
                                  encoding="latin-1")
         try:
             errors: list[str] = []
@@ -83,12 +84,13 @@ class Checks(unittest.TestCase):
 
     def test_a_count_mismatch_stops_before_comparing(self):
         layout = {
+            "target": {"entrypoint": "src/main.s"},
             "rom_image": {"size": 0x100, "landmarks": []},
             "shared_definitions": [],
             "modules": [{"file": "src/a.s", "start": "0x000000", "end": "0x0000FF"}],
         }
         listing = Path(__file__).with_name("_layout_listing2.tmp")
-        listing.write_text(self.listing([(0, "src/a.s"), (0x80, "src/b.s")]), encoding="latin-1")
+        listing.write_text(self.listing([(0, "a.s"), (0x80, "b.s")]), encoding="latin-1")
         try:
             errors: list[str] = []
             verify_layout.check_modules(layout, listing, errors)

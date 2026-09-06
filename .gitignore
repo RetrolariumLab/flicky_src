@@ -7,10 +7,10 @@ data/**/*.bin
 # Build artifacts
 build/
 fbuilt.bin
-flicky.p
-flicky.lst
 flicky.map
 flicky.asm
+*.p
+*.lst
 temp.asm
 tools/*.exe
 tools/*.o

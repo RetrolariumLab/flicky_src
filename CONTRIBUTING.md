@@ -12,7 +12,7 @@ Use a legally obtained ROM whose SHA-1 is
 `Flicky (UE) [!].bin`. Run `make init` once; it validates the dump, extracts the
 seventeen data segments and proves the build matches.
 
-Never add the ROM, anything under `data/`, `fbuilt.bin`, `flicky.p` or the
+Never add the ROM, anything under `data/`, `fbuilt.bin`, `build/main.p` or the
 listing to Git. The tracked `.gmv` movies are controller input and contain no
 game data.
 
@@ -20,7 +20,7 @@ game data.
 
 Find the owning module with [`docs/source_layout.md`](docs/source_layout.md) and
 its callers with [`docs/subsystems.md`](docs/subsystems.md). Keep the include
-order in `flicky.s` -- it is the ROM layout, and moving a line moves code.
+order in `src/main.s` -- it is the ROM layout, and moving a line moves code.
 
 Name symbols with the vocabulary in [`docs/naming.md`](docs/naming.md) and let
 `make format` handle the layout. Comments and documentation are English; the

@@ -133,7 +133,7 @@ def main():
     parser.add_argument('--report', required=True, help='Analysis report CSV file')
     parser.add_argument('--count', type=int, default=40, help='Number of procedures')
     parser.add_argument('--output', required=True, help='Output file')
-    parser.add_argument('--source', default='flicky.s', help='Source assembly file')
+    parser.add_argument('--source', default='src/main.s', help='Source assembly file')
 
     args = parser.parse_args()
 

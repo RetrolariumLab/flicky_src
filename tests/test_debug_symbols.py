@@ -29,7 +29,7 @@ class ListingParser(unittest.TestCase):
 
     def test_a_page_header_is_not_a_row(self):
         self.assertIsNone(debug_symbols.LISTING_ROW_RE.match(
-            " AS V1.42 Beta [Bld 212] - Source File flicky.s - Page 1"))
+            " AS V1.42 Beta [Bld 212] - Source File main.s - Page 1"))
 
 
 class Equates(unittest.TestCase):

@@ -38,14 +38,14 @@ segment fails by name rather than as a mysterious byte difference.
 ## The pipeline
 
 ```text
-flicky.s ──[asw]──> flicky.p ──[p2bin -p=FF]──> fbuilt.bin ──[compare]──> the dump
+src/main.s ──[asw]──> build/main.p ──[p2bin -p=FF]──> fbuilt.bin ──[compare]──> the dump
 ```
 
-**Assembling.** `flicky.s` includes 43 modules in ROM address order and AS
+**Assembling.** `src/main.s` includes 43 modules in ROM address order and AS
 assembles all of it as a single translation unit, so every label is global and
-cross-module branches need no declaration. The `-i <project root>` flag lets a
-module under `src/` resolve its `binclude` paths from the repository root rather
-than from its own directory.
+cross-module branches need no declaration. Includes are written relative to `src/main.s`; the `-i <project root>` flag is
+what lets a module under `src/` reach `data/` with `binclude`, since AS would
+otherwise resolve that relative to the module's own directory.
 
 **Converting.** `p2bin` flattens the object into the cartridge image. The
 `-p=FF` is not optional: the cartridge pads unused space with `$FF` and p2bin
@@ -81,8 +81,8 @@ Everything generated is disposable and ignored by git:
 
 | Path | What it is |
 | --- | --- |
-| `flicky.p` | AS object file |
-| `flicky.lst` | AS listing, the source of the symbol map and the layout check |
+| `build/main.p` | AS object file |
+| `build/main.lst` | AS listing, the source of the symbol map and the layout check |
 | `fbuilt.bin` | The assembled ROM |
 | `build/` | Symbol map, format round-trip results, runtime captures, summaries |
 
@@ -125,6 +125,6 @@ make release-check
 
 runs `verify-toolchain`, `check-assets`, `lint`, `test`, `roundtrip-formats`,
 `verify`, `verify-layout`, `symbols`, `trace` and `release-audit`, in that
-order, cheapest first. It takes about thirteen minutes, almost all of it in
-`trace`, which replays 67,000 frames under the emulator. See
+order, cheapest first. It takes a few minutes, most of it in `trace`, which
+replays 67,000 frames under the emulator. See
 [`validation.md`](validation.md) for what each layer can and cannot tell you.

@@ -100,7 +100,7 @@ def setup_worker_dir(project_dir, proc_name, temp_base):
     os.makedirs(worker_dir)
 
     # Copy essential files
-    src_file = os.path.join(project_dir, 'flicky.s')
+    src_file = os.path.join(project_dir, 'src/main.s')
     shutil.copy(src_file, worker_dir)
 
     # Copy Makefile
@@ -222,7 +222,7 @@ def analyze_single_procedure(args_tuple):
     try:
         # Setup worker directory (unique per procedure)
         worker_dir = setup_worker_dir(project_dir, proc_name, temp_base)
-        source_file = os.path.join(worker_dir, 'flicky.s')
+        source_file = os.path.join(worker_dir, 'src/main.s')
         rom_file = os.path.join(worker_dir, 'fbuilt.bin')
 
         # Disable procedure
@@ -440,7 +440,7 @@ def analyze_procedures(args):
 def main():
     parser = argparse.ArgumentParser(description='Analyze ROM procedures for visual impact')
     parser.add_argument('--project-dir', default='.', help='Project directory')
-    parser.add_argument('--source', default='flicky.s', help='Source file')
+    parser.add_argument('--source', default='src/main.s', help='Source file')
     parser.add_argument('--rom', default='fbuilt.bin', help='Built ROM file')
     parser.add_argument('--movie', default='movies/flicky_longplay.gmv', help='TAS movie file')
     parser.add_argument('--reference', default='reference', help='Reference screenshots directory')

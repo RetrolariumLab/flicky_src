@@ -11,7 +11,7 @@ Approaches are shared with the sibling
 ## Status
 
 The build reproduces the reference ROM exactly, verified against the dump
-itself. `flicky.s` is no longer a source file: it is an index of 43
+itself. `src/main.s` is no longer a source file: it is an index of 43
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
@@ -78,9 +78,9 @@ flicky_src/
 |   |-- memory/             # Hardware ports, constants, work RAM map
 |   |-- rendering/          # VDP, tilemaps, text, HUD, level drawing
 |   |-- sound/              # Z80 bus handling and the command queue
-|   `-- system/             # Boot, entry point, interrupts, DMA, input
+|   |-- system/             # Boot, entry point, interrupts, DMA, input
+|   `-- main.s              # Address-ordered include index, the entrypoint
 |-- tools/                  # C and Python decompressors
-|-- flicky.s                # Address-ordered include index
 `-- Makefile
 ```
 
@@ -102,7 +102,7 @@ make help           # Everything, including the analysis workflow
 
 make test           # Unit tests for the Python tooling
 make roundtrip-formats   # Decode and re-encode the authored data
-make symbols        # Export build/flicky.sym for debuggers
+make symbols        # Export build/main.sym for debuggers
 make verify-toolchain  # Hash-check the vendored assembler before it runs
 make verify-layout     # Check the ROM layout against config/rom_layout.json
 make release-check  # The complete acceptance gate

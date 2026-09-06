@@ -1,7 +1,7 @@
 # Vendored toolchain
 
 This directory contains the AS Macro Assembler and its `p2bin` companion, the
-toolchain that assembles `flicky.s` into a byte-identical ROM. They are vendored
+toolchain that assembles `src/main.s` into a byte-identical ROM. They are vendored
 so that a fresh clone can reproduce the reference build without hunting for a
 matching assembler release.
 

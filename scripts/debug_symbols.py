@@ -69,18 +69,18 @@ def load_config(path: Path, key: str) -> list[dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--listing", default="flicky.lst")
+    parser.add_argument("--listing", default="build/main.lst")
     parser.add_argument("--ram", default="src/memory/ram.inc")
     parser.add_argument("--hardware", default="src/memory/hardware.inc")
     parser.add_argument("--breakpoints", default="config/debugger_breakpoints.json")
     parser.add_argument("--watches", default="config/debugger_watches.json")
-    parser.add_argument("--sym", default="build/flicky.sym")
+    parser.add_argument("--sym", default="build/main.sym")
     parser.add_argument("--summary", default="build/debug_symbols.json")
     args = parser.parse_args()
 
     listing = Path(args.listing)
     if not listing.is_file():
-        fail(f"listing not found: {listing}. Run 'make flicky.lst' first.")
+        fail(f"listing not found: {listing}. Run 'make symbols' first.")
 
     rom = collect_from_listing(listing)
     if not rom:
