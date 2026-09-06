@@ -2,13 +2,13 @@
 ; ROM $000DC0-$000E41
 
 Input_ProcessJoypads:
-                bsr.w   InitJoypads                     ; was: sub_DC0
+                bsr.w   Input_InitJoypads
                 lea     (Ram_ButtonStates).w,a0
                 move.w  (Ram_Joypad).w,d0
                 moveq   #$E,d1
                 moveq   #6,d2
 
-Input_ProcessJoypads_UpperBitLoop:                      ; was: loc_DD0
+Input_ProcessJoypads_UpperBitLoop:
                 btst    d1,d0
                 sne     (a0)+
                 subq.b  #1,d1
@@ -16,7 +16,7 @@ Input_ProcessJoypads_UpperBitLoop:                      ; was: loc_DD0
                 moveq   #6,d1
                 moveq   #2,d2
 
-Input_ProcessJoypads_LowerBitLoop:                      ; was: loc_DDE
+Input_ProcessJoypads_LowerBitLoop:
                 btst    d1,d0
                 sne     (a0)+
                 subq.b  #1,d1
@@ -27,11 +27,11 @@ Input_ProcessJoypads_LowerBitLoop:                      ; was: loc_DDE
                 beq.s   Input_ProcessJoypads_Return
                 clr.b   (Ram_ButtonRepeatFlag).w
 
-Input_ProcessJoypads_Return:                            ; was: locret_DF8
+Input_ProcessJoypads_Return:
                 rts
 
-InitJoypads:
-                bsr.w   RequestZ80Bus
+Input_InitJoypads:
+                bsr.w   Sound_RequestZ80BusIfFree
                 lea     (Ram_Joypad).w,a0
                 lea     ((IO_CT1_DATA+1)).l,a1
                 bsr.s   Input_ReadPort
@@ -41,7 +41,7 @@ InitJoypads:
 
 ; Reads controller port with 6-button protocol
 Input_ReadPort:
-                move.b  #0,(a1)                         ; was: sub_E12
+                move.b  #0,(a1)
                 nop
                 nop
                 move.b  (a1),d0

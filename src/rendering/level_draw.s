@@ -2,16 +2,16 @@
 ; ROM $011910-$011BC1
 
 UI_DrawGroundTile:
-                lsl.w   #1,d4                           ; was: sub_11910
+                lsl.w   #1,d4
                 move.w  UI_GroundTileTable(pc,d4.w),d4
                 bsr.w   Gfx_WriteTileAtOffset
                 rts
 
-UI_GroundTileTable:     dc.w    $220D, $2206, $2207, $2208, $2209, $220A, $220B, $220C  ; was: word_1191C
+UI_GroundTileTable: dc.w    $220D, $2206, $2207, $2208, $2209, $220A, $220B, $220C
                 dc.w    $220D, $220E, $220F, $2210, $2211, $2212, $2213, $2214
 ; Writes ground tile from pointer table to VRAM
 UI_DrawGroundTilePtr:
-                lsl.w   #1,d4                           ; was: sub_1193C
+                lsl.w   #1,d4
                 movea.l (Ram_GroundTilePtr).w,a1
                 move.w  (a1,d4.w),d4
                 bsr.w   Gfx_WriteTileAtOffset
@@ -19,11 +19,11 @@ UI_DrawGroundTilePtr:
 
 ; Draws 8 columns of upper ground decoration
 Level_DrawUpperGround:
-                moveq   #0,d5                           ; was: sub_1194C
+                moveq   #0,d5
                 move.w  #$E000,d5
                 moveq   #7,d0
 
-Level_DrawUpperGround_ColumnLoop:                       ; was: loc_11954
+Level_DrawUpperGround_ColumnLoop:
                 move.w  d0,-(sp)
                 bsr.s   Level_DrawUpperGroundBlock
                 move.w  (sp)+,d0
@@ -33,7 +33,7 @@ Level_DrawUpperGround_ColumnLoop:                       ; was: loc_11954
 
 ; Draws single 4x2 upper ground block
 Level_DrawUpperGroundBlock:
-                lea     (Ram_UpperGroundPtr).w,a6       ; was: sub_11962
+                lea     (Ram_UpperGroundPtr).w,a6
                 movea.l (a6),a6
                 moveq   #3,d7
                 moveq   #1,d6
@@ -44,11 +44,11 @@ Level_DrawUpperGroundBlock:
 
 ; Draws 8 columns of lower ground decoration
 Level_DrawLowerGround:
-                moveq   #0,d5                           ; was: sub_11976
+                moveq   #0,d5
                 move.w  #$E680,d5
                 moveq   #7,d0
 
-Level_DrawLowerGround_ColumnLoop:                       ; was: loc_1197E
+Level_DrawLowerGround_ColumnLoop:
                 move.w  d0,-(sp)
                 bsr.s   Level_DrawLowerGroundBlock
                 move.w  (sp)+,d0
@@ -58,7 +58,7 @@ Level_DrawLowerGround_ColumnLoop:                       ; was: loc_1197E
 
 ; Draws single 4x2 lower ground block
 Level_DrawLowerGroundBlock:
-                lea     (Ram_LowerGroundPtr).w,a6       ; was: sub_1198C
+                lea     (Ram_LowerGroundPtr).w,a6
                 movea.l (a6),a6
                 moveq   #3,d7
                 moveq   #1,d6
@@ -69,19 +69,19 @@ Level_DrawLowerGroundBlock:
 
 ; Fills background plane with repeated tile pattern
 Gfx_FillBackground:
-                move.l  #$60800003,(VDP_CTRL).l         ; was: sub_119A0
+                move.l  #$60800003,(VDP_CTRL).l
                 movea.l (Ram_BackgroundTilePtr).w,a0
                 move.w  (a0),d1
                 move.w  #$2FF,d0
 
-Gfx_FillBackground_Loop:                                ; was: loc_119B4
+Gfx_FillBackground_Loop:
                 move.w  d1,(VDP_DATA).l
                 dbf     d0,Gfx_FillBackground_Loop
                 rts
 
 ; Builds ground tilemap from collision flags
 Level_BuildGroundTilemap:
-                lea     (Ram_CollisionMapRow1).w,a0     ; was: sub_119C0
+                lea     (Ram_CollisionMapRow1).w,a0
                 moveq   #0,d1
                 moveq   #0,d2
                 moveq   #0,d6
@@ -89,7 +89,7 @@ Level_BuildGroundTilemap:
                 move.w  d6,d5
                 move.w  #$2FF,d0
 
-Level_BuildGroundTilemap_CellLoop:                      ; was: loc_119D4
+Level_BuildGroundTilemap_CellLoop:
                 moveq   #0,d4
                 moveq   #0,d5
                 move.w  d6,d5
@@ -101,12 +101,12 @@ Level_BuildGroundTilemap_CellLoop:                      ; was: loc_119D4
                 beq.w   Level_GroundTile_SolidRightEdge
                 bra.w   Level_GroundTile_SolidMiddle
 
-Level_BuildGroundTilemap_EmptyCell:                     ; was: loc_119F4
+Level_BuildGroundTilemap_EmptyCell:
                 andi.w  #$1F,d2
                 beq.w   Level_GroundTile_EmptyLeftEdge
                 bra.w   Level_GroundTile_EmptyMiddle
 
-Level_BuildGroundTilemap_NextCell:                      ; was: loc_11A00
+Level_BuildGroundTilemap_NextCell:
                 addq.l  #1,a0
                 addq.w  #1,d1
                 move.w  d1,d2
@@ -117,7 +117,7 @@ Level_BuildGroundTilemap_NextCell:                      ; was: loc_11A00
                 move.w  #$E080,d5
                 moveq   #$1F,d0
 
-Level_BuildGroundTilemap_TopRowLoop:                    ; was: loc_11A18
+Level_BuildGroundTilemap_TopRowLoop:
                 tst.b   (a0)+
                 bne.s   Level_BuildGroundTilemap_TopRowNext
                 move.w  #3,d4
@@ -125,127 +125,127 @@ Level_BuildGroundTilemap_TopRowLoop:                    ; was: loc_11A18
                 bsr.w   UI_DrawGroundTilePtr
                 movem.l (sp)+,d5/a0
 
-Level_BuildGroundTilemap_TopRowNext:                    ; was: loc_11A2C
+Level_BuildGroundTilemap_TopRowNext:
                 addq.w  #2,d5
                 dbf     d0,Level_BuildGroundTilemap_TopRowLoop
                 rts
 
-Level_GroundTile_SolidLeftEdge:                         ; was: loc_11A34
+Level_GroundTile_SolidLeftEdge:
                 tst.b   -$20(a0)
                 beq.s   Level_GroundTile_SolidLeftEdge_TestBelow
                 bset    #0,d4
 
-Level_GroundTile_SolidLeftEdge_TestBelow:               ; was: loc_11A3E
+Level_GroundTile_SolidLeftEdge_TestBelow:
                 tst.b   $20(a0)
                 beq.s   Level_GroundTile_SolidLeftEdge_TestBelowLeft
                 bset    #1,d4
 
-Level_GroundTile_SolidLeftEdge_TestBelowLeft:           ; was: loc_11A48
+Level_GroundTile_SolidLeftEdge_TestBelowLeft:
                 tst.b   $1F(a0)
                 beq.s   Level_GroundTile_SolidLeftEdge_TestRight
                 bset    #2,d4
 
-Level_GroundTile_SolidLeftEdge_TestRight:               ; was: loc_11A52
+Level_GroundTile_SolidLeftEdge_TestRight:
                 tst.b   1(a0)
                 beq.s   Level_GroundTile_SolidLeftEdge_Draw
                 bset    #3,d4
 
-Level_GroundTile_SolidLeftEdge_Draw:                    ; was: loc_11A5C
+Level_GroundTile_SolidLeftEdge_Draw:
                 move.b  d4,(a0)
                 bsr.w   UI_DrawGroundTile
                 bra.w   Level_BuildGroundTilemap_NextCell
 
-Level_GroundTile_SolidRightEdge:                        ; was: loc_11A66
+Level_GroundTile_SolidRightEdge:
                 tst.b   -$20(a0)
                 beq.s   Level_GroundTile_SolidRightEdge_TestBelow
                 bset    #0,d4
 
-Level_GroundTile_SolidRightEdge_TestBelow:              ; was: loc_11A70
+Level_GroundTile_SolidRightEdge_TestBelow:
                 tst.b   $20(a0)
                 beq.s   Level_GroundTile_SolidRightEdge_TestLeft
                 bset    #1,d4
 
-Level_GroundTile_SolidRightEdge_TestLeft:               ; was: loc_11A7A
+Level_GroundTile_SolidRightEdge_TestLeft:
                 tst.b   -1(a0)
                 beq.s   Level_GroundTile_SolidRightEdge_TestAboveRight
                 bset    #2,d4
 
-Level_GroundTile_SolidRightEdge_TestAboveRight:         ; was: loc_11A84
+Level_GroundTile_SolidRightEdge_TestAboveRight:
                 tst.b   -$1F(a0)
                 beq.s   Level_GroundTile_SolidRightEdge_Draw
                 bset    #3,d4
 
-Level_GroundTile_SolidRightEdge_Draw:                   ; was: loc_11A8E
+Level_GroundTile_SolidRightEdge_Draw:
                 move.b  d4,(a0)
                 bsr.w   UI_DrawGroundTile
                 bra.w   Level_BuildGroundTilemap_NextCell
 
-Level_GroundTile_SolidMiddle:                           ; was: loc_11A98
+Level_GroundTile_SolidMiddle:
                 tst.b   -$20(a0)
                 beq.s   Level_GroundTile_SolidMiddle_TestBelow
                 bset    #0,d4
 
-Level_GroundTile_SolidMiddle_TestBelow:                 ; was: loc_11AA2
+Level_GroundTile_SolidMiddle_TestBelow:
                 tst.b   $20(a0)
                 beq.s   Level_GroundTile_SolidMiddle_TestLeft
                 bset    #1,d4
 
-Level_GroundTile_SolidMiddle_TestLeft:                  ; was: loc_11AAC
+Level_GroundTile_SolidMiddle_TestLeft:
                 tst.b   -1(a0)
                 beq.s   Level_GroundTile_SolidMiddle_TestRight
                 bset    #2,d4
 
-Level_GroundTile_SolidMiddle_TestRight:                 ; was: loc_11AB6
+Level_GroundTile_SolidMiddle_TestRight:
                 tst.b   1(a0)
                 beq.s   Level_GroundTile_SolidMiddle_Draw
                 bset    #3,d4
 
-Level_GroundTile_SolidMiddle_Draw:                      ; was: loc_11AC0
+Level_GroundTile_SolidMiddle_Draw:
                 move.b  d4,(a0)
                 bsr.w   UI_DrawGroundTile
                 bra.w   Level_BuildGroundTilemap_NextCell
 
-Level_GroundTile_EmptyLeftEdge:                         ; was: loc_11ACA
+Level_GroundTile_EmptyLeftEdge:
                 tst.b   -$20(a0)
                 beq.s   Level_GroundTile_EmptyLeftEdge_TestLeft
                 bset    #0,d4
 
-Level_GroundTile_EmptyLeftEdge_TestLeft:                ; was: loc_11AD4
+Level_GroundTile_EmptyLeftEdge_TestLeft:
                 tst.b   -1(a0)
                 beq.s   Level_GroundTile_EmptyLeftEdge_TestBelowLeft
                 bset    #1,d4
 
-Level_GroundTile_EmptyLeftEdge_TestBelowLeft:           ; was: loc_11ADE
+Level_GroundTile_EmptyLeftEdge_TestBelowLeft:
                 tst.b   $1F(a0)
                 beq.s   Level_GroundTile_EmptyLeftEdge_Draw
                 bset    #2,d4
 
-Level_GroundTile_EmptyLeftEdge_Draw:                    ; was: loc_11AE8
+Level_GroundTile_EmptyLeftEdge_Draw:
                 bsr.w   UI_DrawGroundTilePtr
                 bra.w   Level_BuildGroundTilemap_NextCell
 
-Level_GroundTile_EmptyMiddle:                           ; was: loc_11AF0
+Level_GroundTile_EmptyMiddle:
                 tst.b   -$20(a0)
                 beq.s   Level_GroundTile_EmptyMiddle_TestAboveLeft
                 bset    #0,d4
 
-Level_GroundTile_EmptyMiddle_TestAboveLeft:             ; was: loc_11AFA
+Level_GroundTile_EmptyMiddle_TestAboveLeft:
                 tst.b   -$21(a0)
                 beq.s   Level_GroundTile_EmptyMiddle_TestLeft
                 bset    #1,d4
 
-Level_GroundTile_EmptyMiddle_TestLeft:                  ; was: loc_11B04
+Level_GroundTile_EmptyMiddle_TestLeft:
                 tst.b   -1(a0)
                 beq.s   Level_GroundTile_EmptyMiddle_Draw
                 bset    #2,d4
 
-Level_GroundTile_EmptyMiddle_Draw:                      ; was: loc_11B0E
+Level_GroundTile_EmptyMiddle_Draw:
                 bsr.w   UI_DrawGroundTilePtr
                 bra.w   Level_BuildGroundTilemap_NextCell
 
 ; Draws background object at grid position d7/d6
 Level_DrawBackgroundObject:
-                moveq   #0,d5                           ; was: sub_11B16
+                moveq   #0,d5
                 move.w  #$C000,d5
                 bsr.w   Gfx_TilemapCoordToAddr
                 lsl.w   #2,d4
@@ -259,12 +259,12 @@ Level_DrawBackgroundObject:
                 bsr.w   Gfx_DrawTilemapRect
                 rts
 
-Level_BackgroundWidthTable:             dc.w    2       ; was: word_11B3C
-Level_BackgroundHeightTable:            dc.w    2, 1, 1, 1, 2, 1, 2, 4, 2, 3, 3  ; was: word_11B3E
-Level_BackgroundMappingPointers:        dc.w    $D81C, $D820, $D824, $D810, $D814, $D818  ; was: word_11B54
+Level_BackgroundWidthTable:         dc.w    2
+Level_BackgroundHeightTable:        dc.w    2, 1, 1, 1, 2, 1, 2, 4, 2, 3, 3
+Level_BackgroundMappingPointers:    dc.w    $D81C, $D820, $D824, $D810, $D814, $D818
 ; Draws cat exit door at level start position
 Level_DrawCatDoor:
-                moveq   #0,d7                           ; was: sub_11B60
+                moveq   #0,d7
                 moveq   #0,d6
                 moveq   #0,d5
                 move.b  (Ram_PlayerStartX).w,d7
@@ -279,7 +279,7 @@ Level_DrawCatDoor:
 
 ; Draws player entry indicator above start pos
 Level_DrawEntryArrow:
-                lea     (Ram_PlayerStartX).w,a0         ; was: sub_11B86
+                lea     (Ram_PlayerStartX).w,a0
                 moveq   #0,d7
                 moveq   #0,d6
                 moveq   #0,d5
@@ -295,7 +295,7 @@ Level_DrawEntryArrow:
                 beq.s   Level_DrawEntryArrow_Draw
                 lea     (UI_EntryArrowFrame1).l,a6
 
-Level_DrawEntryArrow_Draw:                              ; was: loc_11BBC
+Level_DrawEntryArrow_Draw:
                 bsr.w   Gfx_DrawTilemapRect
                 rts
 

@@ -23,22 +23,35 @@ disassembler-generated identifiers were replaced across 1,979 definitions.
 `make lint --strict-naming` now rejects any identifier containing four or more
 hex digits, so generation 1 cannot come back.
 
-## Reading a name's origin from the source
+## Reading a name's origin
 
-Every renamed symbol keeps its predecessor inline:
+[`label_renames.json`](label_renames.json) maps every label, equate and macro
+the imported disassembly defined to the name this reconstruction gave it, and
+the file that now holds it:
 
-```asm
-Game_MainLoop_PostFrame:  ; was: loc_12B5E
+```json
+["sub_12A94", "Game_StartRound", "src/game/main_loop.s"]
 ```
 
-The `; was:` marker is the provenance record. It means the symbol at this
-address used to be called that, so an old note, an old trace or an old
-disassembly listing can still be matched against the current source. The marker
-records the *previous* name, not necessarily the original one, where a symbol
-was renamed twice.
+A symbol the reconstruction did not rename appears with `original` equal to
+`current`. A symbol that never existed in the disassembly is listed separately
+under `project_additions`, so the two cases cannot be confused.
 
-A symbol with no `; was:` marker was introduced by this reconstruction and never
-existed in a disassembler's output.
+The table replaced an inline `; was:` comment on every renamed symbol, for two
+reasons. The marker recorded a symbol's *immediate predecessor*, not its origin,
+so a symbol renamed twice pointed at a name that had never existed in the
+disassembly. And it sat in two different places -- on the label line for data,
+on the first line of the body for a procedure -- which is easy to misread:
+
+```asm
+Game_StartRound:
+                jsr     Sys_InitTitleScreen             ; was: sub_12A94
+```
+
+`tests/test_label_provenance.py` holds the table to the source in both
+directions. Every entry must name a symbol that exists at the path it declares,
+every symbol in `src/` must have an entry, every imported label must be
+accounted for, and no `; was:` may come back.
 
 ## How much a name is worth
 
@@ -47,7 +60,7 @@ A name is a claim, and the claims here are not all equally strong.
 | Basis | What it means | Example |
 | --- | --- | --- |
 | Structural | The code's shape settles it: a jump table entry, a vector, a loop counter | `Sys_GameModeTable` |
-| Cross-referenced | Another named thing forces the reading | The `j_` trampolines, resolved through `func_table` below |
+| Cross-referenced | Another named thing forces the reading | The `j_` trampolines, resolved through `Sys_FuncTable` below |
 | Observed | The runtime layer saw the value behave this way | `Ram_NextGameMode`, `Ram_GameState` |
 | Interpretive | A reading of what the code does, unconfirmed by anything else | Most object and enemy helpers |
 | Neutral | Deliberately says little, because nothing settles it | `Ram_SharedState*` entries in `unknowns.md` |
@@ -59,9 +72,9 @@ settled is a lie in the record.
 
 ## Two resolutions worth recording
 
-**The RAM-resident jump table at `$FFFA70`.** `LoadFuncTable` copies a table of
+**The RAM-resident jump table at `$FFFA70`.** `Sys_LoadFuncTable` copies a table of
 entry points into work RAM as `jmp` instructions and the game calls through
-them. The source in ROM is `func_table`: a count word of `$39` followed by 58
+them. The source in ROM is `Sys_FuncTable`: a count word of `$39` followed by 58
 destination words. Walking the copy loop against that table gives each RAM
 address its real destination, and 17 of them are named `j_*` after the
 procedure they reach. That is why the `j_` prefix is not a guess here — the

@@ -108,7 +108,7 @@
     {
       "id": "semantic_naming",
       "kind": "source",
-      "summary": "All 1,488 disassembler-generated identifiers replaced across 1,979 definitions, the original kept as a '; was:' marker. The RAM-resident jump table at $FFFA70 resolved against func_table, which names each trampoline by the procedure it reaches.",
+      "summary": "All 1,488 disassembler-generated identifiers replaced across 1,979 definitions, each recorded against its imported name. The RAM-resident jump table at $FFFA70 resolved against Sys_FuncTable, which names each trampoline by the procedure it reaches.",
       "commits": [
         "4c9b1fc",
         "31d8539",
@@ -202,6 +202,18 @@
         "source_boundary",
         "files:config/rom_layout.json"
       ]
+    },
+    {
+      "id": "checked_naming_and_provenance_table",
+      "kind": "source",
+      "summary": "The inline '; was:' markers became docs/provenance/label_renames.json, which maps all 1,717 imported labels to their current names and paths; the naming vocabulary in docs/naming.md is now enforced by make lint rather than only documented.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "provenance_and_unknowns",
+        "baseline_validation"
+      ]
     }
   ],
   "requirements": {
@@ -262,11 +274,12 @@
           "lint"
         ],
         "files": [
+          "docs/provenance/label_renames.json",
           "docs/unknowns.md",
           "docs/provenance/labels.md",
           "docs/naming.md"
         ],
-        "note": "Seven open questions with stable IDs. Every evidence tag except the plain observation tag names a registry entry, and every entry is referenced back; lint checks both directions."
+        "note": "Seven open questions with stable IDs, and a provenance table mapping every imported label to its current name. Every evidence tag except the plain observation tag names a registry entry, and every entry is referenced back; lint checks both directions and the table is held to the source in both."
       }
     },
     "baseline_documentation": {
@@ -554,6 +567,7 @@
   ],
   "provenance": {
     "references": [
+      "docs/provenance/label_renames.json",
       "docs/provenance/labels.md",
       "docs/unknowns.md",
       "bin/README.md",
@@ -600,6 +614,7 @@
     "docs/unknowns.md",
     "docs/source_reconstruction_1_0.md",
     "docs/provenance/labels.md",
+    "docs/provenance/label_renames.json",
     "docs/adr/0001-as-assembler.md",
     "docs/adr/0002-rom-layout-contract.md",
     "docs/adr/0003-runtime-evidence-is-state.md",

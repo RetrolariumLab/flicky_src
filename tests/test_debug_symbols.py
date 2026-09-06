@@ -39,11 +39,12 @@ class Equates(unittest.TestCase):
         self.assertEqual(ram["Ram_PlayerObject"], 0xFFC440)
 
     def test_the_trampoline_block_resolves_where_it_was_computed(self):
-        # LoadFuncTable writes one jmp every six bytes from EXT = $FFFA70.
+        # Sys_LoadFuncTable writes one jmp every six bytes from $FFFA70, which
+        # is why each entry's address is a multiple of six from the first.
         ram = debug_symbols.equates([ROOT / "src" / "memory" / "ram.inc"])
-        self.assertEqual(ram["EXT"], 0xFFFA70)
+        self.assertEqual(ram["Ram_ExtIntTrampoline"], 0xFFFA70)
         self.assertEqual(ram["j_Nem_Decomp"], 0xFFFA70 + 6 * 3)
-        self.assertEqual(ram["j_LoadZ80Driver"], 0xFFFA70 + 6 * 32)
+        self.assertEqual(ram["j_Sound_LoadZ80Driver"], 0xFFFA70 + 6 * 32)
         self.assertEqual(ram["j_Sound_QueueSFX"], 0xFFFA70 + 6 * 42)
 
     def test_hardware_ports_are_read(self):

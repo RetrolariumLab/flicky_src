@@ -2,7 +2,7 @@
 ; ROM $013E70-$0144DB
 
 Obj_Player:
-                bset    #7,(a0)                         ; was: sub_13E70
+                bset    #7,(a0)
                 bne.s   Obj_Player_Update
                 move.l  #Player_AnimPointers,8(a0)
                 move.b  $3E(a0),d7
@@ -14,7 +14,7 @@ Obj_Player:
                 move.w  d6,$24(a0)
                 move.b  #3,$3A(a0)
 
-Obj_Player_Update:                                      ; was: loc_13EA0
+Obj_Player_Update:
                 tst.b   (Ram_CutsceneFlag).w
                 bne.s   Obj_Player_Return
                 tst.b   (Ram_RoundEndingFlag).w
@@ -23,7 +23,7 @@ Obj_Player_Update:                                      ; was: loc_13EA0
                 and.w   $3C(a0),d0
                 jsr     Player_StateTable(pc,d0.w)
 
-Obj_Player_CheckProjectiles:                            ; was: loc_13EB6
+Obj_Player_CheckProjectiles:
                 move.w  $3C(a0),d0
                 andi.w  #$7C,d0
                 cmpi.w  #4,d0
@@ -32,30 +32,30 @@ Obj_Player_CheckProjectiles:                            ; was: loc_13EB6
                 bne.s   Obj_Player_RecordAndAnimate
                 bsr.w   Player_CheckProjectileHit
 
-Obj_Player_RecordAndAnimate:                            ; was: loc_13ECE
+Obj_Player_RecordAndAnimate:
                 bsr.w   Player_RecordHistory
                 tst.b   (Ram_BonusRoundFlag).w
                 bne.s   Obj_Player_Return
                 bsr.w   UI_AnimateEntryArrow
 
-Obj_Player_Return:                                      ; was: locret_13EDC
+Obj_Player_Return:
                 rts
 
-Player_StateTable:                                      ; was: loc_13EDE
+Player_StateTable:
                 bra.w   Player_StateNormal
                 bra.w   Player_StateDeath
                 bra.w   Player_StateRespawn
 
 ; Player state: normal walking/running gameplay
 Player_StateNormal:
-                move.b  #$1E,5(a0)                      ; was: sub_13EEA
+                move.b  #$1E,5(a0)
                 bsr.s   Player_ProcessInput
                 bsr.w   Player_CheckExit
                 tst.b   (Ram_RoundEndingFlag).w
                 bne.s   Player_StateNormal_Move
                 bsr.w   Camera_UpdateScroll
 
-Player_StateNormal_Move:                                ; was: loc_13F00
+Player_StateNormal_Move:
                 bsr.w   Object_UpdatePosition
                 bsr.w   Player_CheckGround
                 bsr.w   Player_CheckWalls
@@ -67,12 +67,12 @@ Player_StateNormal_Move:                                ; was: loc_13F00
                 bmi.s   Player_StateNormal_Return
                 clr.b   $39(a0)
 
-Player_StateNormal_Return:                              ; was: locret_13F24
+Player_StateNormal_Return:
                 rts
 
 ; Player input processing: joypad to velocity
 Player_ProcessInput:
-                move.b  (Ram_Joypad).w,d0               ; was: sub_13F26
+                move.b  (Ram_Joypad).w,d0
                 andi.b  #$C,d0
                 beq.w   Player_ProcessInput_NoDirection
                 btst    #3,d0
@@ -80,14 +80,14 @@ Player_ProcessInput:
                 btst    #2,d0
                 bne.w   Player_ProcessInput_AccelerateLeft
 
-Player_ProcessInput_Apply:                              ; was: loc_13F42
+Player_ProcessInput_Apply:
                 move.l  $30(a0),d2
                 move.l  d1,$34(a0)
                 tst.b   (Ram_BonusRoundFlag).w
                 bne.s   Player_ProcessInput_CheckJump
                 move.l  d1,(Ram_CameraVelocityX).w
 
-Player_ProcessInput_CheckJump:                          ; was: loc_13F54
+Player_ProcessInput_CheckJump:
                 bsr.w   Player_ThrowChick
                 tst.b   $38(a0)
                 bne.w   Player_ProcessInput_Airborne
@@ -105,16 +105,16 @@ Player_ProcessInput_CheckJump:                          ; was: loc_13F54
                 bclr    #0,$3A(a0)
                 bclr    #1,$3A(a0)
 
-Player_ProcessInput_CheckRelease:                       ; was: loc_13F98
+Player_ProcessInput_CheckRelease:
                 move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
                 bne.s   Player_ProcessInput_Return
                 move.b  #3,$3A(a0)
 
-Player_ProcessInput_Return:                             ; was: locret_13FA8
+Player_ProcessInput_Return:
                 rts
 
-Player_ProcessInput_NoDirection:                        ; was: loc_13FAA
+Player_ProcessInput_NoDirection:
                 move.l  $34(a0),d1
                 tst.b   $38(a0)
                 bne.s   Player_ProcessInput_Apply
@@ -125,61 +125,61 @@ Player_ProcessInput_NoDirection:                        ; was: loc_13FAA
                 subi.l  #$600,d1
                 bra.s   Player_ProcessInput_Decelerated
 
-Player_ProcessInput_DecelerateLeft:                     ; was: loc_13FC4
+Player_ProcessInput_DecelerateLeft:
                 addi.l  #$600,d1
 
-Player_ProcessInput_Decelerated:                        ; was: loc_13FCA
+Player_ProcessInput_Decelerated:
                 bra.w   Player_ProcessInput_Apply
 
-Player_ProcessInput_AccelerateRight:                    ; was: loc_13FCE
+Player_ProcessInput_AccelerateRight:
                 move.l  $34(a0),d1
                 cmpi.l  #$18000,d1
                 bge.s   Player_ProcessInput_ClampRight
                 addi.l  #$1800,d1
                 bra.s   Player_ProcessInput_RightDone
 
-Player_ProcessInput_ClampRight:                         ; was: loc_13FE2
+Player_ProcessInput_ClampRight:
                 move.l  #$18000,d1
 
-Player_ProcessInput_RightDone:                          ; was: loc_13FE8
+Player_ProcessInput_RightDone:
                 bra.w   Player_ProcessInput_Apply
 
-Player_ProcessInput_AccelerateLeft:                     ; was: loc_13FEC
+Player_ProcessInput_AccelerateLeft:
                 move.l  $34(a0),d1
                 cmpi.l  #$FFFE8000,d1
                 ble.s   Player_ProcessInput_ClampLeft
                 subi.l  #$1800,d1
                 bra.s   Player_ProcessInput_LeftDone
 
-Player_ProcessInput_ClampLeft:                          ; was: loc_14000
+Player_ProcessInput_ClampLeft:
                 move.l  #$FFFE8000,d1
 
-Player_ProcessInput_LeftDone:                           ; was: loc_14006
+Player_ProcessInput_LeftDone:
                 bra.w   Player_ProcessInput_Apply
 
-Player_ProcessInput_Airborne:                           ; was: loc_1400A
+Player_ProcessInput_Airborne:
                 cmpi.l  #$30000,$2C(a0)
                 bge.s   Player_ProcessInput_AirReleaseCheck
                 addi.l  #$1000,$2C(a0)
 
-Player_ProcessInput_AirReleaseCheck:                    ; was: loc_1401C
+Player_ProcessInput_AirReleaseCheck:
                 move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
                 bne.s   Player_ProcessInput_AirReturn
                 move.b  #3,$3A(a0)
 
-Player_ProcessInput_AirReturn:                          ; was: locret_1402C
+Player_ProcessInput_AirReturn:
                 rts
 
 ; Clears player airborne/jump state
 Player_ClearAirState:
-                clr.b   $38(a0)                         ; was: sub_1402E
+                clr.b   $38(a0)
                 clr.l   $2C(a0)
                 rts
 
 ; Player throws held chick when button pressed
 Player_ThrowChick:
-                btst    #1,$3A(a0)                      ; was: sub_14038
+                btst    #1,$3A(a0)
                 beq.s   Player_ThrowChick_Return
                 move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
@@ -192,18 +192,18 @@ Player_ThrowChick:
                 beq.s   Player_ThrowChick_SetVelocity
                 move.w  #$FFFC,$34(a1)
 
-Player_ThrowChick_SetVelocity:                          ; was: loc_14066
+Player_ThrowChick_SetVelocity:
                 move.w  #8,$3C(a1)
                 move.l  $30(a0),$30(a1)
                 clr.b   $3B(a0)
                 bclr    #1,$3A(a0)
 
-Player_ThrowChick_Return:                               ; was: locret_1407C
+Player_ThrowChick_Return:
                 rts
 
 ; Player ground check: standing on solid
 Player_CheckGround:
-                move.w  $30(a0),d7                      ; was: sub_1407E
+                move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 tst.b   $38(a0)
                 bne.s   Player_CheckGround_Airborne
@@ -213,10 +213,10 @@ Player_CheckGround:
                 bne.s   Player_CheckGround_Return
                 move.b  #1,$38(a0)
 
-Player_CheckGround_Return:                              ; was: locret_1409C
+Player_CheckGround_Return:
                 rts
 
-Player_CheckGround_Airborne:                            ; was: loc_1409E
+Player_CheckGround_Airborne:
                 tst.l   $34(a0)
                 bne.s   Player_CheckGround_Moving
                 tst.l   $2C(a0)
@@ -227,10 +227,10 @@ Player_CheckGround_Airborne:                            ; was: loc_1409E
                 beq.s   Player_CheckGround_RisingReturn
                 clr.l   $2C(a0)
 
-Player_CheckGround_RisingReturn:                        ; was: locret_140BA
+Player_CheckGround_RisingReturn:
                 rts
 
-Player_CheckGround_Falling:                             ; was: loc_140BC
+Player_CheckGround_Falling:
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   Player_CheckGround_LandReturn
@@ -240,10 +240,10 @@ Player_CheckGround_Falling:                             ; was: loc_140BC
                 clr.w   $26(a0)
                 move.w  d6,$24(a0)
 
-Player_CheckGround_LandReturn:                          ; was: locret_140D8
+Player_CheckGround_LandReturn:
                 rts
 
-Player_CheckGround_Moving:                              ; was: loc_140DA
+Player_CheckGround_Moving:
                 tst.l   $2C(a0)
                 bpl.s   Player_CheckGround_MovingFall
                 subi.w  #$E,d6
@@ -256,13 +256,13 @@ Player_CheckGround_Moving:                              ; was: loc_140DA
                 tst.b   d4
                 beq.s   Player_CheckGround_MovingRiseReturn
 
-Player_CheckGround_StopRise:                            ; was: loc_140F8
+Player_CheckGround_StopRise:
                 clr.l   $2C(a0)
 
-Player_CheckGround_MovingRiseReturn:                    ; was: locret_140FC
+Player_CheckGround_MovingRiseReturn:
                 rts
 
-Player_CheckGround_MovingFall:                          ; was: loc_140FE
+Player_CheckGround_MovingFall:
                 subq.w  #4,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
@@ -272,19 +272,19 @@ Player_CheckGround_MovingFall:                          ; was: loc_140FE
                 tst.b   d4
                 beq.s   Player_CheckGround_MovingReturn
 
-Player_CheckGround_MovingLand:                          ; was: loc_14112
+Player_CheckGround_MovingLand:
                 clr.b   $38(a0)
                 clr.l   $2C(a0)
                 andi.w  #$FFF8,d6
                 clr.w   $26(a0)
                 move.w  d6,$24(a0)
 
-Player_CheckGround_MovingReturn:                        ; was: locret_14126
+Player_CheckGround_MovingReturn:
                 rts
 
 ; Player wall collision: left/right walls
 Player_CheckWalls:
-                move.w  $30(a0),d7                      ; was: sub_14128
+                move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 move.l  $34(a0),d5
                 tst.b   $38(a0)
@@ -304,14 +304,14 @@ Player_CheckWalls:
                 bge.s   Player_CheckWalls_ClampLeftBounce
                 move.l  #$FFFE0200,d0
 
-Player_CheckWalls_ClampLeftBounce:                      ; was: loc_14168
+Player_CheckWalls_ClampLeftBounce:
                 neg.l   d0
                 move.l  d0,$34(a0)
 
-Player_CheckWalls_Return:                               ; was: locret_1416E
+Player_CheckWalls_Return:
                 rts
 
-Player_CheckWalls_TestRight:                            ; was: loc_14170
+Player_CheckWalls_TestRight:
                 addq.w  #6,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
@@ -322,14 +322,14 @@ Player_CheckWalls_TestRight:                            ; was: loc_14170
                 ble.s   Player_CheckWalls_ClampRightBounce
                 move.l  #$1FE00,d0
 
-Player_CheckWalls_ClampRightBounce:                     ; was: loc_14192
+Player_CheckWalls_ClampRightBounce:
                 neg.l   d0
                 move.l  d0,$34(a0)
 
-Player_CheckWalls_RightReturn:                          ; was: locret_14198
+Player_CheckWalls_RightReturn:
                 rts
 
-Player_CheckWalls_Airborne:                             ; was: loc_1419A
+Player_CheckWalls_Airborne:
                 subq.w  #8,d6
                 tst.l   d5
                 beq.w   Player_CheckWalls_NoVelocity
@@ -344,21 +344,21 @@ Player_CheckWalls_Airborne:                             ; was: loc_1419A
                 btst    #0,d4
                 beq.s   Player_CheckWalls_Ceiling
 
-Player_CheckWalls_AirBounceLeft:                        ; was: loc_141BC
+Player_CheckWalls_AirBounceLeft:
                 move.l  $34(a0),d0
                 subi.l  #$3000,d0
                 cmpi.l  #$FFFE0200,d0
                 bge.s   Player_CheckWalls_AirClampLeft
                 move.l  #$FFFE0200,d0
 
-Player_CheckWalls_AirClampLeft:                         ; was: loc_141D4
+Player_CheckWalls_AirClampLeft:
                 neg.l   d0
                 move.l  d0,$34(a0)
 
-Player_CheckWalls_AirLeftReturn:                        ; was: locret_141DA
+Player_CheckWalls_AirLeftReturn:
                 rts
 
-Player_CheckWalls_AirTestRight:                         ; was: loc_141DC
+Player_CheckWalls_AirTestRight:
                 addq.w  #6,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
@@ -368,21 +368,21 @@ Player_CheckWalls_AirTestRight:                         ; was: loc_141DC
                 btst    #0,d4
                 beq.s   Player_CheckWalls_Ceiling
 
-Player_CheckWalls_AirBounceRight:                       ; was: loc_141F2
+Player_CheckWalls_AirBounceRight:
                 move.l  $34(a0),d0
                 addi.l  #$3000,d0
                 cmpi.l  #$1FE00,d0
                 ble.s   Player_CheckWalls_AirClampRight
                 move.l  #$1FE00,d0
 
-Player_CheckWalls_AirClampRight:                        ; was: loc_1420A
+Player_CheckWalls_AirClampRight:
                 neg.l   d0
                 move.l  d0,$34(a0)
 
-Player_CheckWalls_AirRightReturn:                       ; was: locret_14210
+Player_CheckWalls_AirRightReturn:
                 rts
 
-Player_CheckWalls_Ceiling:                              ; was: loc_14212
+Player_CheckWalls_Ceiling:
                 tst.l   $2C(a0)
                 bpl.s   Player_CheckWalls_SnapToFloor
                 move.w  d6,d0
@@ -393,10 +393,10 @@ Player_CheckWalls_Ceiling:                              ; was: loc_14212
                 move.w  d6,$24(a0)
                 clr.l   $2C(a0)
 
-Player_CheckWalls_CeilingReturn:                        ; was: locret_14230
+Player_CheckWalls_CeilingReturn:
                 rts
 
-Player_CheckWalls_SnapToFloor:                          ; was: loc_14232
+Player_CheckWalls_SnapToFloor:
                 andi.w  #$FFF8,d6
                 move.w  d6,$24(a0)
                 clr.w   $26(a0)
@@ -404,7 +404,7 @@ Player_CheckWalls_SnapToFloor:                          ; was: loc_14232
                 clr.b   $38(a0)
                 rts
 
-Player_CheckWalls_NoVelocity:                           ; was: loc_14248
+Player_CheckWalls_NoVelocity:
                 addq.w  #6,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
@@ -412,25 +412,25 @@ Player_CheckWalls_NoVelocity:                           ; was: loc_14248
                 move.l  #$FFFF4000,$34(a0)
                 bra.s   Player_CheckWalls_PushReturn
 
-Player_CheckWalls_PushRight:                            ; was: loc_1425C
+Player_CheckWalls_PushRight:
                 subi.w  #$C,d7
                 bsr.w   Collision_GetTileAtPos
                 tst.b   d4
                 beq.s   Player_CheckWalls_PushReturn
                 move.l  #$C000,$34(a0)
 
-Player_CheckWalls_PushReturn:                           ; was: locret_14270
+Player_CheckWalls_PushReturn:
                 rts
 
 ; Records player position history for chicks
 Player_RecordHistory:
-                lea     (Ram_PlayerTrailXShift).w,a2    ; was: sub_14272
+                lea     (Ram_PlayerTrailXShift).w,a2
                 lea     (Ram_PlayerTrailXLast).w,a1
                 lea     (Ram_PlayerTrailYShift).w,a4
                 lea     (Ram_PlayerTrailYLast).w,a3
                 moveq   #$3F,d0
 
-Player_RecordHistory_ShiftLoop:                         ; was: loc_14284
+Player_RecordHistory_ShiftLoop:
                 move.l  (a1),(a2)
                 move.l  (a3),(a4)
                 subq.l  #8,a1
@@ -442,7 +442,7 @@ Player_RecordHistory_ShiftLoop:                         ; was: loc_14284
                 lea     (Ram_PlayerTrailFlagsLast).w,a1
                 moveq   #$3F,d0
 
-Player_RecordHistory_ShiftFlagsLoop:                    ; was: loc_1429E
+Player_RecordHistory_ShiftFlagsLoop:
                 move.b  -(a1),-(a2)
                 dbf     d0,Player_RecordHistory_ShiftFlagsLoop
                 move.l  $30(a0),(Ram_PlayerTrailX).w
@@ -452,7 +452,7 @@ Player_RecordHistory_ShiftFlagsLoop:                    ; was: loc_1429E
                 beq.s   Player_RecordHistory_EncodeDirection
                 bset    #7,d0
 
-Player_RecordHistory_EncodeDirection:                   ; was: loc_142BC
+Player_RecordHistory_EncodeDirection:
                 move.l  $34(a0),d7
                 beq.s   Player_RecordHistory_Store
                 tst.l   d7
@@ -460,16 +460,16 @@ Player_RecordHistory_EncodeDirection:                   ; was: loc_142BC
                 bset    #1,d0
                 bra.s   Player_RecordHistory_Store
 
-Player_RecordHistory_FacingRight:                       ; was: loc_142CC
+Player_RecordHistory_FacingRight:
                 bset    #0,d0
 
-Player_RecordHistory_Store:                             ; was: loc_142D0
+Player_RecordHistory_Store:
                 move.b  d0,(Ram_PlayerTrailFlags).w
                 rts
 
 ; Player checks if entered exit door
 Player_CheckExit:
-                tst.b   (Ram_ChickChainCount).w         ; was: sub_142D6
+                tst.b   (Ram_ChickChainCount).w
                 beq.s   Player_CheckExit_Return
                 tst.b   $38(a0)
                 bne.s   Player_CheckExit_Return
@@ -489,12 +489,12 @@ Player_CheckExit:
                 bsr.w   UI_AnimateCatCountReverse
                 movea.l (sp)+,a0
 
-Player_CheckExit_Return:                                ; was: locret_14316
+Player_CheckExit_Return:
                 rts
 
 ; Player animation based on movement state
 Player_UpdateAnim:
-                bclr    #7,2(a0)                        ; was: sub_14318
+                bclr    #7,2(a0)
                 move.l  $34(a0),d0
                 move.b  (Ram_Joypad).w,d1
                 tst.b   $38(a0)
@@ -508,24 +508,24 @@ Player_UpdateAnim:
                 bne.s   Player_UpdateAnim_Walking
                 bra.s   Player_UpdateAnim_Braking
 
-Player_UpdateAnim_FacingRight:                          ; was: loc_14342
+Player_UpdateAnim_FacingRight:
                 btst    #3,d1
                 bne.s   Player_UpdateAnim_Walking
 
-Player_UpdateAnim_Braking:                              ; was: loc_14348
+Player_UpdateAnim_Braking:
                 move.l  #Player_UpdateAnim_BrakingData,$C(a0)
                 rts
 
-Player_UpdateAnim_Walking:                              ; was: loc_14352
+Player_UpdateAnim_Walking:
                 clr.w   6(a0)
                 bsr.w   Anim_UpdateFrame
                 rts
 
-Player_UpdateAnim_Standing:                             ; was: loc_1435C
+Player_UpdateAnim_Standing:
                 move.l  #Guide_CharacterMap6,$C(a0)
                 rts
 
-Player_UpdateAnim_Airborne:                             ; was: loc_14366
+Player_UpdateAnim_Airborne:
                 tst.l   d0
                 beq.s   Player_UpdateAnim_AirIdle
                 move.w  #8,6(a0)
@@ -533,18 +533,18 @@ Player_UpdateAnim_Airborne:                             ; was: loc_14366
                 bpl.s   Player_UpdateAnim_AirFrame
                 bset    #7,2(a0)
 
-Player_UpdateAnim_AirFrame:                             ; was: loc_1437A
+Player_UpdateAnim_AirFrame:
                 bsr.w   Anim_UpdateFrame
                 rts
 
-Player_UpdateAnim_AirIdle:                              ; was: loc_14380
+Player_UpdateAnim_AirIdle:
                 move.w  #4,6(a0)
                 bsr.w   Anim_UpdateFrame
                 rts
 
 ; Player state: death falling animation
 Player_StateDeath:
-                bset    #7,$3C(a0)                      ; was: sub_1438C
+                bset    #7,$3C(a0)
                 bne.s   Player_StateDeath_Fall
                 move.l  a0,-(sp)
                 move.b  #$87,d0
@@ -554,7 +554,7 @@ Player_StateDeath:
                 clr.l   $34(a0)
                 move.w  #$C,6(a0)
 
-Player_StateDeath_Fall:                                 ; was: loc_143AE
+Player_StateDeath_Fall:
                 addi.l  #$1000,$2C(a0)
                 bsr.w   Object_UpdatePosition
                 move.w  $30(a0),d7
@@ -570,11 +570,11 @@ Player_StateDeath_Fall:                                 ; was: loc_143AE
                 beq.s   Player_StateDeath_Animate
                 clr.l   $2C(a0)
 
-Player_StateDeath_Animate:                              ; was: loc_143DE
+Player_StateDeath_Animate:
                 bsr.w   Anim_UpdateFrame
                 rts
 
-Player_StateDeath_Land:                                 ; was: loc_143E4
+Player_StateDeath_Land:
                 clr.l   $2C(a0)
                 andi.w  #$FFF8,d6
                 clr.w   $26(a0)
@@ -584,14 +584,14 @@ Player_StateDeath_Land:                                 ; was: loc_143E4
 
 ; Player state: respawn with invincibility
 Player_StateRespawn:
-                bset    #7,$3C(a0)                      ; was: sub_143FC
+                bset    #7,$3C(a0)
                 bne.s   Player_StateRespawn_Update
                 clr.b   5(a0)
                 clr.b   $10(a0)
                 bclr    #2,2(a0)
                 move.b  #3,$39(a0)
 
-Player_StateRespawn_Update:                             ; was: loc_14418
+Player_StateRespawn_Update:
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
                 bclr    #2,2(a0)
@@ -599,7 +599,7 @@ Player_StateRespawn_Update:                             ; was: loc_14418
                 subq.b  #1,$39(a0)
                 bsr.w   Enemy_ClearProjectiles
 
-Player_StateRespawn_CheckDone:                          ; was: loc_14430
+Player_StateRespawn_CheckDone:
                 tst.b   $39(a0)
                 bne.s   Player_StateRespawn_Return
                 subq.b  #1,(Ram_Lives).w
@@ -609,24 +609,24 @@ Player_StateRespawn_CheckDone:                          ; was: loc_14430
                 move.w  #$20,(Ram_NextGameMode).w
                 moveq   #$3C,d2
 
-Player_StateRespawn_DelayLoop:                          ; was: loc_1444E
+Player_StateRespawn_DelayLoop:
                 bsr.w   Timer_IncrementTime
                 jsr     j_Sound_QueueSFX
                 dbf     d2,Player_StateRespawn_DelayLoop
                 bra.s   Player_StateRespawn_Return
 
-Player_StateRespawn_GameOver:                           ; was: loc_1445C
+Player_StateRespawn_GameOver:
                 move.w  #$10,(Ram_GameState).w
 
-Player_StateRespawn_Return:                             ; was: locret_14462
+Player_StateRespawn_Return:
                 rts
 
 ; Clears enemy projectile object slots
 Enemy_ClearProjectiles:
-                lea     (Ram_ProjectileSlots).w,a1      ; was: sub_14464
+                lea     (Ram_ProjectileSlots).w,a1
                 moveq   #2,d0
 
-Enemy_ClearProjectiles_Loop:                            ; was: loc_1446A
+Enemy_ClearProjectiles_Loop:
                 clr.w   (a1)
                 lea     $40(a1),a1
                 dbf     d0,Enemy_ClearProjectiles_Loop
@@ -634,10 +634,10 @@ Enemy_ClearProjectiles_Loop:                            ; was: loc_1446A
 
 ; Checks player collision with projectiles
 Player_CheckProjectileHit:
-                lea     (Ram_ProjectileSlots).w,a1      ; was: sub_14476
+                lea     (Ram_ProjectileSlots).w,a1
                 moveq   #2,d1
 
-Player_CheckProjectileHit_Loop:                         ; was: loc_1447C
+Player_CheckProjectileHit_Loop:
                 btst    #0,5(a1)
                 beq.s   Player_CheckProjectileHit_Next
                 movem.w d1,-(sp)
@@ -649,27 +649,27 @@ Player_CheckProjectileHit_Loop:                         ; was: loc_1447C
                 move.b  #1,(Ram_PlayerHitFlag).w
                 bra.s   Player_CheckProjectileHit_Return
 
-Player_CheckProjectileHit_Next:                         ; was: loc_144A2
+Player_CheckProjectileHit_Next:
                 lea     $40(a1),a1
                 dbf     d1,Player_CheckProjectileHit_Loop
 
-Player_CheckProjectileHit_Return:                       ; was: locret_144AA
+Player_CheckProjectileHit_Return:
                 rts
 
-Player_AnimPointers:    dc.l    Player_AnimWalk         ; was: off_144AC
+Player_AnimPointers:    dc.l    Player_AnimWalk
                 dc.l    Player_AnimFly
                 dc.l    Player_AnimBrake
                 dc.l    Player_AnimDeath
-Player_AnimWalk:        dc.b    2, 2                    ; was: byte_144BC
+Player_AnimWalk:    dc.b    2, 2
                 dc.w    Guide_CharacterMap11-Sys_GameEntryPoint
                 dc.w    Player_WalkFrame1-Sys_GameEntryPoint
-Player_AnimFly: dc.b    2, 2                            ; was: byte_144C2
+Player_AnimFly: dc.b    2, 2
                 dc.w    Player_FlyFrame0-Sys_GameEntryPoint
                 dc.w    Player_FlyFrame1-Sys_GameEntryPoint
-Player_AnimBrake:       dc.b    2, 2                    ; was: byte_144C8
+Player_AnimBrake:   dc.b    2, 2
                 dc.w    Player_BrakeFrame0-Sys_GameEntryPoint
                 dc.w    Guide_CharacterMap8-Sys_GameEntryPoint
-Player_AnimDeath:       dc.b    6, 3                    ; was: byte_144CE
+Player_AnimDeath:   dc.b    6, 3
                 dc.w    Player_DeathFrame0-Sys_GameEntryPoint
                 dc.w    Player_DeathFrame1-Sys_GameEntryPoint
                 dc.w    Player_DeathFrame2-Sys_GameEntryPoint

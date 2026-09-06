@@ -90,7 +90,7 @@ column for the whole table -- see [`assembly_style.md`](assembly_style.md).
 ## Tooling
 
 `scripts/rename_symbols.py` takes a CSV of `old,new` pairs, rewrites every
-reference across `src/`, and appends the provenance comment. It
+reference across `src/`. It
 refuses to run if a target name already exists, if two renames collide, or if a
 source name is not defined anywhere -- so a typo cannot silently do nothing.
 
@@ -99,3 +99,12 @@ python scripts/rename_symbols.py workflow/rename_batch.csv
 make format
 make verify
 ```
+
+A rename also changes what `docs/provenance/label_renames.json` should say, and
+`make test` fails until it does: the table has to cover the source exactly.
+
+`make lint` checks the vocabulary itself. Every symbol must begin with one of
+the categories above, derive from a symbol that exists (`Owner_Detail`,
+`Block_End`), or be one of the two named exceptions -- the hardware and
+memory-map names in `src/memory/`, and the cartridge header fields, which keep
+the names the Mega Drive format gives them.

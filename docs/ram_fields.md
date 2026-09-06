@@ -215,8 +215,8 @@ writes.
 
 ## RAM-resident jump table
 
-`LoadFuncTable` builds this block at boot by writing
-one `jmp <target>` every six bytes, taking the targets from `func_table` in
+`Sys_LoadFuncTable` builds this block at boot by writing
+one `jmp <target>` every six bytes, taking the targets from `Sys_FuncTable` in
 `src/data/bank0.s`. Calling through it is how the game reaches the routines in
 the first 64 KiB after the code has been copied to RAM.
 

@@ -31,3 +31,15 @@ VDP__DATA       equ     $C00002
 VDP___CNTR      equ     $C0000C
 VDP____CNTR     equ     $C0000E
 ; ports
+
+; Z80 memory map and the 68000 work RAM base. The naming rules keep hardware
+; and memory-map names here rather than in ram.inc, which owns game fields
+Z80_RAM:            equ     $A00000
+Z80_CommandBlock:   equ     $A01C04
+Z80_MusicCommand:   equ     $A01C09
+Z80_SFXSlot0:       equ     $A01C0A
+Z80_SFXSlot1:       equ     $A01C0B
+Z80_SFXSlot2:       equ     $A01C0C
+Z80_PauseFlag:      equ     $A01C10
+Z80_YM2612:         equ     $A04000
+M68K_RAM:           equ     $FF0000

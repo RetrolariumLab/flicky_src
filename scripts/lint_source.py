@@ -21,6 +21,34 @@ ADDRESS_DERIVED_RE = re.compile(r"^(?:loc|locret|sub|nullsub|off|unk|byte|word|d
 RAW_HARDWARE_RE = re.compile(r"\$(?:C0000[0-9A-F]|A1[0-9A-F]{4}|A0[0-9A-F]{4})(?![0-9A-F])")
 DEFINITIONS_DIR = Path("src/memory")
 
+# The naming vocabulary from docs/naming.md. A symbol is either owned by one of
+# these subsystems, or derived from another symbol, or one of the two named
+# exceptions below.
+CATEGORIES = frozenset("""
+    Sys Int Boot Gfx DMA Nem Eni Input Sound Text Math
+    Game Level Object Sprite Anim Camera Collision Score Timer UI
+    Title Guide RoundSelect Demo Bonus Ending SegaScreen
+    Player Chick Cat Lizard Snake Spawner Enemy Obj
+    BonusCat BonusChick StarBonus ExitDoor
+    ScorePopup ChickCountPopup BonusScorePopup
+    Data Ram Unused Z80
+""".split())
+
+# Hardware ports, the Z80 memory map and the VDP status bits keep the names the
+# hardware gives them, in uppercase, and only in these two files.
+HARDWARE_FILES = frozenset({"src/memory/hardware.inc", "src/memory/constants.inc"})
+HARDWARE_NAME_RE = re.compile(r"^[A-Z][A-Z0-9_]*$")
+
+# The cartridge header fields keep the names the Mega Drive format gives them,
+# which is what every other Mega Drive disassembly calls them.
+HEADER_FILE = "src/system/vectors_and_header.s"
+# Alignment pseudo-instructions keep instruction-like lowercase names.
+MACRO_DIR = "src/macros/"
+HEADER_FIELDS = frozenset({
+    "CopyRights", "DomesticName", "Checksum", "Peripherials", "RomStart", "RomEnd",
+    "RamStart", "RamEnd", "SramCode", "ModemCode", "Reserved", "CountryCode",
+})
+
 LABEL_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):")
 EQUATE_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)\s+equ\b", re.IGNORECASE)
 MACRO_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)\s+macro\b", re.IGNORECASE)
@@ -41,6 +69,49 @@ def split_comment(text: str) -> str:
 def source_files() -> list[Path]:
     """Every assembly source, entrypoint included: src/main.s lives under src/."""
     return sorted(Path("src").rglob("*.s")) + sorted(Path("src").rglob("*.inc"))
+
+
+def owner_of(name: str, defined: set[str]) -> str | None:
+    """The defined symbol a derived name hangs off, if there is one.
+
+    A branch target is named after the procedure that contains it, and an end
+    marker after the block it closes, so `Nem_PCD_WritePixel_Loop` is valid
+    because `Nem_PCD_WritePixel` exists. The longest match wins, so a name
+    cannot pass by accidentally sharing a first word with something else.
+    """
+    owner = name
+    while "_" in owner:
+        owner = owner.rsplit("_", 1)[0]
+        if owner in defined:
+            return owner
+    return None
+
+
+def check_vocabulary(definitions: dict[str, str]) -> list[str]:
+    """Every symbol belongs to a subsystem, derives from one, or is hardware."""
+    defined = set(definitions)
+    errors: list[str] = []
+    for name, where in sorted(definitions.items()):
+        path = where.rsplit(":", 1)[0].replace("\\", "/")
+        if path in HARDWARE_FILES and HARDWARE_NAME_RE.match(name):
+            continue
+        if path == HEADER_FILE and name in HEADER_FIELDS:
+            continue
+        if path.startswith(MACRO_DIR):
+            # Macros are pseudo-instructions and read as such at the call site:
+            # `cnop 0,4`, not `Sys_Cnop 0,4`.
+            continue
+        if name.split("_", 1)[0] in CATEGORIES:
+            continue
+        if name.startswith("j_") and name[2:] in defined:
+            continue
+        if owner_of(name, defined):
+            continue
+        errors.append(
+            f"{where}: '{name}' names no subsystem and derives from no symbol; "
+            "see docs/naming.md"
+        )
+    return errors
 
 
 def main() -> int:
@@ -100,6 +171,8 @@ def main() -> int:
     for target, where in call_targets:
         if target not in definitions:
             errors.append(f"{where}: call target '{target}' is not defined in the source")
+
+    errors.extend(check_vocabulary(definitions))
 
     errors.extend(duplicates)
 

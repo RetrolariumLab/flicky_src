@@ -16,7 +16,7 @@ reordered include, a landmark that moves — each of these changes the ROM, and
 would simply be silently wrong.
 
 There was a live example: the entry point was recorded as `$000200` while
-`EntryPoint` is actually at `$000206`; `ErrorTrap` occupies the first six bytes.
+`Boot_EntryPoint` is actually at `$000206`; `Sys_ErrorTrap` occupies the first six bytes.
 
 ## Decision
 
@@ -32,7 +32,7 @@ landmarks from the symbol table, and the padding gap from the built image.
 ## Consequences
 
 A layout change now fails by name: "`src/system/input.s` starts at `0x000DC0`,
-the layout declares `0x000DC1`" rather than a raw offset. The `EntryPoint`
+the layout declares `0x000DC1`" rather than a raw offset. The `Boot_EntryPoint`
 mistake above was caught this way.
 
 The declaration has to be regenerated when the layout legitimately changes, which

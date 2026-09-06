@@ -2,9 +2,9 @@
 ; ROM $001316-$00FFFF
 
 ; !(UNKNOWN) SND-001 the Z80 driver is copied verbatim, not disassembled
-z80_part1:      binclude "data/sound/data_z80_part1.bin"
-z80_part1_End:
-func_table:     dc.w    $39
+Data_Z80Driver1:    binclude "data/sound/data_z80_part1.bin"
+Data_Z80Driver1_End:
+Sys_FuncTable:      dc.w    $39
                 dc.w    Int_UnusedHandler
                 dc.w    Int_UnusedHandler
                 dc.w    Int_UnusedHandler
@@ -33,14 +33,14 @@ func_table:     dc.w    $39
                 dc.w    Gfx_VBlankScrollUpdate
                 dc.w    Gfx_ApplyPaletteMask
                 dc.w    Input_ProcessJoypads
-                dc.w    InitJoypads
-                dc.w    SetInitialVDPRegs
+                dc.w    Input_InitJoypads
+                dc.w    Gfx_SetInitialVDPRegs
                 dc.w    Gfx_WriteVDPRegs
                 dc.w    Gfx_ClearSpriteArea
-                dc.w    LoadZ80Driver
+                dc.w    Sound_LoadZ80Driver
                 dc.w    Sound_RequestZ80Bus
-                dc.w    ReleaseZ80Bus
-                dc.w    RequestZ80Bus
+                dc.w    Sound_ReleaseZ80Bus
+                dc.w    Sound_RequestZ80BusIfFree
                 dc.w    Sound_ReleaseZ80Check
                 dc.w    Sound_ResetZ80
                 dc.w    Sound_CopyToZ80RAM
@@ -49,7 +49,7 @@ func_table:     dc.w    $39
                 dc.w    Sound_QueueToBuffer
                 dc.w    Sound_QueueSFX
                 dc.w    Sys_WaitVBlank
-                dc.w    RandomNumber
+                dc.w    Math_RandomNumber
                 dc.w    Gfx_WriteTilemapBlock
                 dc.w    Gfx_FillTilemapArea
                 dc.w    Gfx_SetTileWriteAddr
@@ -63,8 +63,8 @@ func_table:     dc.w    $39
                 dc.w    Gfx_LoadPaletteCompact
                 dc.w    Gfx_DecompEnigmaTilemap
                 dc.w    Gfx_LoadFullTilemap
-Jap1BPPTiles:   binclude "data/artunc/data_Jap1BPPTiles.bin"
-Jap1BPPTiles_End:
-empty_block_1:                                          ; dc.b [$D6F6]$FF
+Data_Jap1BPPTiles:  binclude "data/artunc/data_Jap1BPPTiles.bin"
+Data_Jap1BPPTiles_End:
+Unused_Block1:                                          ; dc.b [$D6F6]$FF
                 org     $10000
 ; Main game entry point after Sega screen

@@ -1,194 +1,185 @@
-Z80_RAM:                        equ     $A00000
-Z80_CommandBlock:               equ     $A01C04         ; was: unk_A01C04
-Z80_MusicCommand:               equ     $A01C09         ; was: byte_A01C09
-Z80_SFXSlot0:                   equ     $A01C0A         ; was: byte_A01C0A
-Z80_SFXSlot1:                   equ     $A01C0B         ; was: byte_A01C0B
-Z80_SFXSlot2:                   equ     $A01C0C         ; was: byte_A01C0C
-Z80_PauseFlag:                  equ     $A01C10         ; was: byte_A01C10
-Z80_YM2612:                     equ     $A04000
-M68K_RAM:                       equ     $FF0000
-Ram_ObjectSlots:                equ     $FFC000         ; was: word_FFC000
-Ram_Object01:                   equ     $FFC040         ; was: word_FFC040
-Ram_Object01_State:             equ     $FFC07C         ; was: word_FFC07C
-Ram_BonusChickSlots:            equ     $FFC080         ; was: unk_FFC080
-Ram_PopupSlots:                 equ     $FFC0C0         ; was: unk_FFC0C0
-Ram_TitleStaticSlots:           equ     $FFC140         ; was: unk_FFC140
-Ram_SpawnerSlots:               equ     $FFC200         ; was: unk_FFC200
-Ram_ProjectileSlots:            equ     $FFC380         ; was: unk_FFC380
-Ram_CatSlot0_GridPos:           equ     $FFC3BE         ; was: word_FFC3BE
-Ram_CatSlot1:                   equ     $FFC3C0         ; was: unk_FFC3C0
-Ram_EnigmaBuffer:               equ     $FFC3E0         ; was: unk_FFC3E0
-Ram_CatSlot1_GridPos:           equ     $FFC3FE         ; was: word_FFC3FE
-Ram_CatSlot2:                   equ     $FFC400         ; was: unk_FFC400
-Ram_CatSlot2_GridPos:           equ     $FFC43E         ; was: word_FFC43E
-Ram_PlayerObject:               equ     $FFC440         ; was: word_FFC440
-Ram_PlayerScreenX:              equ     $FFC460         ; was: word_FFC460
-Ram_PlayerVelocityY:            equ     $FFC46C         ; was: dword_FFC46C
-Ram_PlayerWorldX:               equ     $FFC470         ; was: dword_FFC470
-Ram_PlayerState:                equ     $FFC47C         ; was: word_FFC47C
-Ram_PlayerGridPos:              equ     $FFC47E         ; was: word_FFC47E
-Ram_ChickSlots:                 equ     $FFC480         ; was: unk_FFC480
-Ram_BonusPlayerObject:          equ     $FFC580         ; was: unk_FFC580
-Ram_BonusPlayerWorldX:          equ     $FFC5B0         ; was: dword_FFC5B0
-Ram_BonusCatInnerSlots:         equ     $FFC5C0         ; was: unk_FFC5C0
-Ram_BonusCatOuterSlots:         equ     $FFC640         ; was: unk_FFC640
-Ram_CatSlot3:                   equ     $FFC680         ; was: unk_FFC680
-Ram_CatSlot3_GridPos:           equ     $FFC6BE         ; was: word_FFC6BE
-Ram_CatSlot4:                   equ     $FFC6C0         ; was: unk_FFC6C0
-Ram_CatSlot4_GridPos:           equ     $FFC6FE         ; was: word_FFC6FE
-Ram_CatSlot5:                   equ     $FFC700         ; was: unk_FFC700
-Ram_CatSlot5_GridPos:           equ     $FFC73E         ; was: word_FFC73E
-Ram_LizardRespawnSlot:          equ     $FFC740         ; was: unk_FFC740
-Ram_SnakeRespawnSlot:           equ     $FFC7C0         ; was: unk_FFC7C0
-Ram_CollisionMap:               equ     $FFC800         ; was: unk_FFC800
-Ram_CollisionMapRow1:           equ     $FFC840         ; was: unk_FFC840
-Ram_CollisionMapBonusRow:       equ     $FFCAA0         ; was: unk_FFCAA0
-Ram_CollisionMapLastRow:        equ     $FFCB20         ; was: unk_FFCB20
-Ram_CollisionMapEnd:            equ     $FFCB40         ; was: unk_FFCB40
-Ram_HighScore:                  equ     $FFCC00         ; was: dword_FFCC00
-Ram_SpriteTableCursor:          equ     $FFD000         ; was: word_FFD000
-Ram_SpriteLinkCounter:          equ     $FFD002         ; was: word_FFD002
-Ram_CameraVelocityX:            equ     $FFD004         ; was: dword_FFD004
-Ram_CameraVelocityY:            equ     $FFD008         ; was: dword_FFD008
-Ram_PaletteDirty:               equ     $FFD00C         ; was: byte_FFD00C
-Ram_LeadingDigitSeen:           equ     $FFD00D         ; was: byte_FFD00D
-Ram_PlayerTrailX:               equ     $FFD00E         ; was: dword_FFD00E
-Ram_PlayerTrailY:               equ     $FFD012         ; was: dword_FFD012
-Ram_PlayerTrailXLast:           equ     $FFD1FE         ; was: unk_FFD1FE
-Ram_PlayerTrailYLast:           equ     $FFD202         ; was: unk_FFD202
-Ram_PlayerTrailXShift:          equ     $FFD206         ; was: unk_FFD206
-Ram_PlayerTrailYShift:          equ     $FFD20A         ; was: unk_FFD20A
-Ram_PlayerTrailFlags:           equ     $FFD20E         ; was: byte_FFD20E
-Ram_PlayerTrailFlagsLast:       equ     $FFD24D         ; was: unk_FFD24D
-Ram_BonusRoundFlag:             equ     $FFD24E         ; was: byte_FFD24E
-Ram_RoundEndingFlag:            equ     $FFD24F         ; was: byte_FFD24F
-Ram_HeldChickObject:            equ     $FFD250         ; was: dword_FFD250
-Ram_UIAnimState:                equ     $FFD254         ; was: unk_FFD254
-Ram_ArrowAnimState:             equ     $FFD258         ; was: unk_FFD258
-Ram_ExitDoorY:                  equ     $FFD25C         ; was: word_FFD25C
-Ram_ExitDoorLeftX:              equ     $FFD25E         ; was: word_FFD25E
-Ram_ExitDoorRightX:             equ     $FFD260         ; was: word_FFD260
-Ram_ScoreDelta:                 equ     $FFD262         ; was: dword_FFD262
-Ram_RoundMinutes:               equ     $FFD266         ; was: byte_FFD266
-Ram_RoundSeconds:               equ     $FFD267         ; was: byte_FFD267
-Ram_TimeBonus:                  equ     $FFD268         ; was: dword_FFD268
-Ram_ActiveEnemyCount:           equ     $FFD26C         ; was: byte_FFD26C
-Ram_PlayerHitFlag:              equ     $FFD26D         ; was: byte_FFD26D
-Ram_LizardJumpVelX:             equ     $FFD26E         ; was: dword_FFD26E
-Ram_LizardJumpVelY:             equ     $FFD272         ; was: dword_FFD272
-Ram_LizardJumpSpeed:            equ     $FFD276         ; was: dword_FFD276
-Ram_ChickChainCount:            equ     $FFD27A         ; was: byte_FFD27A
-Ram_CutsceneFlag:               equ     $FFD27B         ; was: byte_FFD27B
-Ram_SnakeSpeed:                 equ     $FFD27C         ; was: dword_FFD27C
-Ram_BlinkTimer:                 equ     $FFD280         ; was: byte_FFD280
-Ram_RoundClearFlag:             equ     $FFD281         ; was: byte_FFD281
-Ram_BonusChickDelayPtr:         equ     $FFD282         ; was: dword_FFD282
-Ram_BonusChickVelocityPtr:      equ     $FFD286         ; was: dword_FFD286
-Ram_BonusChickTrajPtr:          equ     $FFD28A         ; was: dword_FFD28A
-Ram_BonusCaughtCount:           equ     $FFD28E         ; was: byte_FFD28E
-Ram_BonusCaughtBCD:             equ     $FFD28F         ; was: byte_FFD28F
-Ram_BonusScore:                 equ     $FFD290         ; was: dword_FFD290
-Ram_SpawnerDelay:               equ     $FFD294         ; was: word_FFD294
-Ram_LizardSpeed:                equ     $FFD296         ; was: dword_FFD296
-Ram_ShowLeadingZeros:           equ     $FFD29A         ; was: byte_FFD29A
-Ram_CreditsLine:                equ     $FFD29C         ; was: byte_FFD29C
-Ram_CreditsScrollTimer:         equ     $FFD29D         ; was: byte_FFD29D
-Ram_EndingState:                equ     $FFD29E         ; was: word_FFD29E
-Ram_GameState:                  equ     $FFD2A0         ; was: word_FFD2A0
-Ram_SoundCooldown:              equ     $FFD2A2         ; was: word_FFD2A2
-Ram_SoundBusyFlag:              equ     $FFD2A4         ; was: byte_FFD2A4
-Ram_DemoModeFlag:               equ     $FFD2A5         ; was: byte_FFD2A5
-Ram_BonusState:                 equ     $FFD2A6         ; was: word_FFD2A6
-Ram_DemoInputByte:              equ     $FFD2A8         ; was: byte_FFD2A8
-Ram_DemoStreamPtr:              equ     $FFD2AA         ; was: word_FFD2AA
-Ram_DemoHoldFrames:             equ     $FFD2AC         ; was: byte_FFD2AC
-Ram_GroundTilePtr:              equ     $FFD800         ; was: dword_FFD800
-Ram_BackgroundTilePtr:          equ     $FFD804         ; was: dword_FFD804
-Ram_UpperGroundPtr:             equ     $FFD808         ; was: dword_FFD808
-Ram_LowerGroundPtr:             equ     $FFD80C         ; was: dword_FFD80C
-Ram_BgObject3Ptr:               equ     $FFD810         ; was: dword_FFD810
-Ram_BgObject4Ptr:               equ     $FFD814         ; was: dword_FFD814
-Ram_BgObject5Ptr:               equ     $FFD818         ; was: dword_FFD818
-Ram_BgObject0Ptr:               equ     $FFD81C         ; was: dword_FFD81C
-Ram_BgObject1Ptr:               equ     $FFD820         ; was: dword_FFD820
-Ram_BgObject2Ptr:               equ     $FFD824         ; was: dword_FFD824
-Ram_ChickMappingPtr:            equ     $FFD828         ; was: dword_FFD828
-Ram_RoundNumber:                equ     $FFD82C         ; was: word_FFD82C
-Ram_PlayerStartX:               equ     $FFD82E         ; was: byte_FFD82E
-Ram_PlayerStartY:               equ     $FFD82F         ; was: byte_FFD82F
-Ram_EntryArrowPos:              equ     $FFD830         ; was: byte_FFD830
-Ram_CatDoorPos:                 equ     $FFD832         ; was: unk_FFD832
-Ram_ExitDoorGridX:              equ     $FFD834         ; was: byte_FFD834
-Ram_ExitDoorGridY:              equ     $FFD835         ; was: byte_FFD835
-Ram_Score:                      equ     $FFD87E         ; was: dword_FFD87E
-Ram_Lives:                      equ     $FFD882         ; was: byte_FFD882
-Ram_ChicksRemaining:            equ     $FFD883         ; was: byte_FFD883
-Ram_TextTileBase:               equ     $FFD884         ; was: word_FFD884
-Ram_RestoreEnemiesFlag:         equ     $FFD886         ; was: byte_FFD886
-Ram_ExtraLifeFlags:             equ     $FFD887         ; was: byte_FFD887
-Ram_RoundTime:                  equ     $FFD888         ; was: dword_FFD888
-Ram_BonusAwardCount:            equ     $FFD88C         ; was: byte_FFD88C
-Ram_ExitReachedFlag:            equ     $FFD88D         ; was: byte_FFD88D
-Ram_FontBankFlag:               equ     $FFD88E         ; was: byte_FFD88E
-Ram_SkipBonusFlag:              equ     $FFD88F         ; was: byte_FFD88F
-Ram_DemoIndex:                  equ     $FFD890         ; was: word_FFD890
-Ram_EnemyBackup:                equ     $FFDE00         ; was: unk_FFDE00
-Ram_DecompCodeTable:            equ     $FFE630         ; was: word_FFE630
-Ram_RandomCount:                equ     $FFE632         ; was: word_FFE632
-Ram_RandomDivisor:              equ     $FFE634         ; was: word_FFE634
-Ram_SpriteTable:                equ     $FFF550         ; was: dword_FFF550
-Ram_Palette:                    equ     $FFF7E0         ; was: word_FFF7E0
-Ram_PaletteEntry2:              equ     $FFF7E4         ; was: unk_FFF7E4
-Ram_PaletteEntry3:              equ     $FFF7E6         ; was: word_FFF7E6
-Ram_LevelPalette:               equ     $FFF800         ; was: unk_FFF800
-Ram_BonusPaletteEntry:          equ     $FFF82E         ; was: word_FFF82E
-Ram_TitlePaletteSlot:           equ     $FFF840         ; was: unk_FFF840
-Ram_AccentPaletteSlot:          equ     $FFF858         ; was: unk_FFF858
-Ram_PaletteBackup:              equ     $FFF860         ; was: unk_FFF860
-EXT:                            equ     $FFFA70
-HBLANK:                         equ     $FFFA76
-VBLANK:                         equ     $FFFA7C
-Ram_VBlankVector:               equ     $FFFA7E         ; was: dword_FFFA7E
-j_Nem_Decomp:                   equ     $FFFA82
-j_Nem_DecompSetup:              equ     $FFFA8E         ; was: unk_FFFA8E
-j_Gfx_CopyToCRAM:               equ     $FFFAC4         ; was: unk_FFFAC4
-j_Gfx_CopyToVRAM:               equ     $FFFACA         ; was: unk_FFFACA
-j_Gfx_FillVRAMZero:             equ     $FFFAD6         ; was: unk_FFFAD6
-j_Gfx_ApplyPaletteMask:         equ     $FFFB0C         ; was: unk_FFFB0C
-j_Input_ProcessJoypads:         equ     $FFFB12         ; was: unk_FFFB12
-j_LoadZ80Driver:                equ     $FFFB30
-j_Sound_RequestZ80Bus:          equ     $FFFB36         ; was: unk_FFFB36
-j_ReleaseZ80Bus:                equ     $FFFB3C         ; was: unk_FFFB3C
-j_Sound_CopyToZ80RAM:           equ     $FFFB54         ; was: unk_FFFB54
-j_Sound_QueueToBuffer:          equ     $FFFB66         ; was: unk_FFFB66
-j_Sound_QueueSFX:               equ     $FFFB6C         ; was: unk_FFFB6C
-j_Gfx_SetTileWriteAddr:         equ     $FFFB8A         ; was: unk_FFFB8A
-j_Gfx_FadePalette:              equ     $FFFBA8         ; was: unk_FFFBA8
-j_Sys_InitGameState:            equ     $FFFBB4         ; was: unk_FFFBB4
-j_Gfx_LoadPaletteCompact:       equ     $FFFBBA         ; was: unk_FFFBBA
-Ram_VDPRegisters:               equ     $FFFF70         ; was: unk_FFFF70
-Ram_VDPMode2:                   equ     $FFFF71         ; was: byte_FFFF71
-Ram_ButtonStates:               equ     $FFFF83         ; was: unk_FFFF83
-Ram_ButtonRepeatFlag:           equ     $FFFF86         ; was: byte_FFFF86
-Ram_ButtonRepeatEnable:         equ     $FFFF87         ; was: byte_FFFF87
-Ram_Joypad:                     equ     $FFFF8E         ; was: word_FFFF8E
-Ram_FrameCounter:               equ     $FFFF92         ; was: word_FFFF92
-Ram_VBlankRequest:              equ     $FFFF96         ; was: word_FFFF96
-Ram_VBlankMode:                 equ     $FFFF98         ; was: word_FFFF98
-Ram_SoundQueueCount:            equ     $FFFFA2         ; was: word_FFFFA2
-Ram_CameraY:                    equ     $FFFFA4         ; was: dword_FFFFA4
-Ram_CameraX:                    equ     $FFFFA8         ; was: dword_FFFFA8
-Ram_FadeLevel:                  equ     $FFFFAC         ; was: word_FFFFAC
-Ram_DMACommandLow:              equ     $FFFFAE         ; was: word_FFFFAE
-Ram_PaletteMaskHigh:            equ     $FFFFB8         ; was: dword_FFFFB8
-Ram_PaletteMaskLow:             equ     $FFFFBC         ; was: dword_FFFFBC
-Ram_NextGameMode:               equ     $FFFFC0         ; was: word_FFFFC0
-Ram_GameModeSpare1:             equ     $FFFFC2         ; was: word_FFFFC2
-Ram_GameModeSpare2:             equ     $FFFFC4         ; was: word_FFFFC4
-Ram_Z80BusHeld:                 equ     $FFFFC8         ; was: byte_FFFFC8
-Ram_RandomSeed:                 equ     $FFFFCA         ; was: dword_FFFFCA
-Ram_VDPPlaneAddrs:              equ     $FFFFD8         ; was: word_FFFFD8
-Ram_HScrollAddr:                equ     $FFFFDA         ; was: word_FFFFDA
-Ram_TilemapRowStride:           equ     $FFFFE2         ; was: word_FFFFE2
-Ram_TilemapGradientBase:        equ     $FFFFE4         ; was: word_FFFFE4
-Ram_InitFlag:                   equ     $FFFFFC         ; was: dword_FFFFFC
+Ram_ObjectSlots:            equ     $FFC000
+Ram_Object01:               equ     $FFC040
+Ram_Object01_State:         equ     $FFC07C
+Ram_BonusChickSlots:        equ     $FFC080
+Ram_PopupSlots:             equ     $FFC0C0
+Ram_TitleStaticSlots:       equ     $FFC140
+Ram_SpawnerSlots:           equ     $FFC200
+Ram_ProjectileSlots:        equ     $FFC380
+Ram_CatSlot0_GridPos:       equ     $FFC3BE
+Ram_CatSlot1:               equ     $FFC3C0
+Ram_EnigmaBuffer:           equ     $FFC3E0
+Ram_CatSlot1_GridPos:       equ     $FFC3FE
+Ram_CatSlot2:               equ     $FFC400
+Ram_CatSlot2_GridPos:       equ     $FFC43E
+Ram_PlayerObject:           equ     $FFC440
+Ram_PlayerScreenX:          equ     $FFC460
+Ram_PlayerVelocityY:        equ     $FFC46C
+Ram_PlayerWorldX:           equ     $FFC470
+Ram_PlayerState:            equ     $FFC47C
+Ram_PlayerGridPos:          equ     $FFC47E
+Ram_ChickSlots:             equ     $FFC480
+Ram_BonusPlayerObject:      equ     $FFC580
+Ram_BonusPlayerWorldX:      equ     $FFC5B0
+Ram_BonusCatInnerSlots:     equ     $FFC5C0
+Ram_BonusCatOuterSlots:     equ     $FFC640
+Ram_CatSlot3:               equ     $FFC680
+Ram_CatSlot3_GridPos:       equ     $FFC6BE
+Ram_CatSlot4:               equ     $FFC6C0
+Ram_CatSlot4_GridPos:       equ     $FFC6FE
+Ram_CatSlot5:               equ     $FFC700
+Ram_CatSlot5_GridPos:       equ     $FFC73E
+Ram_LizardRespawnSlot:      equ     $FFC740
+Ram_SnakeRespawnSlot:       equ     $FFC7C0
+Ram_CollisionMap:           equ     $FFC800
+Ram_CollisionMapRow1:       equ     $FFC840
+Ram_CollisionMapBonusRow:   equ     $FFCAA0
+Ram_CollisionMapLastRow:    equ     $FFCB20
+Ram_CollisionMapEnd:        equ     $FFCB40
+Ram_HighScore:              equ     $FFCC00
+Ram_SpriteTableCursor:      equ     $FFD000
+Ram_SpriteLinkCounter:      equ     $FFD002
+Ram_CameraVelocityX:        equ     $FFD004
+Ram_CameraVelocityY:        equ     $FFD008
+Ram_PaletteDirty:           equ     $FFD00C
+Ram_LeadingDigitSeen:       equ     $FFD00D
+Ram_PlayerTrailX:           equ     $FFD00E
+Ram_PlayerTrailY:           equ     $FFD012
+Ram_PlayerTrailXLast:       equ     $FFD1FE
+Ram_PlayerTrailYLast:       equ     $FFD202
+Ram_PlayerTrailXShift:      equ     $FFD206
+Ram_PlayerTrailYShift:      equ     $FFD20A
+Ram_PlayerTrailFlags:       equ     $FFD20E
+Ram_PlayerTrailFlagsLast:   equ     $FFD24D
+Ram_BonusRoundFlag:         equ     $FFD24E
+Ram_RoundEndingFlag:        equ     $FFD24F
+Ram_HeldChickObject:        equ     $FFD250
+Ram_UIAnimState:            equ     $FFD254
+Ram_ArrowAnimState:         equ     $FFD258
+Ram_ExitDoorY:              equ     $FFD25C
+Ram_ExitDoorLeftX:          equ     $FFD25E
+Ram_ExitDoorRightX:         equ     $FFD260
+Ram_ScoreDelta:             equ     $FFD262
+Ram_RoundMinutes:           equ     $FFD266
+Ram_RoundSeconds:           equ     $FFD267
+Ram_TimeBonus:              equ     $FFD268
+Ram_ActiveEnemyCount:       equ     $FFD26C
+Ram_PlayerHitFlag:          equ     $FFD26D
+Ram_LizardJumpVelX:         equ     $FFD26E
+Ram_LizardJumpVelY:         equ     $FFD272
+Ram_LizardJumpSpeed:        equ     $FFD276
+Ram_ChickChainCount:        equ     $FFD27A
+Ram_CutsceneFlag:           equ     $FFD27B
+Ram_SnakeSpeed:             equ     $FFD27C
+Ram_BlinkTimer:             equ     $FFD280
+Ram_RoundClearFlag:         equ     $FFD281
+Ram_BonusChickDelayPtr:     equ     $FFD282
+Ram_BonusChickVelocityPtr:  equ     $FFD286
+Ram_BonusChickTrajPtr:      equ     $FFD28A
+Ram_BonusCaughtCount:       equ     $FFD28E
+Ram_BonusCaughtBCD:         equ     $FFD28F
+Ram_BonusScore:             equ     $FFD290
+Ram_SpawnerDelay:           equ     $FFD294
+Ram_LizardSpeed:            equ     $FFD296
+Ram_ShowLeadingZeros:       equ     $FFD29A
+Ram_CreditsLine:            equ     $FFD29C
+Ram_CreditsScrollTimer:     equ     $FFD29D
+Ram_EndingState:            equ     $FFD29E
+Ram_GameState:              equ     $FFD2A0
+Ram_SoundCooldown:          equ     $FFD2A2
+Ram_SoundBusyFlag:          equ     $FFD2A4
+Ram_DemoModeFlag:           equ     $FFD2A5
+Ram_BonusState:             equ     $FFD2A6
+Ram_DemoInputByte:          equ     $FFD2A8
+Ram_DemoStreamPtr:          equ     $FFD2AA
+Ram_DemoHoldFrames:         equ     $FFD2AC
+Ram_GroundTilePtr:          equ     $FFD800
+Ram_BackgroundTilePtr:      equ     $FFD804
+Ram_UpperGroundPtr:         equ     $FFD808
+Ram_LowerGroundPtr:         equ     $FFD80C
+Ram_BgObject3Ptr:           equ     $FFD810
+Ram_BgObject4Ptr:           equ     $FFD814
+Ram_BgObject5Ptr:           equ     $FFD818
+Ram_BgObject0Ptr:           equ     $FFD81C
+Ram_BgObject1Ptr:           equ     $FFD820
+Ram_BgObject2Ptr:           equ     $FFD824
+Ram_ChickMappingPtr:        equ     $FFD828
+Ram_RoundNumber:            equ     $FFD82C
+Ram_PlayerStartX:           equ     $FFD82E
+Ram_PlayerStartY:           equ     $FFD82F
+Ram_EntryArrowPos:          equ     $FFD830
+Ram_CatDoorPos:             equ     $FFD832
+Ram_ExitDoorGridX:          equ     $FFD834
+Ram_ExitDoorGridY:          equ     $FFD835
+Ram_Score:                  equ     $FFD87E
+Ram_Lives:                  equ     $FFD882
+Ram_ChicksRemaining:        equ     $FFD883
+Ram_TextTileBase:           equ     $FFD884
+Ram_RestoreEnemiesFlag:     equ     $FFD886
+Ram_ExtraLifeFlags:         equ     $FFD887
+Ram_RoundTime:              equ     $FFD888
+Ram_BonusAwardCount:        equ     $FFD88C
+Ram_ExitReachedFlag:        equ     $FFD88D
+Ram_FontBankFlag:           equ     $FFD88E
+Ram_SkipBonusFlag:          equ     $FFD88F
+Ram_DemoIndex:              equ     $FFD890
+Ram_EnemyBackup:            equ     $FFDE00
+Ram_DecompCodeTable:        equ     $FFE630
+Ram_RandomCount:            equ     $FFE632
+Ram_RandomDivisor:          equ     $FFE634
+Ram_SpriteTable:            equ     $FFF550
+Ram_Palette:                equ     $FFF7E0
+Ram_PaletteEntry2:          equ     $FFF7E4
+Ram_PaletteEntry3:          equ     $FFF7E6
+Ram_LevelPalette:           equ     $FFF800
+Ram_BonusPaletteEntry:      equ     $FFF82E
+Ram_TitlePaletteSlot:       equ     $FFF840
+Ram_AccentPaletteSlot:      equ     $FFF858
+Ram_PaletteBackup:          equ     $FFF860
+Ram_ExtIntTrampoline:       equ     $FFFA70
+Ram_HBlankTrampoline:       equ     $FFFA76
+Ram_VBlankTrampoline:       equ     $FFFA7C
+Ram_VBlankVector:           equ     $FFFA7E
+j_Nem_Decomp:               equ     $FFFA82
+j_Nem_DecompSetup:          equ     $FFFA8E
+j_Gfx_CopyToCRAM:           equ     $FFFAC4
+j_Gfx_CopyToVRAM:           equ     $FFFACA
+j_Gfx_FillVRAMZero:         equ     $FFFAD6
+j_Gfx_ApplyPaletteMask:     equ     $FFFB0C
+j_Input_ProcessJoypads:     equ     $FFFB12
+j_Sound_LoadZ80Driver:      equ     $FFFB30
+j_Sound_RequestZ80Bus:      equ     $FFFB36
+j_Sound_ReleaseZ80Bus:      equ     $FFFB3C
+j_Sound_CopyToZ80RAM:       equ     $FFFB54
+j_Sound_QueueToBuffer:      equ     $FFFB66
+j_Sound_QueueSFX:           equ     $FFFB6C
+j_Gfx_SetTileWriteAddr:     equ     $FFFB8A
+j_Gfx_FadePalette:          equ     $FFFBA8
+j_Sys_InitGameState:        equ     $FFFBB4
+j_Gfx_LoadPaletteCompact:   equ     $FFFBBA
+Ram_VDPRegisters:           equ     $FFFF70
+Ram_VDPMode2:               equ     $FFFF71
+Ram_ButtonStates:           equ     $FFFF83
+Ram_ButtonRepeatFlag:       equ     $FFFF86
+Ram_ButtonRepeatEnable:     equ     $FFFF87
+Ram_Joypad:                 equ     $FFFF8E
+Ram_FrameCounter:           equ     $FFFF92
+Ram_VBlankRequest:          equ     $FFFF96
+Ram_VBlankMode:             equ     $FFFF98
+Ram_SoundQueueCount:        equ     $FFFFA2
+Ram_CameraY:                equ     $FFFFA4
+Ram_CameraX:                equ     $FFFFA8
+Ram_FadeLevel:              equ     $FFFFAC
+Ram_DMACommandLow:          equ     $FFFFAE
+Ram_PaletteMaskHigh:        equ     $FFFFB8
+Ram_PaletteMaskLow:         equ     $FFFFBC
+Ram_NextGameMode:           equ     $FFFFC0
+Ram_GameModeSpare1:         equ     $FFFFC2
+Ram_GameModeSpare2:         equ     $FFFFC4
+Ram_Z80BusHeld:             equ     $FFFFC8
+Ram_RandomSeed:             equ     $FFFFCA
+Ram_VDPPlaneAddrs:          equ     $FFFFD8
+Ram_HScrollAddr:            equ     $FFFFDA
+Ram_TilemapRowStride:       equ     $FFFFE2
+Ram_TilemapGradientBase:    equ     $FFFFE4
+Ram_InitFlag:               equ     $FFFFFC

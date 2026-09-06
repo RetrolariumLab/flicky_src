@@ -36,6 +36,29 @@ Gfx_ClearSpriteArea:
 A mnemonic that fills the field keeps a single space rather than pushing its
 operand out of line: `movea.l d1,a6`, not `movea.l  d1,a6`.
 
+### Why those columns, and why spaces
+
+They are the Sonic disassembly layout, which is what a Mega Drive reader
+expects. `s1_improvements/sonic.asm` writes it with tabs: two of them before
+4,793 of its statement lines, one between the mnemonic and the operand 4,012
+times, and one after every label that carries a directive. At the tab width
+that layout assumes, that is column 16, column 24 and column 16 -- the three
+columns above. The width is not a guess: only 51 mnemonics in that file
+overflow an eight-column field, against 3,352 that overflow a four-column one.
+
+This project renders the same columns with spaces. The picture is identical at
+a tab width of 8 and stays identical at every other width, which a tabbed file
+does not -- at width 4 the operand lands in column 12. `alien_soldier_src`, the
+closest Mega Drive sibling to this reconstruction, makes the same choice, and
+`.editorconfig`, `.gitattributes` and `make lint` all enforce it.
+
+The one place this parts company with Sonic is the comment column. There a tab
+after the operand puts the comment wherever the operand's length leaves it --
+37, 44, 39, 47, with only 125 of 1,240 landing on a multiple of eight. Here it
+is fixed, which is worth more now than it would have been: the provenance table
+took the inline comment count from 1,838 down to 57, so what is left is
+commentary rather than bookkeeping.
+
 Both label forms are in use and both are correct. A label on its own line marks
 an entry point that the following block belongs to; a label sharing its line
 with a directive marks the datum itself.
