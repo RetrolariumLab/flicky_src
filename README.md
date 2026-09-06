@@ -162,9 +162,11 @@ for the Japanese variants carry a `JP` suffix.
 ## Known gaps
 
 - **`Sys_GameEntryPoint` must stay at `$10000`.** The Z80 sound data contains
-  pointer offsets that assume it, and the build does not recompute them.
-  Inserting padding before that address shifts the code without shifting the
-  data and the game hangs. Tracked as DATA-001 in
+  pointer offsets that assume it, and the build does not recompute them. Moving
+  it in either direction costs the sound and nothing else: a build with the
+  padding removed replays the whole longplay with identical scoring and
+  byte-identical video, while the Z80 pointer table is never copied and stays
+  zero. The failure is silent. Tracked as DATA-001 in
   [`docs/unknowns.md`](docs/unknowns.md).
 - **The Z80 sound driver is not disassembled.** Both images are copied verbatim
   and the 68000 side only writes command bytes. Tracked as SND-001.
