@@ -26,7 +26,8 @@ def main() -> int:
     parser.add_argument("--manifest", default="assets/manifest.json", help="Asset manifest")
     parser.add_argument("--data-dir", default="data", help="Data directory")
     parser.add_argument("--data-addrs", default="data/data_addrs.txt", help="Segment addresses")
-    parser.add_argument("--source", default="flicky.s", help="Assembly source")
+    parser.add_argument("--source", default="src/main.s", help="Assembly source")
+    parser.add_argument("--obj", default="build/main.p", help="AS object file")
     parser.add_argument("--output", default="fbuilt.bin", help="Output ROM")
     parser.add_argument("--as-bin", default="bin/asw.exe", help="AS assembler")
     parser.add_argument("--p2bin", default="bin/p2bin.exe", help="p2bin converter")
@@ -85,6 +86,7 @@ def main() -> int:
             str(scripts_dir / "build_rom.py"),
             "--source", args.source,
             "--output", args.output,
+            "--obj", args.obj,
             "--manifest", args.manifest,
             "--original-rom", str(rom_path),
             "--as-bin", args.as_bin,

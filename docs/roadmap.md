@@ -29,7 +29,7 @@ is a different reconstruction.
 
 ## Current baseline
 
-- `flicky.s` is an index of 43 address-ordered modules; the largest is under
+- `src/main.s` is an index of 43 address-ordered modules; the largest is under
   700 lines and the mean is around 240.
 - The build reproduces the reference ROM exactly, verified against the dump
   itself rather than against a copy of a previous build.
@@ -144,7 +144,7 @@ entry that explains the exception.
 
 ### 6. Debugger symbols - Complete
 
-`make symbols` exports 1,739 ROM symbols as `build/flicky.sym` and resolves the
+`make symbols` exports 1,739 ROM symbols as `build/main.sym` and resolves the
 breakpoint and watch configs against it, failing if a rename orphaned one.
 
 The instrumented Gens build has no symbol loader, so there is no named
@@ -231,4 +231,4 @@ output. The preservation build stays the default and the gate stays permanent.
 4. Run `make lint` and `make verify` before and after any change.
 5. Read [`index.md`](index.md) for the documentation order.
 
-Never commit the ROM, `data/**/*.bin`, `fbuilt.bin`, `flicky.p` or the listing.
+Never commit the ROM, `data/**/*.bin`, `fbuilt.bin`, `build/main.p` or the listing.

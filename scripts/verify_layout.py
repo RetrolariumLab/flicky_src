@@ -2,7 +2,7 @@
 """Check the ROM layout contract against the assembled image.
 
 AS builds one translation unit and there is no linker, so `config/linker/` has
-nothing to hold: the include order in `flicky.s` *is* the layout. This makes
+nothing to hold: the include order in `src/main.s` *is* the layout. This makes
 that layout a declaration the build has to agree with, rather than a comment
 that can drift.
 
@@ -38,18 +38,28 @@ def parse_number(text: str) -> int:
     return int(text, 16) if text.lower().startswith("0x") else int(text, 0)
 
 
-def includes_from_listing(listing: Path) -> list[tuple[int, str]]:
-    """Every include the assembler processed, with the address it started at."""
+def includes_from_listing(listing: Path, root: str) -> list[tuple[int, str]]:
+    """Every include the assembler processed, with the address it started at.
+
+    The listing records the path as written, and `src/main.s` writes its
+    includes relative to itself. `root` is the entrypoint's directory, so the
+    paths come back repository-relative and can be compared with the layout and
+    opened from the project root.
+    """
     found = []
     for line in listing.read_text(encoding="latin-1").splitlines():
         match = INCLUDE_ROW.match(line)
         if match:
-            found.append((int(match.group(1), 16), match.group(2)))
+            path = match.group(2)
+            if root and not path.startswith(f"{root}/"):
+                path = f"{root}/{path}"
+            found.append((int(match.group(1), 16), path))
     return found
 
 
 def check_modules(layout: dict, listing: Path, errors: list[str]) -> int:
-    rows = includes_from_listing(listing)
+    root = str(Path(layout["target"]["entrypoint"]).parent.as_posix())
+    rows = includes_from_listing(listing, "" if root == "." else root)
     actual = [row for row in rows if row[1].endswith(".s")]
     shared = [row[1] for row in rows if row[1].endswith(".inc")]
     declared = layout["modules"]
@@ -135,7 +145,7 @@ def check_image(layout: dict, rom: Path, errors: list[str]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--layout", default="config/rom_layout.json")
-    parser.add_argument("--listing", default="flicky.lst")
+    parser.add_argument("--listing", default="build/main.lst")
     parser.add_argument("--rom", default="fbuilt.bin")
     args = parser.parse_args()
 

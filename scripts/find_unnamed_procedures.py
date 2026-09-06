@@ -239,8 +239,8 @@ def main():
     parser.add_argument(
         'input',
         nargs='?',
-        default='flicky.s',
-        help='Input disassembly file (default: flicky.s)'
+        default='src/main.s',
+        help='Input disassembly file (default: src/main.s)'
     )
 
     parser.add_argument(

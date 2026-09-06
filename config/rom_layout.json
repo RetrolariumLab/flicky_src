@@ -5,8 +5,8 @@
     "cpu": "Motorola 68000",
     "cartridge_size": 131072,
     "translation_unit": "single",
-    "entrypoint": "flicky.s",
-    "entrypoint_note": "AS assembles one translation unit, so there is no linker and no linker script. The include order in flicky.s is the ROM layout: moving an include moves code in the output."
+    "entrypoint": "src/main.s",
+    "entrypoint_note": "AS assembles one translation unit, so there is no linker and no linker script. The include order in src/main.s is the ROM layout: moving an include moves code in the output."
   },
   "memory_regions": [
     {
@@ -15,7 +15,7 @@
       "end": "0x01FFFF",
       "size": 131072,
       "access": "read-only",
-      "owner": "flicky.s"
+      "owner": "src/main.s"
     },
     {
       "id": "work_ram",

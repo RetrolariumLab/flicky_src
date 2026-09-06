@@ -2,7 +2,7 @@
 """
 Extract binary data addresses from Flicky listing file.
 
-Parses flicky.lst to find all binclude directives and generates
+Parses the AS listing to find all binclude directives and generates
 data_addrs.txt with format: name,start,end,subdir
 
 Categories:
@@ -33,7 +33,7 @@ def classify_data(name: str) -> str:
         return 'mappings'
 
     # Nemesis-compressed tiles (known from code analysis)
-    # These are decompressed via Nem_Decomp in flicky.s
+    # These are decompressed via Nem_Decomp in the source
     nemesis_compressed = [
         'LevelTiles',
         'SpritesTiles',
@@ -64,8 +64,8 @@ def main():
     parser.add_argument(
         'listing',
         nargs='?',
-        default='flicky.lst',
-        help='Listing file (default: flicky.lst)'
+        default='build/main.lst',
+        help='Listing file (default: build/main.lst)'
     )
     parser.add_argument(
         '--data-dir',

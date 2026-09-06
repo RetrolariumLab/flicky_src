@@ -356,7 +356,7 @@ def source_files(roots: list[Path]) -> list[Path]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("paths", nargs="*", type=Path, default=[Path("flicky.s"), Path("src")])
+    parser.add_argument("paths", nargs="*", type=Path, default=[Path("src")])
     parser.add_argument("--fix", action="store_true", help="normalize files before checking")
     args = parser.parse_args()
 

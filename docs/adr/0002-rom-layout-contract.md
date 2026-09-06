@@ -7,7 +7,7 @@
 
 Choosing AS means there is no linker and no linker script, so the release
 contract's `config/linker/` has nothing to hold. The layout lives implicitly in
-the include order of `flicky.s`, and it was documented only as a prose table in
+the include order of `src/main.s`, and it was documented only as a prose table in
 `docs/source_layout.md`.
 
 Prose drifts. A module that grows past its neighbour's start address, a

@@ -190,6 +190,18 @@
         "release_contract",
         "licensing_and_provenance"
       ]
+    },
+    {
+      "id": "entrypoint_under_src",
+      "kind": "source",
+      "summary": "The entrypoint moved from flicky.s at the repository root to src/main.s, the path the shared contract recommends, and its includes are now written relative to src/ the way the NES projects write theirs. The AS object and listing are named explicitly so the move does not drop build artifacts into src/.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "source_boundary",
+        "files:config/rom_layout.json"
+      ]
     }
   ],
   "requirements": {
@@ -235,6 +247,7 @@
           "verify-layout"
         ],
         "files": [
+          "src/main.s",
           "config/rom_layout.json",
           "docs/source_layout.md",
           "assets/manifest.json"
@@ -470,12 +483,6 @@
     ]
   },
   "layout_deviations": [
-    {
-      "rule_id": "src/main.asm",
-      "actual_path": "flicky.s",
-      "reason": "AS assembles one translation unit and the entrypoint sits at the repository root, where the assembler and the tooling already expect it.",
-      "equivalent_control": "config/rom_layout.json names it as the entrypoint and verify-layout checks its include order against the assembler's listing."
-    },
     {
       "rule_id": "config/linker/",
       "actual_path": "config/rom_layout.json",

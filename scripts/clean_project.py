@@ -15,8 +15,8 @@ import shutil
 # hand. Ordinary cleaning must never destroy them.
 TARGETS = [
     'fbuilt.bin',
-    'flicky.p',
-    'flicky.lst',
+    'build/main.p',
+    'build/main.lst',
     'flicky.map',
     'flicky.asm',
     'temp.asm',

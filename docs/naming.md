@@ -90,7 +90,7 @@ column for the whole table -- see [`assembly_style.md`](assembly_style.md).
 ## Tooling
 
 `scripts/rename_symbols.py` takes a CSV of `old,new` pairs, rewrites every
-reference across `flicky.s` and `src/`, and appends the provenance comment. It
+reference across `src/`, and appends the provenance comment. It
 refuses to run if a target name already exists, if two renames collide, or if a
 source name is not defined anywhere -- so a typo cannot silently do nothing.
 

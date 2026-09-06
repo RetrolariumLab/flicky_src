@@ -34,8 +34,8 @@ AS_ARGS ?= -maxerrors 2
 export AS_MSGPATH = $(TOOLS_DIR)
 
 # Sources and outputs
-SRC ?= flicky.s
-OBJ ?= flicky.p
+SRC ?= src/main.s
+OBJ ?= build/main.p
 ROM ?= fbuilt.bin
 ORIGINAL_ROM ?= Flicky (UE) [!].bin
 ASSET_MANIFEST ?= assets/manifest.json
@@ -46,7 +46,7 @@ DATA_FORMAT_MANIFEST ?= config/data_formats.json
 DATA_FORMAT_SUMMARY ?= build/data_formats.json
 DEBUG_BREAKPOINTS ?= config/debugger_breakpoints.json
 DEBUG_WATCHES ?= config/debugger_watches.json
-SYMBOL_FILE ?= build/flicky.sym
+SYMBOL_FILE ?= build/main.sym
 DEBUG_SUMMARY ?= build/debug_symbols.json
 RUNTIME_SCENARIOS ?= scenarios/runtime_scenarios.json
 RUNTIME_DIR ?= build/runtime
@@ -54,7 +54,7 @@ RUNTIME_SUMMARY ?= build/runtime_scenarios.json
 RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 ROM_LAYOUT ?= config/rom_layout.json
-LISTING ?= flicky.lst
+LISTING ?= build/main.lst
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -103,14 +103,14 @@ all: build
 # Assemble and report byte identity as a warning.
 build: _require-assets _require-toolchain
 	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
-		--source $(SRC) --output $(ROM) \
+		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # The permanent gate: any difference from the reference ROM fails the build.
 verify: _require-assets _require-toolchain
 	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
-		--source $(SRC) --output $(ROM) \
+		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
 		--verify
@@ -120,7 +120,7 @@ init:
 	@$(PYTHON) $(SCRIPTS_DIR)/init_project.py \
 		--orig-rom "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST) \
 		--data-dir $(DATA_DIR) --data-addrs $(DATA_ADDRS) \
-		--source $(SRC) --output $(ROM) \
+		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # Extract binary segments from the reference ROM. This is the only command
@@ -144,9 +144,10 @@ verify-toolchain:
 _require-toolchain:
 	@$(PYTHON) $(SCRIPTS_DIR)/verify_toolchain.py --config $(TOOLCHAIN_MANIFEST)
 
-# AS has no linker, so the include order in flicky.s is the ROM layout itself.
-# This makes that layout a declaration the build has to agree with.
-verify-layout:
+# AS has no linker, so the include order in src/main.s is the ROM layout itself.
+# This makes that layout a declaration the build has to agree with. It reads the
+# listing for the module addresses, so it has to depend on one being there.
+verify-layout: $(LISTING)
 	@$(PYTHON) $(SCRIPTS_DIR)/verify_layout.py \
 		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
 
@@ -157,8 +158,9 @@ compare:
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
 # -i lets modules under src/ resolve their binclude paths from the project root.
-flicky.lst: $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc)
-	@$(AS_BIN) -i . -L -olist $@ $(AS_ARGS) $(SRC)
+$(LISTING): $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc)
+	@mkdir -p $(dir $@)
+	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
 
 # ---------------------------------------------------------------------------
 # Validation
@@ -167,7 +169,7 @@ flicky.lst: $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc)
 # Style, semantic source invariants, and repository-wide checks. None of these
 # substitute for "make verify": a green lint says nothing about byte identity.
 lint:
-	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py $(SRC) src
+	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py src
 	@$(PYTHON) $(SCRIPTS_DIR)/lint_source.py $(STRICT_NAMING)
 	@$(PYTHON) $(SCRIPTS_DIR)/lint_project.py
 
@@ -197,7 +199,7 @@ release-check:
 # Deterministic whitespace, label-layout and case normalization, then re-check.
 # Formatting must never move a byte, so verify afterwards.
 format:
-	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py $(SRC) src --fix
+	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py src --fix
 	@$(MAKE) lint
 
 # ---------------------------------------------------------------------------
@@ -218,8 +220,8 @@ clean:
 	@$(PYTHON) $(SCRIPTS_DIR)/clean_project.py
 
 # Export the symbol map and resolve the debugger configs against it.
-symbols: flicky.lst
-	@$(PYTHON) $(SCRIPTS_DIR)/debug_symbols.py 		--listing flicky.lst 		--breakpoints $(DEBUG_BREAKPOINTS) --watches $(DEBUG_WATCHES) 		--sym $(SYMBOL_FILE) --summary $(DEBUG_SUMMARY)
+symbols: $(LISTING)
+	@$(PYTHON) $(SCRIPTS_DIR)/debug_symbols.py 		--listing $(LISTING) 		--breakpoints $(DEBUG_BREAKPOINTS) --watches $(DEBUG_WATCHES) 		--sym $(SYMBOL_FILE) --summary $(DEBUG_SUMMARY)
 
 # ---------------------------------------------------------------------------
 # Emulator analysis (requires MOVIE=longplay|demos)
@@ -354,7 +356,7 @@ help:
 	@echo "  make tools                     Build the C decompressors"
 	@echo "  make unpack-data               Decompress Nemesis/Enigma segments"
 	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
-	@echo "  make symbols                   Export build/flicky.sym for debuggers"
+	@echo "  make symbols                   Export $(SYMBOL_FILE) for debuggers"
 	@echo "  make trace                     Capture and validate runtime scenarios"
 	@echo "  make validate-runtime          Re-check an existing capture"
 	@echo ""

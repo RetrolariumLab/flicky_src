@@ -1,6 +1,6 @@
 # Source Layout
 
-`flicky.s` is not a source file any more: it is the index. It sets the CPU and
+`src/main.s` is not a source file any more: it is the index. It sets the CPU and
 assembly options, pulls in the shared definitions, and then includes 43
 modules in ROM address order.
 

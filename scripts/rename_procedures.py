@@ -315,7 +315,7 @@ def main():
     parser = argparse.ArgumentParser(description='Apply procedure renames from database')
     parser.add_argument('--database', default='procedure_database.csv',
                        help='Procedure database CSV')
-    parser.add_argument('--source', default='flicky.s',
+    parser.add_argument('--source', default='src/main.s',
                        help='Assembly source file')
     parser.add_argument('--report', default='analysis_report.csv',
                        help='Analysis report CSV to mark procedures as processed')
@@ -448,7 +448,7 @@ def main():
             print(f"Log: {log_file}")
 
             print("\nNext steps:")
-            print("  1. Review changes with: git diff flicky.s")
+            print("  1. Review changes with: git diff src/main.s")
             print("  2. Build ROM: make build")
             print("  3. Test that ROM works correctly")
             print("  4. Commit if everything looks good")

@@ -39,10 +39,8 @@ def split_comment(text: str) -> str:
 
 
 def source_files() -> list[Path]:
-    files = sorted(Path("src").rglob("*.s")) + sorted(Path("src").rglob("*.inc"))
-    if Path("flicky.s").is_file():
-        files.append(Path("flicky.s"))
-    return files
+    """Every assembly source, entrypoint included: src/main.s lives under src/."""
+    return sorted(Path("src").rglob("*.s")) + sorted(Path("src").rglob("*.inc"))
 
 
 def main() -> int:

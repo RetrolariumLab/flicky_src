@@ -35,7 +35,7 @@ original assembler produced are reachable.
 
 There is no linker. AS emits one object and `p2bin` flattens it, so nothing owns
 the memory layout the way a linker script would — the include order in
-`flicky.s` *is* the layout. That gap is filled deliberately by
+`src/main.s` *is* the layout. That gap is filled deliberately by
 [ADR 2](0002-rom-layout-contract.md).
 
 Vendoring binaries makes the build reproducible from a fresh clone but puts
