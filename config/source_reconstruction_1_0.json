@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "release": "Source Reconstruction 1.0",
+  "tag": "source-reconstruction-1.0",
+  "reference": {
+    "name": "Flicky (UE) [!]",
+    "rom_sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
+    "rom_md5": "805CC0B3724F041126A57A4D956FD251",
+    "rom_crc32": "4291C8AB",
+    "rom_size": 131072,
+    "padding_byte": "0xFF"
+  },
+  "toolchain": {
+    "assembler": "AS Macro Assembler 1.42 Beta [Bld 212]",
+    "platforms": ["windows_i386", "linux_x86_64"]
+  },
+  "evidence": {
+    "modules": 43,
+    "module_line_limit": 700,
+    "extracted_segments": 17,
+    "exact_round_trips": 8,
+    "semantic_round_trips": 6,
+    "runtime_scenarios": 12,
+    "runtime_captures_produced": false
+  },
+  "required_documents": [
+    "README.md",
+    "CONTRIBUTING.md",
+    "docs/index.md",
+    "docs/roadmap.md",
+    "docs/source_layout.md",
+    "docs/subsystems.md",
+    "docs/naming.md",
+    "docs/assembly_style.md",
+    "docs/ram_fields.md",
+    "docs/data_formats.md",
+    "docs/debugger_workflow.md",
+    "docs/runtime_evidence.md",
+    "docs/validation.md",
+    "docs/unknowns.md",
+    "docs/source_reconstruction_1_0.md",
+    "bin/README.md",
+    "movies/README.md"
+  ],
+  "release_commands": ["lint", "test", "roundtrip-formats", "verify", "symbols", "release-audit"],
+  "complete_milestones": [0, 1, 2, 3, 4, 5, 6, 8],
+  "open_milestones": {
+    "7": "Runtime evidence: declared but not captured, no emulator build available"
+  },
+  "prohibited_tracked_extensions": [".bin", ".p", ".gen", ".sym"],
+  "prohibited_tracked_prefixes": ["data/artnem/", "data/arteni/", "data/artunc/", "data/sound/", "data/other/", "build/"]
+}

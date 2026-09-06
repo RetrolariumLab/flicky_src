@@ -15,9 +15,12 @@ itself. `flicky.s` is no longer a source file: it is an index of 43
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-Milestones 0 through 4 are complete. Data round trips, debugger symbols,
-runtime evidence and the automated release audit are planned; see
-[`docs/roadmap.md`](docs/roadmap.md).
+This is Source Reconstruction 1.0. Milestones 0 through 6 and 8 are complete:
+the data formats have codecs, the symbol map is exported for debuggers, and
+`make release-check` audits the whole release contract. Milestone 7, runtime
+evidence, is declared but not captured -- see
+[`docs/source_reconstruction_1_0.md`](docs/source_reconstruction_1_0.md) for
+what the release claims and what it does not.
 
 The gate for every change is `make verify`. Annotating, renaming and
 reformatting must never alter the assembled bytes, so any difference means the
@@ -88,6 +91,11 @@ make tools          # Build the C decompressors
 make unpack-data    # Decompress the Nemesis and Enigma segments
 make clean          # Remove build artifacts; extracted data is kept
 make help           # Everything, including the analysis workflow
+
+make test           # Unit tests for the Python tooling
+make roundtrip-formats   # Decode and re-encode the authored data
+make symbols        # Export build/flicky.sym for debuggers
+make release-check  # The complete acceptance gate
 ```
 
 The toolchain folder is chosen from the host platform; override it with
@@ -149,10 +157,15 @@ for the Japanese variants carry a `JP` suffix.
   [`docs/unknowns.md`](docs/unknowns.md).
 - **The Z80 sound driver is not disassembled.** Both images are copied verbatim
   and the 68000 side only writes command bytes. Tracked as SND-001.
-- **No data round trips yet.** The Nemesis and Enigma formats can be decoded
-  but not re-encoded, so there is no proof yet that a decoded segment can be put
-  back exactly. See [`docs/data_formats.md`](docs/data_formats.md).
-- Five further open questions are listed in
+- **Nemesis and Enigma do not re-encode byte for byte.** Eight of the seventeen
+  segments round-trip exactly; the six Nemesis ones only round-trip
+  semantically, and Enigma has no encoder at all. Tracked as DATA-002; see
+  [`docs/data_formats.md`](docs/data_formats.md).
+- **No runtime evidence has been captured.** The scenarios exist but the
+  instrumented emulator could not be built here, so nothing in this release
+  observes behaviour rather than bytes. See
+  [`docs/runtime_evidence.md`](docs/runtime_evidence.md).
+- Four further open questions are listed in
   [`docs/unknowns.md`](docs/unknowns.md).
 
 ## Credits

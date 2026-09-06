@@ -48,6 +48,10 @@ DEBUG_BREAKPOINTS ?= config/debugger_breakpoints.json
 DEBUG_WATCHES ?= config/debugger_watches.json
 SYMBOL_FILE ?= build/flicky.sym
 DEBUG_SUMMARY ?= build/debug_symbols.json
+RUNTIME_SCENARIOS ?= scenarios/runtime_scenarios.json
+RUNTIME_DIR ?= build/runtime
+RUNTIME_SUMMARY ?= build/runtime_scenarios.json
+RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -75,7 +79,7 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify init split check-assets compare lint format tools unpack-data \n        roundtrip-formats symbols clean \
+.PHONY: all build verify init split check-assets compare lint format tools unpack-data \n        roundtrip-formats symbols trace trace-runtime validate-runtime \n        test release-audit release-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help _require-assets _require-movie
 
@@ -143,6 +147,25 @@ lint:
 	@$(PYTHON) $(SCRIPTS_DIR)/lint_source.py $(STRICT_NAMING)
 	@$(PYTHON) $(SCRIPTS_DIR)/lint_project.py
 
+# Focused unit tests for the Python tooling, so a bug in a check cannot
+# quietly pass everything it is supposed to catch.
+test:
+	@$(PYTHON) -m unittest discover -s tests -p "test_*.py"
+
+# Check the repository against the machine-readable release contract.
+release-audit:
+	@$(PYTHON) $(SCRIPTS_DIR)/release_audit.py --contract $(RELEASE_CONTRACT)
+
+# The complete acceptance gate, in increasing cost. Recursive $(MAKE) calls
+# keep the order explicit even under a parallel build.
+release-check:
+	$(MAKE) lint
+	$(MAKE) test
+	$(MAKE) roundtrip-formats
+	$(MAKE) verify
+	$(MAKE) symbols
+	$(MAKE) release-audit
+
 # Deterministic whitespace, label-layout and case normalization, then re-check.
 # Formatting must never move a byte, so verify afterwards.
 format:
@@ -204,6 +227,17 @@ analyze: _require-movie
 		$(if $(MAX_FRAMES_$(MOVIE)),--max-frames $(MAX_FRAMES_$(MOVIE)),) \
 		--max-diffs $(ANALYSIS_MAX_DIFFS) --diff-color $(ANALYSIS_DIFF_COLOR) \
 		$(if $(filter true,$(MEMORY)),--memory-diffs,)
+
+# Capture the declared scenarios, then validate them. Needs the instrumented
+# Gens build; without it the runner stops rather than producing nothing quietly.
+trace-runtime: verify symbols
+	@$(PYTHON) $(SCRIPTS_DIR)/run_runtime_scenarios.py 		--scenarios $(RUNTIME_SCENARIOS) --gens "$(GENS_EXE)" 		--rom $(ROM) --output-dir $(RUNTIME_DIR)
+	@$(MAKE) validate-runtime
+
+validate-runtime:
+	@$(PYTHON) $(SCRIPTS_DIR)/validate_runtime_scenarios.py 		--scenarios $(RUNTIME_SCENARIOS) --capture-dir $(RUNTIME_DIR) 		--summary $(RUNTIME_SUMMARY)
+
+trace: symbols trace-runtime
 
 find-unanalyzed:
 	@$(PYTHON) -c "import os; os.makedirs('$(WORKFLOW_DIR)', exist_ok=True)"
@@ -281,12 +315,16 @@ help:
 	@echo "Validation:"
 	@echo "  make lint                      Style, naming and repository checks"
 	@echo "  make format                    Apply the deterministic fixes, then lint"
+	@echo "  make test                      Unit tests for the Python tooling"
+	@echo "  make release-audit             Check the 1.0 release contract"
+	@echo "  make release-check             The complete acceptance gate"
 	@echo ""
 	@echo "Data tools:"
 	@echo "  make tools                     Build the C decompressors"
 	@echo "  make unpack-data               Decompress Nemesis/Enigma segments"
 	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
 	@echo "  make symbols                   Export build/flicky.sym for debuggers"
+	@echo "  make trace                     Capture and validate runtime scenarios"
 	@echo ""
 	@echo "Analysis (MOVIE=longplay|demos):"
 	@echo "  make reference MOVIE=longplay  Capture reference screenshots and dumps"

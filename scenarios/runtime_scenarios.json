@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "rom_sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
+  "movies": {
+    "longplay": {
+      "path": "movies/flicky_longplay.gmv",
+      "sha1": "df655c49ff072706dc4edc66fc01cb3b0f3ebf1c"
+    },
+    "demos": {
+      "path": "movies/flicky_demos.gmv",
+      "sha1": "e490c5977ff3d2b55bd14fd3b09fc0507e075990"
+    }
+  },
+  "capture": {
+    "interval": 20,
+    "frameskip": 0
+  },
+  "scenarios": [
+    {
+      "id": "longplay-sega-screen",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 20,
+      "last_frame": 300,
+      "expects": "Sega screen"
+    },
+    {
+      "id": "longplay-title-screen",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 320,
+      "last_frame": 440,
+      "expects": "Title screen"
+    },
+    {
+      "id": "longplay-guide-screen",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 460,
+      "last_frame": 680,
+      "expects": "Guide screen"
+    },
+    {
+      "id": "longplay-round-1",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 700,
+      "last_frame": 1380,
+      "expects": "Round 1"
+    },
+    {
+      "id": "longplay-chickens-counting",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 1400,
+      "last_frame": 1440,
+      "expects": "Chickens counting"
+    },
+    {
+      "id": "longplay-score-screen",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 1460,
+      "last_frame": 1700,
+      "expects": "Score screen"
+    },
+    {
+      "id": "longplay-round-3-bonus",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 3180,
+      "last_frame": 4240,
+      "expects": "Round 3 (bonus)"
+    },
+    {
+      "id": "longplay-girl-in-window-appeared",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 33260,
+      "last_frame": 33600,
+      "expects": "Girl in window appeared"
+    },
+    {
+      "id": "longplay-credits",
+      "movie": "longplay",
+      "method": "natural play",
+      "first_frame": 62800,
+      "last_frame": 66980,
+      "expects": "Credits"
+    },
+    {
+      "id": "demos-sega-screen",
+      "movie": "demos",
+      "method": "natural play",
+      "first_frame": 20,
+      "last_frame": 300,
+      "expects": "Sega screen"
+    },
+    {
+      "id": "demos-title-screen",
+      "movie": "demos",
+      "method": "natural play",
+      "first_frame": 320,
+      "last_frame": 1380,
+      "expects": "Title screen"
+    },
+    {
+      "id": "demos-demo-play-round-1",
+      "movie": "demos",
+      "method": "natural play",
+      "first_frame": 1400,
+      "last_frame": 3380,
+      "expects": "Demo play Round 1"
+    }
+  ]
+}

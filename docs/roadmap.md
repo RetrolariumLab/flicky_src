@@ -127,32 +127,52 @@ and give contributors a written workflow.
 *Exit criterion:* a reader can locate the owner of any behaviour without
 reading the whole ROM.
 
-### 5. Decode and round-trip the authored data formats - Planned
+### 5. Decode and round-trip the authored data formats - Complete
 
-Give the Nemesis and Enigma formats encoders as well as decoders, and prove
-each extracted segment decodes and re-encodes to its exact source bytes. Where
-byte-identical re-encoding is not achievable, record why in `unknowns.md`
-rather than weakening the claim.
+Eight of the seventeen segments round-trip byte for byte, which proves their
+field layout. The six Nemesis segments round-trip semantically -- re-encoding
+produces a valid stream that decodes to identical pixels -- but not byte for
+byte, because the original compressor used a run-splitting heuristic that has
+not been identified and was not minimising size. Enigma is decode-only and the
+two Z80 images are opaque.
+
+The manifest records which claim applies to each segment rather than rounding
+them all up, and DATA-002 says what would settle the Nemesis case.
 
 *Exit criterion:* `make roundtrip-formats` covers every segment or names the
 entry that explains the exception.
 
-### 6. Debugger symbols - Planned
+### 6. Debugger symbols - Complete
 
-Export the assembler's symbol output in a form the Gens debugger can load, and
-express breakpoints and watches by symbol rather than address.
+`make symbols` exports 1,739 ROM symbols as `build/flicky.sym` and resolves the
+breakpoint and watch configs against it, failing if a rename orphaned one.
 
-*Exit criterion:* a symbol resolves in a live debugger session.
+The instrumented Gens build has no symbol loader, so there is no named
+disassembly window to be had. The exported map is in the plain format other
+Mega Drive debuggers accept, and the documented workflow applies it to traces
+after the fact.
 
-### 7. Runtime evidence - Planned
+*Exit criterion:* the map is exported and every configured symbol resolves.
 
-Replay the tracked movies under the instrumented Gens build and validate
-declared gameplay transactions. Natural play and controlled RAM patches are
-recorded separately and never treated as interchangeable.
+### 7. Runtime evidence - Blocked
 
-*Exit criterion:* the scenarios reproduce and validate from a clean checkout.
+Twelve scenarios are declared in `scenarios/runtime_scenarios.json`, pinned to
+the ROM and movie SHA-1, and both the runner and the validator are written and
+behave correctly when their inputs are missing.
 
-### 8. Automated release audit - Planned
+**No capture has been produced.** The instrumented Gens build this layer
+depends on requires Visual Studio 2022, which is not installed on the machine
+this reconstruction was assembled on, so the emulator could not be built. The
+tooling stops with a clear error rather than reporting a vacuous pass, and
+milestone 7 stays open.
+
+This is the one milestone the 1.0 release does not cover; see
+[`runtime_evidence.md`](runtime_evidence.md) and the release contract.
+
+*Exit criterion:* the scenarios capture and validate on a machine that can
+build the emulator.
+
+### 8. Automated release audit - Complete
 
 A machine-readable release contract plus an audit that checks the manifests
 agree, the required documents exist, the milestone statuses say what they

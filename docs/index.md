@@ -8,6 +8,7 @@
 | [`source_layout.md`](source_layout.md) | Where the code lives and why it is split that way |
 | [`subsystems.md`](subsystems.md) | What the program does and who calls whom |
 | [`validation.md`](validation.md) | Which check proves what |
+| [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
 
 ## Working on the source
 
@@ -17,6 +18,9 @@
 | [`assembly_style.md`](assembly_style.md) | The layout rules the formatter enforces |
 | [`ram_fields.md`](ram_fields.md) | What every work RAM address is for |
 | [`unknowns.md`](unknowns.md) | What is still unresolved, and the experiment that would settle it |
+| [`data_formats.md`](data_formats.md) | What each extracted segment is and how well it is understood |
+| [`debugger_workflow.md`](debugger_workflow.md) | Exporting symbols and using them on a trace |
+| [`runtime_evidence.md`](runtime_evidence.md) | The declared scenarios, and why none have been captured |
 | [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | The workflow, from a fresh clone to a reviewed change |
 
 ## Reading order
@@ -51,10 +55,16 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 ## Current status
 
-- Milestones 0 through 4 are complete: the byte-identity gate is real, the
-  source is modular and consistently styled, every symbol is semantic, and the
-  subsystems are documented.
-- Milestones 5 through 8 -- data round trips, debugger symbols, runtime
-  evidence and the release audit -- are planned. `make roundtrip-formats`,
-  `make symbols` and `make trace` do not exist yet.
-- Six questions are open in [`unknowns.md`](unknowns.md).
+Source Reconstruction 1.0. Milestones 0 through 6 and 8 are complete: the
+byte-identity gate compares against the cartridge dump, the source is modular
+and consistently styled, every symbol is semantic, the subsystems and the
+memory map are documented, the authored data formats have codecs, the symbol
+map is exported, and `make release-check` audits the whole contract.
+
+Milestone 7, runtime evidence, is declared but **not captured** -- the
+instrumented emulator could not be built here. See
+[`runtime_evidence.md`](runtime_evidence.md) and
+[`source_reconstruction_1_0.md`](source_reconstruction_1_0.md), which states
+what the release does and does not claim.
+
+Seven questions are open in [`unknowns.md`](unknowns.md).

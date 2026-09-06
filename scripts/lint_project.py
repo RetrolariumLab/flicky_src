@@ -96,6 +96,10 @@ def check_evidence(files: list[Path], texts: dict[Path, str], errors: list[str])
         text = texts.get(path)
         if text is None or path == REGISTRY:
             continue
+        # Tests carry tags as fixtures and the registry defines them; neither is
+        # an annotation on real source.
+        if path.parts and path.parts[0] == "tests":
+            continue
         markdown = path.suffix == ".md"
         for number, raw_line in enumerate(text.split("\n"), 1):
             # Documentation quotes the vocabulary in code spans; those are
