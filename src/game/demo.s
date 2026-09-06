@@ -1,14 +1,14 @@
-; Attract-mode demo playback.
-; ROM $0139A2-$013E6F.
+; Attract-mode demo playback
+; ROM $0139A2-$013E6F
 ;
 ; !(OBS) The longplay presses start before the attract demos begin, so this file
 ; is only reached by the demos recording. Replaying it holds Ram_Score at zero
 ; across the whole demo while chicks are caught, which is how the two round
 ; tables below were told apart: the index one feeds Ram_RoundNumber+1 and the
-; display one the BCD byte the HUD prints.
+; display one the BCD byte the HUD prints
 
 Demo_Init:
-                jsr     Sys_InitTitleScreen  ; was: sub_139A2
+                jsr     Sys_InitTitleScreen             ; was: sub_139A2
                 lea     (Gfx_SharedPalette).l,a5
                 jsr     j_Gfx_LoadPaletteCompact
                 move.w  (Ram_DemoIndex).w,d0
@@ -32,26 +32,26 @@ Demo_Init:
                 bsr.w   Game_CalcDifficulty
                 jmp     j_Sound_QueueSFX
 
-Demo_RoundIndexTable: dc.b    1, $A, $14, $18  ; was: byte_13A08
-Demo_RoundDisplayTable: dc.b    1, $10, $20, $24  ; was: byte_13A0C
-Demo_InputStreamPointers: dc.w    Demo_InputStream0-Sys_GameEntryPoint  ; was: off_13A10
+Demo_RoundIndexTable:           dc.b    1, $A, $14, $18  ; was: byte_13A08
+Demo_RoundDisplayTable:         dc.b    1, $10, $20, $24  ; was: byte_13A0C
+Demo_InputStreamPointers:       dc.w    Demo_InputStream0-Sys_GameEntryPoint  ; was: off_13A10
                 dc.w    Demo_InputStream1-Sys_GameEntryPoint
                 dc.w    Demo_InputStream2-Sys_GameEntryPoint
                 dc.w    Demo_InputStream3-Sys_GameEntryPoint
 ; Demo mode update: processes recorded input
 Demo_Update:
-                btst    #7,(Ram_Joypad+1).w  ; was: sub_13A18
+                btst    #7,(Ram_Joypad+1).w             ; was: sub_13A18
                 beq.s   Demo_Update_Run
                 bsr.w   Gfx_FadeInPalette
                 move.w  #0,(Ram_NextGameMode).w
 
-Demo_Update_Run:  ; was: loc_13A2A
+Demo_Update_Run:                                        ; was: loc_13A2A
                 bsr.w   Demo_ReadInput
                 cmpi.l  #$1C000,(Ram_LizardSpeed).w
                 bgt.s   Demo_Update_Objects
                 addq.l  #7,(Ram_LizardSpeed).w
 
-Demo_Update_Objects:  ; was: loc_13A3C
+Demo_Update_Objects:                                    ; was: loc_13A3C
                 bsr.w   Enemy_SpawnCats
                 bsr.w   Object_UpdateAll
                 bsr.w   Timer_IncrementTime
@@ -60,12 +60,12 @@ Demo_Update_Objects:  ; was: loc_13A3C
                 bsr.w   Gfx_FadeInPalette
                 move.w  #$40,(Ram_NextGameMode).w
 
-Demo_Update_Return:  ; was: loc_13A5A
+Demo_Update_Return:                                     ; was: loc_13A5A
                 jmp     j_Sound_QueueSFX
 
 ; Reads next input from demo data stream
 Demo_ReadInput:
-                moveq   #$FFFFFFFF,d0  ; was: sub_13A5E
+                moveq   #$FFFFFFFF,d0                   ; was: sub_13A5E
                 move.w  (Ram_DemoStreamPtr).w,d0
                 movea.l d0,a0
                 move.b  (a0),(Ram_Joypad).w
@@ -76,12 +76,12 @@ Demo_ReadInput:
                 move.b  1(a0),(Ram_DemoHoldFrames).w
                 move.w  a0,(Ram_DemoStreamPtr).w
 
-Demo_ReadInput_Return:  ; was: locret_13A80
+Demo_ReadInput_Return:                                  ; was: locret_13A80
                 rts
 
-Demo_InputStream0: binclude "data/other/data_DemoInputStream0.bin"  ; was: word_13A82
-Demo_InputStream0_End:  ; was: word_13A82_End
-Demo_InputStream1: dc.w    $12, $801, $A09, $4A11, $A17, $14, $4004, $4A0B  ; was: word_13B82
+Demo_InputStream0:      binclude "data/other/data_DemoInputStream0.bin"  ; was: word_13A82
+Demo_InputStream0_End:                                  ; was: word_13A82_End
+Demo_InputStream1:      dc.w    $12, $801, $A09, $4A11, $A17, $14, $4004, $4A0B  ; was: word_13B82
                 dc.w    $A5A, $1C, $A0C, 9, $403, $502, $409, $1E
                 dc.w    $407, 3, $801, $A0F, $602, $40D, $4405, $400B
                 dc.w    $23, $408, 9, $40E, $441F, $D, $410, $440F
@@ -94,8 +94,8 @@ Demo_InputStream1: dc.w    $12, $801, $A09, $4A11, $A17, $14, $4004, $4A0B  ; wa
                 dc.w    $4201, $4407, $4502, $4403, $4001, $19, $801, $A07
                 dc.w    $201, $406, $4405, $4003, 8, $A1E, $10, $A13
                 dc.w    $801, $1A, $414, $1F, $403, $504, $40C, $43
-Demo_InputStream2: binclude "data/other/data_DemoInputStream2.bin"  ; was: word_13C52
-Demo_InputStream2_End:  ; was: word_13C52_End
-Demo_InputStream3: binclude "data/other/data_DemoInputStream3.bin"  ; was: word_13D70
-Demo_InputStream3_End:  ; was: word_13D70_End
+Demo_InputStream2:      binclude "data/other/data_DemoInputStream2.bin"  ; was: word_13C52
+Demo_InputStream2_End:                                  ; was: word_13C52_End
+Demo_InputStream3:      binclude "data/other/data_DemoInputStream3.bin"  ; was: word_13D70
+Demo_InputStream3_End:                                  ; was: word_13D70_End
 ; Player main object: states and collision

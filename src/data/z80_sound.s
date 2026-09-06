@@ -1,5 +1,5 @@
-; Second Z80 sound-driver image.
-; ROM $0101D4-$010CD3.
+; Second Z80 sound-driver image
+; ROM $0101D4-$010CD3
 
 z80_part2:      binclude "data/sound/data_z80_part2.bin"
 z80_part2_End:

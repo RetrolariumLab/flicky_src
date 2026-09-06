@@ -46,7 +46,7 @@ extracted from it, or any build output.
 | The toolchain is the declared one | SHA-256 for every vendored binary in `config/toolchain.json`, checked by `make verify-toolchain` before the assembler runs |
 | The ROM layout is declared, not implied | `config/rom_layout.json` holds 43 module ranges, 9 landmarks and the padding gap; `make verify-layout` checks all three against the build |
 | The release contract is machine-checked | The manifest follows `retrolarium.source_reconstruction_release_contract` v3, and `make release-audit` resolves every requirement's evidence to a real file, target or scenario |
-| The tooling itself is checked | 129 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
+| The tooling itself is checked | 146 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
 | The contract holds together | `make release-audit` cross-checks the manifests, milestones, documents, targets, toolchain and full git history |
 
 ## What this release does not cover

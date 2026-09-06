@@ -23,7 +23,7 @@ org0            macro   address
                     error   "too much stuff before org0 $\{address} ($\{(-.diff)} bytes)"
                     else
                     while   .diff > 1024
-   ; AS can only generate 1 kb of code on a single line
+    ; AS can only generate 1 kb of code on a single line
                     dc.b    [1024]0
                     .diff   := .diff - 1024
                 endm

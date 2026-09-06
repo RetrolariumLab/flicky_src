@@ -1,8 +1,8 @@
-; Level init, object spawning, collision queries.
-; ROM $011422-$011673.
+; Level init, object spawning, collision queries
+; ROM $011422-$011673
 
 Level_Init:
-                bsr.s   Collision_LoadMap  ; was: sub_11422
+                bsr.s   Collision_LoadMap               ; was: sub_11422
                 bsr.s   Level_SpawnObjects
                 bsr.w   Level_BuildGroundTilemap
                 bsr.w   Level_DrawUpperGround
@@ -13,46 +13,46 @@ Level_Init:
 
 ; Fills map edges with solid collision type
 Collision_SetBoundaries:
-                lea     (Ram_CollisionMap).w,a0  ; was: sub_1143A
+                lea     (Ram_CollisionMap).w,a0         ; was: sub_1143A
                 moveq   #$1F,d0
 
-Collision_SetBoundaries_TopRowLoop:  ; was: loc_11440
+Collision_SetBoundaries_TopRowLoop:                     ; was: loc_11440
                 move.b  #$C,(a0)+
                 dbf     d0,Collision_SetBoundaries_TopRowLoop
                 lea     (Ram_CollisionMapEnd).w,a0
                 moveq   #$3F,d0
 
-Collision_SetBoundaries_BottomRowsLoop:  ; was: loc_1144E
+Collision_SetBoundaries_BottomRowsLoop:                 ; was: loc_1144E
                 move.b  #$C,(a0)+
                 dbf     d0,Collision_SetBoundaries_BottomRowsLoop
                 lea     (Ram_CollisionMapRow1).w,a0
                 moveq   #$1F,d0
 
-Collision_SetBoundaries_TopEdgeLoop:  ; was: loc_1145C
+Collision_SetBoundaries_TopEdgeLoop:                    ; was: loc_1145C
                 tst.b   (a0)
                 beq.s   Collision_SetBoundaries_TopEdgeNext
                 move.b  #3,-$20(a0)
                 move.b  #$E,-$40(a0)
 
-Collision_SetBoundaries_TopEdgeNext:  ; was: loc_1146C
+Collision_SetBoundaries_TopEdgeNext:                    ; was: loc_1146C
                 addq.l  #1,a0
                 dbf     d0,Collision_SetBoundaries_TopEdgeLoop
                 lea     (Ram_CollisionMapLastRow).w,a0
                 moveq   #$1F,d0
 
-Collision_SetBoundaries_BottomEdgeLoop:  ; was: loc_11478
+Collision_SetBoundaries_BottomEdgeLoop:                 ; was: loc_11478
                 tst.b   (a0)
                 beq.s   Collision_SetBoundaries_BottomEdgeNext
                 move.b  #$D,$20(a0)
 
-Collision_SetBoundaries_BottomEdgeNext:  ; was: loc_11482
+Collision_SetBoundaries_BottomEdgeNext:                 ; was: loc_11482
                 addq.l  #1,a0
                 dbf     d0,Collision_SetBoundaries_BottomEdgeLoop
                 rts
 
 ; Spawns level objects from level data at (a6)
 Level_SpawnObjects:
-                lea     (Ram_PlayerStartX).w,a0  ; was: sub_1148A
+                lea     (Ram_PlayerStartX).w,a0         ; was: sub_1148A
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)
                 moveq   #0,d4
@@ -83,7 +83,7 @@ Level_SpawnObjects:
                 subq.b  #1,d0
                 bsr.w   Level_SpawnBackgroundLoop
 
-Level_SpawnObjects_Group4:  ; was: loc_114E0
+Level_SpawnObjects_Group4:                              ; was: loc_114E0
                 moveq   #4,d4
                 moveq   #0,d0
                 move.b  (a6)+,d0
@@ -91,7 +91,7 @@ Level_SpawnObjects_Group4:  ; was: loc_114E0
                 subq.b  #1,d0
                 bsr.s   Level_SpawnBackgroundLoop
 
-Level_SpawnObjects_Group5:  ; was: loc_114EC
+Level_SpawnObjects_Group5:                              ; was: loc_114EC
                 moveq   #5,d4
                 moveq   #0,d0
                 move.b  (a6)+,d0
@@ -99,11 +99,11 @@ Level_SpawnObjects_Group5:  ; was: loc_114EC
                 subq.b  #1,d0
                 bsr.s   Level_SpawnBackgroundLoop
 
-Level_SpawnObjects_Spawners:  ; was: loc_114F8
+Level_SpawnObjects_Spawners:                            ; was: loc_114F8
                 lea     (Ram_SpawnerSlots).w,a0
                 moveq   #5,d0
 
-Level_SpawnObjects_SpawnerLoop:  ; was: loc_114FE
+Level_SpawnObjects_SpawnerLoop:                         ; was: loc_114FE
                 move.w  #4,(a0)
                 move.b  (a6)+,$3E(a0)
                 move.b  (a6)+,$3F(a0)
@@ -116,7 +116,7 @@ Level_SpawnObjects_SpawnerLoop:  ; was: loc_114FE
                 add.b   d0,(Ram_ChicksRemaining).w
                 subq.b  #1,d0
 
-Level_SpawnObjects_ChickLoop:  ; was: loc_11522
+Level_SpawnObjects_ChickLoop:                           ; was: loc_11522
                 move.w  #8,(a0)
                 move.b  (a6)+,$3E(a0)
                 move.b  (a6)+,$3F(a0)
@@ -124,14 +124,14 @@ Level_SpawnObjects_ChickLoop:  ; was: loc_11522
                 lea     $40(a0),a0
                 dbf     d0,Level_SpawnObjects_ChickLoop
 
-Level_SpawnObjects_SecondChickGroup:  ; was: loc_1153A
+Level_SpawnObjects_SecondChickGroup:                    ; was: loc_1153A
                 moveq   #0,d0
                 move.b  (a6)+,d0
                 beq.s   Level_SpawnObjects_Return
                 add.b   d0,(Ram_ChicksRemaining).w
                 subq.b  #1,d0
 
-Level_SpawnObjects_SecondChickLoop:  ; was: loc_11546
+Level_SpawnObjects_SecondChickLoop:                     ; was: loc_11546
                 move.w  #8,(a0)
                 move.b  (a6)+,$3E(a0)
                 move.b  (a6)+,$3F(a0)
@@ -139,12 +139,12 @@ Level_SpawnObjects_SecondChickLoop:  ; was: loc_11546
                 lea     $40(a0),a0
                 dbf     d0,Level_SpawnObjects_SecondChickLoop
 
-Level_SpawnObjects_Return:  ; was: locret_11560
+Level_SpawnObjects_Return:                              ; was: locret_11560
                 rts
 
 ; Spawns background objects from position list at (a6)
 Level_SpawnBackgroundLoop:
-                moveq   #0,d7  ; was: sub_11562
+                moveq   #0,d7                           ; was: sub_11562
                 moveq   #0,d6
                 move.b  (a6)+,d7
                 move.b  (a6)+,d6
@@ -156,17 +156,17 @@ Level_SpawnBackgroundLoop:
 
 ; Gets collision tile value at world position d7/d6
 Collision_GetTileAtPos:
-                movem.l d6-d7/a1,-(sp)  ; was: sub_1157C
+                movem.l d6-d7/a1,-(sp)                  ; was: sub_1157C
                 cmpi.w  #$80,d7
                 bge.s   Collision_GetTileAtPos_WrapHigh
                 addi.w  #$100,d7
 
-Collision_GetTileAtPos_WrapHigh:  ; was: loc_1158A
+Collision_GetTileAtPos_WrapHigh:                        ; was: loc_1158A
                 cmpi.w  #$180,d7
                 blt.s   Collision_GetTileAtPos_Lookup
                 subi.w  #$100,d7
 
-Collision_GetTileAtPos_Lookup:  ; was: loc_11594
+Collision_GetTileAtPos_Lookup:                          ; was: loc_11594
                 lea     (Ram_CollisionMap).w,a1
                 move.l  #$FFFF,d4
                 and.l   d4,d7
@@ -185,18 +185,18 @@ Collision_GetTileAtPos_Lookup:  ; was: loc_11594
 
 ; Gets collision tile at object-relative position
 Collision_GetTileAtObject:
-                add.w   $30(a0),d7  ; was: sub_115C0
+                add.w   $30(a0),d7                      ; was: sub_115C0
                 add.w   $24(a0),d6
                 cmpi.w  #$80,d7
                 bge.s   Collision_GetTileAtObject_WrapHigh
                 addi.w  #$100,d7
 
-Collision_GetTileAtObject_WrapHigh:  ; was: loc_115D2
+Collision_GetTileAtObject_WrapHigh:                     ; was: loc_115D2
                 cmpi.w  #$180,d7
                 blt.s   Collision_GetTileAtObject_Lookup
                 subi.w  #$100,d7
 
-Collision_GetTileAtObject_Lookup:  ; was: loc_115DC
+Collision_GetTileAtObject_Lookup:                       ; was: loc_115DC
                 movem.l d6-d7,-(sp)
                 lea     (Ram_CollisionMap).w,a1
                 move.l  #$FFFF,d4
@@ -215,12 +215,12 @@ Collision_GetTileAtObject_Lookup:  ; was: loc_115DC
 
 ; Marks special collision tiles with flag bits 7/6/5
 Collision_SetSpecialTiles:
-                moveq   #0,d0  ; was: sub_11608
+                moveq   #0,d0                           ; was: sub_11608
                 move.b  (a6)+,d0
                 beq.s   Collision_SetSpecialTiles_Flag76
                 subq.w  #1,d0
 
-Collision_SetSpecialTiles_Flag7Loop:  ; was: loc_11610
+Collision_SetSpecialTiles_Flag7Loop:                    ; was: loc_11610
                 moveq   #0,d7
                 moveq   #0,d6
                 lea     (Ram_CollisionMap).w,a0
@@ -232,13 +232,13 @@ Collision_SetSpecialTiles_Flag7Loop:  ; was: loc_11610
                 bset    #7,(a0)
                 dbf     d0,Collision_SetSpecialTiles_Flag7Loop
 
-Collision_SetSpecialTiles_Flag76:  ; was: loc_1162A
+Collision_SetSpecialTiles_Flag76:                       ; was: loc_1162A
                 moveq   #0,d0
                 move.b  (a6)+,d0
                 beq.s   Collision_SetSpecialTiles_Flag5
                 subq.w  #1,d0
 
-Collision_SetSpecialTiles_Flag76Loop:  ; was: loc_11632
+Collision_SetSpecialTiles_Flag76Loop:                   ; was: loc_11632
                 moveq   #0,d7
                 moveq   #0,d6
                 lea     (Ram_CollisionMap).w,a0
@@ -251,13 +251,13 @@ Collision_SetSpecialTiles_Flag76Loop:  ; was: loc_11632
                 bset    #6,(a0)
                 dbf     d0,Collision_SetSpecialTiles_Flag76Loop
 
-Collision_SetSpecialTiles_Flag5:  ; was: loc_11650
+Collision_SetSpecialTiles_Flag5:                        ; was: loc_11650
                 moveq   #0,d0
                 move.b  (a6)+,d0
                 beq.s   Collision_SetSpecialTiles_Return
                 subq.w  #1,d0
 
-Collision_SetSpecialTiles_Flag5Loop:  ; was: loc_11658
+Collision_SetSpecialTiles_Flag5Loop:                    ; was: loc_11658
                 moveq   #0,d7
                 moveq   #0,d6
                 lea     (Ram_CollisionMap).w,a0
@@ -269,7 +269,7 @@ Collision_SetSpecialTiles_Flag5Loop:  ; was: loc_11658
                 bset    #5,(a0)
                 dbf     d0,Collision_SetSpecialTiles_Flag5Loop
 
-Collision_SetSpecialTiles_Return:  ; was: locret_11672
+Collision_SetSpecialTiles_Return:                       ; was: locret_11672
                 rts
 
 ; Converts grid coords to screen pixels (x8 + $80)

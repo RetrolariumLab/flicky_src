@@ -1,8 +1,8 @@
-; Title screen and its objects.
-; ROM $011FB0-$01228D.
+; Title screen and its objects
+; ROM $011FB0-$01228D
 
 Title_Init:
-                bsr.w   Sys_InitTitleScreen  ; was: sub_11FB0
+                bsr.w   Sys_InitTitleScreen             ; was: sub_11FB0
                 move.w  #$740,d0
                 jsr     j_Gfx_SetTileWriteAddr
                 lea     (FlickyLogoTiles).l,a0
@@ -15,7 +15,7 @@ Title_Init:
                 lea     (Ram_TitlePaletteSlot).w,a1
                 moveq   #3,d0
 
-Title_Init_CopyPaletteLoop:  ; was: loc_11FE2
+Title_Init_CopyPaletteLoop:                             ; was: loc_11FE2
                 move.l  (a0)+,(a1)+
                 dbf     d0,Title_Init_CopyPaletteLoop
                 moveq   #5,d0
@@ -24,7 +24,7 @@ Title_Init_CopyPaletteLoop:  ; was: loc_11FE2
                 beq.s   Title_Init_DrawTextLoop
                 lea     Title_TextPointersAlt(pc),a0
 
-Title_Init_DrawTextLoop:  ; was: loc_11FFC
+Title_Init_DrawTextLoop:                                ; was: loc_11FFC
                 movea.l (a0)+,a6
                 bsr.w   Text_DrawString
                 dbf     d0,Title_Init_DrawTextLoop
@@ -35,7 +35,7 @@ Title_Init_DrawTextLoop:  ; was: loc_11FFC
                 moveq   #0,d1
                 moveq   #3,d0
 
-Title_Init_SpawnBirdsLoop:  ; was: loc_12020
+Title_Init_SpawnBirdsLoop:                              ; was: loc_12020
                 move.w  #$40,(a0)
                 move.w  d1,$38(a0)
                 lea     $40(a0),a0
@@ -46,7 +46,7 @@ Title_Init_SpawnBirdsLoop:  ; was: loc_12020
                 moveq   #0,d1
                 moveq   #5,d0
 
-Title_Init_SpawnStaticLoop:  ; was: loc_1203E
+Title_Init_SpawnStaticLoop:                             ; was: loc_1203E
                 move.w  #$48,(a0)
                 move.w  d1,$38(a0)
                 lea     $40(a0),a0
@@ -57,7 +57,7 @@ Title_Init_SpawnStaticLoop:  ; was: loc_1203E
                 lea     Title_TrademarkLabel(pc),a6
                 bsr.w   Text_DrawDoubleHeight
 
-Title_Init_DrawHUD:  ; was: loc_12062
+Title_Init_DrawHUD:                                     ; was: loc_12062
                 bsr.w   UI_Draw1UPAndHILabels
                 bsr.w   UI_DrawScore
                 bsr.w   UI_DrawHighScore
@@ -68,48 +68,48 @@ Title_Init_DrawHUD:  ; was: loc_12062
                 jsr     j_Sound_QueueSFX
                 jmp     j_Sound_QueueSFX
 
-Title_TextPointers: dc.l    Title_CastLabel  ; was: off_12086
+Title_TextPointers:     dc.l    Title_CastLabel         ; was: off_12086
                 dc.l    Title_FlickyLabel
                 dc.l    Title_PiopioLabel
                 dc.l    Title_NyannyanLabel
                 dc.l    Title_ChoroLabel
                 dc.l    Title_CopyrightLabel
-Title_TextPointersAlt: dc.l    Title_CastLabel  ; was: off_1209E
+Title_TextPointersAlt:  dc.l    Title_CastLabel         ; was: off_1209E
                 dc.l    Title_FlickyLabel
                 dc.l    Title_ChirpLabel
                 dc.l    Title_TigerLabel
                 dc.l    Title_IggyLabel
                 dc.l    Title_CopyrightLabel
-Title_CastLabel: dc.b    $C2, $9C  ; was: byte_120B6
-Title_CastText: dc.b    "CAST",0
+Title_CastLabel:        dc.b    $C2, $9C                ; was: byte_120B6
+Title_CastText:         dc.b    "CAST",0
                 dc.b    0
-Title_FlickyLabel: dc.b    $C3, $10  ; was: byte_120BE
-Title_FlickyText: dc.b    "FLICKY",0
+Title_FlickyLabel:      dc.b    $C3, $10                ; was: byte_120BE
+Title_FlickyText:       dc.b    "FLICKY",0
                 dc.b    0
-Title_PiopioLabel: dc.b    $C3, $28  ; was: byte_120C8
-Title_PiopioText: dc.b    "PIOPIO",0
+Title_PiopioLabel:      dc.b    $C3, $28                ; was: byte_120C8
+Title_PiopioText:       dc.b    "PIOPIO",0
                 dc.b    0
-Title_NyannyanLabel: dc.b    $C3, $D0  ; was: byte_120D2
-Title_NyannyanText: dc.b    "NYANNYAN",0
+Title_NyannyanLabel:    dc.b    $C3, $D0                ; was: byte_120D2
+Title_NyannyanText:     dc.b    "NYANNYAN",0
                 dc.b    0
-Title_ChoroLabel: dc.b    $C3, $E8  ; was: byte_120DE
-Title_ChoroText: dc.b    "CHORO",0
-Title_CopyrightLabel: dc.b    $C6, $54  ; was: byte_120E6
-Title_Sega1991Text: dc.b    $27," SEGA 1991",0
-Title_ChirpLabel: dc.b    $C3, $28  ; was: byte_120F4
-Title_ChirpText: dc.b    "CHIRP",0
-Title_TigerLabel: dc.b    $C3, $D0  ; was: byte_120FC
-Title_TigerText: dc.b    "TIGER",0
-Title_IggyLabel: dc.b    $C3, $E8  ; was: byte_12104
-Title_IggyText: dc.b    "IGGY",0
+Title_ChoroLabel:       dc.b    $C3, $E8                ; was: byte_120DE
+Title_ChoroText:        dc.b    "CHORO",0
+Title_CopyrightLabel:   dc.b    $C6, $54                ; was: byte_120E6
+Title_Sega1991Text:     dc.b    $27," SEGA 1991",0
+Title_ChirpLabel:       dc.b    $C3, $28                ; was: byte_120F4
+Title_ChirpText:        dc.b    "CHIRP",0
+Title_TigerLabel:       dc.b    $C3, $D0                ; was: byte_120FC
+Title_TigerText:        dc.b    "TIGER",0
+Title_IggyLabel:        dc.b    $C3, $E8                ; was: byte_12104
+Title_IggyText:         dc.b    "IGGY",0
                 dc.b    0
-Title_LogoPalette: dc.w    0, $EEE, $EAE, $C6E, $A4E, $A2E, $60A, 0  ; was: word_1210C
-Title_TrademarkLabel: dc.b    $C0, $EE  ; was: byte_1211C
-Title_TmText:   dc.b    "TM",0
+Title_LogoPalette:      dc.w    0, $EEE, $EAE, $C6E, $A4E, $A2E, $60A, 0  ; was: word_1210C
+Title_TrademarkLabel:   dc.b    $C0, $EE                ; was: byte_1211C
+Title_TmText:           dc.b    "TM",0
                 dc.b    0
 ; Title screen update: handles start button and fade
 Title_Update:
-                btst    #7,(Ram_Joypad+1).w  ; was: sub_12122
+                btst    #7,(Ram_Joypad+1).w             ; was: sub_12122
                 beq.s   Title_Update_CheckTimeout
                 bsr.w   Gfx_FadeInPalette
                 move.b  #$E0,d0
@@ -118,7 +118,7 @@ Title_Update:
                 bsr.w   LoadTilesToVRAM_LoadFont
                 move.w  #8,(Ram_NextGameMode).w
 
-Title_Update_CheckTimeout:  ; was: loc_12146
+Title_Update_CheckTimeout:                              ; was: loc_12146
                 cmpi.w  #$400,(Ram_FrameCounter).w
                 bcs.s   Title_Update_Draw
                 bsr.w   Gfx_FadeInPalette
@@ -128,13 +128,13 @@ Title_Update_CheckTimeout:  ; was: loc_12146
                 bsr.w   LoadTilesToVRAM_LoadFont
                 move.w  #$38,(Ram_NextGameMode).w
 
-Title_Update_Draw:  ; was: loc_1216A
+Title_Update_Draw:                                      ; was: loc_1216A
                 bsr.w   Object_UpdateAll
                 jmp     j_Sound_QueueSFX
 
 ; Title screen Flicky bird animation object
 Obj_TitleBird:
-                bset    #7,(a0)  ; was: sub_12172
+                bset    #7,(a0)                         ; was: sub_12172
                 bne.s   Obj_TitleBird_Animate
                 bset    #7,2(a0)
                 move.w  $38(a0),d0
@@ -145,68 +145,68 @@ Obj_TitleBird:
                 move.w  Title_BirdXTable(pc,d0.w),$20(a0)
                 move.w  Title_BirdYTable(pc,d0.w),$24(a0)
 
-Obj_TitleBird_Animate:  ; was: loc_1219E
+Obj_TitleBird_Animate:                                  ; was: loc_1219E
                 bsr.w   Anim_UpdateFrame
                 rts
 
-Title_BirdAnimPointers: dc.l    Player_AnimPointers  ; was: off_121A4
+Title_BirdAnimPointers: dc.l    Player_AnimPointers     ; was: off_121A4
                 dc.l    Cat_AnimPointers
                 dc.l    Lizard_AnimPointers
                 dc.l    Snake_AnimPointers
-Title_BirdAnimIndexTable: dc.w    0, 4, 4, 0  ; was: word_121B4
-Title_BirdXTable: dc.w    $B0  ; was: word_121BC
-Title_BirdYTable: dc.w    $F0, $110, $EC, $B0, $108, $110, $100  ; was: word_121BE
+Title_BirdAnimIndexTable:       dc.w    0, 4, 4, 0      ; was: word_121B4
+Title_BirdXTable:               dc.w    $B0             ; was: word_121BC
+Title_BirdYTable:               dc.w    $F0, $110, $EC, $B0, $108, $110, $100  ; was: word_121BE
 ; Title screen cursor with blink state machine
 Obj_TitleCursor:
-                bset    #7,(a0)  ; was: sub_121CC
+                bset    #7,(a0)                         ; was: sub_121CC
                 bne.s   Obj_TitleCursor_Dispatch
                 move.l  #Obj_TitleCursorData,$C(a0)
                 move.w  #$F0,$20(a0)
                 move.w  #$120,$24(a0)
 
-Obj_TitleCursor_Dispatch:  ; was: loc_121E6
+Obj_TitleCursor_Dispatch:                               ; was: loc_121E6
                 move.w  $3C(a0),d0
                 andi.w  #$7C,d0
                 jsr     Title_CursorStateTable(pc,d0.w)
                 rts
 
-Title_CursorStateTable:  ; was: loc_121F4
+Title_CursorStateTable:                                 ; was: loc_121F4
                 bra.w   Obj_CursorWait
                 bra.w   Obj_CursorBlink
 
 ; Cursor wait state: timer before showing
 Obj_CursorWait:
-                bset    #7,$3C(a0)  ; was: sub_121FC
+                bset    #7,$3C(a0)                      ; was: sub_121FC
                 bne.s   Obj_CursorWait_Countdown
                 bclr    #1,2(a0)
                 move.w  #$3C,$3A(a0)
 
-Obj_CursorWait_Countdown:  ; was: loc_12210
+Obj_CursorWait_Countdown:                               ; was: loc_12210
                 subq.w  #1,$3A(a0)
                 bne.s   Obj_CursorWait_Return
                 move.w  #4,$3C(a0)
 
-Obj_CursorWait_Return:  ; was: locret_1221C
+Obj_CursorWait_Return:                                  ; was: locret_1221C
                 rts
 
 ; Cursor blink state: show then hide cycle
 Obj_CursorBlink:
-                bset    #7,$3C(a0)  ; was: sub_1221E
+                bset    #7,$3C(a0)                      ; was: sub_1221E
                 bne.s   Obj_CursorBlink_Countdown
                 bset    #1,2(a0)
                 move.w  #$14,$3A(a0)
 
-Obj_CursorBlink_Countdown:  ; was: loc_12232
+Obj_CursorBlink_Countdown:                              ; was: loc_12232
                 subq.w  #1,$3A(a0)
                 bne.s   Obj_CursorBlink_Return
                 clr.w   $3C(a0)
 
-Obj_CursorBlink_Return:  ; was: locret_1223C
+Obj_CursorBlink_Return:                                 ; was: locret_1223C
                 rts
 
 ; Title screen static sprite objects
 Obj_TitleStatic:
-                bset    #7,(a0)  ; was: sub_1223E
+                bset    #7,(a0)                         ; was: sub_1223E
                 bne.s   Obj_TitleStatic_Return
                 move.w  $38(a0),d0
                 lsl.w   #2,d0
@@ -214,15 +214,15 @@ Obj_TitleStatic:
                 move.w  Title_StaticXTable(pc,d0.w),$20(a0)
                 move.w  Title_StaticYTable(pc,d0.w),$24(a0)
 
-Obj_TitleStatic_Return:  ; was: locret_1225C
+Obj_TitleStatic_Return:                                 ; was: locret_1225C
                 rts
 
-Title_StaticMappingPointers: dc.l    Title_StaticMap0  ; was: off_1225E
+Title_StaticMappingPointers:    dc.l    Title_StaticMap0  ; was: off_1225E
                 dc.l    Title_StaticMap1
                 dc.l    Title_StaticMap2
                 dc.l    Title_StaticMap3
                 dc.l    Title_StaticMap4
                 dc.l    Title_StaticMap5
-Title_StaticXTable: dc.w    $D0  ; was: word_12276
-Title_StaticYTable: dc.w    $C0, $E5, $C0, $F7, $C0, $107, $C0, $11C, $C0, $133, $C0  ; was: word_12278
+Title_StaticXTable:     dc.w    $D0                     ; was: word_12276
+Title_StaticYTable:     dc.w    $C0, $E5, $C0, $F7, $C0, $107, $C0, $11C, $C0, $133, $C0  ; was: word_12278
 ; Guide/How-to-play screen initialization

@@ -79,9 +79,13 @@ Add a category only when an existing one genuinely does not fit.
    entry in [`unknowns.md`](unknowns.md) with an evidence tag. An honest
    neutral name is better than a confident wrong one, because the wrong one
    stops anyone from looking again.
-6. Every rename must leave the ROM byte-identical. Run `make verify` after each
-   batch; `make lint --strict-naming` refuses any surviving address-derived
-   identifier.
+6. Every rename must leave the ROM byte-identical. Run `make format` and then
+   `make verify` after each batch; `make lint --strict-naming` refuses any
+   surviving address-derived identifier.
+
+`make format` belongs in that order because a name is also a width. Label lines
+share a column across a run, so renaming one symbol in a table can move the
+column for the whole table -- see [`assembly_style.md`](assembly_style.md).
 
 ## Tooling
 
@@ -92,5 +96,6 @@ source name is not defined anywhere -- so a typo cannot silently do nothing.
 
 ```bash
 python scripts/rename_symbols.py workflow/rename_batch.csv
+make format
 make verify
 ```
