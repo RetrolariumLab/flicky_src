@@ -50,11 +50,27 @@ the claim.
 ## Level Studio
 
 `make level-studio` opens the current visual editor. It exposes all 48 round
-slots while preserving their mapping onto 36 shared layouts. The editor can
-change the 32-column collision grid, player and door positions, background
-objects, six spawners, both chick groups, and the three special-collision
-classes. Shared layouts are identified in the toolbar so an edit cannot appear
-to affect only one of several linked rounds.
+slots while preserving their mapping onto 36 shared layouts. Its 256-by-224
+preview composes the real editable level tiles, theme palette, upper and lower
+ground, background-object tilemaps, sprite mappings, Flicky, collectible chicks,
+and both enemy groups. The optional two-times grid and placement outlines sit
+above the game image instead of replacing it with abstract markers.
+
+The editor can change the 32-column collision grid, player and door positions,
+background objects, six collectible/throwable chicks, both enemy groups, and the three
+special-collision classes. The JSON keys `spawners` and `chicks_a/chicks_b`
+retain their original schema names for compatibility; runtime object types and
+mapping pointers establish the former as chicks and the latter as enemies.
+Shared layouts are identified in the toolbar so an edit cannot appear to
+affect only one of several linked rounds.
+
+`Playtest` saves the workspace, builds the isolated content ROM, and starts the
+round selected in the toolbar directly in Gens. A Lua bootstrap waits for the
+normal title initialization, writes the game's BCD-display/plain-index round
+word, and enters `Game_InitRound`; level loading, music, controls, and round
+logic therefore remain the game's own. `Stop` closes the emulator started by
+the editor. The same path is available outside the GUI as
+`make playtest-level ROUND=26`.
 
 The headless model decodes the collision command stream and every variable-
 length object group into `content/workspace/level/levels.json`. On build it
@@ -66,8 +82,9 @@ before the end marker.
 
 Unedited streams retain their original representation. An edited collision
 grid is encoded as forward skips and horizontal solid runs, and the validator
-decodes the result again before the assembler sees it. `make check-studios`
-loads and validates the model without creating a Tk window.
+decodes the result again before the assembler sees it. The preview is also
+headless: `make check-studios` loads all four VRAM banks, the shared/level/accent
+CRAM colours, static tilemaps, and sprite mappings without creating a Tk window.
 
 ## Graphics Studio
 

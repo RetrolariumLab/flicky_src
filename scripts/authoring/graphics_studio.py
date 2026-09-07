@@ -34,9 +34,9 @@ GENERIC_COLORS = (
 
 
 def md_color(word: int) -> str:
-    red = ((word >> 9) & 7) * 255 // 7
+    red = ((word >> 1) & 7) * 255 // 7
     green = ((word >> 5) & 7) * 255 // 7
-    blue = ((word >> 1) & 7) * 255 // 7
+    blue = ((word >> 9) & 7) * 255 // 7
     return f"#{red:02x}{green:02x}{blue:02x}"
 
 

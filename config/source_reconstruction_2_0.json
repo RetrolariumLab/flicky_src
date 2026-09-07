@@ -37,7 +37,9 @@
     "artifact_count": 5,
     "supported_studios": ["level", "graphics", "sound"],
     "headless_gate": "check-studios",
-    "editable_build_gate": "build-content"
+    "editable_build_gate": "build-content",
+    "level_playtest_target": "playtest-level",
+    "level_playtest_gate": "smoke-level-playtest"
   },
   "conditional_scope": {
     "revisions": {
@@ -84,6 +86,8 @@
     "validate-content",
     "check-studios",
     "level-studio",
+    "playtest-level",
+    "smoke-level-playtest",
     "graphics-studio",
     "sound-studio",
     "check-source-structure",
