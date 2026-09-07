@@ -60,13 +60,13 @@ class Agreement(unittest.TestCase):
 
 
 class ContractShape(unittest.TestCase):
-    """The manifest has to be the shape the shared release contract defines."""
+    """The manifest has to expose a stable project-owned public shape."""
 
-    def test_it_names_the_shared_contract_and_edition(self):
-        block = CONTRACT["contract"]
-        self.assertEqual(block["schema"], release_audit.CONTRACT_SCHEMA)
-        self.assertEqual(block["version"], release_audit.CONTRACT_VERSION)
-        self.assertEqual(block["release_line"], CONTRACT["release"]["version"])
+    def test_it_names_the_public_schema_and_release_line(self):
+        self.assertEqual(
+            CONTRACT["schema_version"], release_audit.MANIFEST_SCHEMA_VERSION
+        )
+        self.assertEqual(CONTRACT["release_line"], CONTRACT["release"]["version"])
 
     def test_the_tag_follows_the_template(self):
         self.assertEqual(CONTRACT["tag"], f"source-reconstruction-{CONTRACT['release']['version']}")

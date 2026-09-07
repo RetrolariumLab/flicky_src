@@ -69,6 +69,47 @@ grid is encoded as forward skips and horizontal solid runs, and the validator
 decodes the result again before the assembler sees it. `make check-studios`
 loads and validates the model without creating a Tk window.
 
+## Graphics Studio
+
+`make graphics-studio` opens the current raster-asset editor. Its tile canvas
+can edit all six Nemesis-compressed 4bpp banks (843 tiles total) and both 1bpp
+font banks. Separate tabs expose the ten-entry compact Sega palette and the
+12-by-4 word tilemap used by the Sega screen. The ignored editable document is
+`content/workspace/graphics/graphics.json`.
+
+Unedited assets pass through their original bytes. Edited Nemesis banks are
+recompressed with an optimizing encoder and decoded again during validation;
+the result must fit the bank's original fixed ROM slot. The Sega tilemap has
+an exact Enigma encoder and the same ten-byte capacity check. Fonts and the
+compact palette retain their exact fixed sizes. Shorter compressed streams are
+padded only inside their existing slots, so no following ROM address moves.
+
+This is the raster foundation of Graphics Studio. Mappings, animations, level
+palettes, in-game text, and additional screens remain separate semantic data.
+
+The same GUI also loads `content/workspace/graphics/semantics.json`. It exposes
+52 printable English strings and 28 palettes: twelve 16-colour level palettes,
+fifteen four-colour accent palettes, and the eight-colour title-logo palette.
+Strings may be replaced within their original byte capacity; shorter values
+are padded with spaces in the staged source. Palette sizes are fixed and each
+channel is validated against the Mega Drive's even `$0EEE` colour bits. These
+rules keep every edited record in its original ROM footprint. The Japanese
+guide strings use a separate raw glyph encoding and are not yet exposed.
+
+`content/workspace/graphics/sequences.json` covers the sprite layer: 224 used
+mapping records and 50 animation sequences. A mapping piece is decoded into
+signed X/Y coordinates, its separate mirrored-X coordinate, a one-to-four tile
+width and height, tile index, palette, priority, and flip flags. The GUI draws
+the pieces around their object origin. Animation records expose their delay and
+every fixed frame slot, for both object-sprite and tilemap animation formats.
+Piece and frame counts remain fixed so generated records retain their original
+byte capacities; labels in the staged assembly make all references compiler-
+resolved.
+
+The Japanese guide strings and additional non-animated screen layouts remain
+outside the current machine-readable artifacts and are not yet claimed as
+supported.
+
 The editable build stages a disposable copy of the source tree under
 `build/content/` and redirects generated payload includes there. This makes an
 edited ROM possible without copying a workspace payload over

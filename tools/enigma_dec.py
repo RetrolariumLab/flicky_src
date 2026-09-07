@@ -74,23 +74,17 @@ def decompress(data: bytes, base_tile: int = 0) -> bytes:
         consume_bits(count)
         return val
 
-    # Bit masks table
-    bit_masks = [0] + [(1 << i) - 1 for i in range(1, 17)]
-
     def decode_tile():
-        nonlocal bits_remaining, bit_buffer, pos
         tile = base_tile
 
         # Check vflip flag (bit 31)
         if flags & 0x80000000:
-            bits_remaining -= 1
-            if bit_buffer & (1 << bits_remaining):
+            if get_bits(1):
                 tile |= 0x1000
 
         # Check hflip flag (bit 15)
         if flags & 0x8000:
-            bits_remaining -= 1
-            if bit_buffer & (1 << bits_remaining):
+            if get_bits(1):
                 tile |= 0x0800
 
         # Read tile bits
@@ -101,31 +95,7 @@ def decompress(data: bytes, base_tile: int = 0) -> bytes:
         if bits < 0:
             bits = -bits
 
-        shift = bits_remaining - bits
-
-        if shift > 0:
-            val = (bit_buffer >> shift) & bit_masks[bits]
-            tile += val
-            consume_bits(bits)
-        elif shift == 0:
-            val = bit_buffer & bit_masks[bits]
-            tile += val
-            # Read new code word
-            bit_buffer = (src[pos] << 8) | src[pos + 1]
-            pos += 2
-            bits_remaining = 16
-        else:
-            need = -shift
-            val = bit_buffer << need
-            next_byte = src[pos] if pos < len(src) else 0
-            val |= (next_byte >> (8 - need)) & bit_masks[need]
-            val &= bit_masks[bits]
-            tile += val
-            bits_remaining = 16 + shift
-            bit_buffer = (src[pos] << 8) | src[pos + 1]
-            pos += 2
-
-        return tile
+        return tile + get_bits(bits)
 
     output = bytearray()
 

@@ -20,8 +20,7 @@ from pathlib import Path
 
 MILESTONE_RE = re.compile(r"^###\s+(\d+)\.\s+.*?-\s+(\w[\w ]*)$", re.MULTILINE)
 
-CONTRACT_SCHEMA = "retrolarium.source_reconstruction_release_contract"
-CONTRACT_VERSION = 3
+MANIFEST_SCHEMA_VERSION = 1
 REQUIREMENT_STATUSES = {"satisfied", "not_applicable", "partial", "unsupported", "planned"}
 RELEASE_STATUSES = {"development", "tag-ready", "tagged"}
 RELEASE_KINDS = {"preservation", "baseline", "compatible_minor", "advanced"}
@@ -39,22 +38,18 @@ def git_output(args: list[str]) -> list[str]:
     return [line for line in result.stdout.splitlines() if line]
 
 
-def check_contract_block(contract: dict, errors: list[str]) -> None:
-    """The manifest has to say which shared contract it was checked against."""
-    block = contract.get("contract")
-    if not isinstance(block, dict):
-        errors.append("manifest has no 'contract' block naming the shared release contract")
-        return
-    if block.get("schema") != CONTRACT_SCHEMA:
-        errors.append(f"contract.schema is {block.get('schema')!r}, expected {CONTRACT_SCHEMA!r}")
-    if block.get("version") != CONTRACT_VERSION:
-        errors.append(f"contract.version is {block.get('version')!r}, expected {CONTRACT_VERSION}")
-
+def check_release_header(contract: dict, errors: list[str]) -> None:
+    """Validate the public, project-owned manifest header."""
+    if contract.get("schema_version") != MANIFEST_SCHEMA_VERSION:
+        errors.append(
+            f"schema_version is {contract.get('schema_version')!r}, "
+            f"expected {MANIFEST_SCHEMA_VERSION}"
+        )
     release = contract.get("release", {})
     version = release.get("version")
-    if block.get("release_line") != version:
+    if contract.get("release_line") != version:
         errors.append(
-            f"contract.release_line {block.get('release_line')!r} does not match "
+            f"release_line {contract.get('release_line')!r} does not match "
             f"release.version {version!r}"
         )
     expected_tag = f"source-reconstruction-{version}"
@@ -347,12 +342,20 @@ def check_manifests(contract: dict, errors: list[str]) -> None:
     formats = load(Path("config/data_formats.json"))
     exact = sum(1 for a in formats["artifacts"] if a["round_trip"] == "exact")
     semantic = sum(1 for a in formats["artifacts"] if a["round_trip"] == "semantic")
-    if exact != contract["evidence"]["exact_round_trips"]:
-        errors.append(f"{exact} exact round trips declared, contract says "
+    # The 1.0 contract records the minimum evidence shipped at that milestone.
+    # Later source releases may strengthen a codec without rewriting history.
+    if exact < contract["evidence"]["exact_round_trips"]:
+        errors.append(f"{exact} exact round trips declared, contract requires at least "
                       f"{contract['evidence']['exact_round_trips']}")
-    if semantic != contract["evidence"]["semantic_round_trips"]:
-        errors.append(f"{semantic} semantic round trips declared, contract says "
-                      f"{contract['evidence']['semantic_round_trips']}")
+    required_understood = (
+        contract["evidence"]["exact_round_trips"]
+        + contract["evidence"]["semantic_round_trips"]
+    )
+    if exact + semantic < required_understood:
+        errors.append(
+            f"{exact + semantic} exact or semantic round trips declared, "
+            f"contract requires at least {required_understood}"
+        )
     if len(formats["artifacts"]) != contract["evidence"]["extracted_segments"]:
         errors.append("config/data_formats.json does not cover every extracted segment")
 
@@ -446,7 +449,7 @@ def main() -> int:
     contract = load(Path(args.contract))
 
     errors: list[str] = []
-    check_contract_block(contract, errors)
+    check_release_header(contract, errors)
     check_scope(contract, errors)
     check_delta(contract, errors)
     requirements = check_requirements(contract, errors)
@@ -471,8 +474,10 @@ def main() -> int:
     name = contract["release"]["name"]
     open_milestones = ", ".join(contract["open_milestones"]) or "none"
     profiles = len(contract["profiles"])
-    print(f"[OK] {name} ({contract['status']}), contract "
-          f"{contract['contract']['schema']} v{contract['contract']['version']}")
+    print(
+        f"[OK] {name} ({contract['status']}), public manifest schema "
+        f"v{contract['schema_version']}"
+    )
     print(f"[OK] {requirements} requirement(s), {profiles} profile(s) with identity and")
     print(f"[OK] runtime coverage, toolchain, licensing, documents, targets and history")
     print(f"[OK] all agree. Open milestones: {open_milestones}")

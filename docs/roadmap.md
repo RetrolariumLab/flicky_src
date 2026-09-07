@@ -136,6 +136,10 @@ byte, because the original compressor used a run-splitting heuristic that has
 not been identified and was not minimising size. Enigma is decode-only and the
 two Z80 images are opaque.
 
+Source 2.0 subsequently added an exact Enigma encoder, raising the live format
+manifest to nine exact round trips while leaving this 1.0 milestone record
+unchanged.
+
 The manifest records which claim applies to each segment rather than rounding
 them all up, and DATA-002 says what would settle the Nemesis case.
 
@@ -183,10 +187,10 @@ reachable history.
 
 *Exit criterion:* `make release-check` passes end to end.
 
-### 9. Shared release contract - Complete
+### 9. Machine-readable release policy - Complete
 
 The release manifest was rewritten to the shape
-`retrolarium.source_reconstruction_release_contract` edition 3 defines: scope in
+The project release manifest defines scope in
 and out, delta, profiles, runtime coverage, artifacts, aggregate gates, layout
 deviations, licensing and provenance, plus a per-requirement status with
 evidence that has to resolve to a real file, target or scenario.

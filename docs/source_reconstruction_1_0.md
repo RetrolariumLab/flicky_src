@@ -47,7 +47,7 @@ extracted from it, or any build output.
 | Behaviour is observed, not assumed | 12 movie replays under the emulator, 68 expectations about work RAM checked against the captures |
 | The toolchain is the declared one | SHA-256 for every vendored binary in `config/toolchain.json`, checked by `make verify-toolchain` before the assembler runs |
 | The ROM layout is declared, not implied | `config/rom_layout.json` holds 43 module ranges, 9 landmarks and the padding gap; `make verify-layout` checks all three against the build |
-| The release contract is machine-checked | The manifest follows `retrolarium.source_reconstruction_release_contract` v3, and `make release-audit` resolves every requirement's evidence to a real file, target or scenario |
+| The release boundary is machine-checked | The public manifest uses schema version 1, and `make release-audit` resolves every requirement's evidence to a real file, target or scenario |
 | The tooling itself is checked | 155 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
 | The contract holds together | `make release-audit` cross-checks the manifests, milestones, documents, targets, toolchain and full git history |
 
@@ -87,7 +87,7 @@ make release-check
 
 runs, in order: `verify-toolchain`, `check-assets`, `lint`, `test`,
 `roundtrip-formats`, `verify`, `verify-layout`, `symbols`, `trace`,
-`release-audit`. The order is the one the shared release contract recommends and
+`release-audit`. The order is the one the project release policy requires and
 `release_audit.py` checks that the Makefile recipe matches the sequence declared
 in the manifest, so the contract cannot claim a layer the gate skips.
 
