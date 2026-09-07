@@ -11,6 +11,7 @@
 | [`content_authoring.md`](content_authoring.md) | How isolated editable builds and the 2.0 studios work |
 | [`validation.md`](validation.md) | Which check proves what |
 | [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
+| [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) | What the 2.0 authoring release adds and how it is accepted |
 | [`provenance/labels.md`](provenance/labels.md) | Where every name and every extracted byte came from |
 | [`adr/`](adr/0001-as-assembler.md) | The decisions that would be expensive to reverse |
 
@@ -59,8 +60,8 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 ## Current status
 
-Source Reconstruction 1.0 is preserved and complete; Source 2.0 authoring is
-in progress. The byte-identity gate compares against the cartridge dump, the
+Source Reconstruction 1.0 is preserved and complete; Source Reconstruction
+2.0 is tag-ready on its release branch. The byte-identity gate compares against the cartridge dump, the
 source is modular and
 consistently styled, every symbol is semantic, the subsystems and the memory
 map are documented, the authored data formats have codecs, the symbol map is
@@ -68,9 +69,10 @@ exported, twelve scenarios replay under the emulator with 68 checked
 expectations about work RAM, and `make release-check` audits the whole
 contract.
 
-See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe
-and [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for what the
-release does and does not claim.
+See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe,
+[`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for the preserved
+base, and [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) for the
+authoring release.
 
 Seven questions are open in [`unknowns.md`](unknowns.md), and one is resolved:
 CODE-002 records the defect class byte identity cannot see.

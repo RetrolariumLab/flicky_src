@@ -15,8 +15,8 @@ itself. `src/main.s` is no longer a source file: it is an index of 43
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is in
-progress on top of it, adding isolated Level, Graphics, and Sound studios. The
+Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is
+tag-ready on top of it, with isolated Level, Graphics, and Sound studios. The
 data formats have codecs, the symbol map is exported for debuggers, twelve scenarios
 replay under the emulator and are checked against 68 declared facts about work
 RAM, and `make release-check` audits the whole release contract. See

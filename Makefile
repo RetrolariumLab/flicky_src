@@ -52,6 +52,7 @@ RUNTIME_SCENARIOS ?= scenarios/runtime_scenarios.json
 RUNTIME_DIR ?= build/runtime
 RUNTIME_SUMMARY ?= build/runtime_scenarios.json
 RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
+SOURCE_2_MANIFEST ?= config/source_reconstruction_2_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 ROM_LAYOUT ?= config/rom_layout.json
 LISTING ?= build/main.lst
@@ -101,7 +102,7 @@ STRICT_NAMING ?= --strict-naming
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         init-content inspect-content validate-content build-content check-content-zero-edit level-studio graphics-studio sound-studio check-studios \
-        test release-audit release-check clean \
+        test release-audit release-check source-2-audit source-2-release-audit source-2-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help \
         _require-assets _require-movie _require-toolchain
@@ -278,6 +279,20 @@ release-check:
 	$(MAKE) trace
 	$(MAKE) release-audit
 
+source-2-audit:
+	@$(PYTHON) $(SCRIPTS_DIR)/source_2_audit.py --manifest $(SOURCE_2_MANIFEST)
+
+source-2-release-audit:
+	@$(PYTHON) $(SCRIPTS_DIR)/source_2_audit.py --manifest $(SOURCE_2_MANIFEST) --require-ready
+
+source-2-check:
+	$(MAKE) release-check
+	$(MAKE) verify-relocation
+	$(MAKE) check-content-zero-edit
+	$(MAKE) validate-content
+	$(MAKE) check-studios
+	$(MAKE) source-2-release-audit
+
 # Deterministic whitespace, label-layout and case normalization, then re-check.
 # Formatting must never move a byte, so verify afterwards.
 format:
@@ -447,6 +462,8 @@ help:
 	@echo "  make test                      Unit tests for the Python tooling"
 	@echo "  make release-audit             Check the 1.0 release contract"
 	@echo "  make release-check             The complete acceptance gate"
+	@echo "  make source-2-audit            Check the Source 2.0 manifest"
+	@echo "  make source-2-check            Run 1.0 plus every Source 2.0 gate"
 	@echo ""
 	@echo "Data tools:"
 	@echo "  make tools                     Build the C decompressors"
