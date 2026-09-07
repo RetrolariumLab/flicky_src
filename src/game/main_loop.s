@@ -347,6 +347,9 @@ Game_RoundStartSequence_DelayLoop:
                 rts
 
 ; Calculates round difficulty: speed and patterns
+; !(OBS) CODE-002 $14000 is an accumulator, not an address. The disassembler
+; read it as one and invented a label for it, which assembles to the same bytes
+; here and to a wrong value anywhere else
 Game_CalcDifficulty:
                 move.w  #$136,d1
                 move.l  #$14000,d2

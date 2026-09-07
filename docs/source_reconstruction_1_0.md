@@ -43,7 +43,7 @@ extracted from it, or any build output.
 | Names mean something | Zero address-derived identifiers across 1,979 definitions, enforced by `make lint --strict-naming` |
 | The memory map is known | 194 named work RAM fields in [`ram_fields.md`](ram_fields.md), raw addresses rejected outside `src/memory/` |
 | Authored data is understood | 8 of 17 segments round-trip byte for byte; the rest declare a weaker claim in `config/data_formats.json` |
-| Uncertainty is explicit | 7 entries in [`unknowns.md`](unknowns.md), each referenced from the source, checked both ways by lint |
+| Uncertainty is explicit | 8 entries in [`unknowns.md`](unknowns.md), seven open and one resolved, each referenced from the source, checked both ways by lint |
 | Behaviour is observed, not assumed | 12 movie replays under the emulator, 68 expectations about work RAM checked against the captures |
 | The toolchain is the declared one | SHA-256 for every vendored binary in `config/toolchain.json`, checked by `make verify-toolchain` before the assembler runs |
 | The ROM layout is declared, not implied | `config/rom_layout.json` holds 43 module ranges, 9 landmarks and the padding gap; `make verify-layout` checks all three against the build |
