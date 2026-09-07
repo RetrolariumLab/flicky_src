@@ -15,8 +15,8 @@
     {
       "id": "graphics",
       "name": "Graphics Studio",
-      "status": "planned",
-      "artifacts": []
+      "status": "foundation",
+      "artifacts": ["graphics_assets", "graphics_semantics", "graphics_sequences"]
     },
     {
       "id": "sound",
@@ -26,6 +26,29 @@
     }
   ],
   "artifacts": [
+    {
+      "id": "graphics_assets",
+      "studio": "graphics",
+      "kind": "graphics_document",
+      "workspace": "graphics/graphics.json",
+      "asset_count": 10
+    },
+    {
+      "id": "graphics_semantics",
+      "studio": "graphics",
+      "kind": "graphics_semantics_document",
+      "workspace": "graphics/semantics.json",
+      "text_count": 52,
+      "palette_count": 28
+    },
+    {
+      "id": "graphics_sequences",
+      "studio": "graphics",
+      "kind": "graphics_sequences_document",
+      "workspace": "graphics/sequences.json",
+      "mapping_count": 224,
+      "animation_count": 50
+    },
     {
       "id": "level_layouts",
       "studio": "level",

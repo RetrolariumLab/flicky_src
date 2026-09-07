@@ -11,6 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools"))
 
 import enigma_dec  # noqa: E402
+import enigma_enc  # noqa: E402
 import nemesis_dec  # noqa: E402
 import nemesis_enc  # noqa: E402
 
@@ -122,6 +123,7 @@ CODECS = {
     "velocity_pairs": (decode_velocity_pairs, encode_velocity_pairs),
     "tilemap_words": (decode_tilemap_words, encode_tilemap_words),
     "font_1bpp": (decode_font_1bpp, encode_font_1bpp),
+    "enigma": (enigma_dec.decompress, enigma_enc.encode),
 }
 
 
@@ -155,13 +157,6 @@ def check_nemesis(data: bytes) -> tuple[bool, str]:
         f"{len(data)} -> {len(plain)} bytes, re-encoded to {len(again)} bytes, "
         f"decodes identically{exact}"
     )
-
-
-def check_enigma(data: bytes) -> tuple[bool, str]:
-    plain = enigma_dec.decompress(data)
-    if not plain:
-        return False, "decoded to nothing"
-    return True, f"{len(data)} -> {len(plain)} bytes, decode only (DATA-002)"
 
 
 def main() -> int:
@@ -199,8 +194,6 @@ def main() -> int:
         codec = artifact["codec"]
         if codec == "nemesis":
             ok, detail = check_nemesis(data)
-        elif codec == "enigma":
-            ok, detail = check_enigma(data)
         else:
             ok, detail = check_exact(data, codec)
 

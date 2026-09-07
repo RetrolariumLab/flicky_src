@@ -94,8 +94,8 @@
       "segment": "SegaEnigma",
       "path": "arteni/data_SegaEnigma.bin",
       "codec": "enigma",
-      "round_trip": "decode_only",
-      "note": "See DATA-002: no encoder exists for this format."
+      "round_trip": "exact",
+      "note": "The optimizing encoder reproduces the 48-word incrementing tilemap in its original 10-byte slot."
     },
     {
       "segment": "z80_part1",

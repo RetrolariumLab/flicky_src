@@ -1,10 +1,6 @@
 {
-  "contract": {
-    "schema": "retrolarium.source_reconstruction_release_contract",
-    "version": 3,
-    "release_line": "1.0",
-    "document": "source_reconstruction_release_contract.md"
-  },
+  "schema_version": 1,
+  "release_line": "1.0",
   "release": {
     "name": "Source Reconstruction 1.0",
     "version": "1.0"
@@ -181,7 +177,7 @@
     {
       "id": "release_contract_alignment",
       "kind": "tooling",
-      "summary": "Toolchain hashes are verified before the assembler runs, the ROM layout became a checked contract instead of prose, and this manifest was rewritten to the shared release contract's shape.",
+      "summary": "Toolchain hashes are verified before the assembler runs, the ROM layout became a checked contract instead of prose, and this manifest records the complete public release boundary.",
       "commits": [
         "release-commit"
       ],
@@ -194,7 +190,7 @@
     {
       "id": "entrypoint_under_src",
       "kind": "source",
-      "summary": "The entrypoint moved from flicky.s at the repository root to src/main.s, the path the shared contract recommends, and its includes are now written relative to src/ the way the NES projects write theirs. The AS object and listing are named explicitly so the move does not drop build artifacts into src/.",
+      "summary": "The entrypoint moved from flicky.s at the repository root to src/main.s, the project's canonical source index, and its includes are now written relative to src/. The AS object and listing are named explicitly so the move does not drop build artifacts into src/.",
       "commits": [
         "release-commit"
       ],

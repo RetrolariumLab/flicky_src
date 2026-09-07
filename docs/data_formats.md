@@ -108,7 +108,7 @@ built into the ROM for attract mode.
 recorded in `config/data_formats.json`. Three claims are possible and they are
 not interchangeable.
 
-**`exact`** -- decoding and re-encoding returns the original bytes. Eight
+**`exact`** -- decoding and re-encoding returns the original bytes. Nine
 segments qualify, and for these the field layout is proven rather than
 plausible:
 
@@ -121,6 +121,7 @@ LizardJumpArcTable  384 bytes,    48 entries
 EndingCongratsArt   954 bytes,   477 entries
 Jap1BPPTiles      1,432 bytes, 1,432 rows
 Latin1BPPTiles      344 bytes,   344 rows
+SegaEnigma           10 bytes,    48 words
 ```
 
 **`semantic`** -- re-encoding produces a valid stream that decodes to identical
@@ -132,8 +133,10 @@ consistently *smaller* than the original -- 117 bytes against 128 for
 `ExitTiles` -- which says the original compressor was not minimising size. This
 is [DATA-002](unknowns.md).
 
-**`decode_only`** -- there is a decoder and no encoder. `SegaEnigma` is the one
-case; it decodes from 10 bytes to 96 and stops there.
+There are no remaining decode-only formats. `SegaEnigma` now has an optimizing
+encoder which reproduces its 48 incrementing words in the original ten-byte
+slot. Edited tilemaps are accepted only when their optimal stream still fits
+that fixed region.
 
 The historical 1.0 format manifest still marks both extracted Z80 segments as
 `none`. On `source-2.0`, the first claim is superseded by the independent
@@ -142,6 +145,6 @@ source-assembly equality gate; the second remains an authored-data task.
 This distinction is the point of the milestone. A decoder can be plausibly
 wrong -- it can produce sensible-looking tiles from a misunderstood header and
 nobody would notice. Requiring the encoder to reproduce the original bytes is
-what turns "this decodes" into "this is understood", so the eight `exact`
+what turns "this decodes" into "this is understood", so the nine `exact`
 segments carry a stronger guarantee than the six `semantic` ones, and the
 manifest says which is which rather than rounding them all up.

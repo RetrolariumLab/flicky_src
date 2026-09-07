@@ -112,6 +112,7 @@ make init-content              # Initialize the ignored editor workspace
 make build-content             # Build an isolated editable ROM
 make check-content-zero-edit   # Prove editable baseline byte identity
 make level-studio              # Open the visual level editor
+make graphics-studio           # Open the visual graphics editor
 make check-studios             # Validate Studio models without opening GUI
 ```
 
@@ -168,9 +169,9 @@ for the Japanese variants carry a `JP` suffix.
 
 ## Known gaps
 
-- **Nemesis and Enigma do not re-encode byte for byte.** Eight of the seventeen
-  segments round-trip exactly; the six Nemesis ones only round-trip
-  semantically, and Enigma has no encoder at all. Tracked as DATA-002; see
+- **Nemesis does not re-encode byte for byte.** Nine of the seventeen segments
+  round-trip exactly, including Enigma; the six Nemesis streams round-trip
+  semantically with smaller valid encodings. Tracked as DATA-002; see
   [`docs/data_formats.md`](docs/data_formats.md).
 - **The runtime layer checks state, not pixels.** The twelve replays assert
   declared values of work RAM, which catches a game that diverges; comparing

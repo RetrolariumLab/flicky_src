@@ -62,7 +62,13 @@ def validate_manifest(document: dict[str, Any]) -> list[str]:
         if artifact.get("studio") not in EXPECTED_STUDIOS:
             errors.append(f"invalid artifact studio: {identifier}")
         kind = artifact.get("kind")
-        if kind not in {"assembly_source", "level_document"}:
+        if kind not in {
+            "assembly_source",
+            "level_document",
+            "graphics_document",
+            "graphics_semantics_document",
+            "graphics_sequences_document",
+        }:
             errors.append(f"unsupported artifact kind: {identifier}")
         if kind == "assembly_source" and (
             not isinstance(artifact.get("capacity"), int) or artifact["capacity"] <= 0
@@ -113,6 +119,18 @@ def initialize(root: Path, manifest: dict[str, Any], force: bool = False) -> int
             from level_studio_model import atomic_write_json, export_document
 
             atomic_write_json(workspace, export_document(root))
+        elif artifact["kind"] == "graphics_document":
+            from graphics_studio_model import atomic_write_json, export_document
+
+            atomic_write_json(workspace, export_document(root))
+        elif artifact["kind"] == "graphics_semantics_document":
+            from graphics_semantics_model import atomic_write_json, export_document
+
+            atomic_write_json(workspace, export_document(root))
+        elif artifact["kind"] == "graphics_sequences_document":
+            from graphics_sequences_model import atomic_write_json, export_document
+
+            atomic_write_json(workspace, export_document(root))
         created += 1
     print(f"[OK] Content workspace ready ({created} artifact(s) initialized)")
     return created
@@ -133,6 +151,18 @@ def validate_workspace(root: Path, manifest: dict[str, Any], zero_edit: bool = F
             from level_studio_model import load_document, validate_document
 
             validate_document(load_document(workspace))
+        elif artifact["kind"] == "graphics_document":
+            from graphics_studio_model import load_document, validate_document
+
+            validate_document(load_document(workspace), root)
+        elif artifact["kind"] == "graphics_semantics_document":
+            from graphics_semantics_model import load_document, validate_document
+
+            validate_document(load_document(workspace), root)
+        elif artifact["kind"] == "graphics_sequences_document":
+            from graphics_sequences_model import load_document, validate_document
+
+            validate_document(load_document(workspace), root)
     mode = "zero-edit " if zero_edit else ""
     print(f"[OK] {mode}content workspace is structurally valid")
 
@@ -175,8 +205,20 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
             if artifact["kind"] == "assembly_source":
                 baseline = root / artifact["baseline"]
                 unchanged = workspace.read_bytes() == baseline.read_bytes()
-            else:
+            elif artifact["kind"] == "level_document":
                 from level_studio_model import export_document, load_document
+
+                unchanged = load_document(workspace) == export_document(root)
+            elif artifact["kind"] == "graphics_document":
+                from graphics_studio_model import export_document, load_document
+
+                unchanged = load_document(workspace) == export_document(root)
+            elif artifact["kind"] == "graphics_semantics_document":
+                from graphics_semantics_model import export_document, load_document
+
+                unchanged = load_document(workspace) == export_document(root)
+            else:
+                from graphics_sequences_model import export_document, load_document
 
                 unchanged = load_document(workspace) == export_document(root)
             state = "unchanged" if unchanged else "edited"

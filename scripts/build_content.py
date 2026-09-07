@@ -9,6 +9,22 @@ import sys
 from pathlib import Path
 
 from content_workspace import load_manifest, stage_sources, validate_workspace
+from graphics_studio_model import (
+    build_assets as build_graphics_assets,
+    export_document as export_graphics_document,
+    load_document as load_graphics_document,
+    redirect_includes as redirect_graphics_includes,
+)
+from graphics_semantics_model import (
+    apply_document as apply_graphics_semantics,
+    export_document as export_graphics_semantics,
+    load_document as load_graphics_semantics,
+)
+from graphics_sequences_model import (
+    apply_document as apply_graphics_sequences,
+    export_document as export_graphics_sequences,
+    load_document as load_graphics_sequences,
+)
 from level_studio_model import apply_document, export_document, load_document
 
 
@@ -93,6 +109,37 @@ def main() -> int:
             root / manifest["workspace"] / level_artifact["workspace"]
         )
     apply_document(level_document, staged_main.parent)
+    graphics_artifact = next(
+        item for item in manifest["artifacts"] if item["id"] == "graphics_assets"
+    )
+    if args.zero_edit:
+        graphics_document = export_graphics_document(root)
+    else:
+        graphics_document = load_graphics_document(
+            root / manifest["workspace"] / graphics_artifact["workspace"]
+        )
+    graphics_outputs = build_graphics_assets(graphics_document, root, build_dir)
+    redirect_graphics_includes(staged_main.parent, graphics_outputs)
+    semantics_artifact = next(
+        item for item in manifest["artifacts"] if item["id"] == "graphics_semantics"
+    )
+    if args.zero_edit:
+        semantics_document = export_graphics_semantics(root)
+    else:
+        semantics_document = load_graphics_semantics(
+            root / manifest["workspace"] / semantics_artifact["workspace"]
+        )
+    apply_graphics_semantics(semantics_document, root, staged_main.parent)
+    sequences_artifact = next(
+        item for item in manifest["artifacts"] if item["id"] == "graphics_sequences"
+    )
+    if args.zero_edit:
+        sequences_document = export_graphics_sequences(root)
+    else:
+        sequences_document = load_graphics_sequences(
+            root / manifest["workspace"] / sequences_artifact["workspace"]
+        )
+    apply_graphics_sequences(sequences_document, root, staged_main.parent)
     rom_command = [
         sys.executable, "scripts/build_rom.py",
         "--source", str(staged_main),
