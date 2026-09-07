@@ -31,7 +31,7 @@ would be expected.
 
 `Boot_EntryPoint` brings up the hardware -- security register, VDP, Z80, PSG, work
 RAM, CRAM, VSRAM -- then verifies the cartridge checksum against the value in
-the header and jumps to `CheckSumError` if it does not match. `Boot_CheckInitFlag`
+the header and jumps to `Boot_ChecksumError` if it does not match. `Boot_CheckInitFlag`
 tests a magic longword so a soft reset skips the RAM clear. Finally the whole
 first 48 KiB of the second bank is copied to work RAM and executed from there,
 which is what makes `Sys_GameEntryPoint` at `$10000` the fixed point everything
