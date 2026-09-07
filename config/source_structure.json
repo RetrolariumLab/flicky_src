@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "preferred_line_range": {
+    "minimum": 300,
+    "maximum": 700
+  },
+  "exceptions": {
+    "src/main.s": "Address-ordered 68000 translation-unit index; it deliberately contains no game implementation.",
+    "src/macros/macros.inc": "Shared assembler pseudo-instructions; definitions are kept together and emit no bytes.",
+    "src/memory/constants.inc": "Small hardware constant vocabulary; padding it or mixing it with addresses would obscure ownership.",
+    "src/memory/hardware.inc": "Memory-mapped hardware address vocabulary; it emits no bytes and is separated from game RAM.",
+    "src/memory/ram.inc": "Work-RAM ABI declaration; it emits no bytes and remains a single searchable address map.",
+    "src/data/art.s": "Compact ordered asset include ledger whose physical ROM position is the reason for the boundary.",
+    "src/data/bank0.s": "Fixed first-bank bridge containing the Z80 image, jump table, and Japanese font at their ROM positions.",
+    "src/data/level_layout.s": "Dense level-layout data physically interleaved between enemy implementations in the original ROM.",
+    "src/game/bonus/mode.s": "Bonus-round state flow is physically separated from its object implementations by the ROM layout.",
+    "src/game/enemies/spawner.s": "Complete enemy-spawner and score-popup unit; neighbouring ROM code belongs to other actors.",
+    "src/game/round/select_and_setup.s": "Complete pre-round controller; adding the following 440-line state machine would exceed the maximum.",
+    "src/game/screens/attract_mode.s": "Self-contained attract-mode input player stored between the ending and actor implementations.",
+    "src/game/screens/game_over.s": "Fixed text-only game-over tail; merging it with bonus objects or art would cross subsystem boundaries.",
+    "src/game/text_encoding.s": "Compact character lookup and RNG block isolated by the surrounding RLE and interrupt code.",
+    "src/rendering/rle.s": "Self-contained RLE decoder and VRAM-address helper isolated in the original ROM order.",
+    "src/rendering/text.s": "Complete text renderer isolated by the VBlank handler before it and world code after it.",
+    "src/rendering/tilemap.s": "Complete tilemap transfer unit separated from other rendering code by the Z80 host block.",
+    "src/rendering/vdp.s": "Complete VDP hardware layer; the next contiguous ROM block belongs to the sound subsystem.",
+    "src/sound/engine.s": "Small 68000 sound initializer isolated between the Z80 data payload and rendering code.",
+    "src/sound/z80/driver.asm": "Standalone Z80 translation-unit index; implementation lives in its size-bounded included modules.",
+    "src/sound/z80/driver/abi.asm": "Non-emitting Z80 hardware and resident-RAM ABI shared by every driver implementation module.",
+    "src/sound/z80/host.s": "Complete 68000 Z80 bus and command-queue driver occupying its own fixed ROM block.",
+    "src/sound/z80/load_data.s": "ROM load descriptors and payload include kept together so their computed source pointers remain visible.",
+    "src/system/dma.s": "Complete DMA implementation only slightly below the preferred minimum and bounded by compression code.",
+    "src/system/game_entry.s": "Fixed game-entry and mode-dispatch block separated from startup by the first ROM bank.",
+    "src/system/input.s": "Self-contained controller driver physically located between compression and VDP implementations.",
+    "src/system/vblank.s": "Self-contained interrupt handler isolated between text encoding and the text renderer."
+  }
+}

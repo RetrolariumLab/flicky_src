@@ -71,7 +71,7 @@ def main() -> int:
     ]
     run([
         sys.executable, "scripts/build_z80_driver.py",
-        "--source", "src/sound/z80_driver_z80.asm",
+        "--source", "src/sound/z80/driver.asm",
         "--obj", str(build_dir / "z80_driver.p"),
         "--output", str(driver_output),
         "--reference", "data/sound/data_z80_part1.bin",

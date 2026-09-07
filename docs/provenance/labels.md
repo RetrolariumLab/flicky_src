@@ -30,7 +30,7 @@ the imported disassembly defined to the name this reconstruction gave it, and
 the file that now holds it:
 
 ```json
-["sub_12A94", "Game_StartRound", "src/game/main_loop.s"]
+["sub_12A94", "Game_StartRound", "src/game/round/main_loop.s"]
 ```
 
 A symbol the reconstruction did not rename appears with `original` equal to
@@ -118,9 +118,9 @@ walks every reachable git object to prove no payload was ever committed.
 The 1.0 release excluded the extracted sound images by name because it had not
 yet reconstructed their source. On `source-2.0`, `data_z80_part1.bin` is the
 byte-identity reference for the symbolic resident program in
-`src/sound/z80_driver_z80.asm`. `data_z80_part2.bin` is not executable: its
+`src/sound/z80/driver.asm`. `data_z80_part2.bin` is not executable: its
 descriptors, indices, SFX/music headers and data pointers are authored in
-`src/data/z80_sound.s` and `src/sound/z80_sound_data.asm`.
+`src/sound/z80/load_data.s` and `src/sound/z80/data.asm`.
 
 Both generated components are assembled and compared with the extracted
 images before the main ROM pass. DATA-001 and SND-001 in

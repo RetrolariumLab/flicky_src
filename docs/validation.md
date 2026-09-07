@@ -1,11 +1,12 @@
 # Validation
 
-Seven layers, in increasing cost and decreasing frequency. They check different
+Eight layers, in increasing cost and decreasing frequency. They check different
 things and none of them substitutes for another.
 
 ```bash
 make verify-toolchain     # the assembler is the one this release was built with
 make lint                 # style, naming, documentation, evidence registry
+make check-source-structure # 300-700 lines, exceptions, filename prefixes
 make verify               # byte identity with the reference ROM -- the gate
 make verify-layout        # the ROM layout is the one config/rom_layout.json declares
 make test                 # focused unit tests for the Python tooling
@@ -26,6 +27,12 @@ name instead of appearing as an unexplained byte difference. `build` and
 symbol carries a ROM address, that every evidence tag resolves to a registry
 entry and back, and that no documentation link is broken. It knows nothing
 about what the program does.
+
+**`make check-source-structure`** inventories every `.s`, `.asm`, and `.inc`
+file. Sources should contain 300-700 lines; every exception needs a concrete
+reason in `config/source_structure.json`. It also rejects repeated filename
+prefixes in one directory. The check is part of `make lint` as well as a
+standalone target.
 
 **`make verify`** assembles the source and compares the result against the
 cartridge dump. This is the only check that can say the reconstruction is

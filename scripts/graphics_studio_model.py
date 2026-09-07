@@ -36,7 +36,7 @@ ASSETS = (
 )
 
 INCLUDES = {
-    "sega_tiles": ("system/sega_screen.s", "data/artnem/data_SegaTiles.bin"),
+    "sega_tiles": ("system/startup.s", "data/artnem/data_SegaTiles.bin"),
     "level_tiles": ("data/art.s", "data/artnem/data_LevelTiles.bin"),
     "exit_tiles": ("data/art.s", "data/artnem/data_ExitTiles.bin"),
     "sprite_tiles": ("data/art.s", "data/artnem/data_SpritesTiles.bin"),
@@ -44,8 +44,8 @@ INCLUDES = {
     "logo_tiles": ("data/art.s", "data/artnem/data_FlickyLogoTiles.bin"),
     "japanese_font": ("data/bank0.s", "data/artunc/data_Jap1BPPTiles.bin"),
     "latin_font": ("data/art.s", "data/artunc/data_Latin1BPPTiles.bin"),
-    "sega_palette": ("system/sega_screen.s", "data/other/data_SegaPalette.bin"),
-    "sega_tilemap": ("system/sega_screen.s", "data/arteni/data_SegaEnigma.bin"),
+    "sega_palette": ("system/startup.s", "data/other/data_SegaPalette.bin"),
+    "sega_tilemap": ("system/startup.s", "data/arteni/data_SegaEnigma.bin"),
 }
 
 

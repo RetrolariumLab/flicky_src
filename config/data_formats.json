@@ -102,7 +102,7 @@
       "path": "sound/data_z80_part1.bin",
       "codec": "opaque",
       "round_trip": "none",
-      "note": "Reference image for authored src/sound/z80_driver_z80.asm; see resolved SND-001."
+      "note": "Reference image for authored src/sound/z80/driver.asm; see resolved SND-001."
     },
     {
       "segment": "z80_part2",

@@ -18,10 +18,12 @@
   },
   "semantic_source": {
     "status": "satisfied",
-    "z80_driver_source": "src/sound/z80_driver_z80.asm",
+    "z80_driver_source": "src/sound/z80/driver.asm",
     "z80_driver_gate": "z80-check",
-    "z80_sound_data_source": "src/sound/z80_sound_data.asm",
+    "z80_sound_data_source": "src/sound/z80/data.asm",
     "z80_sound_data_gate": "z80-data-check",
+    "source_structure_manifest": "config/source_structure.json",
+    "source_structure_gate": "check-source-structure",
     "format_manifest": "config/data_formats.json",
     "exact_round_trips": 9,
     "semantic_round_trips": 6,
@@ -71,6 +73,7 @@
     "docs/content_authoring.md",
     "docs/data_formats.md",
     "docs/z80_sound_driver.md",
+    "docs/source_layout.md",
     "docs/unknowns.md",
     "docs/source_reconstruction_2_0.md"
   ],
@@ -83,6 +86,7 @@
     "level-studio",
     "graphics-studio",
     "sound-studio",
+    "check-source-structure",
     "source-2-audit",
     "source-2-release-audit",
     "source-2-check"

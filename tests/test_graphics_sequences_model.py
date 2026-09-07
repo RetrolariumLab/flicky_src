@@ -1,4 +1,5 @@
 import copy
+import json
 import shutil
 import sys
 import tempfile
@@ -25,6 +26,19 @@ class GraphicsSequencesDocument(unittest.TestCase):
     def test_exported_document_is_valid(self):
         model.validate_document(self.document, ROOT)
 
+    def test_legacy_workspace_paths_are_migrated_in_memory(self):
+        document = copy.deepcopy(self.document)
+        record = next(
+            item for item in document["animations"]
+            if item["source"] == "game/actors/player.s"
+        )
+        record["source"] = "game/player.s"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sequences.json"
+            path.write_text(json.dumps(document), encoding="utf-8")
+            loaded = model.load_document(path)
+        model.validate_document(loaded, ROOT)
+
     def test_piece_count_cannot_change(self):
         document = copy.deepcopy(self.document)
         document["mappings"][0]["pieces"].append(copy.deepcopy(document["mappings"][0]["pieces"][0]))
@@ -48,7 +62,7 @@ class GraphicsSequencesDocument(unittest.TestCase):
             shutil.copytree(ROOT / "src", staged)
             model.apply_document(document, ROOT, staged)
             table = (staged / "data/tables.s").read_text(encoding="utf-8")
-            player = (staged / "game/player.s").read_text(encoding="utf-8")
+            player = (staged / "game/actors/player.s").read_text(encoding="utf-8")
             self.assertIn("Player_WalkFrame1:\tdc.b", table)
             self.assertIn("Player_AnimWalk:\tdc.b\t2, 3", player)
 

@@ -61,7 +61,8 @@ status.
 1.0 `make release-check` first, including the twelve emulator scenarios. It
 then verifies relocation, constructs and compares the independent zero-edit
 content ROM, validates every local workspace artifact, loads all Studio models
-without a display server, and audits the 2.0 manifest, documents, Make targets,
+without a display server, enforces the source granularity and directory policy,
+and audits the 2.0 manifest, documents, Make targets,
 format strengths, supported Studio inventory, predecessor tag, and ancestry.
 
 The annotated `source-reconstruction-2.0` tag is created only after that gate
