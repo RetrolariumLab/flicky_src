@@ -82,6 +82,36 @@ reused, even after the entry is resolved.
   likely by comparing against another Sega first-party boot sequence of the
   same era.
 
+### CODE-002 An immediate the disassembler mistook for an address
+
+- **Status:** resolved
+- **Confidence:** high, verified by a relocation build
+- **Location:** `src/game/main_loop.s`, `src/game/lizard.s`
+- **Evidence:** IDA read the immediate `$14000` in `Game_CalcDifficulty` as an
+  address and invented a label `loc_14000` for it, which happened to land inside
+  `Player_ProcessInput`. The disassembly then wrote three instructions as
+  `move.l #loc_14000,...`, so the difficulty accumulator and the lizard's speed
+  read as pointers into an unrelated procedure. The value is not an address: it
+  is compared against `$1C000` and incremented by 7.
+- **Resolution:** All three are written as the literal `$14000` they always
+  were. This changed nothing about the assembled ROM, which is exactly the
+  problem it poses.
+- **Why it matters beyond the instance:** `#loc_14000` and `#$14000` assemble to
+  the same bytes at the original layout, so `make verify` cannot tell them
+  apart. The difference only appears once the code moves: a label follows the
+  move, a constant does not. Byte identity proves this project builds the same
+  ROM; it does not prove the source understands what each number *is*.
+- **How to check for others:** build with the two `org` directives removed so
+  the image packs to about 58 KB, recompute the header checksum, and replay the
+  recorded longplay against the reference state. A surviving mistaken label
+  shows up as gameplay divergence, not as a build error.
+- **Result of that check:** the current source passes. The padding-free build
+  replays all 67,000 frames and reaches the credits with the same round, lives
+  and score, and VRAM and CRAM are byte-identical at the frames compared. The
+  pre-reconstruction source does not: it diverges at frame 4,000 and reaches
+  game over by frame 10,000, because the enemy speed becomes `$68FC` instead of
+  `$14000`. That is the observable form of this defect class.
+
 ### DATA-001 Z80 sound data holds pointers that assume a fixed ROM address
 
 - **Status:** open

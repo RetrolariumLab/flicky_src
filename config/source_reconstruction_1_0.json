@@ -214,6 +214,18 @@
         "provenance_and_unknowns",
         "baseline_validation"
       ]
+    },
+    {
+      "id": "relocation_defect_class",
+      "kind": "evidence",
+      "summary": "CODE-002 records the one defect class byte identity cannot see: an immediate the disassembler read as an address. A build with the padding removed is the check, and the current source passes it while the pre-reconstruction source reaches game over.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "provenance_and_unknowns",
+        "claims_need_evidence"
+      ]
     }
   ],
   "requirements": {
@@ -594,7 +606,8 @@
     "runtime_captures_produced": true,
     "runtime_state_expectations": 68,
     "exported_symbols": 1739,
-    "open_unknowns": 7
+    "open_unknowns": 7,
+    "resolved_unknowns": 1
   },
   "required_documents": [
     "README.md",

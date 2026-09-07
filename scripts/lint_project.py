@@ -113,14 +113,16 @@ def check_evidence(files: list[Path], texts: dict[Path, str], errors: list[str])
                 tag_count += 1
                 match = EVIDENCE_TAG_RE.search(line[raw.start():])
                 identifier = match.group(3) if match else None
+                if identifier:
+                    # An observation may name the entry it settles, and that
+                    # counts as a reference: a resolved entry still needs one.
+                    used_ids.add(identifier)
                 if name == "OBS":
                     continue
                 if not identifier:
                     errors.append(
                         f"{path}:{number}: !({name}) must name a registry entry from {REGISTRY}"
                     )
-                else:
-                    used_ids.add(identifier)
     return tag_count, used_ids
 
 

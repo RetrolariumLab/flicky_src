@@ -70,4 +70,5 @@ See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe
 and [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for what the
 release does and does not claim.
 
-Seven questions are open in [`unknowns.md`](unknowns.md).
+Seven questions are open in [`unknowns.md`](unknowns.md), and one is resolved:
+CODE-002 records the defect class byte identity cannot see.
