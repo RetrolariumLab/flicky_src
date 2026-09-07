@@ -9,8 +9,8 @@
     {
       "id": "level",
       "name": "Level Studio",
-      "status": "planned",
-      "artifacts": []
+      "status": "foundation",
+      "artifacts": ["level_layouts"]
     },
     {
       "id": "graphics",
@@ -26,6 +26,16 @@
     }
   ],
   "artifacts": [
+    {
+      "id": "level_layouts",
+      "studio": "level",
+      "kind": "level_document",
+      "workspace": "level/levels.json",
+      "staged_outputs": [
+        "src/data/tables.s",
+        "src/data/level_layout.s"
+      ]
+    },
     {
       "id": "z80_sound_banks",
       "studio": "sound",

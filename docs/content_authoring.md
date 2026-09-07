@@ -26,7 +26,7 @@ make check-content-zero-edit   # prove tracked baselines reproduce the ROM
 `make init-content FORCE=true` intentionally resets workspace artifacts to
 their tracked baselines. Ordinary initialization never overwrites an edit.
 
-The first supported artifact is the Z80 sound-data translation unit. Its
+The first editable artifact is the Z80 sound-data translation unit. Its
 editable build may differ from the reference bytes, but it must remain exactly
 2,804 bytes so the following ROM regions do not move. The resident driver is
 still assembled from tracked source and checked byte for byte in both build
@@ -46,6 +46,28 @@ Each GUI is a thin client over the same decoder, validator, and encoder used by
 the command line. A format is not supported merely because the GUI can display
 it: headless load, validation, save, and zero-edit reproduction are all part of
 the claim.
+
+## Level Studio
+
+`make level-studio` opens the current visual editor. It exposes all 48 round
+slots while preserving their mapping onto 36 shared layouts. The editor can
+change the 32-column collision grid, player and door positions, background
+objects, six spawners, both chick groups, and the three special-collision
+classes. Shared layouts are identified in the toolbar so an edit cannot appear
+to affect only one of several linked rounds.
+
+The headless model decodes the collision command stream and every variable-
+length object group into `content/workspace/level/levels.json`. On build it
+generates the two owning assembly sections. Their pointer tables refer to
+`Level_DataN` and `Level_SpecialTilesN` labels, so AS recalculates every pointer
+after a record changes length. The special-tile section retains its fixed
+capacity; ordinary level data may consume the original `$465F`-byte ROM padding
+before the end marker.
+
+Unedited streams retain their original representation. An edited collision
+grid is encoded as forward skips and horizontal solid runs, and the validator
+decodes the result again before the assembler sees it. `make check-studios`
+loads and validates the model without creating a Tk window.
 
 The editable build stages a disposable copy of the source tree under
 `build/content/` and redirects generated payload includes there. This makes an

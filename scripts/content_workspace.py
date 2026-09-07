@@ -61,11 +61,19 @@ def validate_manifest(document: dict[str, Any]) -> list[str]:
         identifier = artifact.get("id", "<missing>")
         if artifact.get("studio") not in EXPECTED_STUDIOS:
             errors.append(f"invalid artifact studio: {identifier}")
-        if artifact.get("kind") != "assembly_source":
+        kind = artifact.get("kind")
+        if kind not in {"assembly_source", "level_document"}:
             errors.append(f"unsupported artifact kind: {identifier}")
-        if not isinstance(artifact.get("capacity"), int) or artifact["capacity"] <= 0:
+        if kind == "assembly_source" and (
+            not isinstance(artifact.get("capacity"), int) or artifact["capacity"] <= 0
+        ):
             errors.append(f"invalid artifact capacity: {identifier}")
-        for field in ("baseline", "workspace", "output"):
+        required_paths = (
+            ("baseline", "workspace", "output")
+            if kind == "assembly_source"
+            else ("workspace",)
+        )
+        for field in required_paths:
             value = artifact.get(field)
             if not isinstance(value, str) or Path(value).is_absolute() or ".." in Path(value).parts:
                 errors.append(f"invalid artifact {field}: {identifier}")
@@ -93,12 +101,18 @@ def atomic_copy(source: Path, destination: Path) -> None:
 def initialize(root: Path, manifest: dict[str, Any], force: bool = False) -> int:
     created = 0
     for artifact in manifest["artifacts"]:
-        baseline, workspace = artifact_paths(root, manifest, artifact)
-        if not baseline.is_file():
-            fail(f"baseline artifact not found: {baseline}")
+        workspace = root / manifest["workspace"] / artifact["workspace"]
         if workspace.exists() and not force:
             continue
-        atomic_copy(baseline, workspace)
+        if artifact["kind"] == "assembly_source":
+            baseline = root / artifact["baseline"]
+            if not baseline.is_file():
+                fail(f"baseline artifact not found: {baseline}")
+            atomic_copy(baseline, workspace)
+        elif artifact["kind"] == "level_document":
+            from level_studio_model import atomic_write_json, export_document
+
+            atomic_write_json(workspace, export_document(root))
         created += 1
     print(f"[OK] Content workspace ready ({created} artifact(s) initialized)")
     return created
@@ -106,13 +120,19 @@ def initialize(root: Path, manifest: dict[str, Any], force: bool = False) -> int
 
 def validate_workspace(root: Path, manifest: dict[str, Any], zero_edit: bool = False) -> None:
     for artifact in manifest["artifacts"]:
-        baseline, workspace = artifact_paths(root, manifest, artifact)
-        if not baseline.is_file():
-            fail(f"baseline artifact not found: {baseline}")
+        workspace = root / manifest["workspace"] / artifact["workspace"]
         if not workspace.is_file():
             fail(f"workspace artifact not found: {workspace}; run make init-content")
-        if zero_edit and workspace.read_bytes() != baseline.read_bytes():
-            fail(f"zero-edit check found a modified artifact: {workspace}")
+        if artifact["kind"] == "assembly_source":
+            baseline = root / artifact["baseline"]
+            if not baseline.is_file():
+                fail(f"baseline artifact not found: {baseline}")
+            if zero_edit and workspace.read_bytes() != baseline.read_bytes():
+                fail(f"zero-edit check found a modified artifact: {workspace}")
+        elif artifact["kind"] == "level_document":
+            from level_studio_model import load_document, validate_document
+
+            validate_document(load_document(workspace))
     mode = "zero-edit " if zero_edit else ""
     print(f"[OK] {mode}content workspace is structurally valid")
 
@@ -149,10 +169,17 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
     print(f"Profile: {manifest['profile']}")
     print(f"Workspace: {manifest['workspace']}")
     for artifact in manifest["artifacts"]:
-        baseline, workspace = artifact_paths(root, manifest, artifact)
+        workspace = root / manifest["workspace"] / artifact["workspace"]
         state = "missing"
         if workspace.is_file():
-            state = "unchanged" if workspace.read_bytes() == baseline.read_bytes() else "edited"
+            if artifact["kind"] == "assembly_source":
+                baseline = root / artifact["baseline"]
+                unchanged = workspace.read_bytes() == baseline.read_bytes()
+            else:
+                from level_studio_model import export_document, load_document
+
+                unchanged = load_document(workspace) == export_document(root)
+            state = "unchanged" if unchanged else "edited"
         digest = sha1(workspace.read_bytes()) if workspace.is_file() else "-"
         print(f"{artifact['id']}: {state}, SHA1 {digest}")
 

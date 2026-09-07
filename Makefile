@@ -100,7 +100,7 @@ STRICT_NAMING ?= --strict-naming
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
-        init-content inspect-content validate-content build-content check-content-zero-edit \
+        init-content inspect-content validate-content build-content check-content-zero-edit level-studio check-studios \
         test release-audit release-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help \
@@ -177,6 +177,12 @@ check-content-zero-edit: _require-assets _require-toolchain
 		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
 		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
 		--asset-manifest $(ASSET_MANIFEST)
+
+level-studio: init-content
+	@$(PYTHON) $(SCRIPTS_DIR)/level_studio.py
+
+check-studios: init-content
+	@$(PYTHON) $(SCRIPTS_DIR)/level_studio.py --check
 
 # Validate the reference ROM, extract data, then build and verify.
 init:
@@ -419,6 +425,8 @@ help:
 	@echo "  make validate-content          Validate the editable workspace"
 	@echo "  make build-content             Build the isolated editable ROM"
 	@echo "  make check-content-zero-edit   Prove tracked content still reproduces the ROM"
+	@echo "  make level-studio              Open the visual level editor"
+	@echo "  make check-studios             Load Studio models without opening a GUI"
 	@echo ""
 	@echo "Validation:"
 	@echo "  make verify-toolchain          Hash-check the vendored assembler"

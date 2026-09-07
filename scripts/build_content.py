@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from content_workspace import load_manifest, stage_sources, validate_workspace
+from level_studio_model import apply_document, export_document, load_document
 
 
 def run(command: list[str], root: Path) -> None:
@@ -82,6 +83,16 @@ def main() -> int:
         driver_output.relative_to(root),
         sound_output.relative_to(root),
     )
+    level_artifact = next(
+        item for item in manifest["artifacts"] if item["id"] == "level_layouts"
+    )
+    if args.zero_edit:
+        level_document = export_document(root)
+    else:
+        level_document = load_document(
+            root / manifest["workspace"] / level_artifact["workspace"]
+        )
+    apply_document(level_document, staged_main.parent)
     rom_command = [
         sys.executable, "scripts/build_rom.py",
         "--source", str(staged_main),
