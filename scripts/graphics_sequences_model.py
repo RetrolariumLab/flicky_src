@@ -11,15 +11,24 @@ from typing import Any
 
 MAPPING_SOURCE = "data/tables.s"
 ANIMATION_SOURCES = (
-    "game/bonus_objects.s",
-    "game/cat.s",
-    "game/chick.s",
-    "game/lizard.s",
-    "game/player.s",
-    "game/snake.s",
-    "game/spawner.s",
+    "game/bonus/objects.s",
+    "game/enemies/cat.s",
+    "game/actors/chick.s",
+    "game/enemies/lizard.s",
+    "game/actors/player.s",
+    "game/enemies/snake.s",
+    "game/enemies/spawner.s",
     "rendering/hud.s",
 )
+LEGACY_SOURCE_PATHS = {
+    "game/bonus_objects.s": "game/bonus/objects.s",
+    "game/cat.s": "game/enemies/cat.s",
+    "game/chick.s": "game/actors/chick.s",
+    "game/lizard.s": "game/enemies/lizard.s",
+    "game/player.s": "game/actors/player.s",
+    "game/snake.s": "game/enemies/snake.s",
+    "game/spawner.s": "game/enemies/spawner.s",
+}
 LABEL_RE = re.compile(r"^(?P<label>[A-Za-z_][A-Za-z0-9_]*):", re.MULTILINE)
 DIRECTIVE_RE = re.compile(r"^\s*dc\.(?P<size>[bw])\s+(?P<values>[^;]+?)\s*$")
 NUMBER_RE = re.compile(r"^(?:\$[0-9A-Fa-f]+|[0-9]+)$")
@@ -258,7 +267,12 @@ def validate_document(document: dict[str, Any], root: Path) -> None:
 
 
 def load_document(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    document = json.loads(path.read_text(encoding="utf-8"))
+    for animation in document.get("animations", []):
+        source = animation.get("source")
+        if source in LEGACY_SOURCE_PATHS:
+            animation["source"] = LEGACY_SOURCE_PATHS[source]
+    return document
 
 
 def atomic_write_json(path: Path, document: dict[str, Any]) -> None:

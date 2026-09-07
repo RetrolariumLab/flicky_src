@@ -69,7 +69,7 @@ reused, even after the entry is resolved.
 
 - **Status:** open
 - **Confidence:** high
-- **Location:** `src/system/boot.s`
+- **Location:** `src/system/startup.s`
 - **Evidence:** After `Gfx_InitVDPRegister` returns, the boot path compares its
   result against zero and branches to `Boot_SetupControllerPorts` when it
   matches. The fall-through path is three `nop` instructions that run straight
@@ -86,7 +86,7 @@ reused, even after the entry is resolved.
 
 - **Status:** resolved
 - **Confidence:** high, verified by a relocation build
-- **Location:** `src/game/main_loop.s`, `src/game/lizard.s`
+- **Location:** `src/game/round/main_loop.s`, `src/game/enemies/lizard.s`
 - **Evidence:** IDA read the immediate `$14000` in `Game_CalcDifficulty` as an
   address and invented a label `loc_14000` for it, which happened to land inside
   `Player_ProcessInput`. The disassembly then wrote three instructions as
@@ -116,7 +116,7 @@ reused, even after the entry is resolved.
 
 - **Status:** resolved on `source-2.0`
 - **Confidence:** high, and the symptom is now measured rather than predicted
-- **Location:** `src/data/z80_sound.s`, `src/sound/engine.s`
+- **Location:** `src/sound/z80/load_data.s`, `src/sound/engine.s`
 - **Original evidence:** `Sound_LoadZ80Table` converted ROM addresses to Z80-relative
   offsets with `suba.l #Sys_GameEntryPoint,a0`, which only holds while
   `Sys_GameEntryPoint` sits at exactly `$10000`. The offsets baked into
@@ -140,11 +140,11 @@ reused, even after the entry is resolved.
   worse for anyone relocating this code and expecting a crash to tell them.
   The entry also blamed inserting padding; removing it breaks the same way, so
   the constraint is that `Sys_GameEntryPoint` must not move at all.
-- **Resolution:** `src/sound/z80_sound_data.asm` now authors the two data banks,
+- **Resolution:** `src/sound/z80/data.asm` now authors the two data banks,
   including the resident SFX and music pointer tables and every voice/sequence
   pointer in their headers. Its address macros produce Z80 little-endian
   pointers from labels. The six 68000 descriptor words in
-  `src/data/z80_sound.s` are expressions over the actual ROM labels instead of
+  `src/sound/z80/load_data.s` are expressions over the actual ROM labels instead of
   bytes inherited from the extracted image. `make z80-data-check` assembles the
   2,804-byte payload and requires byte identity with the original payload.
 - **Relocation check:** The loader conversion must subtract the fixed 64-KiB
@@ -182,7 +182,7 @@ reused, even after the entry is resolved.
 
 - **Status:** resolved on `source-2.0`
 - **Confidence:** high
-- **Location:** `src/sound/z80_driver_z80.asm`,
+- **Location:** `src/sound/z80/driver.asm`,
   `scripts/build_z80_driver.py`, `docs/z80_sound_driver.md`
 - **Correction:** Only `z80_part1` is executable. `z80_part2` begins with two
   68000 load descriptors and supplies the data banks copied to Z80 `$1000` and

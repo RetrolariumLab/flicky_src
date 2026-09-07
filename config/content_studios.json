@@ -63,7 +63,7 @@
       "id": "z80_sound_banks",
       "studio": "sound",
       "kind": "assembly_source",
-      "baseline": "src/sound/z80_sound_data.asm",
+      "baseline": "src/sound/z80/data.asm",
       "workspace": "sound/z80_sound_data.asm",
       "output": "build/content/z80_sound_data.bin",
       "capacity": 2804,

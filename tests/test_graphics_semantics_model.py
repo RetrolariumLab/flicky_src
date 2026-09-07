@@ -1,4 +1,5 @@
 import copy
+import json
 import shutil
 import sys
 import tempfile
@@ -25,6 +26,16 @@ class GraphicsSemanticsDocument(unittest.TestCase):
     def test_exported_document_is_valid(self):
         model.validate_document(self.document, ROOT)
 
+    def test_legacy_workspace_paths_are_migrated_in_memory(self):
+        document = copy.deepcopy(self.document)
+        record = next(item for item in document["texts"] if item["source"] == "game/bonus/mode.s")
+        record["source"] = "game/bonus.s"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "semantics.json"
+            path.write_text(json.dumps(document), encoding="utf-8")
+            loaded = model.load_document(path)
+        model.validate_document(loaded, ROOT)
+
     def test_text_cannot_exceed_its_original_slot(self):
         document = copy.deepcopy(self.document)
         document["texts"][0]["value"] += "!"
@@ -50,11 +61,11 @@ class GraphicsSemanticsDocument(unittest.TestCase):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / "src" / relative, target)
             model.apply_document(document, ROOT, staged)
-            bonus = (staged / "game/bonus.s").read_text(encoding="utf-8")
-            title = (staged / "game/title.s").read_text(encoding="utf-8")
+            bonus = (staged / "game/bonus/mode.s").read_text(encoding="utf-8")
+            title = (staged / "game/screens/front_end.s").read_text(encoding="utf-8")
             self.assertIn('Bonus_BonusText:    dc.b    "POINT",0', bonus)
             self.assertIn("Title_LogoPalette:      dc.w    0, $EEE, $EEE", title)
-        self.assertIn('Bonus_BonusText:    dc.b    "BONUS",0', (ROOT / "src/game/bonus.s").read_text())
+        self.assertIn('Bonus_BonusText:    dc.b    "BONUS",0', (ROOT / "src/game/bonus/mode.s").read_text())
 
 
 if __name__ == "__main__":

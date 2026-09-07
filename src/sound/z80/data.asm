@@ -1,7 +1,7 @@
 ; Flicky Z80 sound banks
 ; Reconstructed from ROM $0101E0-$010CD3. This translation unit contains the
 ; bytes loaded at Z80 $1000 and $1200; the 68000 load descriptors live in
-; src/data/z80_sound.s because their source fields depend on the ROM layout.
+; src/sound/z80/load_data.s because their source fields depend on the ROM layout.
 ;
 ; The first bank occupies $1000-$11C7 in this file. The original DBF transfer
 ; deliberately copies one more byte, so its final byte is the first byte of

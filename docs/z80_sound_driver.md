@@ -6,7 +6,7 @@ runs the SMPS sequencer on the 68000 and leaves PCM playback to the Z80, while
 Flicky's Z80 writes both the YM2612 and SN76489 directly.
 
 The resident program is now reconstructed in
-`src/sound/z80_driver_z80.asm`. It contains symbolic routines, hardware and RAM
+`src/sound/z80/driver.asm`. It contains symbolic routines, hardware and RAM
 names, a 48-byte track layout, frequency and register-order tables, and the
 full `$E0-$FF` coordination-flag dispatch. `scripts/build_z80_driver.py`
 assembles it before the 68000 pass and requires the resulting 4,070 bytes to
@@ -29,7 +29,7 @@ image at `$001316`. This closes [SND-001](unknowns.md).
 | `$8000-$FFFF` | 32 KiB | Banked 68000 ROM window |
 
 The two records at the start of the original `data_z80_part2.bin` are now
-expressions in `src/data/z80_sound.s`. They are big-endian 68000 load
+expressions in `src/sound/z80/load_data.s`. They are big-endian 68000 load
 descriptors. Each is `last_index, z80_destination, source_offset`; the copy
 loop uses `dbf`, so `last_index` is one less than the byte count:
 
@@ -43,7 +43,7 @@ nominal binary segment. This follows directly from the `dbf` count and is why
 the loaded size is 2,349 although only 2,348 bytes remain in
 `data_z80_part2.bin` after its second descriptor.
 
-The payload itself is `src/sound/z80_sound_data.asm`. It declares nine ordinary
+The payload itself is `src/sound/z80/data.asm`. It declares nine ordinary
 SFX slots (`$90-$98`), the special `$D0` alias, seven music slots (`$81-$87`,
 with `$86` empty), and symbolic voice/sequence pointers for every header.
 `$88` has no table entry: reading it would consume the first word of the `$81`

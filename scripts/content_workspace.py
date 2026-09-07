@@ -186,7 +186,7 @@ def stage_sources(
             'binclude "build/z80_driver.bin"',
             f'binclude "{driver_binary.as_posix()}"',
         ),
-        destination / "data" / "z80_sound.s": (
+        destination / "sound" / "z80" / "load_data.s": (
             'binclude "build/z80_sound_data.bin"',
             f'binclude "{sound_binary.as_posix()}"',
         ),
@@ -208,7 +208,10 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
         if workspace.is_file():
             if artifact["kind"] == "assembly_source":
                 baseline = root / artifact["baseline"]
-                unchanged = workspace.read_bytes() == baseline.read_bytes()
+                current_text = workspace.read_text(encoding="utf-8").replace(
+                    "src/data/z80_sound.s", "src/sound/z80/load_data.s"
+                )
+                unchanged = current_text == baseline.read_text(encoding="utf-8")
             elif artifact["kind"] == "level_document":
                 from level_studio_model import export_document, load_document
 
@@ -220,7 +223,12 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
             elif artifact["kind"] == "graphics_semantics_document":
                 from graphics_semantics_model import export_document, load_document
 
-                unchanged = load_document(workspace) == export_document(root)
+                current = load_document(workspace)
+                baseline = export_document(root)
+                for key in ("texts", "palettes"):
+                    current[key] = sorted(current[key], key=lambda record: record["id"])
+                    baseline[key] = sorted(baseline[key], key=lambda record: record["id"])
+                unchanged = current == baseline
             else:
                 from graphics_sequences_model import export_document, load_document
 

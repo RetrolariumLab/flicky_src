@@ -32,11 +32,11 @@
 
 For a first pass at the program itself, follow the ROM:
 
-1. `src/system/boot.s` -- hardware bring-up, checksum, relocation to RAM.
+1. `src/system/startup.s` -- hardware bring-up, checksum, relocation to RAM.
 2. `src/system/game_entry.s` -- `Sys_MainLoop` and the eighteen-entry mode table.
 3. `src/system/vblank.s` -- the other half of the frame.
-4. `src/game/objects.s` -- the slot array and the object handler table.
-5. `src/game/player.s` -- the actor pattern, worked through in full.
+4. `src/game/world.s` -- the slot array and the object handler table.
+5. `src/game/actors/player.s` -- the actor pattern, worked through in full.
 6. Any one enemy (`cat.s`, `lizard.s`, `snake.s`) -- the same pattern again.
 7. `src/rendering/` -- how any of it reaches the screen.
 

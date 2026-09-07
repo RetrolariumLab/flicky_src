@@ -17,9 +17,10 @@ a byte is wrong by definition.
 - Exactly one final newline. No trailing whitespace. No tabs.
 - At most one blank line in a row, and no blank line at the top of a file.
 
-Standalone `.asm` files form separate Z80/sound-data translation units. They
-follow the same ASCII, LF and whitespace hygiene, but retain their processor-
-specific table layout and are not rewritten by `make format`.
+The `.asm` files form the separately assembled Z80/sound-data trees. Their
+entrypoints and included implementation modules follow the same ASCII, LF and
+whitespace hygiene, but retain their processor-specific table layout and are
+not rewritten by `make format`.
 
 ## Layout
 

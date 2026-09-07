@@ -29,7 +29,7 @@ def sha1(data: bytes) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", default="src/sound/z80_driver_z80.asm")
+    parser.add_argument("--source", default="src/sound/z80/driver.asm")
     parser.add_argument("--obj", default="build/z80_driver.p")
     parser.add_argument("--output", default="build/z80_driver.bin")
     parser.add_argument("--reference", default="data/sound/data_z80_part1.bin")

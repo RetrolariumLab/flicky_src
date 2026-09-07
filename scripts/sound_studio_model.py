@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 
-SOURCE = "src/sound/z80_sound_data.asm"
+SOURCE = "src/sound/z80/data.asm"
 LABEL_RE = re.compile(r"^(?P<label>[A-Za-z_][A-Za-z0-9_]*):", re.MULTILINE)
 BYTE_LINE_RE = re.compile(r"^\s*dc\.b\s+(?P<values>[^;]+?)(?:\s*;.*)?$")
 NUMBER_RE = re.compile(r"^(?:\$[0-9A-Fa-f]+|[0-9]+)$")

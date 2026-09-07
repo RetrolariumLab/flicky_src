@@ -29,7 +29,7 @@ currently do with it.
 | `FlickyLogoTiles` | `artnem` | `$19EEE`-`$1A196` | 680 | Nemesis tile art |
 
 `DemoInputStream1` is not in this table because it is not extracted: it lives in
-the source as `dc.w` data in `src/game/demo.s`, which is why the numbering skips
+the source as `dc.w` data in `src/game/screens/attract_mode.s`, which is why the numbering skips
 from 0 to 2 among the extracted files.
 
 ## Nemesis
@@ -80,7 +80,7 @@ is how the same font is drawn in different colours.
 ## Z80 sound program and data
 
 `z80_part1` is the resident program. It is reconstructed as
-`src/sound/z80_driver_z80.asm`, assembled in a separate Z80 pass and compared
+`src/sound/z80/driver.asm`, assembled in a separate Z80 pass and compared
 byte for byte before the main ROM includes it. Its executable boundary, RAM
 layout and sequence dispatcher are documented in
 [z80_sound_driver.md](z80_sound_driver.md).
@@ -89,8 +89,8 @@ layout and sequence dispatcher are documented in
 sound data to Z80 `$1000` and `$1200`: SFX headers/sequences in the first bank,
 and data indices, command priorities, music headers, FM voices, envelopes and
 sequences in the second. The descriptors are expressions in
-`src/data/z80_sound.s`; the 2,804-byte payload is authored in
-`src/sound/z80_sound_data.asm`, where Z80 little-endian pointers are computed
+`src/sound/z80/load_data.s`; the 2,804-byte payload is authored in
+`src/sound/z80/data.asm`, where Z80 little-endian pointers are computed
 from labels. `make z80-data-check` proves byte identity and
 `make verify-relocation` proves the 68000 source offsets follow a moved game
 image. This resolves [DATA-001](unknowns.md).

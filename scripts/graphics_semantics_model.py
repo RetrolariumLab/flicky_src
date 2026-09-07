@@ -10,18 +10,26 @@ from typing import Any
 
 
 TEXT_SOURCES = (
-    "game/bonus.s",
-    "game/bonus_objects.s",
-    "game/ending.s",
-    "game/guide.s",
-    "game/round_select.s",
-    "game/title.s",
+    "game/bonus/mode.s",
+    "game/bonus/objects.s",
+    "game/screens/ending.s",
+    "game/screens/front_end.s",
+    "game/round/select_and_setup.s",
     "rendering/hud.s",
 )
 PALETTE_SOURCES = (
-    "game/round_setup.s",
-    "game/title.s",
+    "game/round/select_and_setup.s",
+    "game/screens/front_end.s",
 )
+LEGACY_SOURCE_PATHS = {
+    "game/bonus.s": "game/bonus/mode.s",
+    "game/bonus_objects.s": "game/bonus/objects.s",
+    "game/ending.s": "game/screens/ending.s",
+    "game/guide.s": "game/screens/front_end.s",
+    "game/round_select.s": "game/round/select_and_setup.s",
+    "game/round_setup.s": "game/round/select_and_setup.s",
+    "game/title.s": "game/screens/front_end.s",
+}
 TEXT_RE = re.compile(
     r'^(?P<label>[A-Za-z_][A-Za-z0-9_]*):(?P<prefix>\s+dc\.b\s+[^"\r\n]*)'
     r'"(?P<value>[^"\r\n]*)"(?P<suffix>[^\r\n]*)$',
@@ -129,7 +137,13 @@ def validate_document(document: dict[str, Any], root: Path) -> None:
 
 
 def load_document(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    document = json.loads(path.read_text(encoding="utf-8"))
+    for key in ("texts", "palettes"):
+        for record in document.get(key, []):
+            source = record.get("source")
+            if source in LEGACY_SOURCE_PATHS:
+                record["source"] = LEGACY_SOURCE_PATHS[source]
+    return document
 
 
 def atomic_write_json(path: Path, document: dict[str, Any]) -> None:

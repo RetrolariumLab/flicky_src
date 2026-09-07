@@ -508,7 +508,7 @@
       "rule_id": "config/linker/",
       "actual_path": "config/rom_layout.json",
       "reason": "There is no linker: AS emits one object and p2bin flattens it, so there is no linker script to own the layout.",
-      "equivalent_control": "config/rom_layout.json declares the memory regions, the ROM landmarks, the padding gap and all 43 module ranges, and make verify-layout checks every one against the build."
+      "equivalent_control": "config/rom_layout.json declares the memory regions, the ROM landmarks, the padding gap and all 36 module ranges, and make verify-layout checks every one against the build."
     },
     {
       "rule_id": "scripts/run.py with build/ validation/ runtime/ authoring/ workflow/ subpackages",
@@ -593,7 +593,7 @@
     ]
   },
   "evidence": {
-    "modules": 43,
+    "modules": 36,
     "module_line_limit": 700,
     "extracted_segments": 17,
     "exact_round_trips": 8,

@@ -74,11 +74,12 @@ class WorkspaceLifecycle(unittest.TestCase):
             root = Path(directory)
             source = root / "src"
             (source / "data").mkdir(parents=True)
+            (source / "sound" / "z80").mkdir(parents=True)
             (source / "main.s").write_text('include "data/bank0.s"\n', encoding="utf-8")
             (source / "data" / "bank0.s").write_text(
                 'binclude "build/z80_driver.bin"\n', encoding="utf-8"
             )
-            (source / "data" / "z80_sound.s").write_text(
+            (source / "sound" / "z80" / "load_data.s").write_text(
                 'binclude "build/z80_sound_data.bin"\n', encoding="utf-8"
             )
             main = content_workspace.stage_sources(
@@ -94,7 +95,7 @@ class WorkspaceLifecycle(unittest.TestCase):
             )
             self.assertIn(
                 'binclude "build/content/z80_sound_data.bin"',
-                (main.parent / "data" / "z80_sound.s").read_text(encoding="utf-8"),
+                (main.parent / "sound" / "z80" / "load_data.s").read_text(encoding="utf-8"),
             )
 
 

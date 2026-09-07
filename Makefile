@@ -55,12 +55,15 @@ RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 SOURCE_2_MANIFEST ?= config/source_reconstruction_2_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 ROM_LAYOUT ?= config/rom_layout.json
+SOURCE_STRUCTURE ?= config/source_structure.json
 LISTING ?= build/main.lst
-Z80_SOURCE ?= src/sound/z80_driver_z80.asm
+M68K_SOURCE_FILES := $(shell $(PYTHON) -c "from pathlib import Path; print(' '.join(p.as_posix() for p in Path('src').rglob('*') if p.suffix in {'.s', '.inc'}))")
+Z80_SOURCE ?= src/sound/z80/driver.asm
+Z80_DRIVER_MODULES := $(wildcard src/sound/z80/driver/*.asm)
 Z80_OBJ ?= build/z80_driver.p
 Z80_BIN ?= build/z80_driver.bin
 Z80_REFERENCE ?= data/sound/data_z80_part1.bin
-Z80_DATA_SOURCE ?= src/sound/z80_sound_data.asm
+Z80_DATA_SOURCE ?= src/sound/z80/data.asm
 Z80_DATA_OBJ ?= build/z80_sound_data.p
 Z80_DATA_BIN ?= build/z80_sound_data.bin
 Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
@@ -98,7 +101,7 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation init split check-assets \
+.PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation check-source-structure init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         init-content inspect-content validate-content build-content check-content-zero-edit level-studio graphics-studio sound-studio check-studios \
@@ -128,7 +131,7 @@ verify: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
 		--verify
 
-$(Z80_BIN): $(Z80_SOURCE) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_REFERENCE)
+$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_REFERENCE)
 	@$(PYTHON) $(SCRIPTS_DIR)/build_z80_driver.py \
 		--source $(Z80_SOURCE) --obj $(Z80_OBJ) --output $(Z80_BIN) \
 		--reference $(Z80_REFERENCE) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
@@ -241,7 +244,7 @@ compare:
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
 # -i lets modules under src/ resolve their binclude paths from the project root.
-$(LISTING): $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc) $(Z80_BIN) $(Z80_DATA_BIN)
+$(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_BIN)
 	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
 	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
 
@@ -254,7 +257,11 @@ $(LISTING): $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc) $(Z80_BIN) $(
 lint:
 	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py src
 	@$(PYTHON) $(SCRIPTS_DIR)/lint_source.py $(STRICT_NAMING)
+	@$(PYTHON) $(SCRIPTS_DIR)/check_source_structure.py --config $(SOURCE_STRUCTURE)
 	@$(PYTHON) $(SCRIPTS_DIR)/lint_project.py
+
+check-source-structure:
+	@$(PYTHON) $(SCRIPTS_DIR)/check_source_structure.py --config $(SOURCE_STRUCTURE)
 
 # Focused unit tests for the Python tooling, so a bug in a check cannot
 # quietly pass everything it is supposed to catch.

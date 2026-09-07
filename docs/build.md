@@ -41,7 +41,7 @@ segment fails by name rather than as a mysterious byte difference.
 src/main.s ──[asw]──> build/main.p ──[p2bin -p=FF]──> fbuilt.bin ──[compare]──> the dump
 ```
 
-**Assembling.** `src/main.s` includes 43 modules in ROM address order and AS
+**Assembling.** `src/main.s` includes 36 modules in ROM address order and AS
 assembles all of it as a single translation unit, so every label is global and
 cross-module branches need no declaration. Includes are written relative to `src/main.s`; the `-i <project root>` flag is
 what lets a module under `src/` reach `data/` with `binclude`, since AS would

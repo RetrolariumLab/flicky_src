@@ -11,7 +11,7 @@ Approaches are shared with the sibling
 ## Status
 
 The build reproduces the reference ROM exactly, verified against the dump
-itself. `src/main.s` is no longer a source file: it is an index of 43
+itself. `src/main.s` is no longer a source file: it is an index of 36
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
@@ -61,6 +61,7 @@ flicky_src/
 |   `-- README.md           # Provenance, hashes, why -p=FF matters
 |-- config/                 # Build and release contracts
 |   |-- rom_layout.json     # Memory map, landmarks, padding gap, module ranges
+|   |-- source_structure.json # 300-700-line policy and justified exceptions
 |   |-- toolchain.json      # Toolchain hashes, pinned commits, supported hosts
 |   `-- source_reconstruction_1_0.json   # The release manifest
 |-- data/                   # Extracted binary segments (ignored, from make split)
@@ -74,11 +75,11 @@ flicky_src/
 |-- src/
 |   |-- compression/        # Nemesis and Enigma decompressors
 |   |-- data/               # Binary includes and the large data tables
-|   |-- game/               # Modes, actors, collision, scoring
+|   |-- game/               # World/rules plus actors, enemies, rounds, screens
 |   |-- macros/             # Alignment pseudo-instructions
 |   |-- memory/             # Hardware ports, constants, work RAM map
 |   |-- rendering/          # VDP, tilemaps, text, HUD, level drawing
-|   |-- sound/              # Z80 bus handling and the command queue
+|   |-- sound/              # 68000 host plus modular Z80 driver and sound data
 |   |-- system/             # Boot, entry point, interrupts, DMA, input
 |   `-- main.s              # Address-ordered include index, the entrypoint
 |-- tools/                  # C and Python decompressors
@@ -106,6 +107,7 @@ make roundtrip-formats   # Decode and re-encode the authored data
 make symbols        # Export build/main.sym for debuggers
 make verify-toolchain  # Hash-check the vendored assembler before it runs
 make verify-layout     # Check the ROM layout against config/rom_layout.json
+make check-source-structure # Enforce 300-700 lines, justified exceptions, paths
 make release-check  # The complete acceptance gate
 
 make init-content              # Initialize the ignored editor workspace

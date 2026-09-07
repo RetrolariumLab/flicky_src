@@ -51,14 +51,14 @@
       "start": "0x000000",
       "end": "0x0000FF",
       "symbol": "Sys_VectorTable",
-      "owner": "src/system/vectors_and_header.s",
+      "owner": "src/system/startup.s",
       "note": "64 longs; entry 1 holds the initial PC and points at Boot_EntryPoint"
     },
     "header": {
       "start": "0x000100",
       "end": "0x0001FF",
       "symbol": "CopyRights",
-      "owner": "src/system/vectors_and_header.s"
+      "owner": "src/system/startup.s"
     },
     "gaps": [
       {
@@ -83,7 +83,7 @@
       {
         "symbol": "Checksum",
         "address": "0x00018E",
-        "role": "Header checksum word, verified at boot by src/system/boot.s"
+        "role": "Header checksum word, verified at boot by src/system/startup.s"
       },
       {
         "symbol": "RomStart",
@@ -137,21 +137,9 @@
   ],
   "modules": [
     {
-      "file": "src/system/vectors_and_header.s",
+      "file": "src/system/startup.s",
       "subsystem": "system",
       "start": "0x000000",
-      "end": "0x0001FF"
-    },
-    {
-      "file": "src/system/boot.s",
-      "subsystem": "system",
-      "start": "0x000200",
-      "end": "0x000401"
-    },
-    {
-      "file": "src/system/sega_screen.s",
-      "subsystem": "system",
-      "start": "0x000402",
       "end": "0x000855"
     },
     {
@@ -179,7 +167,7 @@
       "end": "0x001013"
     },
     {
-      "file": "src/sound/z80_driver.s",
+      "file": "src/sound/z80/host.s",
       "subsystem": "sound",
       "start": "0x001014",
       "end": "0x001195"
@@ -203,7 +191,7 @@
       "end": "0x0101D3"
     },
     {
-      "file": "src/data/z80_sound.s",
+      "file": "src/sound/z80/load_data.s",
       "subsystem": "data",
       "start": "0x0101D4",
       "end": "0x010CD3"
@@ -239,33 +227,15 @@
       "end": "0x01105B"
     },
     {
-      "file": "src/game/objects.s",
+      "file": "src/game/world.s",
       "subsystem": "game",
       "start": "0x01105C",
-      "end": "0x01130B"
-    },
-    {
-      "file": "src/game/camera_collision.s",
-      "subsystem": "game",
-      "start": "0x01130C",
-      "end": "0x011421"
-    },
-    {
-      "file": "src/game/level.s",
-      "subsystem": "game",
-      "start": "0x011422",
       "end": "0x011673"
     },
     {
-      "file": "src/game/scoring.s",
+      "file": "src/game/rules.s",
       "subsystem": "game",
       "start": "0x011674",
-      "end": "0x0117BF"
-    },
-    {
-      "file": "src/game/collision_pairs.s",
-      "subsystem": "game",
-      "start": "0x0117C0",
       "end": "0x01190F"
     },
     {
@@ -281,73 +251,61 @@
       "end": "0x011FAF"
     },
     {
-      "file": "src/game/title.s",
+      "file": "src/game/screens/front_end.s",
       "subsystem": "game",
       "start": "0x011FB0",
-      "end": "0x01228D"
-    },
-    {
-      "file": "src/game/guide.s",
-      "subsystem": "game",
-      "start": "0x01228E",
       "end": "0x0125BD"
     },
     {
-      "file": "src/game/round_select.s",
+      "file": "src/game/round/select_and_setup.s",
       "subsystem": "game",
       "start": "0x0125BE",
-      "end": "0x012655"
-    },
-    {
-      "file": "src/game/round_setup.s",
-      "subsystem": "game",
-      "start": "0x012656",
       "end": "0x012A93"
     },
     {
-      "file": "src/game/main_loop.s",
+      "file": "src/game/round/main_loop.s",
       "subsystem": "game",
       "start": "0x012A94",
       "end": "0x012F2F"
     },
     {
-      "file": "src/game/bonus.s",
+      "file": "src/game/bonus/mode.s",
       "subsystem": "game",
       "start": "0x012F30",
       "end": "0x01310F"
     },
     {
-      "file": "src/game/ending.s",
+      "file": "src/game/screens/ending.s",
       "subsystem": "game",
       "start": "0x013110",
       "end": "0x0139A1"
     },
     {
-      "file": "src/game/demo.s",
+      "file": "src/game/screens/attract_mode.s",
       "subsystem": "game",
       "start": "0x0139A2",
       "end": "0x013E6F"
     },
     {
-      "file": "src/game/player.s",
+      "file": "src/game/actors/player.s",
       "subsystem": "game",
       "start": "0x013E70",
       "end": "0x0144DB"
     },
     {
-      "file": "src/game/chick.s",
+      "file": "src/game/actors/chick.s",
       "subsystem": "game",
       "start": "0x0144DC",
       "end": "0x01483D"
     },
     {
-      "file": "src/game/cat.s",
+      "file": "src/game/enemies/cat.s",
       "subsystem": "game",
       "start": "0x01483E",
       "end": "0x014EC5"
     },
     {
-      "file": "src/game/lizard.s",
+      "file": "src/game/enemies/lizard.s",
       "subsystem": "game",
       "start": "0x014EC6",
       "end": "0x015507"
@@ -359,25 +317,25 @@
       "end": "0x015D57"
     },
     {
-      "file": "src/game/snake.s",
+      "file": "src/game/enemies/snake.s",
       "subsystem": "game",
       "start": "0x015D58",
       "end": "0x016311"
     },
     {
-      "file": "src/game/spawner.s",
+      "file": "src/game/enemies/spawner.s",
       "subsystem": "game",
       "start": "0x016312",
       "end": "0x0164EB"
     },
     {
-      "file": "src/game/bonus_objects.s",
+      "file": "src/game/bonus/objects.s",
       "subsystem": "game",
       "start": "0x0164EC",
       "end": "0x016DA9"
     },
     {
-      "file": "src/game/game_over.s",
+      "file": "src/game/screens/game_over.s",
       "subsystem": "game",
       "start": "0x016DAA",
       "end": "0x016E57"

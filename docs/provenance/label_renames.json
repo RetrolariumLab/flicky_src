@@ -2202,4332 +2202,4332 @@
     [
       "z80_part2",
       "Data_Z80Driver2",
-      "src/data/z80_sound.s"
+      "src/sound/z80/load_data.s"
     ],
     [
       "z80_part2_End",
       "Data_Z80Driver2_End",
-      "src/data/z80_sound.s"
+      "src/sound/z80/load_data.s"
     ],
     [
       "byte_12FCC",
       "Bonus_BonusLabel",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "aBonus",
       "Bonus_BonusText",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "sub_12F30",
       "Bonus_Init",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_12F72",
       "Bonus_Init_FillCollisionLoop",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_12F8C",
       "Bonus_Init_FillGroundLoop",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "sub_12FDC",
       "Bonus_MainLoop",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_12FF4",
       "Bonus_MainLoop_PostFrame",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "byte_12FD4",
       "Bonus_RoundLabel",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "aRound_0",
       "Bonus_RoundText",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "sub_130D4",
       "Bonus_ScoreUpdate",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_130EE",
       "Bonus_ScoreUpdate_AdvanceRound",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_130F8",
       "Bonus_ScoreUpdate_IncrementBCD",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "sub_1303C",
       "Bonus_SetupObjects",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_13084",
       "Bonus_SetupObjects_ChickLoop",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_13098",
       "Bonus_SetupObjects_NextChick",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "sub_1300E",
       "Bonus_StateComplete",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_13026",
       "Bonus_StateComplete_ShowResults",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_13032",
       "Bonus_StateComplete_Update",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_13016",
       "Bonus_StateComplete_WaitForSound",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "sub_13008",
       "Bonus_StatePlay",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "loc_13000",
       "Bonus_StateTable",
-      "src/game/bonus.s"
+      "src/game/bonus/mode.s"
     ],
     [
       "byte_166B4",
       "BonusCat_AnimInner",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_166A2",
       "BonusCat_AnimOuter",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "off_1669A",
       "BonusCat_AnimPointers",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_168E2",
       "BonusChick_CheckCatch",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_1691A",
       "BonusChick_CheckCatch_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16892",
       "BonusChick_LoadTraj",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_168D8",
       "BonusChick_LoadTraj_Store",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_167D6",
       "BonusChick_StateFall",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16834",
       "BonusChick_StateFall_Animate",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16806",
       "BonusChick_StateFall_ApplyGravity",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_167F0",
       "BonusChick_StateFall_HalveRight",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16818",
       "BonusChick_StateFall_Move",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16852",
       "BonusChick_StateFall_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_167F2",
       "BonusChick_StateFall_StoreSpeed",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16782",
       "BonusChick_StateFly",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_167B8",
       "BonusChick_StateFly_Move",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_167C8",
       "BonusChick_StateFly_Update",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_166FC",
       "BonusChick_StateTable",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16708",
       "BonusChick_StateWait",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16768",
       "BonusChick_StateWait_CheckCat",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16778",
       "BonusChick_StateWait_Countdown",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16756",
       "BonusChick_StateWait_Move",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16776",
       "BonusChick_StateWait_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16854",
       "BonusChick_UpdateTraj",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16884",
       "BonusChick_UpdateTraj_Negative",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16882",
       "BonusChick_UpdateTraj_PositiveDone",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16890",
       "BonusChick_UpdateTraj_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_1686C",
       "BonusChick_UpdateTraj_Step",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_1688C",
       "BonusChick_UpdateTraj_Store",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16988",
       "Bonus_CalcScore",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_169A8",
       "Bonus_CalcScore_InnerLoop",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16992",
       "Bonus_CalcScore_OuterLoop",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_169D2",
       "Bonus_CalcScore_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "off_169F4",
       "Bonus_ChickDelayPointers",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16A24",
       "Bonus_ChickDelays0",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16A4C",
       "Bonus_ChickDelays1",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16A74",
       "Bonus_ChickDelays2",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16C64",
       "Bonus_ChickTrajIndex0",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16C78",
       "Bonus_ChickTrajIndex1",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16C8C",
       "Bonus_ChickTrajIndex2",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16CA0",
       "Bonus_ChickTrajIndex3",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16CB4",
       "Bonus_ChickTrajIndex4",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16CC8",
       "Bonus_ChickTrajIndex5",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16CDC",
       "Bonus_ChickTrajIndex6",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16CF0",
       "Bonus_ChickTrajIndex7",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D04",
       "Bonus_ChickTrajIndex8",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "off_16C34",
       "Bonus_ChickTrajIndexPointers",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16ACC",
       "Bonus_ChickVelocities0",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16AF4",
       "Bonus_ChickVelocities1",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16B1C",
       "Bonus_ChickVelocities2",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16B44",
       "Bonus_ChickVelocities3",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16B6C",
       "Bonus_ChickVelocities4",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16B94",
       "Bonus_ChickVelocities5",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16BBC",
       "Bonus_ChickVelocities6",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16BE4",
       "Bonus_ChickVelocities7",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16C0C",
       "Bonus_ChickVelocities8",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "off_16A9C",
       "Bonus_ChickVelocityPointers",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_169D4",
       "Bonus_DrawCaughtCount",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_169E6",
       "Bonus_DrawCaughtCount_Loop",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_1691C",
       "Bonus_DrawResultLabels",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16944",
       "Bonus_DrawResultLabels_NoBonus",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16942",
       "Bonus_DrawResultLabels_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_1697C",
       "Bonus_NoBonusLabel",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "aNoBonus",
       "Bonus_NoBonusText",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "aPerfectBonus",
       "Bonus_PerfectBonusText",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_16964",
       "Bonus_PerfectLabel",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "a250PtsPts",
       "Bonus_PointsText",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_16974",
       "Bonus_PtsLabel",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_1694C",
       "Bonus_PtsPerChickLabel",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "aPts",
       "Bonus_PtsText",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "dword_16588",
       "Bonus_StarScoreTable",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D3C",
       "Bonus_Trajectory0",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D3E",
       "Bonus_Trajectory1",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D48",
       "Bonus_Trajectory2",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D5A",
       "Bonus_Trajectory3",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D68",
       "Bonus_Trajectory4",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D7A",
       "Bonus_Trajectory5",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D8C",
       "Bonus_Trajectory6",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16D92",
       "Bonus_Trajectory7",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "word_16DA0",
       "Bonus_Trajectory8",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "off_16D18",
       "Bonus_TrajectoryPointers",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16600",
       "Obj_BonusCatInner",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16646",
       "Obj_BonusCatInner_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16624",
       "Obj_BonusCatInner_SetPosition",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16638",
       "Obj_BonusCatInner_Update",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_165BA",
       "Obj_BonusCatOuter",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_165FE",
       "Obj_BonusCatOuter_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_165DE",
       "Obj_BonusCatOuter_SetPosition",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_165F0",
       "Obj_BonusCatOuter_Update",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_166C6",
       "Obj_BonusChick",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_166EC",
       "Obj_BonusChick_Dispatch",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_16648",
       "Obj_BonusHeldChick",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16674",
       "Obj_BonusHeldChick_FacingLeft",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16698",
       "Obj_BonusHeldChick_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_1667E",
       "Obj_BonusHeldChick_Update",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_164EC",
       "Obj_StarBonus",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_1657C",
       "Obj_StarBonus_Countdown",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16582",
       "Obj_StarBonus_Despawn",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16540",
       "Obj_StarBonus_PopupLoop",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_16574",
       "Obj_StarBonus_PopupNext",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "locret_16586",
       "Obj_StarBonus_Return",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "loc_1651A",
       "Obj_StarBonus_Update",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_165AC",
       "StarBonus_AnimPointers",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "byte_165B0",
       "StarBonus_AnimSpin",
-      "src/game/bonus_objects.s"
+      "src/game/bonus/objects.s"
     ],
     [
       "sub_1137A",
       "Anim_ProcessTimer",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_1138A",
       "Anim_ProcessTimer_CheckWrap",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_113A0",
       "Anim_ProcessTimer_DrawFrame",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "sub_113BC",
       "Camera_ClearScroll",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "sub_1130C",
       "Camera_UpdateScroll",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "sub_113AC",
       "Collision_ClearMap",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_113B4",
       "Collision_ClearMap_Loop",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "sub_113E4",
       "Collision_LoadMap",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_113FC",
       "Collision_LoadMap_CheckOrientation",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_11404",
       "Collision_LoadMap_HorizontalLoop",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_113EA",
       "Collision_LoadMap_NextRun",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "locret_113FA",
       "Collision_LoadMap_Return",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_11412",
       "Collision_LoadMap_VerticalLoop",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_1140E",
       "Collision_LoadMap_VerticalSetup",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "sub_113CE",
       "Collision_SetTile",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "sub_1132A",
       "Gfx_UpdateScrollRegs",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_1134C",
       "Gfx_UpdateScrollRegs_HScrollLoop",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "loc_1135E",
       "Gfx_UpdateScrollRegs_VScrollLoop",
-      "src/game/camera_collision.s"
+      "src/game/world.s"
     ],
     [
       "byte_14EA2",
       "Cat_AnimCarried",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14EAA",
       "Cat_AnimCarriedAlt",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14E96",
       "Cat_AnimIdle",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14E9C",
       "Cat_AnimIdleAlt",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "off_14E12",
       "Cat_AnimPointers",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "off_14E22",
       "Cat_AnimPointersAlt",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14EB2",
       "Cat_AnimStunned",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14EBC",
       "Cat_AnimStunnedAlt",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14E32",
       "Cat_AnimWalk",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14E64",
       "Cat_AnimWalkAlt",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14A6A",
       "Cat_ChainDirectionPointers",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "byte_14A58",
       "Cat_ChainPositionPointers",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14D52",
       "Cat_CheckPlayerPickup",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "locret_14D84",
       "Cat_CheckPlayerPickup_Return",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14BDC",
       "Cat_CheckWallCollision",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14BE8",
       "Cat_CheckWallCollision_Probe",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14BD0",
       "Cat_ClearVelocity",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14918",
       "Cat_StateFollowing",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14A12",
       "Cat_StateFollowing_Animate",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_1497C",
       "Cat_StateFollowing_CheckDelivery",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14928",
       "Cat_StateFollowing_CheckHit",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_149F2",
       "Cat_StateFollowing_CheckRoundEnd",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_149D2",
       "Cat_StateFollowing_DelayLoop",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_149CE",
       "Cat_StateFollowing_DeliverDelay",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14A4E",
       "Cat_StateFollowing_Draw",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14A48",
       "Cat_StateFollowing_FrameUp",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14A3C",
       "Cat_StateFollowing_SelectFrame",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14A2A",
       "Cat_StateFollowing_SetFacing",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14940",
       "Cat_StateFollowing_TrackChain",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "nullsub_4",
       "Cat_StateIdle",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_148AA",
       "Cat_StatePatrol",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_1490E",
       "Cat_StatePatrol_Animate",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_148C6",
       "Cat_StatePatrol_Bounce",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_148DA",
       "Cat_StatePatrol_CheckPlayer",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "locret_14916",
       "Cat_StatePatrol_Return",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14D86",
       "Cat_StateStunWalk",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14DB8",
       "Cat_StateStunWalk_Animate",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14DD0",
       "Cat_StateStunWalk_CheckPickup",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14DA2",
       "Cat_StateStunWalk_Move",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_1489A",
       "Cat_StateTable",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14C6A",
       "Cat_StateWalkAlt",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14D16",
       "Cat_StateWalkAlt_Animate",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14CC4",
       "Cat_StateWalkAlt_CheckWall",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14D28",
       "Cat_StateWalkAlt_Draw",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14CE0",
       "Cat_StateWalkAlt_Falling",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14CDE",
       "Cat_StateWalkAlt_Finish",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14D08",
       "Cat_StateWalkAlt_KeepFalling",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14C96",
       "Cat_StateWalkAlt_Move",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14CD0",
       "Cat_StateWalkAlt_Probe",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14C90",
       "Cat_StateWalkAlt_SetFrame",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14B42",
       "Cat_StateWalking",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14BC6",
       "Cat_StateWalking_AccelerateRight",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14C2E",
       "Cat_StateWalking_Animate",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14C40",
       "Cat_StateWalking_Draw",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14BF8",
       "Cat_StateWalking_Falling",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14BF6",
       "Cat_StateWalking_Finish",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14C20",
       "Cat_StateWalking_KeepFalling",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14B76",
       "Cat_StateWalking_Move",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14BA4",
       "Cat_StateWalking_OnGround",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14B70",
       "Cat_StateWalking_SetFrame",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14BBA",
       "Cat_StateWalking_Stop",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "dword_14D32",
       "Cat_WalkAltSpeedTable",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "dword_14C4A",
       "Cat_WalkSpeedTable",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14A7C",
       "Chick_AwardPoints",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14AF0",
       "Chick_CheckEnemyHit",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14B12",
       "Chick_CheckEnemyHit_DropLoop",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14B26",
       "Chick_CheckEnemyHit_DropNext",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14AF6",
       "Chick_CheckEnemyHit_Loop",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14B30",
       "Chick_CheckEnemyHit_Next",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14B3C",
       "Chick_CheckEnemyHit_Return",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "dword_14AC0",
       "Chick_DeliveryScoreTable",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "word_14AE0",
       "Chick_PopupSlotTable",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_1483E",
       "Obj_Cat",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_14874",
       "Obj_Cat_Dispatch",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "locret_14898",
       "Obj_Cat_Return",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "loc_1485A",
       "Obj_Cat_SetPosition",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14DD4",
       "Score_CalcTimeBonus",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "locret_14DF8",
       "Score_CalcTimeBonus_Return",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "dword_14DFA",
       "Score_TimeBonusTable",
-      "src/game/cat.s"
+      "src/game/enemies/cat.s"
     ],
     [
       "sub_14662",
       "Chick_CheckOffscreen",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14684",
       "Chick_CheckOffscreen_Despawn",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "locret_14686",
       "Chick_CheckOffscreen_Return",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_145BC",
       "Chick_StateFollowing",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_145FC",
       "Chick_StateFollowing_FacingLeft",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_145EE",
       "Chick_StateFollowing_OnGround",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14602",
       "Chick_StateFollowing_Store",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_145D0",
       "Chick_StateFollowing_Track",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_14588",
       "Chick_StateIdle",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_145B6",
       "Chick_StateIdle_Move",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_1457C",
       "Chick_StateTable",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_14610",
       "Chick_StateThrown",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_1465C",
       "Chick_StateThrown_CheckRange",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14650",
       "Chick_StateThrown_Move",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_1463C",
       "Chick_StateThrown_ReduceRound",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14648",
       "Chick_StateThrown_SelectAnim",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_1476C",
       "Chick_ThrownAnim0",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_1477A",
       "Chick_ThrownAnim1",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147F8",
       "Chick_ThrownAnim10",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14806",
       "Chick_ThrownAnim11",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14814",
       "Chick_ThrownAnim12",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14822",
       "Chick_ThrownAnim13",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14830",
       "Chick_ThrownAnim14",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14788",
       "Chick_ThrownAnim2",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14796",
       "Chick_ThrownAnim3",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147A4",
       "Chick_ThrownAnim4",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147B2",
       "Chick_ThrownAnim5",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147C0",
       "Chick_ThrownAnim6",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147CE",
       "Chick_ThrownAnim7",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147DC",
       "Chick_ThrownAnim8",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_147EA",
       "Chick_ThrownAnim9",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "off_14730",
       "Chick_ThrownAnimPointers",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_14688",
       "Chick_UpdatePhysics",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_146FA",
       "Chick_UpdatePhysics_Airborne",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_146A0",
       "Chick_UpdatePhysics_Animate",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_146BE",
       "Chick_UpdatePhysics_ApplyGravity",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14700",
       "Chick_UpdatePhysics_CheckWalls",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_146B6",
       "Chick_UpdatePhysics_DecelerateRight",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_146BC",
       "Chick_UpdatePhysics_Decelerated",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "locret_1471E",
       "Chick_UpdatePhysics_LeftReturn",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_146C4",
       "Chick_UpdatePhysics_Move",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "locret_1472E",
       "Chick_UpdatePhysics_RightReturn",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14720",
       "Chick_UpdatePhysics_TestRight",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "byte_14528",
       "ExitDoor_AnimOpen",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "off_14524",
       "ExitDoor_AnimPointers",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14516",
       "ExitDoor_StateTable",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_1452E",
       "Obj_Chick",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_1455E",
       "Obj_Chick_Dispatch",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "locret_1457A",
       "Obj_Chick_Return",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_144DC",
       "Obj_ExitDoor",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "sub_1451E",
       "Obj_ExitDoorAnim",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "nullsub_3",
       "Obj_ExitDoorIdle",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "loc_14504",
       "Obj_ExitDoor_Dispatch",
-      "src/game/chick.s"
+      "src/game/actors/chick.s"
     ],
     [
       "word_1187E",
       "Collision_BoxHeightTable",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "word_11878",
       "Collision_BoxLeftTable",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "word_1187C",
       "Collision_BoxTopTable",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "word_1187A",
       "Collision_BoxWidthTable",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "sub_117C0",
       "Collision_CheckObjectPair",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11870",
       "Collision_CheckObjectPair_Hit",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11874",
       "Collision_CheckObjectPair_Miss",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11812",
       "Collision_CheckObjectPair_TestXCase2",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1181C",
       "Collision_CheckObjectPair_TestXCase3",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11826",
       "Collision_CheckObjectPair_TestXCase4",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1182E",
       "Collision_CheckObjectPair_TestY",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11854",
       "Collision_CheckObjectPair_TestYCase2",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1185E",
       "Collision_CheckObjectPair_TestYCase3",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11868",
       "Collision_CheckObjectPair_TestYCase4",
-      "src/game/collision_pairs.s"
+      "src/game/rules.s"
     ],
     [
       "sub_139A2",
       "Demo_Init",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13A82",
       "Demo_InputStream0",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13A82_End",
       "Demo_InputStream0_End",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13B82",
       "Demo_InputStream1",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13C52",
       "Demo_InputStream2",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13C52_End",
       "Demo_InputStream2_End",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13D70",
       "Demo_InputStream3",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "word_13D70_End",
       "Demo_InputStream3_End",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "off_13A10",
       "Demo_InputStreamPointers",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "sub_13A5E",
       "Demo_ReadInput",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "locret_13A80",
       "Demo_ReadInput_Return",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "byte_13A0C",
       "Demo_RoundDisplayTable",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "byte_13A08",
       "Demo_RoundIndexTable",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "sub_13A18",
       "Demo_Update",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "loc_13A3C",
       "Demo_Update_Objects",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "loc_13A5A",
       "Demo_Update_Return",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "loc_13A2A",
       "Demo_Update_Run",
-      "src/game/demo.s"
+      "src/game/screens/attract_mode.s"
     ],
     [
       "aAnd",
       "Ending_AndText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aArcadeFlickySt",
       "Ending_ArcadeFlickyStaffText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "byte_1339C",
       "Ending_BlankLine",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_131D6",
       "Ending_BlinkText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aBo",
       "Ending_BoText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aChallengeTheNe",
       "Ending_ChallengeTheNextStageText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "word_135E8",
       "Ending_CongratsArt",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "word_135E8_End",
       "Ending_CongratsArt_End",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "byte_131EC",
       "Ending_CongratsLabel",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aCongratulation",
       "Ending_CongratulationsText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "word_1350C",
       "Ending_CreditsAnimIndexTable",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "off_134F8",
       "Ending_CreditsAnimPointers",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "word_13516",
       "Ending_CreditsAppearLines",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "off_132E0",
       "Ending_CreditsLinePointers",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_134F0",
       "Ending_CreditsStateTable",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aDesigner",
       "Ending_DesignerText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aDirector",
       "Ending_DirectorText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_131DA",
       "Ending_DrawCongrats",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_1328E",
       "Ending_DrawCreditsLine",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_132BA",
       "Ending_DrawCreditsLine_ClearRowLoop",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_132A4",
       "Ending_DrawCreditsLine_Wrap",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_13566",
       "Ending_DrawGraphics",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_1356A",
       "Ending_DrawGraphics_Loop",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "off_13598",
       "Ending_GraphicsMappingPointers",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "word_135D4",
       "Ending_GraphicsPositions",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "byte_135AC",
       "Ending_GraphicsSizeTable",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_13110",
       "Ending_Init",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aKFuzzy",
       "Ending_KFuzzyText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aLee",
       "Ending_LeeText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_13162",
       "Ending_MainLoop",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aOSamu",
       "Ending_OSamuText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aProgrammer",
       "Ending_ProgrammerText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aSoundDesign",
       "Ending_SoundDesignText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aSpecialThanks",
       "Ending_SpecialThanksText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aStaff",
       "Ending_StaffText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_1321A",
       "Ending_StateCredits",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "locret_1328C",
       "Ending_StateCredits_Return",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_1325A",
       "Ending_StateCredits_Scroll",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_13248",
       "Ending_StateCredits_SpawnLoop",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_13492",
       "Ending_StateRestart",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "locret_134BA",
       "Ending_StateRestart_Return",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_13176",
       "Ending_StateTable",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_13182",
       "Ending_StateWait",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_131CC",
       "Ending_StateWait_ClearPlaneLoop",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "locret_131D4",
       "Ending_StateWait_Return",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "byte_13200",
       "Ending_SuperPlayerLabel",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aTSMusic",
       "Ending_TSMusicText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aTestPlayers",
       "Ending_TestPlayersText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aYouAreASuperPl",
       "Ending_YouAreASuperText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "aYumi",
       "Ending_YumiText",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_134BC",
       "Obj_CreditsCharacter",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_134E2",
       "Obj_CreditsCharacter_Dispatch",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_1352E",
       "Obj_CreditsFlyUp",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_13560",
       "Obj_CreditsFlyUp_Animate",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "loc_13550",
       "Obj_CreditsFlyUp_Move",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "sub_1351C",
       "Obj_CreditsWait",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "locret_1352C",
       "Obj_CreditsWait_Return",
-      "src/game/ending.s"
+      "src/game/screens/ending.s"
     ],
     [
       "word_16DE8",
       "Gfx_SharedPalette",
-      "src/game/game_over.s"
+      "src/game/screens/game_over.s"
     ],
     [
       "sub_16DAA",
       "Obj_GameOverText",
-      "src/game/game_over.s"
+      "src/game/screens/game_over.s"
     ],
     [
       "locret_16DCA",
       "Obj_GameOverText_Return",
-      "src/game/game_over.s"
+      "src/game/screens/game_over.s"
     ],
     [
       "sub_16DCC",
       "Obj_TimeOverText",
-      "src/game/game_over.s"
+      "src/game/screens/game_over.s"
     ],
     [
       "locret_16DE6",
       "Obj_TimeOverText_Return",
-      "src/game/game_over.s"
+      "src/game/screens/game_over.s"
     ],
     [
       "byte_1243A",
       "Guide_ButtonLabel",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_123C2",
       "Guide_ButtonLabelJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_124BA",
       "Guide_CharacterFlagTable",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_124CE",
       "Guide_CharacterMappingPointers",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_1256E",
       "Guide_CharacterPositions",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_1251E",
       "Guide_CharacterPositionsJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_1242A",
       "Guide_DoorLabel",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_123B2",
       "Guide_DoorLabelJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_1230A",
       "Guide_DrawText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_1233A",
       "Guide_DrawText_DrawScene",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_1237A",
       "Guide_DrawText_GroundLoop",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_1231E",
       "Guide_DrawText_Loop",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_12422",
       "Guide_GuideLabel",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_123AE",
       "Guide_GuideLabelJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aGuide",
       "Guide_GuideText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_1241A",
       "Guide_HelpLabel",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_123A4",
       "Guide_HelpLabelJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aHelp",
       "Guide_HelpText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_1228E",
       "Guide_Init",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_122C2",
       "Guide_Init_SpawnCharactersLoop",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12290",
       "Guide_Init_WaitLoop",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aMakeYourMove",
       "Guide_MakeYourMoveText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_12408",
       "Guide_MoveLabel",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aPressButtonToJ",
       "Guide_PressButtonToJumpText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aRackUpASuperSc",
       "Guide_RackUpASuperText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_1245C",
       "Guide_ScoreLabel",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_123DA",
       "Guide_ScoreLabelJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_123F0",
       "Guide_TextPointers",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_12384",
       "Guide_TextPointersJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_1239C",
       "Guide_TitleLabelJP",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aToTheDoor",
       "Guide_ToTheDoorText",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_122E0",
       "Guide_Update",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12302",
       "Guide_Update_Fade",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12306",
       "Guide_Update_Return",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_12476",
       "Obj_GuideCharacter",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "locret_124B8",
       "Obj_GuideCharacter_Return",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12492",
       "Obj_GuideCharacter_SetMapping",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_124AC",
       "Obj_GuideCharacter_SetPosition",
-      "src/game/guide.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_115C0",
       "Collision_GetTileAtObject",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_115DC",
       "Collision_GetTileAtObject_Lookup",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_115D2",
       "Collision_GetTileAtObject_WrapHigh",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "sub_1157C",
       "Collision_GetTileAtPos",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11594",
       "Collision_GetTileAtPos_Lookup",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_1158A",
       "Collision_GetTileAtPos_WrapHigh",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "sub_1143A",
       "Collision_SetBoundaries",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11478",
       "Collision_SetBoundaries_BottomEdgeLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11482",
       "Collision_SetBoundaries_BottomEdgeNext",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_1144E",
       "Collision_SetBoundaries_BottomRowsLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_1145C",
       "Collision_SetBoundaries_TopEdgeLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_1146C",
       "Collision_SetBoundaries_TopEdgeNext",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11440",
       "Collision_SetBoundaries_TopRowLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "sub_11608",
       "Collision_SetSpecialTiles",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11650",
       "Collision_SetSpecialTiles_Flag5",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11658",
       "Collision_SetSpecialTiles_Flag5Loop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_1162A",
       "Collision_SetSpecialTiles_Flag76",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11632",
       "Collision_SetSpecialTiles_Flag76Loop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11610",
       "Collision_SetSpecialTiles_Flag7Loop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "locret_11672",
       "Collision_SetSpecialTiles_Return",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "sub_11422",
       "Level_Init",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "sub_11562",
       "Level_SpawnBackgroundLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "sub_1148A",
       "Level_SpawnObjects",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11522",
       "Level_SpawnObjects_ChickLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_114E0",
       "Level_SpawnObjects_Group4",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_114EC",
       "Level_SpawnObjects_Group5",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "locret_11560",
       "Level_SpawnObjects_Return",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_1153A",
       "Level_SpawnObjects_SecondChickGroup",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_11546",
       "Level_SpawnObjects_SecondChickLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_114FE",
       "Level_SpawnObjects_SpawnerLoop",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "loc_114F8",
       "Level_SpawnObjects_Spawners",
-      "src/game/level.s"
+      "src/game/world.s"
     ],
     [
       "byte_154FE",
       "Lizard_AnimDeath",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "byte_154E2",
       "Lizard_AnimJump",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "off_154AE",
       "Lizard_AnimPointers",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "byte_154D0",
       "Lizard_AnimRun",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "byte_154F4",
       "Lizard_AnimStunned",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "byte_154C2",
       "Lizard_AnimWait",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_1540A",
       "Lizard_CheckPlayerHit",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15410",
       "Lizard_CheckPlayerHit_Loop",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1548E",
       "Lizard_CheckPlayerHit_Next",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15460",
       "Lizard_CheckPlayerHit_PopupLoop",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15484",
       "Lizard_CheckPlayerHit_PopupNext",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1549A",
       "Lizard_CheckPlayerHit_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_1539A",
       "Lizard_DecrementTimer",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "dword_1549E",
       "Lizard_HitScoreTable",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_15068",
       "Lizard_StateChase",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15114",
       "Lizard_StateChase_Animate",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1508A",
       "Lizard_StateChase_ApplyFacing",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1514C",
       "Lizard_StateChase_CheckAhead",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150BA",
       "Lizard_StateChase_CheckGround",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150FE",
       "Lizard_StateChase_ComparePlayerRow",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15126",
       "Lizard_StateChase_Draw",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150DC",
       "Lizard_StateChase_EdgeRight",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150DA",
       "Lizard_StateChase_LeftDone",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15132",
       "Lizard_StateChase_MaybeJump",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15094",
       "Lizard_StateChase_Move",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150AC",
       "Lizard_StateChase_ProbeRight",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150AE",
       "Lizard_StateChase_ProbeWall",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150E8",
       "Lizard_StateChase_RightDone",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150F8",
       "Lizard_StateChase_SpecialFacingLeft",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_150EA",
       "Lizard_StateChase_SpecialTile",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15152",
       "Lizard_StateChase_StartJump",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_153A4",
       "Lizard_StateDeath",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15404",
       "Lizard_StateDeath_ClearSprites",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "locret_15408",
       "Lizard_StateDeath_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_153F0",
       "Lizard_StateDeath_SpawnAt",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_153C8",
       "Lizard_StateDeath_Update",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_152B4",
       "Lizard_StateHit",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_152E4",
       "Lizard_StateHit_Move",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "locret_152F4",
       "Lizard_StateHit_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_152D6",
       "Lizard_StateHit_Setup",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_1515A",
       "Lizard_StateJump",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1520A",
       "Lizard_StateJump_Airborne",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_151AA",
       "Lizard_StateJump_ApplyFacing",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_151EC",
       "Lizard_StateJump_CheckCeiling",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1524C",
       "Lizard_StateJump_Delay",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1520C",
       "Lizard_StateJump_Land",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_151B4",
       "Lizard_StateJump_Move",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_151DC",
       "Lizard_StateJump_ProbeRight",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_151DE",
       "Lizard_StateJump_ProbeWall",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "locret_1524A",
       "Lizard_StateJump_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15222",
       "Lizard_StateJump_SelectFrame",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15238",
       "Lizard_StateJump_SetFacing",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1519A",
       "Lizard_StateJump_UseFixedArc",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1518C",
       "Lizard_StateJump_UseLevelArc",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_14FD2",
       "Lizard_StateLocate",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15004",
       "Lizard_StateLocate_Compare",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1504E",
       "Lizard_StateLocate_FacingLeft",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1502E",
       "Lizard_StateLocate_SameRow",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1505A",
       "Lizard_StateLocate_TurnLeft",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15040",
       "Lizard_StateLocate_TurnRight",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_15256",
       "Lizard_StateStunned",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15290",
       "Lizard_StateStunned_Animate",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_152AA",
       "Lizard_StateStunned_Delay",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1527A",
       "Lizard_StateStunned_Move",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "locret_152A8",
       "Lizard_StateStunned_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_14F44",
       "Lizard_StateTable",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_152F6",
       "Lizard_StateTrack",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15328",
       "Lizard_StateTrack_Compare",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15380",
       "Lizard_StateTrack_FacingLeft",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15352",
       "Lizard_StateTrack_PlayerBelow",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15360",
       "Lizard_StateTrack_SameRow",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_1538C",
       "Lizard_StateTrack_TurnLeft",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_15372",
       "Lizard_StateTrack_TurnRight",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_14F64",
       "Lizard_StateWait",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_14FB0",
       "Lizard_StateWait_CheckEarlyRound",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "locret_14FD0",
       "Lizard_StateWait_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_14F80",
       "Lizard_StateWait_Update",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_14EC6",
       "Obj_Lizard",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_14EFA",
       "Obj_Lizard_Dispatch",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "locret_14F42",
       "Obj_Lizard_Return",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "loc_14F2E",
       "Obj_Lizard_UpdateFacing",
-      "src/game/lizard.s"
+      "src/game/enemies/lizard.s"
     ],
     [
       "sub_12D84",
       "Enemy_SpawnCats",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12D98",
       "Enemy_SpawnCats_CheckSecondPair",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12DBE",
       "Enemy_SpawnCats_CheckThirdPair",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "locret_12DE2",
       "Enemy_SpawnCats_Return",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "byte_12C7C",
       "Game_BonusThresholdTable",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "word_12CCE",
       "Game_BonusTimeLimits",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "dword_12C82",
       "Game_BonusValueTable",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12E2E",
       "Game_CalcDifficulty",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12E44",
       "Game_CalcDifficulty_ScaleLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12E70",
       "Game_CalcDifficulty_SelectPattern",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12C9A",
       "Game_CheckSkipBonus",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12CC6",
       "Game_CheckSkipBonus_Advance",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12CC0",
       "Game_CheckSkipBonus_Skip",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12B46",
       "Game_MainLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12B5E",
       "Game_MainLoop_PostFrame",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12EF4",
       "Game_Pause",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12F0A",
       "Game_Pause_WaitLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12E00",
       "Game_RoundStartSequence",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12E0A",
       "Game_RoundStartSequence_DelayLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12ABA",
       "Game_SetupLevel",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12B20",
       "Game_SetupLevel_CountAndDraw",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12A94",
       "Game_StartRound",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12BDC",
       "Game_StateBonusCheck",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12C74",
       "Game_StateBonusCheck_Advance",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12C2E",
       "Game_StateBonusCheck_AwardLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12C70",
       "Game_StateBonusCheck_ClearFlag",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12C6A",
       "Game_StateBonusCheck_Update",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12C16",
       "Game_StateBonusCheck_WaitLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12CDA",
       "Game_StateNextRound",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12D06",
       "Game_StateNextRound_FadeLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12CFE",
       "Game_StateNextRound_Update",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12CE4",
       "Game_StateNextRound_WaitLoop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12B7E",
       "Game_StatePlay",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12B8C",
       "Game_StatePlay_Update",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12B9A",
       "Game_StateRoundComplete",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12BB2",
       "Game_StateRoundComplete_ShowScoreScreen",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12BD2",
       "Game_StateRoundComplete_Update",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12BA2",
       "Game_StateRoundComplete_WaitForSound",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12B6A",
       "Game_StateTable",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12D1A",
       "Level_CalcExitPos",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12DE4",
       "Level_CountChicks",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12DEC",
       "Level_CountChicks_Loop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12DF2",
       "Level_CountChicks_Next",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12EBA",
       "Score_AwardExtraLife",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12E90",
       "Score_CheckExtraLife",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12E98",
       "Score_CheckExtraLife_Loop",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12EB2",
       "Score_CheckExtraLife_Next",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "locret_12EB8",
       "Score_CheckExtraLife_Return",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "dword_12EE0",
       "Score_ExtraLifeThresholds",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_12D42",
       "Score_UpdateDisplay",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12D56",
       "Score_UpdateDisplay_AdvanceRound",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "loc_12D60",
       "Score_UpdateDisplay_IncrementBCD",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "locret_12D82",
       "Score_UpdateDisplay_Return",
-      "src/game/main_loop.s"
+      "src/game/round/main_loop.s"
     ],
     [
       "sub_11126",
       "Anim_UpdateFrame",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11142",
       "Anim_UpdateFrame_CheckWrap",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11158",
       "Anim_UpdateFrame_StoreMapping",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_110BA",
       "Object_CalcScreenPos",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_110E2",
       "Object_CalcScreenPos_Store",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_110D2",
       "Object_CalcScreenPos_WrapHigh",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_110C2",
       "Object_CalcScreenPos_WrapLow",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_1129E",
       "Object_CallHandler",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_112AC",
       "Object_CallHandler_Return",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_110FE",
       "Object_ClearAllSlots",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1110A",
       "Object_ClearAllSlots_Loop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_110F0",
       "Object_ClearSlot",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_110F6",
       "Object_ClearSlot_Loop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_112B0",
       "Object_HandlerTable",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "locret_1129C",
       "Object_NullHandler",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_111E2",
       "Object_UpdateAll",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11248",
       "Object_UpdateAll_BonusExtraLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11236",
       "Object_UpdateAll_BonusLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11228",
       "Object_UpdateAll_BonusMode",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11208",
       "Object_UpdateAll_ChickLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_111F6",
       "Object_UpdateAll_EnemyLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1121A",
       "Object_UpdateAll_MainLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_111D4",
       "Object_UpdateMain",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_1105C",
       "Object_UpdatePosition",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1107C",
       "Object_UpdatePosition_ClampHigh",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "locret_110B8",
       "Object_UpdatePosition_Return",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_110AC",
       "Object_UpdatePosition_StoreScreenPos",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1108A",
       "Object_UpdatePosition_StoreWorldX",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_110A0",
       "Object_UpdatePosition_WrapHigh",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11094",
       "Object_UpdatePosition_WrapLow",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11254",
       "Sprite_BuildTable",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1129A",
       "Sprite_BuildTable_Empty",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11280",
       "Sprite_BuildTable_NextSlot",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11266",
       "Sprite_BuildTable_SlotLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_11118",
       "Sprite_ClearLinkTable",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1111E",
       "Sprite_ClearLinkTable_Loop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_11166",
       "Sprite_RenderObject",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_111B0",
       "Sprite_RenderObject_ApplyX",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_11170",
       "Sprite_RenderObject_Build",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_111CA",
       "Sprite_RenderObject_EmitPiece",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "loc_1118A",
       "Sprite_RenderObject_PieceLoop",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "locret_111D2",
       "Sprite_RenderObject_Return",
-      "src/game/objects.s"
+      "src/game/world.s"
     ],
     [
       "sub_14464",
       "Enemy_ClearProjectiles",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1446A",
       "Enemy_ClearProjectiles_Loop",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_13E70",
       "Obj_Player",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13EB6",
       "Obj_Player_CheckProjectiles",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13ECE",
       "Obj_Player_RecordAndAnimate",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_13EDC",
       "Obj_Player_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13EA0",
       "Obj_Player_Update",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "byte_144C8",
       "Player_AnimBrake",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "byte_144CE",
       "Player_AnimDeath",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "byte_144C2",
       "Player_AnimFly",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "off_144AC",
       "Player_AnimPointers",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "byte_144BC",
       "Player_AnimWalk",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_142D6",
       "Player_CheckExit",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14316",
       "Player_CheckExit_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_1407E",
       "Player_CheckGround",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1409E",
       "Player_CheckGround_Airborne",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_140BC",
       "Player_CheckGround_Falling",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_140D8",
       "Player_CheckGround_LandReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_140DA",
       "Player_CheckGround_Moving",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_140FE",
       "Player_CheckGround_MovingFall",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14112",
       "Player_CheckGround_MovingLand",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14126",
       "Player_CheckGround_MovingReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_140FC",
       "Player_CheckGround_MovingRiseReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_1409C",
       "Player_CheckGround_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_140BA",
       "Player_CheckGround_RisingReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_140F8",
       "Player_CheckGround_StopRise",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_14476",
       "Player_CheckProjectileHit",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1447C",
       "Player_CheckProjectileHit_Loop",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_144A2",
       "Player_CheckProjectileHit_Next",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_144AA",
       "Player_CheckProjectileHit_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_14128",
       "Player_CheckWalls",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_141BC",
       "Player_CheckWalls_AirBounceLeft",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_141F2",
       "Player_CheckWalls_AirBounceRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_141D4",
       "Player_CheckWalls_AirClampLeft",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1420A",
       "Player_CheckWalls_AirClampRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_141DA",
       "Player_CheckWalls_AirLeftReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14210",
       "Player_CheckWalls_AirRightReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_141DC",
       "Player_CheckWalls_AirTestRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1419A",
       "Player_CheckWalls_Airborne",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14212",
       "Player_CheckWalls_Ceiling",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14230",
       "Player_CheckWalls_CeilingReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14168",
       "Player_CheckWalls_ClampLeftBounce",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14192",
       "Player_CheckWalls_ClampRightBounce",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14248",
       "Player_CheckWalls_NoVelocity",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14270",
       "Player_CheckWalls_PushReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1425C",
       "Player_CheckWalls_PushRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_1416E",
       "Player_CheckWalls_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14198",
       "Player_CheckWalls_RightReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14232",
       "Player_CheckWalls_SnapToFloor",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14170",
       "Player_CheckWalls_TestRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_1402E",
       "Player_ClearAirState",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_13F26",
       "Player_ProcessInput",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FEC",
       "Player_ProcessInput_AccelerateLeft",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FCE",
       "Player_ProcessInput_AccelerateRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1401C",
       "Player_ProcessInput_AirReleaseCheck",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_1402C",
       "Player_ProcessInput_AirReturn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1400A",
       "Player_ProcessInput_Airborne",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13F42",
       "Player_ProcessInput_Apply",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13F54",
       "Player_ProcessInput_CheckJump",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13F98",
       "Player_ProcessInput_CheckRelease",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14000",
       "Player_ProcessInput_ClampLeft",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FE2",
       "Player_ProcessInput_ClampRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FC4",
       "Player_ProcessInput_DecelerateLeft",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FCA",
       "Player_ProcessInput_Decelerated",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14006",
       "Player_ProcessInput_LeftDone",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FAA",
       "Player_ProcessInput_NoDirection",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_13FA8",
       "Player_ProcessInput_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13FE8",
       "Player_ProcessInput_RightDone",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_14272",
       "Player_RecordHistory",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_142BC",
       "Player_RecordHistory_EncodeDirection",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_142CC",
       "Player_RecordHistory_FacingRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1429E",
       "Player_RecordHistory_ShiftFlagsLoop",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14284",
       "Player_RecordHistory_ShiftLoop",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_142D0",
       "Player_RecordHistory_Store",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_1438C",
       "Player_StateDeath",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_143DE",
       "Player_StateDeath_Animate",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_143AE",
       "Player_StateDeath_Fall",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_143E4",
       "Player_StateDeath_Land",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_13EEA",
       "Player_StateNormal",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13F00",
       "Player_StateNormal_Move",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_13F24",
       "Player_StateNormal_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_143FC",
       "Player_StateRespawn",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14430",
       "Player_StateRespawn_CheckDone",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1444E",
       "Player_StateRespawn_DelayLoop",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1445C",
       "Player_StateRespawn_GameOver",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_14462",
       "Player_StateRespawn_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14418",
       "Player_StateRespawn_Update",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_13EDE",
       "Player_StateTable",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_14038",
       "Player_ThrowChick",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "locret_1407C",
       "Player_ThrowChick_Return",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14066",
       "Player_ThrowChick_SetVelocity",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_14318",
       "Player_UpdateAnim",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1437A",
       "Player_UpdateAnim_AirFrame",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14380",
       "Player_UpdateAnim_AirIdle",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14366",
       "Player_UpdateAnim_Airborne",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14348",
       "Player_UpdateAnim_Braking",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14342",
       "Player_UpdateAnim_FacingRight",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_1435C",
       "Player_UpdateAnim_Standing",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "loc_14352",
       "Player_UpdateAnim_Walking",
-      "src/game/player.s"
+      "src/game/actors/player.s"
     ],
     [
       "sub_125BE",
       "RoundSelect_Init",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "byte_125E8",
       "RoundSelect_RoundLabel",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "aRound",
       "RoundSelect_RoundText",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "sub_125F2",
       "RoundSelect_Update",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "loc_1261A",
       "RoundSelect_Update_CheckDown",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "loc_12636",
       "RoundSelect_Update_CheckStart",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "loc_12642",
       "RoundSelect_Update_DrawNumber",
-      "src/game/round_select.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "sub_12656",
       "Game_InitRound",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "sub_1266E",
       "Game_PreRoundDelay",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "loc_12688",
       "Game_PreRoundDelay_Wait",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A1C",
       "Level_AccentPalette0",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A24",
       "Level_AccentPalette1",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A6C",
       "Level_AccentPalette10",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A74",
       "Level_AccentPalette11",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A7C",
       "Level_AccentPalette12",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A84",
       "Level_AccentPalette13",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A8C",
       "Level_AccentPalette14",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A2C",
       "Level_AccentPalette2",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A34",
       "Level_AccentPalette3",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A3C",
       "Level_AccentPalette4",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A44",
       "Level_AccentPalette5",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A4C",
       "Level_AccentPalette6",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A54",
       "Level_AccentPalette7",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A5C",
       "Level_AccentPalette8",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_12A64",
       "Level_AccentPalette9",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_129FE",
       "Level_AccentPalettePointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_12728",
       "Level_BackgroundTilePointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_12788",
       "Level_BgObject3Pointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_127B8",
       "Level_BgObject4Pointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_127D0",
       "Level_BgObject5Pointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_127E8",
       "Level_ChickMappingPointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_12740",
       "Level_GroundTilePointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "sub_12824",
       "Level_LoadPalette",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "loc_12840",
       "Level_LoadPalette_CopyLoop",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "sub_1268E",
       "Level_LoadTileset",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_12770",
       "Level_LowerGroundPointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1287E",
       "Level_Palette0",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1289E",
       "Level_Palette1",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_129BE",
       "Level_Palette10",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_129DE",
       "Level_Palette11",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_128BE",
       "Level_Palette2",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_128DE",
       "Level_Palette3",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_128FE",
       "Level_Palette4",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1291E",
       "Level_Palette5",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1293E",
       "Level_Palette6",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1295E",
       "Level_Palette7",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1297E",
       "Level_Palette8",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "word_1299E",
       "Level_Palette9",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_12866",
       "Level_PalettePointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "off_12758",
       "Level_UpperGroundPointers",
-      "src/game/round_setup.s"
+      "src/game/round/select_and_setup.s"
     ],
     [
       "sub_11722",
       "Enemy_BackupToBuffer",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11734",
       "Enemy_CopyBuffer",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_11738",
       "Enemy_CopyBuffer_Loop",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_1172C",
       "Enemy_RestoreFromBuffer",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_11784",
       "Gfx_FadeInPalette",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_117AA",
       "Gfx_FadeInPalette_ApplyStep",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1178E",
       "Gfx_FadeInPalette_CopyLoop",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "locret_117BE",
       "Gfx_FadeInPalette_Return",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1179A",
       "Gfx_FadeInPalette_StepLoop",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_11700",
       "Level_SetCatPositions",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_11674",
       "Math_GridToScreen",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1176A",
       "Math_ModuloFromD0",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_11764",
       "Math_ModuloLower",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "locret_11772",
       "Math_ModuloLower_Return",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_11774",
       "Math_ModuloUpper",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1177A",
       "Math_ModuloUpper_Loop",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "locret_11782",
       "Math_ModuloUpper_Return",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_1168A",
       "Score_AddAndCheck",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "loc_1169E",
       "Score_AddAndCheck_AddLoop",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "locret_116BC",
       "Score_AddAndCheck_Return",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "word_1175C",
       "Text_BlinkTileBases",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_11740",
       "Text_CycleBlink",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_116BE",
       "Timer_IncrementTime",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "locret_116FE",
       "Timer_IncrementTime_Return",
-      "src/game/scoring.s"
+      "src/game/rules.s"
     ],
     [
       "sub_15D58",
       "Obj_Snake",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15D8C",
       "Obj_Snake_Dispatch",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "locret_15DC0",
       "Obj_Snake_Return",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_162F6",
       "Snake_AnimDown",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_162E6",
       "Snake_AnimLeft",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "off_162BC",
       "Snake_AnimPointers",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_162DC",
       "Snake_AnimRight",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_16308",
       "Snake_AnimSpawn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_162FC",
       "Snake_AnimTurnA",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_16302",
       "Snake_AnimTurnB",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "byte_162F0",
       "Snake_AnimUp",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_16218",
       "Snake_CheckPlayerHit",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_1621E",
       "Snake_CheckPlayerHit_Loop",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_1629C",
       "Snake_CheckPlayerHit_Next",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_1626E",
       "Snake_CheckPlayerHit_PopupLoop",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_16292",
       "Snake_CheckPlayerHit_PopupNext",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_162A8",
       "Snake_CheckPlayerHit_Return",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15E20",
       "Snake_DirectionTable",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "dword_162AC",
       "Snake_HitScoreTable",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_16036",
       "Snake_MoveDown",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_1610C",
       "Snake_MoveDown_StartTurn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_160D6",
       "Snake_MoveDown_TurnLeft",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_1609A",
       "Snake_MoveDown_TurnRight",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_15EE6",
       "Snake_MoveLeft",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15F8E",
       "Snake_MoveLeft_StartTurn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15F5A",
       "Snake_MoveLeft_TurnDown",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15F32",
       "Snake_MoveLeft_TurnUp",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_15E40",
       "Snake_MoveRight",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15ED6",
       "Snake_MoveRight_StartTurn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15E86",
       "Snake_MoveRight_TurnDown",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15EA8",
       "Snake_MoveRight_TurnUp",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_15F9E",
       "Snake_MoveUp",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_16072",
       "Snake_MoveUp_StartTurn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15FDE",
       "Snake_MoveUp_TurnLeft",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_16004",
       "Snake_MoveUp_TurnRight",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_161BC",
       "Snake_StateDeath",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_16212",
       "Snake_StateDeath_ClearSprites",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "locret_16216",
       "Snake_StateDeath_Return",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_161E0",
       "Snake_StateDeath_Update",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_16188",
       "Snake_StateHit",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_161AA",
       "Snake_StateHit_Move",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "locret_161BA",
       "Snake_StateHit_Return",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_15E04",
       "Snake_StateMove",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15E12",
       "Snake_StateMove_Dispatch",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_15DD6",
       "Snake_StateSpawn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15DF2",
       "Snake_StateSpawn_Countdown",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "locret_15E02",
       "Snake_StateSpawn_Return",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_15DC2",
       "Snake_StateTable",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "sub_160C8",
       "Snake_StateTurn",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_16136",
       "Snake_StateTurn_Continue",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "loc_16160",
       "Snake_StateTurn_Finish",
-      "src/game/snake.s"
+      "src/game/enemies/snake.s"
     ],
     [
       "off_164DA",
       "BonusScorePopup_MappingPointers",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "off_1649E",
       "ChickCountPopup_MappingPointers",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_164AE",
       "Obj_BonusScorePopup",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_164CC",
       "Obj_BonusScorePopup_Countdown",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "locret_164D8",
       "Obj_BonusScorePopup_Return",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_16456",
       "Obj_ChickCountPopup",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_16482",
       "Obj_ChickCountPopup_BelowDoor",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_16490",
       "Obj_ChickCountPopup_Countdown",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "locret_1649C",
       "Obj_ChickCountPopup_Return",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_16486",
       "Obj_ChickCountPopup_SetPosition",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_16422",
       "Obj_ScorePopup",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_16442",
       "Obj_ScorePopup_Countdown",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "locret_1644E",
       "Obj_ScorePopup_Return",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_16312",
       "Obj_Spawner",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_1633E",
       "Obj_Spawner_Dispatch",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "locret_1635C",
       "Obj_Spawner_Return",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "off_16450",
       "ScorePopup_MappingPointers",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "byte_163E4",
       "Spawner_AnimAppear",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "off_163E0",
       "Spawner_AnimPointers",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_16366",
       "Spawner_StateCountdown",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_16390",
       "Spawner_StateCountdown_Decrement",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_16378",
       "Spawner_StateCountdown_Tick",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_16396",
       "Spawner_StateSpawn",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_163AC",
       "Spawner_StateSpawn_Animate",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_163DA",
       "Spawner_StateSpawn_ClearSprites",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "locret_163DE",
       "Spawner_StateSpawn_Return",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "loc_1635E",
       "Spawner_StateTable",
-      "src/game/spawner.s"
+      "src/game/enemies/spawner.s"
     ],
     [
       "sub_10E58",
@@ -6597,262 +6597,262 @@
     [
       "sub_1221E",
       "Obj_CursorBlink",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12232",
       "Obj_CursorBlink_Countdown",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "locret_1223C",
       "Obj_CursorBlink_Return",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_121FC",
       "Obj_CursorWait",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12210",
       "Obj_CursorWait_Countdown",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "locret_1221C",
       "Obj_CursorWait_Return",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_12172",
       "Obj_TitleBird",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_1219E",
       "Obj_TitleBird_Animate",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_121CC",
       "Obj_TitleCursor",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_121E6",
       "Obj_TitleCursor_Dispatch",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_1223E",
       "Obj_TitleStatic",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "locret_1225C",
       "Obj_TitleStatic_Return",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_121B4",
       "Title_BirdAnimIndexTable",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_121A4",
       "Title_BirdAnimPointers",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_121BC",
       "Title_BirdXTable",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_121BE",
       "Title_BirdYTable",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120B6",
       "Title_CastLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aCast",
       "Title_CastText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120F4",
       "Title_ChirpLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aChirp",
       "Title_ChirpText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120DE",
       "Title_ChoroLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aChoro",
       "Title_ChoroText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120E6",
       "Title_CopyrightLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_121F4",
       "Title_CursorStateTable",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120BE",
       "Title_FlickyLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aFlicky",
       "Title_FlickyText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_12104",
       "Title_IggyLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aIggy",
       "Title_IggyText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_11FB0",
       "Title_Init",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_11FE2",
       "Title_Init_CopyPaletteLoop",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12062",
       "Title_Init_DrawHUD",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_11FFC",
       "Title_Init_DrawTextLoop",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12020",
       "Title_Init_SpawnBirdsLoop",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_1203E",
       "Title_Init_SpawnStaticLoop",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_1210C",
       "Title_LogoPalette",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120D2",
       "Title_NyannyanLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aNyannyan",
       "Title_NyannyanText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120C8",
       "Title_PiopioLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aPiopio",
       "Title_PiopioText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aSega1991",
       "Title_Sega1991Text",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_1225E",
       "Title_StaticMappingPointers",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_12276",
       "Title_StaticXTable",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "word_12278",
       "Title_StaticYTable",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_12086",
       "Title_TextPointers",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "off_1209E",
       "Title_TextPointersAlt",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_120FC",
       "Title_TigerLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aTiger",
       "Title_TigerText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "aTm",
       "Title_TmText",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "byte_1211C",
       "Title_TrademarkLabel",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "sub_12122",
       "Title_Update",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_12146",
       "Title_Update_CheckTimeout",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "loc_1216A",
       "Title_Update_Draw",
-      "src/game/title.s"
+      "src/game/screens/front_end.s"
     ],
     [
       "unk_A01C04",
@@ -8932,277 +8932,277 @@
     [
       "byte_1046",
       "Sound_ChannelInitData",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_117C",
       "Sound_CheckPlaying",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_115E",
       "Sound_ClearZ80RAM",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_1168",
       "Sound_ClearZ80RAM_ByteLoop",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_116A",
       "Sound_ClearZ80RAM_RetryLoop",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_10A6",
       "Sound_CopyToZ80RAM",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_10B4",
       "Sound_CopyToZ80RAM_ByteLoop",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_10D0",
       "Sound_CopyToZ80RAM_CheckHold",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_10D6",
       "Sound_CopyToZ80RAM_Done",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_10C4",
       "Sound_CopyToZ80RAM_NextByte",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_10D4",
       "Sound_CopyToZ80RAM_Release",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_10B8",
       "Sound_CopyToZ80RAM_RetryLoop",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "LoadZ80Driver",
       "Sound_LoadZ80Driver",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_1114",
       "Sound_QueueSFX",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_1156",
       "Sound_QueueSFX_Release",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_1138",
       "Sound_QueueSFX_TrySlot2",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_1148",
       "Sound_QueueSFX_TrySlot3",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_115A",
       "Sound_QueueSFX_Wait",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_1100",
       "Sound_QueueToBuffer",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "locret_1112",
       "Sound_QueueToBuffer_Return",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "ReleaseZ80Bus",
       "Sound_ReleaseZ80Bus",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_107E",
       "Sound_ReleaseZ80Check",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "locret_108C",
       "Sound_ReleaseZ80Check_Return",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_105E",
       "Sound_RequestZ80Bus",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "RequestZ80Bus",
       "Sound_RequestZ80BusIfFree",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "locret_107C",
       "Sound_RequestZ80Bus_Return",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_106C",
       "Sound_RequestZ80Bus_WaitLoop",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_108E",
       "Sound_ResetZ80",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "sub_10DC",
       "Sound_SendZ80Command",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "nullsub_2",
       "Sys_DelayNop",
-      "src/sound/z80_driver.s"
+      "src/sound/z80/host.s"
     ],
     [
       "loc_3AA",
       "Boot_CheckInitFlag",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "checksum_check",
       "Boot_ChecksumCheck",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "CheckSumError",
       "Boot_ChecksumError",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "checksum_loop",
       "Boot_ChecksumLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "CheckSumOk",
       "Boot_ChecksumOk",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "clr_cram_loop",
       "Boot_ClearCRAMLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "clr_ram_loop",
       "Boot_ClearRAMLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "clr_vsram_loop",
       "Boot_ClearVSRAMLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "loc_388",
       "Boot_ClearWorkRAM",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "loc_394",
       "Boot_ClearWorkRAM_Loop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "loc_3D8",
       "Boot_CopyGameToRAM_Loop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "endless_loop",
       "Boot_EndlessLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "EntryPoint",
       "Boot_EntryPoint",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "fill_red_screen",
       "Boot_FillRedScreen",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "psg_init_loop",
       "Boot_PSGInitLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "port_A_ok",
       "Boot_PortAOk",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "loc_374",
       "Boot_SetupControllerPorts",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "SetupValues",
       "Boot_SetupValues",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "skip_security",
       "Boot_SkipSecurity",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "skip_setup",
       "Boot_SkipSetup",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "vdp_init_loop",
       "Boot_VDPInitLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "wait_for_z80",
       "Boot_WaitForZ80",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "z80_init_loop",
       "Boot_Z80InitLoop",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "ErrorTrap",
       "Sys_ErrorTrap",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "GameProgram",
       "Sys_GameProgram",
-      "src/system/boot.s"
+      "src/system/startup.s"
     ],
     [
       "sub_A66",
@@ -9432,122 +9432,122 @@
     [
       "SegaEnigma",
       "Data_SegaEnigma",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "SegaEnigma_End",
       "Data_SegaEnigma_End",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "SegaPalette",
       "Data_SegaPalette",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "SegaPalette_End",
       "Data_SegaPalette_End",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "sega_tiles",
       "Data_SegaTiles",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "SegaTiles_End",
       "Data_SegaTiles_End",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "sub_402",
       "Gfx_ClearVRAMAndCRAM",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_40E",
       "Gfx_ClearVRAMAndCRAM_CRAMLoop",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_432",
       "Gfx_ClearVRAMAndCRAM_VRAMLoop",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "sub_43A",
       "Gfx_InitVDPRegister",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_458",
       "Gfx_InitVDPRegister_NextBit",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_44A",
       "Gfx_InitVDPRegister_ProbeLoop",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "byte_466",
       "Gfx_VDPProbeTable",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_4F2",
       "SegaScreen_PlaySound",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_4EC",
       "SegaScreen_SkipDelay",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "LoadSegaScreen",
       "Sys_LoadSegaScreen",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_49E",
       "Sys_LoadSegaScreen_PaletteLoop",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_4A6",
       "Sys_LoadSegaScreen_PaletteWrap",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "locret_4B2",
       "Sys_LoadSegaScreen_Return",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "loc_480",
       "Sys_LoadSegaScreen_WaitLoop",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "sega_pal",
       "Sys_SegaFadePalette",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "SegaScreen",
       "Sys_SegaScreen",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "word_4F6",
       "Sys_SegaScreenData",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "SegaTilemapHeader",
       "Sys_SegaTilemapHeader",
-      "src/system/sega_screen.s"
+      "src/system/startup.s"
     ],
     [
       "sub_10E88",
@@ -9602,67 +9602,67 @@
     [
       "Checksum",
       "Checksum",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "CopyRights",
       "CopyRights",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "CountryCode",
       "CountryCode",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "DomesticName",
       "DomesticName",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "ModemCode",
       "ModemCode",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "Peripherials",
       "Peripherials",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "RamEnd",
       "RamEnd",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "RamStart",
       "RamStart",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "Reserved",
       "Reserved",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "RomEnd",
       "RomEnd",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "RomStart",
       "RomStart",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "SramCode",
       "SramCode",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ],
     [
       "off_0",
       "Sys_VectorTable",
-      "src/system/vectors_and_header.s"
+      "src/system/startup.s"
     ]
   ],
   "addition_columns": [
@@ -9672,11 +9672,11 @@
   "project_additions": [
     [
       "Data_Z80MusicBank",
-      "src/data/z80_sound.s"
+      "src/sound/z80/load_data.s"
     ],
     [
       "Data_Z80SFXBank",
-      "src/data/z80_sound.s"
+      "src/sound/z80/load_data.s"
     ],
     [
       "align",

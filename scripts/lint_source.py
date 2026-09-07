@@ -41,7 +41,7 @@ HARDWARE_NAME_RE = re.compile(r"^[A-Z][A-Z0-9_]*$")
 
 # The cartridge header fields keep the names the Mega Drive format gives them,
 # which is what every other Mega Drive disassembly calls them.
-HEADER_FILE = "src/system/vectors_and_header.s"
+HEADER_FILE = "src/system/startup.s"
 # Alignment pseudo-instructions keep instruction-like lowercase names.
 MACRO_DIR = "src/macros/"
 HEADER_FIELDS = frozenset({
