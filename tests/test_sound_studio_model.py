@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import sound_studio_model as model  # noqa: E402
+from authoring import sound_studio_model as model  # noqa: E402
 
 
 class SoundDocument(unittest.TestCase):

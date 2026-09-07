@@ -34,7 +34,7 @@ def main() -> int:
     parser.add_argument("--as-args", default="-maxerrors 2", help="AS arguments")
     args = parser.parse_args()
 
-    scripts_dir = Path(__file__).resolve().parent
+    runner = Path(__file__).resolve().parents[1] / "run.py"
     rom_path = Path(args.orig_rom)
 
     step(1, 3, "Validating the reference ROM")
@@ -59,7 +59,8 @@ def main() -> int:
     result = subprocess.run(
         [
             sys.executable,
-            str(scripts_dir / "split_data_from_rom.py"),
+            str(runner),
+            "build.split_data_from_rom",
             "--rom-file", str(rom_path),
             "--output", args.data_dir,
             "--addrs", args.data_addrs,
@@ -71,7 +72,8 @@ def main() -> int:
     result = subprocess.run(
         [
             sys.executable,
-            str(scripts_dir / "check_assets.py"),
+            str(runner),
+            "build.check_assets",
             "--manifest", args.manifest,
             "--asset-dir", args.data_dir,
         ]
@@ -83,7 +85,8 @@ def main() -> int:
     result = subprocess.run(
         [
             sys.executable,
-            str(scripts_dir / "build_rom.py"),
+            str(runner),
+            "build.build_rom",
             "--source", args.source,
             "--output", args.output,
             "--obj", args.obj,

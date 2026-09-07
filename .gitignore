@@ -5,7 +5,7 @@
 data/**/*.bin
 
 # Build artifacts
-build/
+/build/
 fbuilt.bin
 flicky.map
 flicky.asm
@@ -20,7 +20,7 @@ reference/
 diffs/
 logs/
 reports/
-workflow/
+/workflow/
 test_screenshots/
 analysis_report*
 analysis_results.csv

@@ -32,7 +32,7 @@ even though Gens cannot.
 From the assembler listing, not from the assembler's symbol table. AS emits a
 symbol table but uppercases every name, which would destroy the casing that
 `docs/naming.md` depends on: `Player_CheckGround` and `PLAYER_CHECKGROUND` are
-not equally useful. `scripts/debug_symbols.py` parses the listing rows instead,
+not equally useful. `scripts/validation/debug_symbols.py` parses the listing rows instead,
 where each line carries the address it assembled at next to the original source
 text.
 

@@ -70,7 +70,12 @@ flicky_src/
 |   `-- provenance/         # Where names and extracted bytes came from
 |-- movies/                 # Gens input recordings and their scene indexes
 |-- scenarios/              # Runtime scenarios and their state expectations
-|-- scripts/                # Build, validation and analysis tooling
+|-- scripts/                # Categorized tooling, dispatched by run.py
+|   |-- authoring/          # Content models and visual studios
+|   |-- build/              # Assembly, extraction and housekeeping
+|   |-- runtime/            # Emulator capture and state validation
+|   |-- validation/         # Static, binary and release gates
+|   `-- workflow/           # Reverse-engineering maintenance tools
 |-- tests/                  # Unit tests for the tooling
 |-- src/
 |   |-- compression/        # Nemesis and Enigma decompressors

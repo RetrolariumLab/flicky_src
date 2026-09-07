@@ -9,14 +9,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 
 import enigma_dec  # noqa: E402
 import enigma_enc  # noqa: E402
 import nemesis_dec  # noqa: E402
 import nemesis_enc  # noqa: E402
-from data_formats import (  # noqa: E402
+from authoring.data_formats import (  # noqa: E402
     decode_palette_compact,
     encode_palette_compact,
 )

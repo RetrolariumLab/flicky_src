@@ -10,7 +10,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox, ttk
 
-import sound_studio_model as model
+from authoring import sound_studio_model as model
 
 
 class SoundStudio:
@@ -364,7 +364,7 @@ def main() -> int:
     parser.add_argument("--workspace", default="content/workspace/sound/z80_sound_data.asm")
     parser.add_argument("--check", action="store_true", help="validate without opening Tk")
     args = parser.parse_args()
-    project = Path(__file__).resolve().parents[1]
+    project = Path(__file__).resolve().parents[2]
     workspace = project / args.workspace
     document = model.export_document(workspace)
     model.validate_document(document, project / model.SOURCE)

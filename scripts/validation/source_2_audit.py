@@ -138,7 +138,7 @@ def validate_source_2(root: Path, manifest_path: Path, require_ready: bool = Fal
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project-root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--project-root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--manifest", type=Path, default=Path("config/source_reconstruction_2_0.json"))
     parser.add_argument("--require-ready", action="store_true")
     args = parser.parse_args()

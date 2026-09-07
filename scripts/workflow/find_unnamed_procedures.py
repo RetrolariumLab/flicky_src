@@ -14,10 +14,10 @@ Offset tables look like:
 
 Usage:
     # Find all unnamed procedures
-    python scripts/find_unnamed_procedures.py --list --output procedures_list.txt
+    python scripts/run.py workflow.find_unnamed_procedures --list --output procedures_list.txt
 
     # Get only unanalyzed procedures
-    python scripts/find_unnamed_procedures.py --list --exclude-analyzed analysis_results.csv --output unanalyzed.txt
+    python scripts/run.py workflow.find_unnamed_procedures --list --exclude-analyzed analysis_results.csv --output unanalyzed.txt
 """
 
 import re

@@ -13,7 +13,7 @@ import argparse
 from pathlib import Path
 
 # Add tools directory to path for imports
-TOOLS_DIR = Path(__file__).parent.parent / 'tools'
+TOOLS_DIR = Path(__file__).resolve().parents[2] / 'tools'
 sys.path.insert(0, str(TOOLS_DIR))
 
 import nemesis_dec

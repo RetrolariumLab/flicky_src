@@ -8,24 +8,24 @@ import subprocess
 import sys
 from pathlib import Path
 
-from content_workspace import load_manifest, stage_sources, validate_workspace
-from graphics_studio_model import (
+from authoring.content_workspace import load_manifest, stage_sources, validate_workspace
+from authoring.graphics_studio_model import (
     build_assets as build_graphics_assets,
     export_document as export_graphics_document,
     load_document as load_graphics_document,
     redirect_includes as redirect_graphics_includes,
 )
-from graphics_semantics_model import (
+from authoring.graphics_semantics_model import (
     apply_document as apply_graphics_semantics,
     export_document as export_graphics_semantics,
     load_document as load_graphics_semantics,
 )
-from graphics_sequences_model import (
+from authoring.graphics_sequences_model import (
     apply_document as apply_graphics_sequences,
     export_document as export_graphics_sequences,
     load_document as load_graphics_sequences,
 )
-from level_studio_model import apply_document, export_document, load_document
+from authoring.level_studio_model import apply_document, export_document, load_document
 
 
 def run(command: list[str], root: Path) -> None:
@@ -70,7 +70,7 @@ def main() -> int:
         "--as-args", args.as_args,
     ]
     run([
-        sys.executable, "scripts/build_z80_driver.py",
+        sys.executable, "scripts/run.py", "build.build_z80_driver",
         "--source", "src/sound/z80/driver.asm",
         "--obj", str(build_dir / "z80_driver.p"),
         "--output", str(driver_output),
@@ -79,7 +79,7 @@ def main() -> int:
         *common,
     ], root)
     sound_command = [
-        sys.executable, "scripts/build_z80_driver.py",
+        sys.executable, "scripts/run.py", "build.build_z80_driver",
         "--source", str(sound_source),
         "--obj", str(build_dir / "z80_sound_data.p"),
         "--output", str(sound_output),
@@ -141,7 +141,7 @@ def main() -> int:
         )
     apply_graphics_sequences(sequences_document, root, staged_main.parent)
     rom_command = [
-        sys.executable, "scripts/build_rom.py",
+        sys.executable, "scripts/run.py", "build.build_rom",
         "--source", str(staged_main),
         "--obj", str(build_dir / "main.p"),
         "--output", str(rom_output),

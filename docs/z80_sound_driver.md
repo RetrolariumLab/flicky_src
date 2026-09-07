@@ -8,7 +8,7 @@ Flicky's Z80 writes both the YM2612 and SN76489 directly.
 The resident program is now reconstructed in
 `src/sound/z80/driver.asm`. It contains symbolic routines, hardware and RAM
 names, a 48-byte track layout, frequency and register-order tables, and the
-full `$E0-$FF` coordination-flag dispatch. `scripts/build_z80_driver.py`
+full `$E0-$FF` coordination-flag dispatch. `scripts/build/build_z80_driver.py`
 assembles it before the 68000 pass and requires the resulting 4,070 bytes to
 match `data_z80_part1.bin` exactly. The main ROM then includes that generated
 image at `$001316`. This closes [SND-001](unknowns.md).

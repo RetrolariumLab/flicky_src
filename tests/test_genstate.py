@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import genstate  # noqa: E402
+from runtime import genstate  # noqa: E402
 
 
 def build(sections: dict[int, bytes], magic: bytes = genstate.MAGIC, version: int = 1) -> bytes:

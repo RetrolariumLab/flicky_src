@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import lint_project  # noqa: E402
+from validation import lint_project  # noqa: E402
 
 
 class EvidenceTags(unittest.TestCase):
@@ -60,7 +60,7 @@ class PayloadPolicy(unittest.TestCase):
 class ProjectIsClean(unittest.TestCase):
     def test_the_repository_passes_its_own_check(self):
         result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "lint_project.py")],
+            [sys.executable, str(ROOT / "scripts" / "run.py"), "validation.lint_project"],
             cwd=ROOT, capture_output=True, text=True,
         )
         self.assertEqual(result.returncode, 0, result.stderr)

@@ -11,13 +11,13 @@ from pathlib import Path
 from tkinter import messagebox, ttk
 from typing import Any
 
-from graphics_studio_model import atomic_write_json, asset_table, load_document, validate_document
-from graphics_semantics_model import (
+from authoring.graphics_studio_model import atomic_write_json, asset_table, load_document, validate_document
+from authoring.graphics_semantics_model import (
     atomic_write_json as atomic_write_semantics,
     load_document as load_semantics,
     validate_document as validate_semantics,
 )
-from graphics_sequences_model import (
+from authoring.graphics_sequences_model import (
     atomic_write_json as atomic_write_sequences,
     load_document as load_sequences,
     validate_document as validate_sequences,
@@ -651,7 +651,7 @@ def main() -> int:
     parser.add_argument("--sequences-workspace", default="content/workspace/graphics/sequences.json")
     parser.add_argument("--check", action="store_true", help="validate without opening Tk")
     args = parser.parse_args()
-    project = Path(__file__).resolve().parents[1]
+    project = Path(__file__).resolve().parents[2]
     workspace = project / args.workspace
     semantics_workspace = project / args.semantics_workspace
     sequences_workspace = project / args.sequences_workspace

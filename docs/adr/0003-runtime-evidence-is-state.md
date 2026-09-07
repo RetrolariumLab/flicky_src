@@ -38,6 +38,6 @@ regression that never touches an asserted field will pass — recorded in the
 release manifest as the excluded `frame_image_comparison`.
 
 Reading the dumps required establishing that Gens stores work RAM as host-endian
-16-bit words, so the bytes of every word are swapped. `scripts/genstate.py`
+16-bit words, so the bytes of every word are swapped. `scripts/runtime/genstate.py`
 undoes it, and `Ram_InitFlag` — which spells the ASCII `init` only after the
 swap — is the check that settles whether a reader has it right.

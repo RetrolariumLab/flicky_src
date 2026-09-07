@@ -22,10 +22,8 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import debug_symbols  # noqa: E402
-import genstate  # noqa: E402
+from runtime import genstate
+from validation import debug_symbols
 
 
 def fail(message: str) -> None:

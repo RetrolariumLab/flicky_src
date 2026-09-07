@@ -9,7 +9,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from debug_symbols import collect_from_listing
+from validation.debug_symbols import collect_from_listing
 
 
 def fail(message: str) -> None:

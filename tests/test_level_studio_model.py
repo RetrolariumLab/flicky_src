@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import level_studio_model as model  # noqa: E402
+from authoring import level_studio_model as model  # noqa: E402
 
 
 class LevelExport(unittest.TestCase):

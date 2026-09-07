@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
 
 import enigma_dec  # noqa: E402
-import graphics_studio_model as model  # noqa: E402
+from authoring import graphics_studio_model as model  # noqa: E402
 import nemesis_dec  # noqa: E402
 
 

@@ -116,19 +116,19 @@ def initialize(root: Path, manifest: dict[str, Any], force: bool = False) -> int
                 fail(f"baseline artifact not found: {baseline}")
             atomic_copy(baseline, workspace)
         elif artifact["kind"] == "level_document":
-            from level_studio_model import atomic_write_json, export_document
+            from authoring.level_studio_model import atomic_write_json, export_document
 
             atomic_write_json(workspace, export_document(root))
         elif artifact["kind"] == "graphics_document":
-            from graphics_studio_model import atomic_write_json, export_document
+            from authoring.graphics_studio_model import atomic_write_json, export_document
 
             atomic_write_json(workspace, export_document(root))
         elif artifact["kind"] == "graphics_semantics_document":
-            from graphics_semantics_model import atomic_write_json, export_document
+            from authoring.graphics_semantics_model import atomic_write_json, export_document
 
             atomic_write_json(workspace, export_document(root))
         elif artifact["kind"] == "graphics_sequences_document":
-            from graphics_sequences_model import atomic_write_json, export_document
+            from authoring.graphics_sequences_model import atomic_write_json, export_document
 
             atomic_write_json(workspace, export_document(root))
         created += 1
@@ -148,23 +148,23 @@ def validate_workspace(root: Path, manifest: dict[str, Any], zero_edit: bool = F
             if zero_edit and workspace.read_bytes() != baseline.read_bytes():
                 fail(f"zero-edit check found a modified artifact: {workspace}")
             if artifact["id"] == "z80_sound_banks":
-                from sound_studio_model import export_document, validate_document
+                from authoring.sound_studio_model import export_document, validate_document
 
                 validate_document(export_document(workspace), baseline)
         elif artifact["kind"] == "level_document":
-            from level_studio_model import load_document, validate_document
+            from authoring.level_studio_model import load_document, validate_document
 
             validate_document(load_document(workspace))
         elif artifact["kind"] == "graphics_document":
-            from graphics_studio_model import load_document, validate_document
+            from authoring.graphics_studio_model import load_document, validate_document
 
             validate_document(load_document(workspace), root)
         elif artifact["kind"] == "graphics_semantics_document":
-            from graphics_semantics_model import load_document, validate_document
+            from authoring.graphics_semantics_model import load_document, validate_document
 
             validate_document(load_document(workspace), root)
         elif artifact["kind"] == "graphics_sequences_document":
-            from graphics_sequences_model import load_document, validate_document
+            from authoring.graphics_sequences_model import load_document, validate_document
 
             validate_document(load_document(workspace), root)
     mode = "zero-edit " if zero_edit else ""
@@ -213,15 +213,15 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
                 )
                 unchanged = current_text == baseline.read_text(encoding="utf-8")
             elif artifact["kind"] == "level_document":
-                from level_studio_model import export_document, load_document
+                from authoring.level_studio_model import export_document, load_document
 
                 unchanged = load_document(workspace) == export_document(root)
             elif artifact["kind"] == "graphics_document":
-                from graphics_studio_model import export_document, load_document
+                from authoring.graphics_studio_model import export_document, load_document
 
                 unchanged = load_document(workspace) == export_document(root)
             elif artifact["kind"] == "graphics_semantics_document":
-                from graphics_semantics_model import export_document, load_document
+                from authoring.graphics_semantics_model import export_document, load_document
 
                 current = load_document(workspace)
                 baseline = export_document(root)
@@ -230,7 +230,7 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
                     baseline[key] = sorted(baseline[key], key=lambda record: record["id"])
                 unchanged = current == baseline
             else:
-                from graphics_sequences_model import export_document, load_document
+                from authoring.graphics_sequences_model import export_document, load_document
 
                 unchanged = load_document(workspace) == export_document(root)
             state = "unchanged" if unchanged else "edited"

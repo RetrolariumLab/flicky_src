@@ -46,7 +46,7 @@ The message catalogs differ between the two platforms only in line endings.
 `p2bin` must be invoked with `-p=FF`. The original cartridge pads unused ROM
 space with `$FF`; p2bin's default of `$00` produces a ROM that differs from the
 reference in every gap — 73,045 bytes of the 128 KiB image. The padding byte is
-recorded in `assets/manifest.json` and applied by `scripts/build_rom.py`.
+recorded in `assets/manifest.json` and applied by `scripts/build/build_rom.py`.
 
 ## License
 

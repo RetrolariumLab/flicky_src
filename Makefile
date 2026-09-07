@@ -42,6 +42,7 @@ ASSET_MANIFEST ?= assets/manifest.json
 DATA_DIR ?= data
 DATA_ADDRS ?= $(DATA_DIR)/data_addrs.txt
 SCRIPTS_DIR ?= scripts
+RUN_SCRIPT ?= $(SCRIPTS_DIR)/run.py
 DATA_FORMAT_MANIFEST ?= config/data_formats.json
 DATA_FORMAT_SUMMARY ?= build/data_formats.json
 DEBUG_BREAKPOINTS ?= config/debugger_breakpoints.json
@@ -118,29 +119,29 @@ all: build
 
 # Assemble and report byte identity as a warning.
 build: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
-	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
+	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # The permanent gate: any difference from the reference ROM fails the build.
 verify: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
-	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
+	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
 		--verify
 
-$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_REFERENCE)
-	@$(PYTHON) $(SCRIPTS_DIR)/build_z80_driver.py \
+$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_REFERENCE)
+	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_SOURCE) --obj $(Z80_OBJ) --output $(Z80_BIN) \
 		--reference $(Z80_REFERENCE) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
 		--as-args "$(AS_ARGS)"
 
 z80-check: $(Z80_BIN)
 
-$(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_DATA_REFERENCE)
-	@$(PYTHON) $(SCRIPTS_DIR)/build_z80_driver.py \
+$(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_DATA_REFERENCE)
+	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_DATA_SOURCE) --obj $(Z80_DATA_OBJ) --output $(Z80_DATA_BIN) \
 		--reference $(Z80_DATA_REFERENCE) --reference-offset 12 \
 		--description "Z80 sound-data banks" --as-bin $(AS_BIN) --p2bin $(P2BIN) \
@@ -155,21 +156,21 @@ z80-data-check: $(Z80_DATA_BIN)
 # Initialize only missing workspace files. Existing edits are never replaced;
 # use FORCE=true only when intentionally resetting them to tracked baselines.
 init-content:
-	@$(PYTHON) $(SCRIPTS_DIR)/content_workspace.py init \
+	@$(PYTHON) $(RUN_SCRIPT) authoring.content_workspace init \
 		--manifest $(CONTENT_MANIFEST) $(if $(filter true,$(FORCE)),--force,)
 
 inspect-content:
-	@$(PYTHON) $(SCRIPTS_DIR)/content_workspace.py inspect \
+	@$(PYTHON) $(RUN_SCRIPT) authoring.content_workspace inspect \
 		--manifest $(CONTENT_MANIFEST)
 
 validate-content:
-	@$(PYTHON) $(SCRIPTS_DIR)/content_workspace.py validate \
+	@$(PYTHON) $(RUN_SCRIPT) authoring.content_workspace validate \
 		--manifest $(CONTENT_MANIFEST)
 
 # Editable builds have their own generated source tree and ROM. The strict
 # preservation artifacts used by make verify are neither read nor overwritten.
 build-content: init-content _require-assets _require-toolchain
-	@$(PYTHON) $(SCRIPTS_DIR)/build_content.py \
+	@$(PYTHON) $(RUN_SCRIPT) authoring.build_content \
 		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
 		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
 		--asset-manifest $(ASSET_MANIFEST)
@@ -177,28 +178,28 @@ build-content: init-content _require-assets _require-toolchain
 # The release gate builds directly from tracked baselines, so a developer's
 # current workspace may remain edited while preservation compatibility runs.
 check-content-zero-edit: _require-assets _require-toolchain
-	@$(PYTHON) $(SCRIPTS_DIR)/build_content.py --zero-edit \
+	@$(PYTHON) $(RUN_SCRIPT) authoring.build_content --zero-edit \
 		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
 		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
 		--asset-manifest $(ASSET_MANIFEST)
 
 level-studio: init-content
-	@$(PYTHON) $(SCRIPTS_DIR)/level_studio.py
+	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio
 
 graphics-studio: init-content
-	@$(PYTHON) $(SCRIPTS_DIR)/graphics_studio.py
+	@$(PYTHON) $(RUN_SCRIPT) authoring.graphics_studio
 
 sound-studio: init-content
-	@$(PYTHON) $(SCRIPTS_DIR)/sound_studio.py
+	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_studio
 
 check-studios: init-content
-	@$(PYTHON) $(SCRIPTS_DIR)/level_studio.py --check
-	@$(PYTHON) $(SCRIPTS_DIR)/graphics_studio.py --check
-	@$(PYTHON) $(SCRIPTS_DIR)/sound_studio.py --check
+	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio --check
+	@$(PYTHON) $(RUN_SCRIPT) authoring.graphics_studio --check
+	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_studio --check
 
 # Validate the reference ROM, extract data, then build and verify.
 init:
-	@$(PYTHON) $(SCRIPTS_DIR)/init_project.py \
+	@$(PYTHON) $(RUN_SCRIPT) build.init_project \
 		--orig-rom "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST) \
 		--data-dir $(DATA_DIR) --data-addrs $(DATA_ADDRS) \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
@@ -207,39 +208,39 @@ init:
 # Extract binary segments from the reference ROM. This is the only command
 # that overwrites data/; ordinary builds never touch it.
 split:
-	@$(PYTHON) $(SCRIPTS_DIR)/split_data_from_rom.py \
+	@$(PYTHON) $(RUN_SCRIPT) build.split_data_from_rom \
 		--rom-file "$(ORIGINAL_ROM)" --output $(DATA_DIR) --addrs $(DATA_ADDRS)
 
 check-assets:
-	@$(PYTHON) $(SCRIPTS_DIR)/check_assets.py \
+	@$(PYTHON) $(RUN_SCRIPT) build.check_assets \
 		--manifest $(ASSET_MANIFEST) --asset-dir $(DATA_DIR)
 
 _require-assets:
-	@$(PYTHON) $(SCRIPTS_DIR)/check_assets.py \
+	@$(PYTHON) $(RUN_SCRIPT) build.check_assets \
 		--manifest $(ASSET_MANIFEST) --asset-dir $(DATA_DIR)
 
 # The assembler is checked before it is used, not after the ROM disagrees.
 verify-toolchain:
-	@$(PYTHON) $(SCRIPTS_DIR)/verify_toolchain.py --config $(TOOLCHAIN_MANIFEST)
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST)
 
 _require-toolchain:
-	@$(PYTHON) $(SCRIPTS_DIR)/verify_toolchain.py --config $(TOOLCHAIN_MANIFEST)
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST)
 
 # AS has no linker, so the include order in src/main.s is the ROM layout itself.
 # This makes that layout a declaration the build has to agree with. It reads the
 # listing for the module addresses, so it has to depend on one being there.
 verify-layout: $(LISTING)
-	@$(PYTHON) $(SCRIPTS_DIR)/verify_layout.py \
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_layout \
 		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
 
 verify-relocation: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
-	@$(PYTHON) $(SCRIPTS_DIR)/verify_relocation.py \
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_relocation \
 		--source $(SRC) --sound-data $(Z80_DATA_BIN) \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # Compare an existing build without reassembling.
 compare:
-	@$(PYTHON) $(SCRIPTS_DIR)/compare_roms.py \
+	@$(PYTHON) $(RUN_SCRIPT) validation.compare_roms \
 		--built $(ROM) --original "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST)
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
@@ -255,13 +256,13 @@ $(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_BIN)
 # Style, semantic source invariants, and repository-wide checks. None of these
 # substitute for "make verify": a green lint says nothing about byte identity.
 lint:
-	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py src
-	@$(PYTHON) $(SCRIPTS_DIR)/lint_source.py $(STRICT_NAMING)
-	@$(PYTHON) $(SCRIPTS_DIR)/check_source_structure.py --config $(SOURCE_STRUCTURE)
-	@$(PYTHON) $(SCRIPTS_DIR)/lint_project.py
+	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src
+	@$(PYTHON) $(RUN_SCRIPT) validation.lint_source $(STRICT_NAMING)
+	@$(PYTHON) $(RUN_SCRIPT) validation.check_source_structure --config $(SOURCE_STRUCTURE)
+	@$(PYTHON) $(RUN_SCRIPT) validation.lint_project
 
 check-source-structure:
-	@$(PYTHON) $(SCRIPTS_DIR)/check_source_structure.py --config $(SOURCE_STRUCTURE)
+	@$(PYTHON) $(RUN_SCRIPT) validation.check_source_structure --config $(SOURCE_STRUCTURE)
 
 # Focused unit tests for the Python tooling, so a bug in a check cannot
 # quietly pass everything it is supposed to catch.
@@ -270,7 +271,7 @@ test:
 
 # Check the repository against the machine-readable release contract.
 release-audit:
-	@$(PYTHON) $(SCRIPTS_DIR)/release_audit.py --contract $(RELEASE_CONTRACT)
+	@$(PYTHON) $(RUN_SCRIPT) validation.release_audit --contract $(RELEASE_CONTRACT)
 
 # The complete acceptance gate, in increasing cost. Recursive $(MAKE) calls
 # keep the order explicit even under a parallel build.
@@ -287,10 +288,10 @@ release-check:
 	$(MAKE) release-audit
 
 source-2-audit:
-	@$(PYTHON) $(SCRIPTS_DIR)/source_2_audit.py --manifest $(SOURCE_2_MANIFEST)
+	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit --manifest $(SOURCE_2_MANIFEST)
 
 source-2-release-audit:
-	@$(PYTHON) $(SCRIPTS_DIR)/source_2_audit.py --manifest $(SOURCE_2_MANIFEST) --require-ready
+	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit --manifest $(SOURCE_2_MANIFEST) --require-ready
 
 source-2-check:
 	$(MAKE) release-check
@@ -303,7 +304,7 @@ source-2-check:
 # Deterministic whitespace, label-layout and case normalization, then re-check.
 # Formatting must never move a byte, so verify afterwards.
 format:
-	@$(PYTHON) $(SCRIPTS_DIR)/asm_style.py src --fix
+	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src --fix
 	@$(MAKE) lint
 
 # ---------------------------------------------------------------------------
@@ -314,18 +315,18 @@ tools:
 	@$(MAKE) -C tools all
 
 unpack-data:
-	@$(PYTHON) $(SCRIPTS_DIR)/unpack_data.py --data-dir $(DATA_DIR) -v
+	@$(PYTHON) $(RUN_SCRIPT) build.unpack_data --data-dir $(DATA_DIR) -v
 
 # Decode every authored segment and check it round-trips as declared.
 roundtrip-formats: _require-assets
-	@$(PYTHON) $(SCRIPTS_DIR)/data_formats.py 		--manifest $(DATA_FORMAT_MANIFEST) --data-dir $(DATA_DIR) 		--summary $(DATA_FORMAT_SUMMARY)
+	@$(PYTHON) $(RUN_SCRIPT) authoring.data_formats 		--manifest $(DATA_FORMAT_MANIFEST) --data-dir $(DATA_DIR) 		--summary $(DATA_FORMAT_SUMMARY)
 
 clean:
-	@$(PYTHON) $(SCRIPTS_DIR)/clean_project.py
+	@$(PYTHON) $(RUN_SCRIPT) build.clean_project
 
 # Export the symbol map and resolve the debugger configs against it.
 symbols: $(LISTING)
-	@$(PYTHON) $(SCRIPTS_DIR)/debug_symbols.py 		--listing $(LISTING) 		--breakpoints $(DEBUG_BREAKPOINTS) --watches $(DEBUG_WATCHES) 		--sym $(SYMBOL_FILE) --summary $(DEBUG_SUMMARY)
+	@$(PYTHON) $(RUN_SCRIPT) validation.debug_symbols 		--listing $(LISTING) 		--breakpoints $(DEBUG_BREAKPOINTS) --watches $(DEBUG_WATCHES) 		--sym $(SYMBOL_FILE) --summary $(DEBUG_SUMMARY)
 
 # ---------------------------------------------------------------------------
 # Emulator analysis (requires MOVIE=longplay|demos)
@@ -351,7 +352,7 @@ reference: _require-movie
 # Stub each procedure with an early RTS and diff the result against the
 # reference capture. MEMORY=true also records memory diffs.
 analyze: _require-movie
-	@$(PYTHON) $(SCRIPTS_DIR)/analyze_procedures.py \
+	@$(PYTHON) $(RUN_SCRIPT) workflow.analyze_procedures \
 		--project-dir . --source $(SRC) --rom $(ROM) \
 		--movie $(MOVIE_FILE_$(MOVIE)) \
 		--reference reference/$(MOVIE) --diffs diffs/$(MOVIE) \
@@ -365,22 +366,22 @@ analyze: _require-movie
 # Capture the declared scenarios, then validate them. Needs the instrumented
 # Gens build; without it the runner stops rather than producing nothing quietly.
 trace-runtime: verify symbols
-	@$(PYTHON) $(SCRIPTS_DIR)/run_runtime_scenarios.py 		--scenarios $(RUNTIME_SCENARIOS) --gens "$(GENS_EXE)" 		--rom $(ROM) --output-dir $(RUNTIME_DIR)
+	@$(PYTHON) $(RUN_SCRIPT) runtime.run_runtime_scenarios 		--scenarios $(RUNTIME_SCENARIOS) --gens "$(GENS_EXE)" 		--rom $(ROM) --output-dir $(RUNTIME_DIR)
 	@$(MAKE) validate-runtime
 
 validate-runtime:
-	@$(PYTHON) $(SCRIPTS_DIR)/validate_runtime_scenarios.py 		--scenarios $(RUNTIME_SCENARIOS) --capture-dir $(RUNTIME_DIR) 		--summary $(RUNTIME_SUMMARY)
+	@$(PYTHON) $(RUN_SCRIPT) runtime.validate_runtime_scenarios 		--scenarios $(RUNTIME_SCENARIOS) --capture-dir $(RUNTIME_DIR) 		--summary $(RUNTIME_SUMMARY)
 
 trace: symbols trace-runtime
 
 find-unanalyzed:
 	@$(PYTHON) -c "import os; os.makedirs('$(WORKFLOW_DIR)', exist_ok=True)"
-	@$(PYTHON) $(SCRIPTS_DIR)/find_unnamed_procedures.py \
+	@$(PYTHON) $(RUN_SCRIPT) workflow.find_unnamed_procedures \
 		--list --exclude-analyzed analysis_results.csv --output $(PROCEDURES_FILE)
 
 report: _require-movie
 	@$(PYTHON) -c "import os; os.makedirs('$(WORKFLOW_DIR)', exist_ok=True)"
-	@$(PYTHON) $(SCRIPTS_DIR)/generate_analysis_report.py \
+	@$(PYTHON) $(RUN_SCRIPT) workflow.generate_analysis_report \
 		--project-dir . --movie $(MOVIE) --output-dir $(WORKFLOW_DIR)
 
 # ---------------------------------------------------------------------------
@@ -403,7 +404,7 @@ prepare-batch:
 	@if [ ! -f $(WORKFLOW_DIR)/.movie ]; then \
 		echo "ERROR: no movie set. Run: make set-movie MOVIE=longplay"; exit 1; \
 	fi
-	@$(PYTHON) $(SCRIPTS_DIR)/prepare_batch.py \
+	@$(PYTHON) $(RUN_SCRIPT) workflow.prepare_batch \
 		--report $(WORKFLOW_DIR)/analysis_report_$$(cat $(WORKFLOW_DIR)/.movie).csv \
 		--count $(BATCH_COUNT) \
 		--output $(WORKFLOW_DIR)/batch_procedures.txt --source $(SRC)
@@ -413,7 +414,7 @@ rename:
 		echo "ERROR: $(WORKFLOW_DIR)/rename_batch.csv not found."; \
 		echo "Create it with columns: old_name,new_name,description"; exit 1; \
 	fi
-	@$(PYTHON) $(SCRIPTS_DIR)/rename_procedures.py \
+	@$(PYTHON) $(RUN_SCRIPT) workflow.rename_procedures \
 		--source $(SRC) --database $(WORKFLOW_DIR)/rename_batch.csv \
 		--report $(WORKFLOW_DIR)/analysis_report_$$(cat $(WORKFLOW_DIR)/.movie).csv
 	@echo "Renames applied. A new name can change a shared label column,"
