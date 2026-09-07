@@ -8,7 +8,7 @@ trim_trailing_whitespace = true
 
 # AS assembler sources. Labels sit at column zero; operands are aligned to
 # column 17 (16 leading spaces). See docs/assembly_style.md.
-[*.{s,inc}]
+[*.{s,asm,inc}]
 indent_style = space
 indent_size = 16
 tab_width = 16

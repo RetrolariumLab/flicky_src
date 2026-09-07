@@ -41,6 +41,20 @@ These emit no bytes and are included before any module:
 part of the address-ordered 68000 include tree. It assembles to 4,070 bytes,
 is checked against the reference driver, and is included by `bank0.s`.
 
+## Source extensions
+
+AS does not assign a language or processor to a filename extension; the `cpu`
+directive inside each translation unit does that. This repository uses the
+extension to make the two build boundaries visible instead:
+
+- `.s` is an address-ordered 68000 module included by `src/main.s`;
+- `.asm` is a standalone sound translation unit assembled in its own pass;
+- `.inc` contains shared definitions and emits no bytes by itself.
+
+The distinction is architectural rather than an assembler requirement. It
+also prevents a Z80 source from being mistaken for a module that can be moved
+inside the 68000 ROM include order.
+
 ## Modules
 
 | File | ROM range | Lines | Responsibility |

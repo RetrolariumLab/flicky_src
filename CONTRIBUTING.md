@@ -24,8 +24,9 @@ order in `src/main.s` -- it is the ROM layout, and moving a line moves code.
 
 Name symbols with the vocabulary in [`docs/naming.md`](docs/naming.md) and let
 `make format` handle the layout. Comments and documentation are English; the
-style checker rejects non-ASCII in `.s` and `.inc` files and asks for a manual
-rewrite rather than translating anything itself.
+style checker rejects non-ASCII in 68000 `.s` and shared `.inc` files and asks
+for a manual rewrite rather than translating anything itself. Standalone Z80
+translation units use `.asm`; repository text checks cover those files too.
 
 For each coherent change:
 
