@@ -147,6 +147,10 @@ def validate_workspace(root: Path, manifest: dict[str, Any], zero_edit: bool = F
                 fail(f"baseline artifact not found: {baseline}")
             if zero_edit and workspace.read_bytes() != baseline.read_bytes():
                 fail(f"zero-edit check found a modified artifact: {workspace}")
+            if artifact["id"] == "z80_sound_banks":
+                from sound_studio_model import export_document, validate_document
+
+                validate_document(export_document(workspace), baseline)
         elif artifact["kind"] == "level_document":
             from level_studio_model import load_document, validate_document
 

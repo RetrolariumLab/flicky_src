@@ -110,6 +110,27 @@ The Japanese guide strings and additional non-animated screen layouts remain
 outside the current machine-readable artifacts and are not yet claimed as
 supported.
 
+## Sound Studio
+
+`make sound-studio` opens the semantic editor over the editable
+`content/workspace/sound/z80_sound_data.asm` translation unit. It inventories
+all 14 unique resident headers (six music and eight SFX), 52 channel event
+streams, 34 25-byte YM2612 voices, and the 63-byte shared priority/envelope
+area. Header tabs expose duration scale, tempo, channel sequence, transpose,
+volume, SFX flags/channel, and PSG envelope selectors.
+
+The event view names notes, rests, durations, and the `$E0-$FF` coordination
+commands while retaining byte offsets and arguments. Stream lengths, track
+counts, voice counts, and the total 2,804-byte bank capacity remain fixed in
+this first editor; ASW recomputes every symbolic pointer. The two trailing
+sentinel bytes at the SFX/music bank boundaries are preserved explicitly.
+
+`Preview in Gens` saves the model, runs `make build-content`, and launches the
+edited ROM with the sibling `gens_automation` build. This deliberately uses
+the real Z80 driver, YM2612, PSG, and game interrupt timing instead of a
+separate approximate WAV synthesizer. If Gens is absent the editor reports the
+existing `make build-gens` prerequisite.
+
 The editable build stages a disposable copy of the source tree under
 `build/content/` and redirects generated payload includes there. This makes an
 edited ROM possible without copying a workspace payload over
