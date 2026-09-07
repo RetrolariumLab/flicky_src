@@ -1,5 +1,10 @@
 # Z80 sound driver
 
+Run `make split` with the reference ROM before opening Sound Studio. The editor
+renders the bank layout into `build/content/baseline/z80_sound_data.asm`
+using the extracted bytes. It initializes its editable copy from that source,
+while the normal build includes the extracted banks directly.
+
 Flicky runs its complete music and sound-effect sequencer on the Z80. This is
 the important difference from Sonic 1: Sonic's extensively documented driver
 runs the SMPS sequencer on the 68000 and leaves PCM playback to the Z80, while

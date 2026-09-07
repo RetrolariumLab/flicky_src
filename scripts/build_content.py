@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from content_workspace import load_manifest, stage_sources, validate_workspace
+from content_workspace import artifact_baseline, load_manifest, stage_sources, validate_workspace
 from graphics_studio_model import (
     build_assets as build_graphics_assets,
     export_document as export_graphics_document,
@@ -50,7 +50,7 @@ def main() -> int:
     root = Path(args.root).resolve()
     manifest = load_manifest(root / args.manifest)
     artifact = next(item for item in manifest["artifacts"] if item["id"] == "z80_sound_banks")
-    baseline_source = root / artifact["baseline"]
+    baseline_source = artifact_baseline(root, artifact)
     if args.zero_edit:
         sound_source = baseline_source
         build_dir = root / "build" / "content" / "zero-edit"

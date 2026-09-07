@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from sound_bank_source import RENDERED, baseline_path
+
 
 EXPECTED_STUDIOS = ("level", "graphics", "sound")
 
@@ -91,8 +93,13 @@ def validate_manifest(document: dict[str, Any]) -> list[str]:
     return errors
 
 
+def artifact_baseline(root: Path, artifact: dict[str, Any]) -> Path:
+    baseline = artifact["baseline"]
+    return baseline_path(root) if baseline == RENDERED else root / baseline
+
+
 def artifact_paths(root: Path, manifest: dict[str, Any], artifact: dict[str, Any]) -> tuple[Path, Path]:
-    baseline = root / artifact["baseline"]
+    baseline = artifact_baseline(root, artifact)
     workspace = root / manifest["workspace"] / artifact["workspace"]
     return baseline, workspace
 
@@ -111,7 +118,7 @@ def initialize(root: Path, manifest: dict[str, Any], force: bool = False) -> int
         if workspace.exists() and not force:
             continue
         if artifact["kind"] == "assembly_source":
-            baseline = root / artifact["baseline"]
+            baseline = artifact_baseline(root, artifact)
             if not baseline.is_file():
                 fail(f"baseline artifact not found: {baseline}")
             atomic_copy(baseline, workspace)
@@ -142,11 +149,15 @@ def validate_workspace(root: Path, manifest: dict[str, Any], zero_edit: bool = F
         if not workspace.is_file():
             fail(f"workspace artifact not found: {workspace}; run make init-content")
         if artifact["kind"] == "assembly_source":
-            baseline = root / artifact["baseline"]
+            baseline = artifact_baseline(root, artifact)
             if not baseline.is_file():
                 fail(f"baseline artifact not found: {baseline}")
             if zero_edit and workspace.read_bytes() != baseline.read_bytes():
                 fail(f"zero-edit check found a modified artifact: {workspace}")
+            if artifact["id"] == "z80_sound_banks":
+                from sound_studio_model import export_document, validate_document
+
+                validate_document(export_document(workspace), baseline)
         elif artifact["kind"] == "level_document":
             from level_studio_model import load_document, validate_document
 
@@ -203,7 +214,7 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
         state = "missing"
         if workspace.is_file():
             if artifact["kind"] == "assembly_source":
-                baseline = root / artifact["baseline"]
+                baseline = artifact_baseline(root, artifact)
                 unchanged = workspace.read_bytes() == baseline.read_bytes()
             elif artifact["kind"] == "level_document":
                 from level_studio_model import export_document, load_document

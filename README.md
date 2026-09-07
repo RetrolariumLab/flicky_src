@@ -113,6 +113,7 @@ make build-content             # Build an isolated editable ROM
 make check-content-zero-edit   # Prove editable baseline byte identity
 make level-studio              # Open the visual level editor
 make graphics-studio           # Open the visual graphics editor
+make sound-studio              # Open the music and SFX editor
 make check-studios             # Validate Studio models without opening GUI
 ```
 

@@ -21,7 +21,7 @@
     {
       "id": "sound",
       "name": "Sound Studio",
-      "status": "foundation",
+      "status": "supported",
       "artifacts": ["z80_sound_banks"]
     }
   ],
@@ -63,10 +63,14 @@
       "id": "z80_sound_banks",
       "studio": "sound",
       "kind": "assembly_source",
-      "baseline": "src/sound/z80_sound_data.asm",
+      "baseline": "build/content/baseline/z80_sound_data.asm",
       "workspace": "sound/z80_sound_data.asm",
       "output": "build/content/z80_sound_data.bin",
-      "capacity": 2804
+      "capacity": 2804,
+      "header_count": 14,
+      "sequence_count": 52,
+      "fm_voice_count": 34,
+      "priority_envelope_bytes": 63
     }
   ]
 }

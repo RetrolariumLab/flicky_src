@@ -100,7 +100,7 @@ STRICT_NAMING ?= --strict-naming
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
-        init-content inspect-content validate-content build-content check-content-zero-edit level-studio graphics-studio check-studios \
+        init-content inspect-content validate-content build-content check-content-zero-edit level-studio graphics-studio sound-studio check-studios \
         test release-audit release-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help \
@@ -184,9 +184,13 @@ level-studio: init-content
 graphics-studio: init-content
 	@$(PYTHON) $(SCRIPTS_DIR)/graphics_studio.py
 
+sound-studio: init-content
+	@$(PYTHON) $(SCRIPTS_DIR)/sound_studio.py
+
 check-studios: init-content
 	@$(PYTHON) $(SCRIPTS_DIR)/level_studio.py --check
 	@$(PYTHON) $(SCRIPTS_DIR)/graphics_studio.py --check
+	@$(PYTHON) $(SCRIPTS_DIR)/sound_studio.py --check
 
 # Validate the reference ROM, extract data, then build and verify.
 init:
@@ -431,6 +435,7 @@ help:
 	@echo "  make check-content-zero-edit   Prove tracked content still reproduces the ROM"
 	@echo "  make level-studio              Open the visual level editor"
 	@echo "  make graphics-studio           Open the visual graphics editor"
+	@echo "  make sound-studio              Open the music and SFX editor"
 	@echo "  make check-studios             Load Studio models without opening a GUI"
 	@echo ""
 	@echo "Validation:"
