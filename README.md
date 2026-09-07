@@ -111,6 +111,8 @@ make release-check  # The complete acceptance gate
 make init-content              # Initialize the ignored editor workspace
 make build-content             # Build an isolated editable ROM
 make check-content-zero-edit   # Prove editable baseline byte identity
+make level-studio              # Open the visual level editor
+make check-studios             # Validate Studio models without opening GUI
 ```
 
 The toolchain folder is chosen from the host platform; override it with
