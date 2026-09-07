@@ -114,10 +114,10 @@ reused, even after the entry is resolved.
 
 ### DATA-001 Z80 sound data holds pointers that assume a fixed ROM address
 
-- **Status:** open
+- **Status:** resolved on `source-2.0`
 - **Confidence:** high, and the symptom is now measured rather than predicted
 - **Location:** `src/data/z80_sound.s`, `src/sound/engine.s`
-- **Evidence:** `Sound_LoadZ80Table` converts ROM addresses to Z80-relative
+- **Original evidence:** `Sound_LoadZ80Table` converted ROM addresses to Z80-relative
   offsets with `suba.l #Sys_GameEntryPoint,a0`, which only holds while
   `Sys_GameEntryPoint` sits at exactly `$10000`. The offsets baked into
   `data/sound/data_z80_part2.bin` are not recomputed by the build.
@@ -140,11 +140,20 @@ reused, even after the entry is resolved.
   worse for anyone relocating this code and expecting a crash to tell them.
   The entry also blamed inserting padding; removing it breaks the same way, so
   the constraint is that `Sys_GameEntryPoint` must not move at all.
-- **Experiment:** Decode the pointer fields inside the extracted Z80 blob and
-  express them as expressions the assembler computes, the way the rest of the
-  source does. Until then the constraint is a real one and belongs in
-  `README.md` as a known gap. The check for any such attempt is the Z80 RAM
-  pointer table above, not whether the game boots.
+- **Resolution:** `src/sound/z80_sound_data.asm` now authors the two data banks,
+  including the resident SFX and music pointer tables and every voice/sequence
+  pointer in their headers. Its address macros produce Z80 little-endian
+  pointers from labels. The six 68000 descriptor words in
+  `src/data/z80_sound.s` are expressions over the actual ROM labels instead of
+  bytes inherited from the extracted image. `make z80-data-check` assembles the
+  2,804-byte payload and requires byte identity with the original payload.
+- **Relocation check:** The loader conversion must subtract the fixed 64-KiB
+  RAM-image size, not the movable `Sys_GameEntryPoint` label. With that
+  correction, `make verify-relocation` removes both padding gaps and moves the
+  entry point from `$010000` to `$00290A`. The assembler recomputes the two
+  source offsets as `$01DE` and `$03A6`; the loader maps them to `$FF01DE` and
+  `$FF03A6`, and the gate verifies that the packed ROM contains the authored
+  sound payload at those exact sources. The normal ROM remains byte-identical.
 
 ### DATA-002 Nemesis and Enigma cannot be re-encoded byte for byte
 
@@ -169,14 +178,21 @@ reused, even after the entry is resolved.
 
 ### SND-001 The Z80 driver itself is not disassembled
 
-- **Status:** open
+- **Status:** resolved on `source-2.0`
 - **Confidence:** high
-- **Location:** `src/data/bank0.s`, `src/data/z80_sound.s`
-- **Evidence:** Two Z80 images are copied into sound RAM verbatim:
-  `z80_part1` (`$1316`-`$22FC`) and `z80_part2` (`$101D4`-`$10CD4`). The 68000
-  side only writes command bytes into `Z80_MusicCommand` and the three
-  `Z80_SFXSlot` bytes and polls them back. Everything the driver does with
-  those commands is opaque to this reconstruction.
-- **Experiment:** Disassemble the Z80 images as a separate pass. That is a
-  milestone of its own, not a question to be answered in passing, and the
-  byte-identical gate does not depend on it.
+- **Location:** `src/sound/z80_driver_z80.asm`,
+  `scripts/build_z80_driver.py`, `docs/z80_sound_driver.md`
+- **Correction:** Only `z80_part1` is executable. `z80_part2` begins with two
+  68000 load descriptors and supplies the data banks copied to Z80 `$1000` and
+  `$1200`; no control-flow target enters either bank.
+- **Resolution:** The 4,070-byte resident image is a symbolic Z80 source with
+  named routines, hardware ports, global RAM, all 48-byte track fields, chip
+  tables and all `$E0-$FF` coordination-flag handlers. `make verify` assembles
+  it as a separate CPU pass, requires it to match the extracted image byte for
+  byte, then includes that generated image in the 68000 ROM. The resulting ROM
+  remains byte-identical.
+- **Remaining data work:** The music/SFX banks, indices and headers are authored
+  and all their header pointers are symbolic. Event streams and FM voices are
+  still emitted as explicit source bytes; converting those bytes into command
+  and operator macros is the next semantic pass for the sound editor, not
+  executable-code debt under SND-001.

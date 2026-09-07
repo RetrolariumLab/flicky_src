@@ -161,15 +161,6 @@ for the Japanese variants carry a `JP` suffix.
 
 ## Known gaps
 
-- **`Sys_GameEntryPoint` must stay at `$10000`.** The Z80 sound data contains
-  pointer offsets that assume it, and the build does not recompute them. Moving
-  it in either direction costs the sound and nothing else: a build with the
-  padding removed replays the whole longplay with identical scoring and
-  byte-identical video, while the Z80 pointer table is never copied and stays
-  zero. The failure is silent. Tracked as DATA-001 in
-  [`docs/unknowns.md`](docs/unknowns.md).
-- **The Z80 sound driver is not disassembled.** Both images are copied verbatim
-  and the 68000 side only writes command bytes. Tracked as SND-001.
 - **Nemesis and Enigma do not re-encode byte for byte.** Eight of the seventeen
   segments round-trip exactly; the six Nemesis ones only round-trip
   semantically, and Enigma has no encoder at all. Tracked as DATA-002; see
@@ -180,6 +171,11 @@ for the Japanese variants carry a `JP` suffix.
   [`docs/runtime_evidence.md`](docs/runtime_evidence.md).
 - Four further open questions are listed in
   [`docs/unknowns.md`](docs/unknowns.md).
+
+The former fixed-address sound limitation is resolved on `source-2.0`:
+`make verify-relocation` packs the ROM without its layout gaps and checks the
+recomputed Z80 data sources. See DATA-001 in
+[`docs/unknowns.md`](docs/unknowns.md).
 
 ## Credits
 

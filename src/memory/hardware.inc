@@ -43,3 +43,4 @@ Z80_SFXSlot2:       equ     $A01C0C
 Z80_PauseFlag:      equ     $A01C10
 Z80_YM2612:         equ     $A04000
 M68K_RAM:           equ     $FF0000
+M68K_RAM_SIZE:      equ     $10000

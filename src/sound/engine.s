@@ -31,7 +31,8 @@ Sound_InitCommandData:  dc.b    0, $80, 0, $12, $B4, 0, $E6, $80, $20, 0
 Sound_LoadZ80Table:
                 moveq   #2,d2
                 movem.w (a1)+,d0-d1/a0
-                suba.l  #Sys_GameEntryPoint,a0          ; !(UNKNOWN) DATA-001 offsets assume $10000
+                ; !(OBS) DATA-001 Relative offset maps into the 64-KiB work-RAM image
+                suba.l  #M68K_RAM_SIZE,a0
                 jmp     j_Sound_CopyToZ80RAM
 
 ; Sends note/command to Z80 sound driver

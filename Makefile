@@ -55,6 +55,14 @@ RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 ROM_LAYOUT ?= config/rom_layout.json
 LISTING ?= build/main.lst
+Z80_SOURCE ?= src/sound/z80_driver_z80.asm
+Z80_OBJ ?= build/z80_driver.p
+Z80_BIN ?= build/z80_driver.bin
+Z80_REFERENCE ?= data/sound/data_z80_part1.bin
+Z80_DATA_SOURCE ?= src/sound/z80_sound_data.asm
+Z80_DATA_OBJ ?= build/z80_sound_data.p
+Z80_DATA_BIN ?= build/z80_sound_data.bin
+Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -86,7 +94,7 @@ STRICT_NAMING ?= --strict-naming
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify verify-toolchain verify-layout init split check-assets \
+.PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         test release-audit release-check clean \
@@ -101,19 +109,36 @@ all: build
 # ---------------------------------------------------------------------------
 
 # Assemble and report byte identity as a warning.
-build: _require-assets _require-toolchain
+build: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
 	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # The permanent gate: any difference from the reference ROM fails the build.
-verify: _require-assets _require-toolchain
+verify: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
 	@$(PYTHON) $(SCRIPTS_DIR)/build_rom.py \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
 		--verify
+
+$(Z80_BIN): $(Z80_SOURCE) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_REFERENCE)
+	@$(PYTHON) $(SCRIPTS_DIR)/build_z80_driver.py \
+		--source $(Z80_SOURCE) --obj $(Z80_OBJ) --output $(Z80_BIN) \
+		--reference $(Z80_REFERENCE) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
+		--as-args "$(AS_ARGS)"
+
+z80-check: $(Z80_BIN)
+
+$(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_DATA_REFERENCE)
+	@$(PYTHON) $(SCRIPTS_DIR)/build_z80_driver.py \
+		--source $(Z80_DATA_SOURCE) --obj $(Z80_DATA_OBJ) --output $(Z80_DATA_BIN) \
+		--reference $(Z80_DATA_REFERENCE) --reference-offset 12 \
+		--description "Z80 sound-data banks" --as-bin $(AS_BIN) --p2bin $(P2BIN) \
+		--as-args "$(AS_ARGS)"
+
+z80-data-check: $(Z80_DATA_BIN)
 
 # Validate the reference ROM, extract data, then build and verify.
 init:
@@ -151,6 +176,11 @@ verify-layout: $(LISTING)
 	@$(PYTHON) $(SCRIPTS_DIR)/verify_layout.py \
 		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
 
+verify-relocation: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
+	@$(PYTHON) $(SCRIPTS_DIR)/verify_relocation.py \
+		--source $(SRC) --sound-data $(Z80_DATA_BIN) \
+		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
+
 # Compare an existing build without reassembling.
 compare:
 	@$(PYTHON) $(SCRIPTS_DIR)/compare_roms.py \
@@ -158,8 +188,8 @@ compare:
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
 # -i lets modules under src/ resolve their binclude paths from the project root.
-$(LISTING): $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc)
-	@mkdir -p $(dir $@)
+$(LISTING): $(SRC) $(wildcard src/**/*.s) $(wildcard src/**/*.inc) $(Z80_BIN) $(Z80_DATA_BIN)
+	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
 	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
 
 # ---------------------------------------------------------------------------
@@ -340,12 +370,15 @@ help:
 	@echo "Build:"
 	@echo "  make build                     Assemble; report byte identity as a warning"
 	@echo "  make verify                    Assemble; require byte identity (the gate)"
+	@echo "  make z80-check                 Assemble and byte-check the Z80 sound driver"
+	@echo "  make z80-data-check            Assemble and byte-check the Z80 sound banks"
 	@echo "  make compare                   Compare an existing build without reassembling"
 	@echo "  make clean                     Remove build artifacts"
 	@echo ""
 	@echo "Validation:"
 	@echo "  make verify-toolchain          Hash-check the vendored assembler"
 	@echo "  make verify-layout             Check the ROM layout contract"
+	@echo "  make verify-relocation         Pack the ROM and check relocatable sound loads"
 	@echo "  make lint                      Style, naming and repository checks"
 	@echo "  make format                    Apply the deterministic fixes, then lint"
 	@echo "  make test                      Unit tests for the Python tooling"

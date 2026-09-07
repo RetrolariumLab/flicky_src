@@ -108,7 +108,7 @@
       {
         "symbol": "Sys_GameEntryPoint",
         "address": "0x010000",
-        "role": "Game entry; fixed, because data/sound/z80_part2.bin hard-codes pointers to it (SND-001)"
+        "role": "Canonical game entry; relocation is checked separately by make verify-relocation"
       },
       {
         "symbol": "Sys_RomEndData",
