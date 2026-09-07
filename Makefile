@@ -105,7 +105,7 @@ STRICT_NAMING ?= --strict-naming
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation check-source-structure init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
-        init-content inspect-content validate-content build-content check-content-zero-edit level-studio graphics-studio sound-studio check-studios \
+        init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio check-studios \
         test release-audit release-check source-2-audit source-2-release-audit source-2-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help \
@@ -185,6 +185,14 @@ check-content-zero-edit: _require-assets _require-toolchain
 
 level-studio: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio
+
+playtest-level: build-content
+	@$(PYTHON) $(RUN_SCRIPT) runtime.level_playtest --gens "$(GENS_EXE)" \
+		--rom "$(CONTENT_ROM)" --round "$(or $(ROUND),1)"
+
+smoke-level-playtest: build-content
+	@$(PYTHON) $(RUN_SCRIPT) runtime.level_playtest --gens "$(GENS_EXE)" \
+		--rom "$(CONTENT_ROM)" --round "$(or $(ROUND),26)" --check
 
 graphics-studio: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.graphics_studio
@@ -299,6 +307,7 @@ source-2-check:
 	$(MAKE) check-content-zero-edit
 	$(MAKE) validate-content
 	$(MAKE) check-studios
+	$(MAKE) smoke-level-playtest
 	$(MAKE) source-2-release-audit
 
 # Deterministic whitespace, label-layout and case normalization, then re-check.
@@ -457,6 +466,8 @@ help:
 	@echo "  make build-content             Build the isolated editable ROM"
 	@echo "  make check-content-zero-edit   Prove tracked content still reproduces the ROM"
 	@echo "  make level-studio              Open the visual level editor"
+	@echo "  make playtest-level ROUND=1    Build and play one round directly in Gens"
+	@echo "  make smoke-level-playtest      Prove direct round entry in Gens"
 	@echo "  make graphics-studio           Open the visual graphics editor"
 	@echo "  make sound-studio              Open the music and SFX editor"
 	@echo "  make check-studios             Load Studio models without opening a GUI"

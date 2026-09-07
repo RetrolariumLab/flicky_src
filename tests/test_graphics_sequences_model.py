@@ -24,7 +24,35 @@ class GraphicsSequencesDocument(unittest.TestCase):
         self.assertIn("Player_AnimWalk", {item["id"] for item in self.document["animations"]})
 
     def test_exported_document_is_valid(self):
+        self.assertEqual(self.document["schema_version"], 2)
         model.validate_document(self.document, ROOT)
+
+    def test_genesis_sprite_size_bits_are_not_transposed(self):
+        chick = next(
+            item for item in self.document["mappings"]
+            if item["id"] == "Chick_ThrownAnim0Data0"
+        )
+        self.assertEqual(
+            (chick["pieces"][0]["width"], chick["pieces"][0]["height"]),
+            (2, 1),
+        )
+        self.assertEqual(
+            model._mapping_bytes(chick),
+            bytes.fromhex("00 04 F8 04 64 56 F8 F8"),
+        )
+
+    def test_schema_one_dimensions_are_migrated_in_memory(self):
+        document = copy.deepcopy(self.document)
+        document["schema_version"] = 1
+        for mapping in document["mappings"]:
+            for piece in mapping["pieces"]:
+                piece["width"], piece["height"] = piece["height"], piece["width"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sequences.json"
+            path.write_text(json.dumps(document), encoding="utf-8")
+            loaded = model.load_document(path)
+        self.assertEqual(loaded, self.document)
+        model.validate_document(loaded, ROOT)
 
     def test_legacy_workspace_paths_are_migrated_in_memory(self):
         document = copy.deepcopy(self.document)

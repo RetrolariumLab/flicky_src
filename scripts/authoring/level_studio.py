@@ -5,17 +5,20 @@ from __future__ import annotations
 
 import argparse
 import copy
+import os
 import subprocess
 import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox, ttk
 from typing import Any
 
+from authoring.level_preview import LevelPreview, SCREEN_HEIGHT, SCREEN_WIDTH, md_color
 from authoring.level_studio_model import MAP_HEIGHT, MAP_WIDTH, atomic_write_json, load_document, validate_document
+from runtime.level_playtest import playtest_command, playtest_environment
 
 
-CELL = 18
-WORLD_HEIGHT = 32
+SCALE = 2
+CELL = 8 * SCALE
 VARIABLE_FIELDS = (
     "background_group_3", "background_group_4", "background_group_5",
     "chicks_a", "chicks_b", "flag_7", "flag_7_6", "flag_5",
@@ -40,17 +43,51 @@ COLORS = {
     "flag_7_6": "#ec407a",
     "flag_5": "#9ccc65",
 }
+FIELD_LABELS = {
+    "player": "Flicky / exit door",
+    "entry_arrow": "background object A",
+    "cat_door": "background object B",
+    "exit_door": "background object C",
+    "background_group_3": "background group 3",
+    "background_group_4": "background group 4",
+    "background_group_5": "background group 5",
+    "spawners": "collectible / throwable chicks",
+    "chicks_a": "enemies A",
+    "chicks_b": "enemies B",
+    "flag_7": "special collision 7",
+    "flag_7_6": "special collision 7/6",
+    "flag_5": "special collision 5",
+}
 
 
 class LevelStudio:
-    def __init__(self, root: tk.Tk, project: Path, workspace: Path):
+    def __init__(
+        self,
+        root: tk.Tk,
+        project: Path,
+        workspace: Path,
+        graphics_workspace: Path,
+        semantics_workspace: Path,
+        sequences_workspace: Path,
+    ):
         self.root = root
         self.project = project
         self.workspace = workspace
         self.document = load_document(workspace)
         validate_document(self.document)
         self.saved = copy.deepcopy(self.document)
+        self.graphics_workspace = graphics_workspace
+        self.semantics_workspace = semantics_workspace
+        self.sequences_workspace = sequences_workspace
+        self.preview = LevelPreview.load(
+            project, graphics_workspace, semantics_workspace, sequences_workspace
+        )
+        self.preview_image: tk.PhotoImage | None = None
+        self.preview_native: tk.PhotoImage | None = None
+        self.playtest_process: subprocess.Popen[bytes] | None = None
         self.round_number = tk.IntVar(value=1)
+        self.show_grid = tk.BooleanVar(value=False)
+        self.show_markers = tk.BooleanVar(value=True)
         self.object_key: tuple[str, int | None, bool] | None = None
         self.x_value = tk.IntVar(value=0)
         self.y_value = tk.IntVar(value=0)
@@ -73,13 +110,21 @@ class LevelStudio:
         ttk.Button(toolbar, text="Save", command=self.save).pack(side="left")
         ttk.Button(toolbar, text="Reload", command=self.reload).pack(side="left", padx=4)
         ttk.Button(toolbar, text="Build ROM", command=self.build_rom).pack(side="left")
+        ttk.Button(toolbar, text="Playtest", command=self.playtest).pack(side="left", padx=(4, 0))
+        ttk.Button(toolbar, text="Stop", command=self.stop_playtest).pack(side="left", padx=4)
         self.layout_label = ttk.Label(toolbar)
         self.layout_label.pack(side="left", padx=14)
+        ttk.Checkbutton(
+            toolbar, text="Grid", variable=self.show_grid, command=self.redraw
+        ).pack(side="left", padx=(4, 0))
+        ttk.Checkbutton(
+            toolbar, text="Markers", variable=self.show_markers, command=self.redraw
+        ).pack(side="left")
 
         body = ttk.Frame(self.root, padding=(6, 0, 6, 6))
         body.pack(fill="both", expand=True)
         self.canvas = tk.Canvas(
-            body, width=MAP_WIDTH * CELL, height=WORLD_HEIGHT * CELL,
+            body, width=SCREEN_WIDTH * SCALE, height=SCREEN_HEIGHT * SCALE,
             background="#101820", highlightthickness=0,
         )
         self.canvas.pack(side="left", fill="both", expand=False)
@@ -126,37 +171,69 @@ class LevelStudio:
         )
         self.draw(layout, special)
         self.fill_objects(layout, special)
-        self.status.set("Click the grid to toggle collision; shared layouts update every linked round")
+        self.status.set(
+            "Click the map to toggle collision; graphics use the editable workspace"
+        )
+
+    def redraw(self) -> None:
+        layout, special = self.layouts()
+        self.draw(layout, special)
 
     def draw(self, layout: dict[str, Any], special: dict[str, Any]) -> None:
         self.canvas.delete("all")
-        grid = layout["collision"]
-        for y in range(WORLD_HEIGHT):
-            for x in range(MAP_WIDTH):
-                solid = y < MAP_HEIGHT and grid[y][x]
-                fill = "#455a64" if solid else ("#17242d" if y < MAP_HEIGHT else "#0b1116")
-                self.canvas.create_rectangle(
-                    x * CELL, y * CELL, (x + 1) * CELL, (y + 1) * CELL,
-                    fill=fill, outline="#26343d",
-                )
-        for field in MAIN_FIELDS:
-            value = layout[field]
-            pairs = [value] if field in {"player", "entry_arrow", "cat_door", "exit_door"} else value
-            self.draw_markers(field, pairs)
-        for field in SPECIAL_FIELDS:
-            self.draw_markers(field, special[field], inset=5)
+        round_number = max(1, min(48, self.round_number.get()))
+        frame = self.preview.render(layout, round_number)
+        native = tk.PhotoImage(width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
+        rows = " ".join(
+            "{" + " ".join(md_color(colour) for colour in row) + "}" for row in frame
+        )
+        native.put(rows)
+        self.preview_native = native
+        self.preview_image = native.zoom(SCALE, SCALE)
+        self.canvas.create_image(0, 0, image=self.preview_image, anchor="nw")
 
-    def draw_markers(self, field: str, pairs: list[list[int]], inset: int = 3) -> None:
+        if self.show_grid.get():
+            for x in range(MAP_WIDTH + 1):
+                self.canvas.create_line(x * CELL, 0, x * CELL, SCREEN_HEIGHT * SCALE, fill="#63727a")
+            for y in range(MAP_HEIGHT + 1):
+                self.canvas.create_line(0, y * CELL, SCREEN_WIDTH * SCALE, y * CELL, fill="#63727a")
+        if self.show_markers.get():
+            for field in MAIN_FIELDS:
+                value = layout[field]
+                pairs = [value] if field in {"player", "entry_arrow", "cat_door", "exit_door"} else value
+                self.draw_markers(field, pairs)
+        for field in SPECIAL_FIELDS:
+            self.draw_markers(field, special[field], inset=5, dashed=True)
+
+        selected = self.selected_key()
+        if selected is not None:
+            field, index, special_owner = selected
+            owner = special if special_owner else layout
+            pair = owner[field] if index is None else owner[field][index]
+            self.canvas.create_rectangle(
+                pair[0] * CELL + 1, pair[1] * CELL + 1,
+                (pair[0] + 1) * CELL - 1, (pair[1] + 1) * CELL - 1,
+                outline="#ffffff", width=3,
+            )
+
+    def draw_markers(
+        self,
+        field: str,
+        pairs: list[list[int]],
+        inset: int = 2,
+        dashed: bool = False,
+    ) -> None:
         for index, (x, y) in enumerate(pairs):
-            self.canvas.create_oval(
+            self.canvas.create_rectangle(
                 x * CELL + inset, y * CELL + inset,
                 (x + 1) * CELL - inset, (y + 1) * CELL - inset,
-                fill=COLORS[field], outline="",
+                outline=COLORS[field], width=2, dash=(3, 2) if dashed else None,
             )
-            if len(pairs) > 1 and inset < 5:
+            if len(pairs) > 1 and not dashed:
                 self.canvas.create_text(
-                    x * CELL + CELL // 2, y * CELL + CELL // 2,
-                    text=str(index + 1), fill="#101010", font=("TkDefaultFont", 7),
+                    x * CELL + 3, y * CELL + 2,
+                    text=str(index + 1), fill="#ffffff", anchor="nw",
+                    font=("TkDefaultFont", 7, "bold"),
                 )
 
     def fill_objects(self, layout: dict[str, Any], special: dict[str, Any]) -> None:
@@ -165,11 +242,13 @@ class LevelStudio:
             owner = special if field in SPECIAL_FIELDS else layout
             value = owner[field]
             pairs = [value] if field in {"player", "entry_arrow", "cat_door", "exit_door"} else value
-            parent = self.objects.insert("", "end", text=field, open=False)
+            parent = self.objects.insert(
+                "", "end", text=FIELD_LABELS[field], open=False, tags=(f"group:{field}",)
+            )
             for index, (x, y) in enumerate(pairs):
                 fixed_pair = field in {"player", "entry_arrow", "cat_door", "exit_door"}
                 item = self.objects.insert(
-                    parent, "end", text=field if fixed_pair else str(index + 1), values=(x, y)
+                    parent, "end", text=FIELD_LABELS[field] if fixed_pair else str(index + 1), values=(x, y)
                 )
                 special_owner = field in SPECIAL_FIELDS
                 self.objects.item(item, tags=(f"{field}|{index if not fixed_pair else -1}|{int(special_owner)}",))
@@ -195,6 +274,7 @@ class LevelStudio:
         pair = owner[field] if index is None else owner[field][index]
         self.x_value.set(pair[0])
         self.y_value.set(pair[1])
+        self.draw(layout, special)
 
     def toggle_collision(self, event: tk.Event) -> None:
         x, y = event.x // CELL, event.y // CELL
@@ -235,7 +315,11 @@ class LevelStudio:
         if key:
             field, _index, special_owner = key
         else:
-            field = self.objects.item(item, "text")
+            tags = self.objects.item(item, "tags")
+            if not tags or not tags[0].startswith("group:"):
+                self.status.set("Select a variable object group first")
+                return
+            field = tags[0].split(":", 1)[1]
             special_owner = field in SPECIAL_FIELDS
         if field not in VARIABLE_FIELDS:
             self.status.set(f"{field} has a fixed item count")
@@ -259,49 +343,115 @@ class LevelStudio:
         del owner[field][index]
         self.refresh()
 
-    def save(self) -> None:
+    def save(self) -> bool:
         try:
             validate_document(self.document)
             atomic_write_json(self.workspace, self.document)
         except (OSError, ValueError) as error:
             messagebox.showerror("Cannot save", str(error))
-            return
+            return False
         self.saved = copy.deepcopy(self.document)
         self.status.set(f"Saved {self.workspace}")
+        return True
 
     def reload(self) -> None:
         self.document = load_document(self.workspace)
         validate_document(self.document)
+        self.preview = LevelPreview.load(
+            self.project,
+            self.graphics_workspace,
+            self.semantics_workspace,
+            self.sequences_workspace,
+        )
         self.saved = copy.deepcopy(self.document)
         self.refresh()
 
     def build_rom(self) -> None:
-        self.save()
+        if not self.save():
+            return
         subprocess.Popen(["make", "build-content"], cwd=self.project)
         self.status.set("Started make build-content")
+
+    def playtest(self) -> None:
+        if not self.save():
+            return
+        self.status.set("Building editable ROM for playtest...")
+        self.root.update_idletasks()
+        result = subprocess.run(["make", "build-content"], cwd=self.project)
+        if result.returncode:
+            messagebox.showerror("Build failed", "make build-content failed")
+            self.status.set("Playtest build failed")
+            return
+        gens = Path(os.environ.get(
+            "GENS_EXE", self.project / ".." / "gens_automation" / "Output" / "Gens.exe"
+        )).resolve()
+        if not gens.is_file():
+            messagebox.showerror(
+                "Gens not found",
+                "Build ../gens_automation/Output/Gens.exe with make build-gens",
+            )
+            self.status.set("Gens not found")
+            return
+        self.stop_playtest(update_status=False)
+        round_number = max(1, min(48, self.round_number.get()))
+        result_path = self.project / "build" / "level_playtest.txt"
+        self.playtest_process = subprocess.Popen(
+            playtest_command(gens, self.project / "build/content/flicky.bin"),
+            cwd=gens.parent,
+            env=playtest_environment(round_number, result_path),
+        )
+        self.status.set(f"Playtesting round {round_number} in Gens")
+
+    def stop_playtest(self, update_status: bool = True) -> None:
+        if self.playtest_process is not None and self.playtest_process.poll() is None:
+            self.playtest_process.terminate()
+            try:
+                self.playtest_process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                self.playtest_process.kill()
+            if update_status:
+                self.status.set("Playtest stopped")
+        elif update_status:
+            self.status.set("No playtest is running")
+        self.playtest_process = None
 
     def close(self) -> None:
         if self.document != self.saved and not messagebox.askyesno(
             "Unsaved changes", "Discard unsaved changes?"
         ):
             return
+        self.stop_playtest(update_status=False)
         self.root.destroy()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", default="content/workspace/level/levels.json")
+    parser.add_argument("--graphics", default="content/workspace/graphics/graphics.json")
+    parser.add_argument("--semantics", default="content/workspace/graphics/semantics.json")
+    parser.add_argument("--sequences", default="content/workspace/graphics/sequences.json")
     parser.add_argument("--check", action="store_true", help="load and validate without opening Tk")
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[2]
     workspace = project / args.workspace
+    graphics_workspace = project / args.graphics
+    semantics_workspace = project / args.semantics
+    sequences_workspace = project / args.sequences
     document = load_document(workspace)
     validate_document(document)
+    preview = LevelPreview.load(
+        project, graphics_workspace, semantics_workspace, sequences_workspace
+    )
+    layout_index = document["round_layouts"][0]
+    preview.render(document["layouts"][layout_index], 1)
     if args.check:
-        print("[OK] Level Studio model loaded headlessly")
+        print("[OK] Level Studio loaded real tiles, mappings, palettes, and round objects")
         return 0
     root = tk.Tk()
-    LevelStudio(root, project, workspace)
+    LevelStudio(
+        root, project, workspace,
+        graphics_workspace, semantics_workspace, sequences_workspace,
+    )
     root.mainloop()
     return 0
 

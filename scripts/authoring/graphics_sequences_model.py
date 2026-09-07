@@ -103,8 +103,8 @@ def _decode_mapping(label: str, data: bytes, source_text: str) -> dict[str, Any]
         attributes = int.from_bytes(data[offset + 2:offset + 4], "big")
         pieces.append({
             "y": signed_byte(data[offset]),
-            "width": (size & 3) + 1,
-            "height": ((size >> 2) & 3) + 1,
+            "width": ((size >> 2) & 3) + 1,
+            "height": (size & 3) + 1,
             "tile": attributes & 0x7FF,
             "palette": (attributes >> 13) & 3,
             "priority": bool(attributes & 0x8000),
@@ -190,7 +190,7 @@ def parse_animations(root: Path) -> list[dict[str, Any]]:
 
 def export_document(root: Path) -> dict[str, Any]:
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "profile": "canonical",
         "mappings": parse_mappings(root),
         "animations": parse_animations(root),
@@ -212,7 +212,7 @@ def _table(document: dict[str, Any], key: str) -> dict[str, dict[str, Any]]:
 
 
 def validate_document(document: dict[str, Any], root: Path) -> None:
-    if document.get("schema_version") != 1 or document.get("profile") != "canonical":
+    if document.get("schema_version") != 2 or document.get("profile") != "canonical":
         raise ValueError("unsupported graphics sequences schema or profile")
     baseline = export_document(root)
     expected_mappings = _table(baseline, "mappings")
@@ -268,6 +268,15 @@ def validate_document(document: dict[str, Any], root: Path) -> None:
 
 def load_document(path: Path) -> dict[str, Any]:
     document = json.loads(path.read_text(encoding="utf-8"))
+    if document.get("schema_version") == 1:
+        # Schema 1 exposed the Genesis size byte backwards: its horizontal
+        # count lives in bits 2-3 and its vertical count in bits 0-1. Migrate
+        # existing workspaces in memory so saving or building them preserves
+        # the intended sprite geometry.
+        for mapping in document.get("mappings", []):
+            for piece in mapping.get("pieces", []):
+                piece["width"], piece["height"] = piece["height"], piece["width"]
+        document["schema_version"] = 2
     for animation in document.get("animations", []):
         source = animation.get("source")
         if source in LEGACY_SOURCE_PATHS:
@@ -285,7 +294,7 @@ def atomic_write_json(path: Path, document: dict[str, Any]) -> None:
 def _mapping_bytes(mapping: dict[str, Any]) -> bytes:
     output = bytearray((len(mapping["pieces"]) - 1, mapping["render_flags"]))
     for piece in mapping["pieces"]:
-        size = (piece["width"] - 1) | ((piece["height"] - 1) << 2)
+        size = ((piece["width"] - 1) << 2) | (piece["height"] - 1)
         attributes = piece["tile"] | (piece["palette"] << 13)
         attributes |= 0x8000 if piece["priority"] else 0
         attributes |= 0x0800 if piece["hflip"] else 0

@@ -22,10 +22,15 @@ The release adds three capability groups:
 ## Supported editors
 
 Level Studio exposes all 48 round slots and their 36 shared layouts: collision
-cells, player and door positions, background objects, six spawners, two chick
-groups, and special collision classes. Generated labels let ASW recalculate
-level pointers when an ordinary record changes length; the special section and
-ROM tail retain explicit capacity checks.
+cells, player and door positions, background objects, six hanging chicks, two
+enemy groups, and special collision classes. Its game-scale preview composes
+the editable tile banks, round palettes, background tilemaps, ground, Flicky,
+chicks, and enemies through the same VRAM indices and sprite mappings as the
+ROM. Generated labels let ASW recalculate level pointers when an ordinary
+record changes length; the special section and ROM tail retain explicit
+capacity checks. The selected round can be playtested directly in Gens: a Lua
+bootstrap enters the original `Game_InitRound` path after normal title setup,
+and an automated smoke target proves the requested round reaches gameplay.
 
 Graphics Studio covers ten raster assets, 843 4bpp tiles, both 1bpp fonts, the
 compact Sega palette and screen, 52 English strings, 28 game palettes, 224
@@ -62,8 +67,9 @@ status.
 then verifies relocation, constructs and compares the independent zero-edit
 content ROM, validates every local workspace artifact, loads all Studio models
 without a display server, enforces the source granularity and directory policy,
-and audits the 2.0 manifest, documents, Make targets,
-format strengths, supported Studio inventory, predecessor tag, and ancestry.
+smoke-tests direct level entry in Gens, and audits the 2.0 manifest, documents,
+Make targets, format strengths, supported Studio inventory, predecessor tag,
+and ancestry.
 
 The annotated `source-reconstruction-2.0` tag is created only after that gate
 passes on the release commit with a clean worktree. ROMs, extracted assets,
