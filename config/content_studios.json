@@ -9,13 +9,13 @@
     {
       "id": "level",
       "name": "Level Studio",
-      "status": "foundation",
+      "status": "supported",
       "artifacts": ["level_layouts"]
     },
     {
       "id": "graphics",
       "name": "Graphics Studio",
-      "status": "foundation",
+      "status": "supported",
       "artifacts": ["graphics_assets", "graphics_semantics", "graphics_sequences"]
     },
     {

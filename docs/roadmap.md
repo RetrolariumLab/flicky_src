@@ -205,7 +205,7 @@ truths -- the assembler's own listing, its symbol table and the built image.
 *Exit criterion:* `make release-audit` verifies the manifest against reality,
 not just against itself.
 
-### 10. Source Reconstruction 1.0 - Planned
+### 10. Source Reconstruction 1.0 - Complete
 
 Tag the reviewed state once the audit passes on that exact commit with a clean
 worktree.
@@ -214,6 +214,23 @@ worktree.
 
 Fixed-layout hacks and bug fixes belong to a separate entrypoint and a separate
 output. The preservation build stays the default and the gate stays permanent.
+
+### 12. Source Reconstruction 2.0 - Complete
+
+The resident Z80 driver and sound banks are semantic, assembler-owned source.
+An isolated content pipeline provides Level, Graphics, and Sound studios over
+five editable artifacts without sharing generated objects with preservation.
+Zero-edit content reconstruction produces the canonical ROM byte for byte;
+edited level records, pixels, text, palettes, mappings, animations, event
+streams, and FM voices have each been exercised through a complete ROM build.
+
+The aggregate `make source-2-check` starts with the permanent 1.0 release gate,
+then checks relocation, content identity, every headless Studio model, and the
+machine-readable 2.0 contract.
+
+*Exit criterion:* the 1.0 predecessor tag is an ancestor, all three studios are
+supported, the zero-edit ROM is exact, residual uncertainty is explicit, and
+`make source-2-check` passes.
 
 ## Permanent invariants
 
