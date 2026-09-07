@@ -23,7 +23,7 @@ There was a live example: the entry point was recorded as `$000200` while
 Declare the layout in `config/rom_layout.json` — memory regions, ROM landmarks
 by symbol, the padding gap, the shared includes that emit no bytes, and the
 address range of all 43 modules — and check it with
-`scripts/verify_layout.py` (`make verify-layout`), which is part of the gate.
+`scripts/validation/verify_layout.py` (`make verify-layout`), which is part of the gate.
 
 The three checks read three different ground truths: module ranges come from
 the addresses the assembler recorded for each `include` in its listing,

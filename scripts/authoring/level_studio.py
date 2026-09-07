@@ -11,7 +11,7 @@ from pathlib import Path
 from tkinter import messagebox, ttk
 from typing import Any
 
-from level_studio_model import MAP_HEIGHT, MAP_WIDTH, atomic_write_json, load_document, validate_document
+from authoring.level_studio_model import MAP_HEIGHT, MAP_WIDTH, atomic_write_json, load_document, validate_document
 
 
 CELL = 18
@@ -293,7 +293,7 @@ def main() -> int:
     parser.add_argument("--workspace", default="content/workspace/level/levels.json")
     parser.add_argument("--check", action="store_true", help="load and validate without opening Tk")
     args = parser.parse_args()
-    project = Path(__file__).resolve().parents[1]
+    project = Path(__file__).resolve().parents[2]
     workspace = project / args.workspace
     document = load_document(workspace)
     validate_document(document)

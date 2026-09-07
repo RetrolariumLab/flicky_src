@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from sound_bank_source import baseline_path as baseline_path
+from authoring.sound_bank_source import baseline_path as baseline_path
 
 
 LABEL_RE = re.compile(r"^(?P<label>[A-Za-z_][A-Za-z0-9_]*):", re.MULTILINE)

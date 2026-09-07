@@ -183,7 +183,7 @@ reused, even after the entry is resolved.
 - **Status:** resolved on `source-2.0`
 - **Confidence:** high
 - **Location:** `src/sound/z80/driver.asm`,
-  `scripts/build_z80_driver.py`, `docs/z80_sound_driver.md`
+  `scripts/build/build_z80_driver.py`, `docs/z80_sound_driver.md`
 - **Correction:** Only `z80_part1` is executable. `z80_part2` begins with two
   68000 load descriptors and supplies the data banks copied to Z80 `$1000` and
   `$1200`; no control-flow target enters either bank.

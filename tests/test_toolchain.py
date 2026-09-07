@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import verify_toolchain  # noqa: E402
+from validation import verify_toolchain  # noqa: E402
 
 CONFIG = json.loads((ROOT / "config" / "toolchain.json").read_text(encoding="utf-8"))
 

@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import release_audit  # noqa: E402
+from validation import release_audit  # noqa: E402
 
 CONTRACT = json.loads(
     (ROOT / "config" / "source_reconstruction_1_0.json").read_text(encoding="utf-8")
@@ -158,7 +158,7 @@ class Contract(unittest.TestCase):
 class EndToEnd(unittest.TestCase):
     def test_the_audit_passes(self):
         result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "release_audit.py")],
+            [sys.executable, str(ROOT / "scripts" / "run.py"), "validation.release_audit"],
             cwd=ROOT, capture_output=True, text=True,
         )
         self.assertEqual(result.returncode, 0, result.stderr)

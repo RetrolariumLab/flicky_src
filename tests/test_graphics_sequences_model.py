@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import graphics_sequences_model as model  # noqa: E402
+from authoring import graphics_sequences_model as model  # noqa: E402
 
 
 class GraphicsSequencesDocument(unittest.TestCase):

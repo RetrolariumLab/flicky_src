@@ -139,7 +139,7 @@ The state dumps come from `state_dump.cpp` in the emulator: an eight byte
 That section is written with `fwrite(Ram_68k, ...)`, straight out of the
 emulator's internal buffer, and **Starscream holds work RAM as host-endian
 16 bit words**, so the two bytes of every word are swapped relative to the
-68000's own big-endian view. `scripts/genstate.py` undoes that in `read`.
+68000's own big-endian view. `scripts/runtime/genstate.py` undoes that in `read`.
 
 This is worth stating plainly because getting it wrong is not loud. Reading the
 dump without the swap returns the neighbouring byte, which looks like plausible
@@ -178,7 +178,7 @@ to reach them.
 To also compare screenshots against a known-good capture:
 
 ```bash
-python scripts/validate_runtime_scenarios.py \
+python scripts/run.py runtime.validate_runtime_scenarios \
     --capture-dir build/runtime --reference-dir reference/runtime
 ```
 

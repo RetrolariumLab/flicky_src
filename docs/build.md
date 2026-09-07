@@ -51,7 +51,7 @@ otherwise resolve that relative to the module's own directory.
 `-p=FF` is not optional: the cartridge pads unused space with `$FF` and p2bin
 defaults to `$00`, which would corrupt 18,015 bytes in the middle of the image.
 
-**Comparing.** `scripts/compare_roms.py` compares the result with the dump byte
+**Comparing.** `scripts/validation/compare_roms.py` compares the result with the dump byte
 by byte and reports the first difference. A matching hash is not accepted as a
 substitute.
 

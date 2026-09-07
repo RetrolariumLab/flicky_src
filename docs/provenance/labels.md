@@ -92,7 +92,7 @@ observed to contain. See [`runtime_evidence.md`](../runtime_evidence.md).
 
 **The seventeen extracted segments.** Every `binclude` payload under `data/`
 comes from the cartridge dump, cut at the offsets in `data/data_addrs.txt` by
-`scripts/split_data_from_rom.py`. None is tracked: `assets/manifest.json` holds
+`scripts/build/split_data_from_rom.py`. None is tracked: `assets/manifest.json` holds
 the path, ROM address, size and SHA-1 of each, and `make check-assets` refuses
 to build against a segment that does not match. `make split` is the only command
 that writes to `data/`.
@@ -110,7 +110,7 @@ by watching the recordings; the runtime layer since confirmed all twelve
 against the game mode the emulator actually reached.
 
 **The cartridge dump itself** is never tracked. `assets/manifest.json` records
-its name, size, SHA-1, MD5, CRC32 and SHA-256, and `scripts/release_audit.py`
+its name, size, SHA-1, MD5, CRC32 and SHA-256, and `scripts/validation/release_audit.py`
 walks every reachable git object to prove no payload was ever committed.
 
 ## Z80 sound-source provenance

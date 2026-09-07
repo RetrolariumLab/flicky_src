@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import lint_source  # noqa: E402
+from validation import lint_source  # noqa: E402
 
 
 class AddressDerivedNames(unittest.TestCase):
@@ -67,7 +67,12 @@ class SourceIsClean(unittest.TestCase):
     def test_the_repository_passes_its_own_strict_check(self):
         import subprocess
         result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "lint_source.py"), "--strict-naming"],
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "run.py"),
+                "validation.lint_source",
+                "--strict-naming",
+            ],
             cwd=ROOT, capture_output=True, text=True,
         )
         self.assertEqual(result.returncode, 0, result.stderr)

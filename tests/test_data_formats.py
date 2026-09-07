@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
 
-import data_formats  # noqa: E402
+from authoring import data_formats  # noqa: E402
 import nemesis_dec  # noqa: E402
 import nemesis_enc  # noqa: E402
 

@@ -9,10 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import debug_symbols  # noqa: E402
-import genstate  # noqa: E402
-import run_runtime_scenarios  # noqa: E402
-import validate_runtime_scenarios  # noqa: E402
+from runtime import genstate, run_runtime_scenarios, validate_runtime_scenarios  # noqa: E402
+from validation import debug_symbols  # noqa: E402
 
 SPEC = json.loads(
     (ROOT / "scenarios" / "runtime_scenarios.json").read_text(encoding="utf-8")

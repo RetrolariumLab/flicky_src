@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from rom_assets import read_source_text
+from build.rom_assets import read_source_text
 
 import json
 import re

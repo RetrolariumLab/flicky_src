@@ -89,13 +89,13 @@ column for the whole table -- see [`assembly_style.md`](assembly_style.md).
 
 ## Tooling
 
-`scripts/rename_symbols.py` takes a CSV of `old,new` pairs, rewrites every
+`scripts/workflow/rename_symbols.py` takes a CSV of `old,new` pairs, rewrites every
 reference across `src/`. It
 refuses to run if a target name already exists, if two renames collide, or if a
 source name is not defined anywhere -- so a typo cannot silently do nothing.
 
 ```bash
-python scripts/rename_symbols.py workflow/rename_batch.csv
+python scripts/run.py workflow.rename_symbols workflow/rename_batch.csv
 make format
 make verify
 ```
