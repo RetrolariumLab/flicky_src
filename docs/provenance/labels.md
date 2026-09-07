@@ -113,14 +113,17 @@ against the game mode the emulator actually reached.
 its name, size, SHA-1, MD5, CRC32 and SHA-256, and `scripts/release_audit.py`
 walks every reachable git object to prove no payload was ever committed.
 
-## The Z80 driver is not reconstructed
+## Z80 sound-source provenance
 
-`data/sound/data_z80_part1.bin` and `data_z80_part2.bin` are executable Z80
-code, copied verbatim and never disassembled. They are the one place where this
-repository holds code as an opaque blob, which is why the release manifest
-excludes them by name as `z80_sound_driver_source` rather than passing over it.
+The 1.0 release excluded the extracted sound images by name because it had not
+yet reconstructed their source. On `source-2.0`, `data_z80_part1.bin` is the
+byte-identity reference for the symbolic resident program in
+`src/sound/z80_driver_z80.asm`. `data_z80_part2.bin` is not executable: its
+descriptors, indices, SFX/music headers and data pointers are authored in
+`src/data/z80_sound.s` and `src/sound/z80_sound_data.asm`.
 
-They are not unconstrained: each has an owning module, a declared ROM range in
-`config/rom_layout.json`, and a hash in `assets/manifest.json`. The second image
-also hard-codes pointers to `$10000`, which is why `Sys_GameEntryPoint` cannot
-move. That is tracked as SND-001 in [`unknowns.md`](../unknowns.md).
+Both generated components are assembled and compared with the extracted
+images before the main ROM pass. DATA-001 and SND-001 in
+[`unknowns.md`](../unknowns.md) retain the original evidence and record their
+resolution; `make verify-relocation` separately proves the sound data follows a
+moved `Sys_GameEntryPoint`.

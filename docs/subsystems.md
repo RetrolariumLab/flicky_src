@@ -113,16 +113,17 @@ from `Lizard_JumpSpeedTable` through the per-round index in
 
 ## Sound
 
-The 68000 never generates audio. It copies two Z80 images into sound RAM at
-boot (`LoadZ80Driver`, `Sound_InitDriver`) and afterwards communicates by
+The 68000 never generates audio. It copies the source-built resident Z80 driver
+and two Z80 data banks into sound RAM at boot (`Sound_LoadZ80Driver`,
+`Sound_InitDriver`) and afterwards communicates by
 writing single bytes: `Z80_MusicCommand` for music, three `Z80_SFXSlot` bytes
 for effects, `Z80_PauseFlag` for pause. Every access takes the Z80 bus first
 through `Sound_RequestZ80Bus` and releases it afterwards.
 
 `Sound_QueueToBuffer` and `Sound_QueueSFX` implement a small queue so that
 effects requested during a frame are emitted one per frame rather than fighting
-over the three slots. What the driver does with a command is
-[SND-001](unknowns.md).
+over the three slots. The driver-side scheduler, FM/PSG tracks and sequence
+commands are documented in [z80_sound_driver.md](z80_sound_driver.md).
 
 ## Compression
 

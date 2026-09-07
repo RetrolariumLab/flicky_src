@@ -102,14 +102,14 @@
       "path": "sound/data_z80_part1.bin",
       "codec": "opaque",
       "round_trip": "none",
-      "note": "See SND-001: Z80 machine code, not decoded."
+      "note": "Reference image for authored src/sound/z80_driver_z80.asm; see resolved SND-001."
     },
     {
       "segment": "z80_part2",
       "path": "sound/data_z80_part2.bin",
       "codec": "opaque",
       "round_trip": "none",
-      "note": "See SND-001 and DATA-001."
+      "note": "Reference image for authored descriptors and sound banks; see resolved DATA-001."
     }
   ]
 }

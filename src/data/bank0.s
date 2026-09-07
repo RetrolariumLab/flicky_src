@@ -1,8 +1,8 @@
 ; First Z80 driver image, function table, Japanese 1bpp font
 ; ROM $001316-$00FFFF
 
-; !(UNKNOWN) SND-001 the Z80 driver is copied verbatim, not disassembled
-Data_Z80Driver1:    binclude "data/sound/data_z80_part1.bin"
+; !(OBS) SND-001 built from symbolic Z80 source before the 68000 assembly pass
+Data_Z80Driver1:    binclude "build/z80_driver.bin"
 Data_Z80Driver1_End:
 Sys_FuncTable:      dc.w    $39
                 dc.w    Int_UnusedHandler

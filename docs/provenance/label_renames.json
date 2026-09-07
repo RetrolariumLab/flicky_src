@@ -9,9 +9,9 @@
   },
   "counts": {
     "original_labels": 1717,
-    "current_labels": 1979,
+    "current_labels": 1982,
     "renames": 1929,
-    "project_additions": 50
+    "project_additions": 53
   },
   "rename_columns": [
     "original",
@@ -9671,6 +9671,14 @@
   ],
   "project_additions": [
     [
+      "Data_Z80MusicBank",
+      "src/data/z80_sound.s"
+    ],
+    [
+      "Data_Z80SFXBank",
+      "src/data/z80_sound.s"
+    ],
+    [
       "align",
       "src/macros/macros.inc"
     ],
@@ -9820,6 +9828,10 @@
     ],
     [
       "M68K_RAM",
+      "src/memory/hardware.inc"
+    ],
+    [
+      "M68K_RAM_SIZE",
       "src/memory/hardware.inc"
     ],
     [

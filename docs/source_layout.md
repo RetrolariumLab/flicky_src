@@ -37,6 +37,10 @@ These emit no bytes and are included before any module:
 | `src/memory/constants.inc` | VDP status bit constants |
 | `src/memory/ram.inc` | Work RAM field addresses |
 
+`src/sound/z80_driver_z80.asm` is a separate Z80 translation unit rather than
+part of the address-ordered 68000 include tree. It assembles to 4,070 bytes,
+is checked against the reference driver, and is included by `bank0.s`.
+
 ## Modules
 
 | File | ROM range | Lines | Responsibility |
@@ -50,9 +54,9 @@ These emit no bytes and are included before any module:
 | `src/rendering/vdp.s` | `$000E42-$001013` | 244 | VDP registers, sprite area, tilemap writes, palette fade |
 | `src/sound/z80_driver.s` | `$001014-$001195` | 183 | Z80 bus arbitration and the sound command queue |
 | `src/rendering/tilemap.s` | `$001196-$001315` | 175 | Palette and tilemap loading, VRAM and CRAM transfers |
-| `src/data/bank0.s` | `$001316-$00FFFF` | 69 | First Z80 driver image, function table, Japanese 1bpp font |
+| `src/data/bank0.s` | `$001316-$00FFFF` | 69 | Source-built Z80 driver image, function table, Japanese 1bpp font |
 | `src/system/game_entry.s` | `$010000-$0101D3` | 136 | Game entry point and title-screen VRAM setup |
-| `src/data/z80_sound.s` | `$0101D4-$010CD3` | 6 | Second Z80 sound-driver image |
+| `src/data/z80_sound.s` | `$0101D4-$010CD3` | 6 | Z80 music/SFX data banks and load descriptors |
 | `src/sound/engine.s` | `$010CD4-$010D6D` | 68 | Sound driver init and note playback |
 | `src/rendering/rle.s` | `$010D6E-$010DE7` | 81 | VRAM address helpers and RLE tilemap decompression |
 | `src/game/text_encoding.s` | `$010DE8-$010E87` | 89 | Character-to-tile mapping and random numbers |

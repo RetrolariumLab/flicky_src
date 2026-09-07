@@ -1,8 +1,9 @@
 # Authored Data Formats
 
-Seventeen segments are sliced out of the reference ROM by `make split`,
-validated against `assets/manifest.json` before every build, and pulled back in
-with `binclude`. This page says what each one is and what the tooling can
+Seventeen reference segments are sliced out of the ROM by `make split` and
+validated against `assets/manifest.json` before every build. Most are pulled
+back in with `binclude`; the two sound segments are now byte-exact references
+for authored assembly. This page says what each one is and what the tooling can
 currently do with it.
 
 ## The segments
@@ -14,7 +15,7 @@ currently do with it.
 | `SegaTiles` | `artnem` | `$51A`-`$856` | 828 | Nemesis tile art |
 | `z80_part1` | `sound` | `$1316`-`$22FC` | 4,070 | Z80 machine code |
 | `Jap1BPPTiles` | `artunc` | `$2372`-`$290A` | 1,432 | Uncompressed 1bpp font |
-| `z80_part2` | `sound` | `$101D4`-`$10CD4` | 2,816 | Z80 machine code and tables |
+| `z80_part2` | `sound` | `$101D4`-`$10CD4` | 2,816 | 68000 load descriptors and Z80 sound data |
 | `EndingCongratsArt` | `other` | `$135E8`-`$139A2` | 954 | Tilemap for the ending screen |
 | `DemoInputStream0` | `other` | `$13A82`-`$13B82` | 256 | Recorded controller input |
 | `DemoInputStream2` | `other` | `$13C52`-`$13D70` | 286 | Recorded controller input |
@@ -76,13 +77,23 @@ reads one byte, tests each bit, and emits the foreground or background nibble
 accordingly. The foreground and background nibbles come from the caller, which
 is how the same font is drawn in different colours.
 
-## Z80 images
+## Z80 sound program and data
 
-`z80_part1` and `z80_part2` are copied into sound RAM verbatim and executed by
-the Z80. They are opaque to this reconstruction; see
-[SND-001](unknowns.md). `z80_part2` additionally contains pointer tables whose
-values assume the 68000 code sits at `$10000`, which is
-[DATA-001](unknowns.md) and the reason `Sys_GameEntryPoint` must not move.
+`z80_part1` is the resident program. It is reconstructed as
+`src/sound/z80_driver_z80.asm`, assembled in a separate Z80 pass and compared
+byte for byte before the main ROM includes it. Its executable boundary, RAM
+layout and sequence dispatcher are documented in
+[z80_sound_driver.md](z80_sound_driver.md).
+
+`z80_part2` is not another executable image. Its two load descriptors copy
+sound data to Z80 `$1000` and `$1200`: SFX headers/sequences in the first bank,
+and data indices, command priorities, music headers, FM voices, envelopes and
+sequences in the second. The descriptors are expressions in
+`src/data/z80_sound.s`; the 2,804-byte payload is authored in
+`src/sound/z80_sound_data.asm`, where Z80 little-endian pointers are computed
+from labels. `make z80-data-check` proves byte identity and
+`make verify-relocation` proves the 68000 source offsets follow a moved game
+image. This resolves [DATA-001](unknowns.md).
 
 ## Demo input streams
 
@@ -124,7 +135,9 @@ is [DATA-002](unknowns.md).
 **`decode_only`** -- there is a decoder and no encoder. `SegaEnigma` is the one
 case; it decodes from 10 bytes to 96 and stops there.
 
-The two Z80 images have no codec at all and are marked `none`.
+The historical 1.0 format manifest still marks both extracted Z80 segments as
+`none`. On `source-2.0`, the first claim is superseded by the independent
+source-assembly equality gate; the second remains an authored-data task.
 
 This distinction is the point of the milestone. A decoder can be plausibly
 wrong -- it can produce sensible-looking tiles from a misunderstood header and
