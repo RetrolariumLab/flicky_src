@@ -8,6 +8,7 @@
 | [`source_layout.md`](source_layout.md) | Where the code lives and why it is split that way |
 | [`subsystems.md`](subsystems.md) | What the program does and who calls whom |
 | [`build.md`](build.md) | How the build works, what to supply, and what each failure means |
+| [`content_authoring.md`](content_authoring.md) | How isolated editable builds and the 2.0 studios work |
 | [`validation.md`](validation.md) | Which check proves what |
 | [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
 | [`provenance/labels.md`](provenance/labels.md) | Where every name and every extracted byte came from |
@@ -58,8 +59,9 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 ## Current status
 
-Source Reconstruction 1.0, all ten milestones complete: the byte-identity
-gate compares against the cartridge dump, the source is modular and
+Source Reconstruction 1.0 is preserved and complete; Source 2.0 authoring is
+in progress. The byte-identity gate compares against the cartridge dump, the
+source is modular and
 consistently styled, every symbol is semantic, the subsystems and the memory
 map are documented, the authored data formats have codecs, the symbol map is
 exported, twelve scenarios replay under the emulator with 68 checked

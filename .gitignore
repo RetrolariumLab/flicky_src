@@ -65,6 +65,9 @@ tmp/
 tmpclaude*
 *.lnk
 
+# Isolated editor workspace (initialized from tracked semantic sources)
+content/workspace/
+
 # Stray AS outputs if the assembler is invoked by hand from bin/
 bin/.p
 bin/.lst

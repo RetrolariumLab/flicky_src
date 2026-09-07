@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble one Flicky Z80 sound component and verify its byte identity."""
+"""Assemble one Flicky Z80 sound component and optionally verify byte identity."""
 
 from __future__ import annotations
 
@@ -38,6 +38,16 @@ def main() -> int:
     parser.add_argument("--as-bin", default="bin/windows_i386/asw.exe")
     parser.add_argument("--p2bin", default="bin/windows_i386/p2bin.exe")
     parser.add_argument("--as-args", default="-maxerrors 2")
+    parser.add_argument(
+        "--allow-different",
+        action="store_true",
+        help="allow authored content to differ from the reference image",
+    )
+    parser.add_argument(
+        "--expected-size",
+        type=lambda value: int(value, 0),
+        help="require the assembled component to occupy this many bytes",
+    )
     args = parser.parse_args()
 
     source = Path(args.source).resolve()
@@ -67,6 +77,11 @@ def main() -> int:
     run([str(p2bin), str(obj), str(output)])
 
     built = output.read_bytes()
+    if args.expected_size is not None and len(built) != args.expected_size:
+        fail(
+            f"{args.description} is {len(built)} bytes; "
+            f"the fixed region requires {args.expected_size} bytes"
+        )
     reference_data = reference.read_bytes()
     if args.reference_offset > len(reference_data):
         fail(
@@ -74,7 +89,7 @@ def main() -> int:
             f"{len(reference_data)}-byte reference image"
         )
     expected = reference_data[args.reference_offset:]
-    if built != expected:
+    if built != expected and not args.allow_different:
         offset = next(
             (index for index, pair in enumerate(zip(built, expected))
              if pair[0] != pair[1]),
@@ -86,10 +101,16 @@ def main() -> int:
             f"expected {len(expected)} bytes ({sha1(expected)})"
         )
 
-    print(
-        f"[OK] Byte-identical {args.description} reproduced "
-        f"({len(built)} bytes, SHA1 {sha1(built)})"
-    )
+    if built == expected:
+        print(
+            f"[OK] Byte-identical {args.description} reproduced "
+            f"({len(built)} bytes, SHA1 {sha1(built)})"
+        )
+    else:
+        print(
+            f"[OK] Authored {args.description} assembled within its fixed region "
+            f"({len(built)} bytes, SHA1 {sha1(built)})"
+        )
     return 0
 
 

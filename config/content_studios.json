@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "profile": "canonical",
+  "workspace": "content/workspace",
+  "output": "build/content/flicky.bin",
+  "image_size": 131072,
+  "image_sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
+  "studios": [
+    {
+      "id": "level",
+      "name": "Level Studio",
+      "status": "planned",
+      "artifacts": []
+    },
+    {
+      "id": "graphics",
+      "name": "Graphics Studio",
+      "status": "planned",
+      "artifacts": []
+    },
+    {
+      "id": "sound",
+      "name": "Sound Studio",
+      "status": "foundation",
+      "artifacts": ["z80_sound_banks"]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "z80_sound_banks",
+      "studio": "sound",
+      "kind": "assembly_source",
+      "baseline": "src/sound/z80_sound_data.asm",
+      "workspace": "sound/z80_sound_data.asm",
+      "output": "build/content/z80_sound_data.bin",
+      "capacity": 2804
+    }
+  ]
+}

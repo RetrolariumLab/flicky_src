@@ -15,8 +15,9 @@ itself. `src/main.s` is no longer a source file: it is an index of 43
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-This is Source Reconstruction 1.0, all ten milestones complete: the data
-formats have codecs, the symbol map is exported for debuggers, twelve scenarios
+Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is in
+progress on top of it, adding isolated Level, Graphics, and Sound studios. The
+data formats have codecs, the symbol map is exported for debuggers, twelve scenarios
 replay under the emulator and are checked against 68 declared facts about work
 RAM, and `make release-check` audits the whole release contract. See
 [`docs/source_reconstruction_1_0.md`](docs/source_reconstruction_1_0.md) for
@@ -106,6 +107,10 @@ make symbols        # Export build/main.sym for debuggers
 make verify-toolchain  # Hash-check the vendored assembler before it runs
 make verify-layout     # Check the ROM layout against config/rom_layout.json
 make release-check  # The complete acceptance gate
+
+make init-content              # Initialize the ignored editor workspace
+make build-content             # Build an isolated editable ROM
+make check-content-zero-edit   # Prove editable baseline byte identity
 ```
 
 The toolchain folder is chosen from the host platform; override it with

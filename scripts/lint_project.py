@@ -10,7 +10,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-TEXT_SUFFIXES = {".s", ".inc", ".py", ".c", ".h", ".md", ".txt", ".json", ".csv", ".lua", ".cfg"}
+TEXT_SUFFIXES = {
+    ".s", ".asm", ".inc", ".py", ".c", ".h", ".md", ".txt", ".json",
+    ".csv", ".lua", ".cfg",
+}
 TEXT_FILENAMES = {".gitattributes", ".gitignore", ".editorconfig", "Makefile"}
 
 # Evidence tags separate what was observed from what was inferred.

@@ -63,6 +63,9 @@ Z80_DATA_SOURCE ?= src/sound/z80_sound_data.asm
 Z80_DATA_OBJ ?= build/z80_sound_data.p
 Z80_DATA_BIN ?= build/z80_sound_data.bin
 Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
+CONTENT_MANIFEST ?= config/content_studios.json
+CONTENT_WORKSPACE ?= content/workspace
+CONTENT_ROM ?= build/content/flicky.bin
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -97,6 +100,7 @@ STRICT_NAMING ?= --strict-naming
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
+        init-content inspect-content validate-content build-content check-content-zero-edit \
         test release-audit release-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens stop help \
@@ -139,6 +143,40 @@ $(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(SCRIPTS_DIR)/build_z80_driver.py $(Z80_DAT
 		--as-args "$(AS_ARGS)"
 
 z80-data-check: $(Z80_DATA_BIN)
+
+# ---------------------------------------------------------------------------
+# Isolated content authoring
+# ---------------------------------------------------------------------------
+
+# Initialize only missing workspace files. Existing edits are never replaced;
+# use FORCE=true only when intentionally resetting them to tracked baselines.
+init-content:
+	@$(PYTHON) $(SCRIPTS_DIR)/content_workspace.py init \
+		--manifest $(CONTENT_MANIFEST) $(if $(filter true,$(FORCE)),--force,)
+
+inspect-content:
+	@$(PYTHON) $(SCRIPTS_DIR)/content_workspace.py inspect \
+		--manifest $(CONTENT_MANIFEST)
+
+validate-content:
+	@$(PYTHON) $(SCRIPTS_DIR)/content_workspace.py validate \
+		--manifest $(CONTENT_MANIFEST)
+
+# Editable builds have their own generated source tree and ROM. The strict
+# preservation artifacts used by make verify are neither read nor overwritten.
+build-content: init-content _require-assets _require-toolchain
+	@$(PYTHON) $(SCRIPTS_DIR)/build_content.py \
+		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
+		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
+		--asset-manifest $(ASSET_MANIFEST)
+
+# The release gate builds directly from tracked baselines, so a developer's
+# current workspace may remain edited while preservation compatibility runs.
+check-content-zero-edit: _require-assets _require-toolchain
+	@$(PYTHON) $(SCRIPTS_DIR)/build_content.py --zero-edit \
+		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
+		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
+		--asset-manifest $(ASSET_MANIFEST)
 
 # Validate the reference ROM, extract data, then build and verify.
 init:
@@ -374,6 +412,13 @@ help:
 	@echo "  make z80-data-check            Assemble and byte-check the Z80 sound banks"
 	@echo "  make compare                   Compare an existing build without reassembling"
 	@echo "  make clean                     Remove build artifacts"
+	@echo ""
+	@echo "Content authoring:"
+	@echo "  make init-content              Initialize missing files in $(CONTENT_WORKSPACE)"
+	@echo "  make inspect-content           Show which workspace artifacts are edited"
+	@echo "  make validate-content          Validate the editable workspace"
+	@echo "  make build-content             Build the isolated editable ROM"
+	@echo "  make check-content-zero-edit   Prove tracked content still reproduces the ROM"
 	@echo ""
 	@echo "Validation:"
 	@echo "  make verify-toolchain          Hash-check the vendored assembler"

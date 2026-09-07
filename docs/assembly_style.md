@@ -1,6 +1,7 @@
 # Assembly Style
 
-The source uses one small, mechanically checked AS style. It is not a new style
+The address-ordered 68000 `.s` modules and shared `.inc` files use one small,
+mechanically checked AS style. It is not a new style
 imposed on the reconstruction: it is the layout the disassembly already had,
 written down so that a tool can enforce it.
 
@@ -15,6 +16,10 @@ a byte is wrong by definition.
   the formatter never translates or deletes it.
 - Exactly one final newline. No trailing whitespace. No tabs.
 - At most one blank line in a row, and no blank line at the top of a file.
+
+Standalone `.asm` files form separate Z80/sound-data translation units. They
+follow the same ASCII, LF and whitespace hygiene, but retain their processor-
+specific table layout and are not rewritten by `make format`.
 
 ## Layout
 
