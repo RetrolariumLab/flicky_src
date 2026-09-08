@@ -90,6 +90,12 @@ independently. This explains why the driver contains two update paths and why
 music timing must be previewed against the emulator rather than assumed to be
 one sequencer tick per video frame.
 
+At the YM2612 master clock, timer A advances once per 24 operators times the
+fixed prescale 6: `(1024-A) * 144` clock cycles. Timer B adds its 16-fold
+divider: `(256-B) * 2304` cycles. Music tracks advance on timer A and ordinary
+SFX tracks on timer B; a standalone SFX preview must not also advance them on
+timer A.
+
 YM2612 writes wait for the busy bit before touching an address/data pair.
 Channel bit 2 selects port 1; the other FM channels use port 0. PSG tracks are
 identified by bit 7 of the channel byte and write latched tone/noise and volume
@@ -138,19 +144,36 @@ headers either from the resident `$1000/$1200` banks or through the banked ROM
 window at `$8000`. A sound editor should use this command table as its format
 authority rather than importing a Sonic SMPS parser.
 
-## Editor feasibility
+## Editor and standalone playback
 
-A structured sound editor is practical. The hard part was identifying the
-executable boundary and sequence interpreter; both are now explicit. The next
-sound-data pass should:
+Sound Studio uses this reconstructed command table as its format authority.
+It presents linear note data as a piano roll and decodes every 25-byte voice
+into algorithm, feedback, and the four YM2612 operators. Its headless Python
+sequencer follows the same track states, duration inheritance, calls, loops,
+timers, voice loads, key events, and register writes as the resident driver.
 
-1. decode event bytes into named coordination-command records;
-2. split the 25-byte FM voices and shared envelope area into field records;
-3. expose those records through an editor model whose zero-edit output matches
-   the existing source assembler;
-4. preview changes by assembling a temporary ROM and launching the existing
-   headless Gens workflow.
+The register log is exported as VGM 1.50. A compact project frontend around
+the pinned upstream ymfm core renders YM2612 output to WAV; its small internal
+SN76489 implementation covers PSG writes without introducing a second runtime
+dependency. This makes ordinary preview independent of Gens. Emulator tracing
+remains the fidelity oracle used to test the Python sequencer against the
+original Z80 implementation.
 
-A native WAV renderer would require a cycle-faithful YM2612 plus PSG model and
-is not necessary for the first editor. Emulator preview is both cheaper and
-closer to the game's actual interrupt timing.
+The resident bank declares PSG tracks in music `$84` and `$87`, but both point
+to a one-byte `$F2` stop sequence; all eight resident SFX tracks are FM. Thus
+the shipped material exercises PSG channel muting, but contains no active PSG
+tone sequence whose pitch or envelope playback could be compared. The VGM
+path retains SN76489 writes, while the executable fidelity claim below is
+deliberately limited to the YM2612 traffic that the original content emits.
+
+The oracle is `make verify-sound-sequencer`. The sibling Gens hook sits in
+`Z80_WriteB_YM2612` and records a logical CSV row only when the emulated Z80
+performs the corresponding data-port write. The validation window is frames
+320-457 of the pinned longplay: music `$85` starts there, and the later global
+fade-out is outside the window. After aligning on the song's first 32 writes,
+all 2,624 audible YM2612 writes match the Python sequencer exactly, and their
+timing agrees with the frame-resolution trace within 2.1 frames. Registers
+`$24-$27` are deliberately omitted from the value comparison because they are
+the driver's timer scheduling traffic. The capture uses
+`config/gens_sound_trace.cfg`, so a persisted sound-off development setting
+cannot silently produce an empty trace.

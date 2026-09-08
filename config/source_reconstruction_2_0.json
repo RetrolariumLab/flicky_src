@@ -39,7 +39,16 @@
     "headless_gate": "check-studios",
     "editable_build_gate": "build-content",
     "level_playtest_target": "playtest-level",
-    "level_playtest_gate": "smoke-level-playtest"
+    "level_playtest_gate": "smoke-level-playtest",
+    "sound_preview_target": "preview-sound",
+    "sound_fidelity_gate": "verify-sound-sequencer",
+    "sound_fidelity": {
+      "header": "zMusic85Header",
+      "gens_frames": [320, 457],
+      "exact_ordered_ym2612_writes": 2624,
+      "max_timing_error_frames": 2.1,
+      "emulator_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a"
+    }
   },
   "conditional_scope": {
     "revisions": {
@@ -64,10 +73,6 @@
     {
       "id": "japanese_guide_text_editor",
       "reason": "The Japanese guide uses raw glyph bytes rather than the printable ASCII records exposed by Graphics Studio. It remains editable as semantic assembly source."
-    },
-    {
-      "id": "native_audio_renderer",
-      "reason": "Sound preview uses the real Z80 driver and chips in Gens; a duplicate approximate WAV synthesizer is not part of the release."
     }
   ],
   "required_documents": [
@@ -90,6 +95,10 @@
     "smoke-level-playtest",
     "graphics-studio",
     "sound-studio",
+    "preview-sound",
+    "build-ymfm-renderer",
+    "trace-sound",
+    "verify-sound-sequencer",
     "check-source-structure",
     "source-2-audit",
     "source-2-release-audit",

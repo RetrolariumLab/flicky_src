@@ -12,6 +12,7 @@ make verify-layout        # the ROM layout is the one config/rom_layout.json dec
 make test                 # focused unit tests for the Python tooling
 make roundtrip-formats    # decode and re-encode the authored data formats
 make trace                # emulator evidence for gameplay transactions
+make verify-sound-sequencer # Python audio writes against the real Z80 driver
 make release-check        # everything above, in order
 ```
 
@@ -57,6 +58,13 @@ reports it as an offset.
 declared values of work RAM at each scenario's frames. It is the only layer
 that observes behaviour rather than bytes, and the only one that needs an
 emulator build -- `make build-gens` cross-compiles it in Docker.
+
+**`make verify-sound-sequencer`** uses that instrumented emulator as an audio
+oracle. It captures actual Z80 writes to the YM2612, aligns title song `$85`,
+and requires 2,624 ordered non-timer writes to equal the standalone Python
+sequencer exactly. Their sample positions must also agree with the
+frame-resolution Gens trace within 2.1 frames. A missing, truncated, value-,
+order-, or timing-divergent trace fails the Source 2.0 gate.
 
 ## The rule
 

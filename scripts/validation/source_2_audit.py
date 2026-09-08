@@ -85,6 +85,27 @@ def validate_source_2(root: Path, manifest_path: Path, require_ready: bool = Fal
         if studios.get("image_sha1") != preservation.get("canonical_rom_sha1"):
             errors.append("content manifest pins a different canonical image")
 
+    fidelity = content.get("sound_fidelity", {})
+    fidelity_gate = content.get("sound_fidelity_gate")
+    if fidelity_gate != "verify-sound-sequencer":
+        errors.append("sound fidelity gate is not verify-sound-sequencer")
+    if fidelity.get("header") != "zMusic85Header":
+        errors.append("sound fidelity header is not the observed title song")
+    if fidelity.get("gens_frames") != [320, 457]:
+        errors.append("sound fidelity frame window differs from the observed window")
+    if fidelity.get("exact_ordered_ym2612_writes", 0) < 2600:
+        errors.append("sound fidelity claim covers fewer than 2600 YM2612 writes")
+    if fidelity.get("max_timing_error_frames", float("inf")) > 2.1:
+        errors.append("sound fidelity timing tolerance exceeds 2.1 frames")
+    toolchain_path = root / "config/toolchain.json"
+    if toolchain_path.is_file():
+        components = {
+            item.get("id"): item for item in load_json(toolchain_path).get("components", [])
+        }
+        emulator_commit = components.get("emulator", {}).get("source_commit")
+        if fidelity.get("emulator_commit") != emulator_commit:
+            errors.append("sound fidelity emulator commit differs from toolchain pin")
+
     semantic = release.get("semantic_source", {})
     formats_path = root / semantic.get("format_manifest", "")
     if not formats_path.is_file():

@@ -60,6 +60,68 @@ VOICE_FIELDS = (
     "total_level_op1", "total_level_op2", "total_level_op3", "total_level_op4",
 )
 
+OPERATOR_FIELDS = (
+    "detune", "multiple", "rate_scale", "attack", "amplitude_modulation",
+    "decay_1", "decay_2", "sustain_level", "release", "total_level",
+)
+
+
+def decode_fm_voice(data: list[int]) -> dict[str, Any]:
+    """Decode the driver's 25-byte FM voice into synthesizer parameters."""
+    if len(data) != 25 or any(not _valid_byte(value) for value in data):
+        raise ValueError("an FM voice must contain exactly 25 bytes")
+    operators = []
+    for operator in range(4):
+        detune_multiple = data[1 + operator]
+        rate_scale_attack = data[5 + operator]
+        am_decay = data[9 + operator]
+        sustain_release = data[17 + operator]
+        operators.append({
+            "detune": (detune_multiple >> 4) & 7,
+            "multiple": detune_multiple & 15,
+            "rate_scale": (rate_scale_attack >> 6) & 3,
+            "attack": rate_scale_attack & 31,
+            "amplitude_modulation": (am_decay >> 7) & 1,
+            "decay_1": am_decay & 31,
+            "decay_2": data[13 + operator] & 31,
+            "sustain_level": sustain_release >> 4,
+            "release": sustain_release & 15,
+            "total_level": data[21 + operator] & 127,
+        })
+    return {
+        "algorithm": data[0] & 7,
+        "feedback": (data[0] >> 3) & 7,
+        "operators": operators,
+    }
+
+
+def encode_fm_voice(parameters: dict[str, Any], original: list[int]) -> list[int]:
+    """Encode semantic parameters while retaining the driver's unused bits."""
+    if len(original) != 25:
+        raise ValueError("an FM voice must contain exactly 25 bytes")
+    result = list(original)
+    algorithm = int(parameters["algorithm"])
+    feedback = int(parameters["feedback"])
+    if not 0 <= algorithm <= 7 or not 0 <= feedback <= 7:
+        raise ValueError("algorithm and feedback must be in the range 0..7")
+    result[0] = (result[0] & 0xC0) | feedback << 3 | algorithm
+    operators = parameters["operators"]
+    if len(operators) != 4:
+        raise ValueError("an FM voice must have four operators")
+    limits = (7, 15, 3, 31, 1, 31, 31, 15, 15, 127)
+    for index, operator in enumerate(operators):
+        values = [int(operator[name]) for name in OPERATOR_FIELDS]
+        if any(not 0 <= value <= limit for value, limit in zip(values, limits)):
+            raise ValueError(f"operator {index + 1} parameter is outside its YM2612 range")
+        detune, multiple, rate_scale, attack, am, decay_1, decay_2, sustain, release, level = values
+        result[1 + index] = (result[1 + index] & 0x80) | detune << 4 | multiple
+        result[5 + index] = (result[5 + index] & 0x20) | rate_scale << 6 | attack
+        result[9 + index] = (result[9 + index] & 0x60) | am << 7 | decay_1
+        result[13 + index] = (result[13 + index] & 0xE0) | decay_2
+        result[17 + index] = sustain << 4 | release
+        result[21 + index] = (result[21 + index] & 0x80) | level
+    return result
+
 
 def parse_number(value: str) -> int:
     value = value.strip()
@@ -271,6 +333,58 @@ def describe_sequence(data: list[int]) -> list[dict[str, Any]]:
         })
         offset = end
     return events
+
+
+def piano_roll_notes(data: list[int]) -> list[dict[str, Any]]:
+    """Return the linear note/rest events in a sequence for semantic editing.
+
+    Control-flow commands remain untouched.  A note without its own duration
+    points at the earlier duration byte it inherits, matching the Z80 driver.
+    """
+    result = []
+    offset = 0
+    tick = 0
+    saved_duration = 0
+    duration_source = None
+    while offset < len(data):
+        value = data[offset]
+        if value < 0x80:
+            if value == 0:
+                raise ValueError(f"zero duration at sequence offset ${offset:04X}")
+            saved_duration = value
+            duration_source = offset
+            tick += value
+            offset += 1
+            continue
+        if value < 0xE0:
+            note_offset = offset
+            offset += 1
+            explicit = offset < len(data) and data[offset] < 0x80
+            if explicit:
+                if data[offset] == 0:
+                    raise ValueError(f"zero duration at sequence offset ${offset:04X}")
+                saved_duration = data[offset]
+                duration_source = offset
+                offset += 1
+            duration = saved_duration or 1
+            result.append({
+                "offset": note_offset,
+                "duration_offset": duration_source,
+                "duration_is_shared": not explicit,
+                "start": tick,
+                "duration": duration,
+                "note": None if value == 0x80 else value - 0x81,
+                "rest": value == 0x80,
+            })
+            tick += duration
+            continue
+        _name, count = COMMANDS[value]
+        if value == 0xEF and offset + 1 < len(data) and data[offset + 1] & 0x80:
+            count = 2
+        elif value == 0xFF and offset + 1 < len(data):
+            count = 3 if data[offset + 1] & 7 == 7 else 2
+        offset = min(len(data), offset + 1 + count)
+    return result
 
 
 def _render_byte_block(identifier: str, data: list[int]) -> str:

@@ -41,9 +41,14 @@ their fixed capacities.
 
 Sound Studio covers 14 unique resident headers, 52 event streams, 34 YM2612
 voices, and the 63-byte shared priority/envelope area. It names the Z80
-coordination commands and preserves stream, track, voice, sentinel, and total
-bank sizes. Preview builds an edited ROM and launches the real Z80/YM2612/PSG
-path in Gens instead of approximating it with a second audio engine.
+coordination commands, presents notes on an editable piano roll, and exposes
+semantic four-operator FM parameters while preserving stream, track, voice,
+sentinel, and total bank sizes. Its Python reconstruction exports chip writes
+as VGM, and a pinned local ymfm helper renders standalone WAV previews with
+per-track channel selection. The Python interpreter's frequency folding,
+modulation waves, pitch slides, voice loads, and update ordering are checked
+against the actual Z80: 2,624 ordered YM2612 writes from title music `$85`
+match a fresh instrumented-Gens trace exactly.
 
 ## Scope boundaries
 
@@ -69,7 +74,8 @@ content ROM, validates every local workspace artifact, loads all Studio models
 without a display server, enforces the source granularity and directory policy,
 smoke-tests direct level entry in Gens, and audits the 2.0 manifest, documents,
 Make targets, format strengths, supported Studio inventory, predecessor tag,
-and ancestry.
+and ancestry. It also captures and compares the real Z80 sound-register stream
+through `make verify-sound-sequencer`.
 
 The annotated `source-reconstruction-2.0` tag is created only after that gate
 passes on the release commit with a clean worktree. ROMs, extracted assets,

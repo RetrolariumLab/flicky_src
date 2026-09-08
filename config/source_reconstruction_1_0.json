@@ -551,6 +551,14 @@
       "notes": "A sibling checkout, pinned by commit in config/toolchain.json and never vendored here."
     },
     {
+      "component": "ymfm",
+      "category": "bundled_external_source",
+      "origin": "https://github.com/aaronsgiles/ymfm commit 81aec25ccbb98f4873a255f7551ac4dadac59b4a",
+      "license_id_or_status": "licensed",
+      "redistribution": "allowed",
+      "notes": "The minimal unmodified YM2612 dependencies are vendored under third_party/ymfm with their license; the VGM/WAV frontend is project tooling."
+    },
+    {
       "component": "reference_rom",
       "category": "private_user_supplied",
       "origin": "Supplied by the user from their own cartridge dump",
