@@ -1,9 +1,9 @@
 # Vendored toolchain
 
-This directory contains the AS Macro Assembler and its `p2bin` companion, the
-toolchain that assembles `src/main.s` into a byte-identical ROM. They are vendored
-so that a fresh clone can reproduce the reference build without hunting for a
-matching assembler release.
+This directory contains the AS Macro Assembler and its `p2bin` companion, plus
+the standalone Sound Studio audio renderer. They are vendored so that a fresh
+clone can reproduce the reference build and preview audio without hunting for
+matching tool releases.
 
 ## Content boundary
 
@@ -33,6 +33,7 @@ Override the choice with `make PLATFORM=<subdirectory>`.
 | `windows_i386/cmdarg.msg` | 307 | `83aabb22cdde0fd0579d5cf5f39af9ccae4639465286c1c109d8bbfa1ec6bc62` |
 | `windows_i386/ioerrs.msg` | 2,862 | `1f5e97d35696caf34eef35923b8280cb1ff483772cec0d60c765d3af13c09097` |
 | `windows_i386/p2bin.exe` | 28,672 | `1323430afdfa630ab56ce76f0286ccbb05a04566126411d4b7d673f2a08115eb` |
+| `windows_i386/ymfm_renderer.exe` | 2,640,167 | `6815d01e7e0e5af7ead14947758001a433b73e871e486a421e230a91e48d7191` |
 | `linux_x86_64/as.msg` | 26,005 | `18542d756467b567cf7713d4ee95081d784d8cf11575a7bb57516fc2c5c1c594` |
 | `linux_x86_64/asl` | 2,372,248 | `be2ffab7be719e9c2b5452655be8ce40ad9888d04084e397687f23b6f8b85f1c` |
 | `linux_x86_64/cmdarg.msg` | 307 | `aaa93507412473a546276128bd58a01ac9119979e80b1ef79b3671b602eade0e` |
@@ -51,4 +52,6 @@ recorded in `assets/manifest.json` and applied by `scripts/build/build_rom.py`.
 ## License
 
 AS is distributed under its own license; see the upstream site. It is included
-here unmodified for reproducibility.
+here unmodified for reproducibility. `ymfm_renderer.exe` links the unmodified
+BSD-3-Clause ymfm core vendored with its license under `third_party/ymfm`; its
+project-specific frontend is in `tools/ymfm_renderer`.

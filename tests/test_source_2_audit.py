@@ -42,6 +42,18 @@ class Source2Audit(unittest.TestCase):
         errors = self.validate_copy(document)
         self.assertIn("predecessor tag target differs from the 2.0 contract", errors)
 
+    def test_sound_fidelity_claim_is_bounded_and_pinned(self):
+        document = json.loads(json.dumps(self.manifest))
+        document["authoring"]["sound_fidelity"]["exact_ordered_ym2612_writes"] = 12
+        errors = self.validate_copy(document)
+        self.assertIn(
+            "sound fidelity claim covers fewer than 2600 YM2612 writes", errors
+        )
+        document = json.loads(json.dumps(self.manifest))
+        document["authoring"]["sound_fidelity"]["max_timing_error_frames"] = 3
+        errors = self.validate_copy(document)
+        self.assertIn("sound fidelity timing tolerance exceeds 2.1 frames", errors)
+
 
 if __name__ == "__main__":
     unittest.main()

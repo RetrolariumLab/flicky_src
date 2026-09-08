@@ -71,6 +71,12 @@ Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
 CONTENT_MANIFEST ?= config/content_studios.json
 CONTENT_WORKSPACE ?= content/workspace
 CONTENT_ROM ?= build/content/flicky.bin
+YMFM_RENDERER ?= bin/windows_i386/ymfm_renderer.exe
+SOUND ?= zMusic81Header
+SOUND_SECONDS ?= 30
+SOUND_TRACE_CONFIG ?= config/gens_sound_trace.cfg
+SOUND_TRACE_FILE ?= build/sound_trace/gens.csv
+SOUND_TRACE_FRAMES ?= build/sound_trace/frames
 
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
@@ -105,10 +111,10 @@ STRICT_NAMING ?= --strict-naming
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation check-source-structure init split check-assets \
         compare lint format tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
-        init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio check-studios \
+        init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios \
         test release-audit release-check source-2-audit source-2-release-audit source-2-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
-        prepare-batch rename build-gens stop help \
+        prepare-batch rename build-gens build-ymfm-renderer stop help \
         _require-assets _require-movie _require-toolchain
 
 all: build
@@ -199,6 +205,19 @@ graphics-studio: init-content
 
 sound-studio: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_studio
+
+preview-sound: init-content
+	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_preview $(SOUND) \
+		--seconds $(SOUND_SECONDS) --renderer "$(YMFM_RENDERER)"
+
+trace-sound: verify
+	@$(PYTHON) $(RUN_SCRIPT) runtime.capture_sound_trace --gens "$(GENS_EXE)" \
+		--rom "$(ROM)" --config "$(SOUND_TRACE_CONFIG)" \
+		--trace "$(SOUND_TRACE_FILE)" --frames "$(SOUND_TRACE_FRAMES)"
+
+verify-sound-sequencer: trace-sound
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_sound_trace \
+		--trace "$(SOUND_TRACE_FILE)"
 
 check-studios: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio --check
@@ -308,6 +327,7 @@ source-2-check:
 	$(MAKE) validate-content
 	$(MAKE) check-studios
 	$(MAKE) smoke-level-playtest
+	$(MAKE) verify-sound-sequencer
 	$(MAKE) source-2-release-audit
 
 # Deterministic whitespace, label-layout and case normalization, then re-check.
@@ -437,6 +457,10 @@ build-gens:
 	@$(PYTHON) -c "import os, subprocess; d = '$(GENS_DIR)'; os.path.isdir(d) or subprocess.run(['git', 'clone', '$(GENS_REPO)', d], check=True)"
 	@$(MAKE) -C $(GENS_DIR) -f $(GENS_MAKEFILE) $(GENS_TARGET)
 
+build-ymfm-renderer:
+	docker build --platform linux/amd64 --file tools/ymfm_renderer/Dockerfile \
+		--output type=local,dest=bin/windows_i386 .
+
 stop:
 	-@taskkill //F //IM Gens.exe 2>/dev/null || true
 	@echo "Stopped running emulators."
@@ -470,6 +494,9 @@ help:
 	@echo "  make smoke-level-playtest      Prove direct round entry in Gens"
 	@echo "  make graphics-studio           Open the visual graphics editor"
 	@echo "  make sound-studio              Open the music and SFX editor"
+	@echo "  make preview-sound SOUND=zMusic81Header  Render a song/SFX to VGM and WAV"
+	@echo "  make trace-sound               Capture the real Z80 chip-register stream"
+	@echo "  make verify-sound-sequencer    Compare Python playback with Gens"
 	@echo "  make check-studios             Load Studio models without opening a GUI"
 	@echo ""
 	@echo "Validation:"
@@ -505,6 +532,7 @@ help:
 	@echo ""
 	@echo "Emulator:"
 	@echo "  make build-gens                Clone and cross-build Gens in Docker ($(GENS_DIR))"
+	@echo "  make build-ymfm-renderer       Rebuild the standalone VGM-to-WAV helper"
 	@echo "  make stop                      Kill running emulator processes"
 	@echo ""
 	@echo "Toolchain: $(TOOLS_DIR)  (override with PLATFORM=<subfolder>)"

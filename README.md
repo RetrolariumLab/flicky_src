@@ -121,6 +121,8 @@ make check-content-zero-edit   # Prove editable baseline byte identity
 make level-studio              # Open the visual level editor
 make graphics-studio           # Open the visual graphics editor
 make sound-studio              # Open the music and SFX editor
+make preview-sound SOUND=zMusic81Header  # Render standalone VGM and WAV audio
+make verify-sound-sequencer    # Compare Python YM2612 writes with the real Z80 driver
 make check-studios             # Validate Studio models without opening GUI
 ```
 
@@ -149,6 +151,10 @@ instrumented Gens build from
 [gens_automation](https://github.com/oranguthang/gens_automation) as a sibling
 checkout; `make build-gens` cross-compiles it in Docker, so Visual Studio is
 optional.
+
+The same sibling build contains a Z80 sound-port tracer. `make trace-sound`
+captures the title music into `build/sound_trace/`, using an isolated sound-on
+configuration rather than modifying the user's `Gens.cfg`.
 
 ```bash
 make build-gens                 # Clone it to ../gens_automation and cross-build in Docker

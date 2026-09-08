@@ -22,7 +22,15 @@
       "id": "sound",
       "name": "Sound Studio",
       "status": "supported",
-      "artifacts": ["z80_sound_banks"]
+      "artifacts": ["z80_sound_banks"],
+      "preview": {
+        "sequencer": "scripts/authoring/sound_sequencer.py",
+        "register_stream": "VGM 1.50",
+        "renderer": "bin/windows_i386/ymfm_renderer.exe",
+        "channel_selection": true,
+        "fidelity_gate": "verify-sound-sequencer",
+        "timing_tolerance_frames": 2.1
+      }
     }
   ],
   "artifacts": [

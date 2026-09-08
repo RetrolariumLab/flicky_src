@@ -136,17 +136,41 @@ streams, 34 25-byte YM2612 voices, and the 63-byte shared priority/envelope
 area. Header tabs expose duration scale, tempo, channel sequence, transpose,
 volume, SFX flags/channel, and PSG envelope selectors.
 
-The event view names notes, rests, durations, and the `$E0-$FF` coordination
-commands while retaining byte offsets and arguments. Stream lengths, track
-counts, voice counts, and the total 2,804-byte bank capacity remain fixed in
-this first editor; ASW recomputes every symbolic pointer. The two trailing
-sentinel bytes at the SFX/music bank boundaries are preserved explicitly.
+The primary event view is an editable piano roll. It decodes notes, rests,
+explicit durations, and inherited durations while retaining every `$E0-$FF`
+coordination command in place. The FM-instrument tab decodes algorithm,
+feedback, and detune, multiplier, envelope, modulation, and level parameters
+for all four YM2612 operators. Stream lengths, track counts, voice counts, and
+the total 2,804-byte bank capacity remain fixed; ASW recomputes every symbolic
+pointer. The two trailing sentinel bytes at the SFX/music bank boundaries are
+preserved explicitly.
 
-`Preview in Gens` saves the model, runs `make build-content`, and launches the
-edited ROM with the sibling `gens_automation` build. This deliberately uses
-the real Z80 driver, YM2612, PSG, and game interrupt timing instead of a
-separate approximate WAV synthesizer. If Gens is absent the editor reports the
-existing `make build-gens` prerequisite.
+`Preview song` and `Preview SFX` run the reconstructed Python sequencer over
+the current in-memory editor document, so saving or launching an emulator is
+not required. Independent Song and SFX dropdowns select their first entries by
+default and open the chosen sound in the editor as soon as the selection
+changes. The sequencer emits the YM2612/SN76489 register stream as VGM;
+the small local `ymfm_renderer.exe` frontend renders it through the pinned
+BSD-licensed ymfm core and plays the resulting WAV. Channel checkboxes mute
+individual tracks, and `Stop` cancels both an outstanding render and playback.
+The same headless path is available as
+`make preview-sound SOUND=zMusic81Header`.
+
+Fidelity is executable rather than assumed. `make verify-sound-sequencer`
+replays the pinned longplay in the instrumented sibling Gens build, captures
+the writes made by the real Z80 to both YM2612 ports, locates the start of
+`zMusic85Header` by a 32-write signature, and compares the following 2,624
+non-timer register writes in order. The title-screen window ends before the
+game issues its separate fade-out command. Driver timer-maintenance writes are
+excluded because they schedule updates rather than describe audible channel
+state; frequency, modulation, pitch slide, voice, level, pan, and key writes
+are compared byte for byte. Sample positions are compared with the Gens frame
+timestamps as well and may differ by no more than 2.1 frames.
+
+The resident music bank's declared PSG tracks contain only the `$F2` stop
+command, and its SFX are FM-only, so this claim intentionally covers active
+YM2612 playback plus PSG channel muting rather than unobserved PSG
+tone/envelope behavior.
 
 The editable build stages a disposable copy of the source tree under
 `build/content/` and redirects generated payload includes there. This makes an

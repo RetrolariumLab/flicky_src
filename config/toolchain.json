@@ -87,9 +87,9 @@
       "id": "emulator",
       "name": "Gens (gens_automation fork)",
       "version": "docker-mingw-build",
-      "role": "Replays the recorded movies for the runtime evidence layer",
+      "role": "Replays movies for runtime evidence and traces real Z80 chip-register writes",
       "source": "https://github.com/oranguthang/gens_automation.git",
-      "source_commit": "a97abb671a0a17f3c1541372ed08683a586d72c2",
+      "source_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a",
       "provenance": "source-built",
       "verification": "make verify-toolchain",
       "identity": "source_commit",
@@ -98,9 +98,30 @@
         "any": [
           {
             "path": "../gens_automation/Output/Gens.exe",
-            "size": 9657270,
-            "sha256": "b63a8f5a5cbd6bcc6a939da98c4abb63a6c2655d6fb86b0f11acc438a418c60c",
+            "size": 9658397,
+            "sha256": "d536817f33cc9871e2749bc0d5ced8956502d3182541a07e1d44279fdf45d141",
             "observed_only": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "audio_renderer",
+      "name": "Flicky ymfm VGM renderer",
+      "version": "ymfm 81aec25ccbb9",
+      "role": "Renders Sound Studio's YM2612/SN76489 VGM stream to a standalone WAV preview",
+      "source": "https://github.com/aaronsgiles/ymfm",
+      "source_commit": "81aec25ccbb98f4873a255f7551ac4dadac59b4a",
+      "provenance": "source-built",
+      "verification": "make verify-toolchain",
+      "identity": "source_commit_and_binary_hash",
+      "identity_note": "The minimal required ymfm sources and BSD-3-Clause license are vendored unchanged under third_party/ymfm; tools/ymfm_renderer is the project-specific VGM/WAV frontend.",
+      "files": {
+        "windows_i386": [
+          {
+            "path": "bin/windows_i386/ymfm_renderer.exe",
+            "size": 2640167,
+            "sha256": "6815d01e7e0e5af7ead14947758001a433b73e871e486a421e230a91e48d7191"
           }
         ]
       }
