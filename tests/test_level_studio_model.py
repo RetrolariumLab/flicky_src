@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from authoring import level_studio_model as model  # noqa: E402
+from authoring.level_studio import LevelStudio  # noqa: E402
 
 
 class LevelExport(unittest.TestCase):
@@ -40,6 +41,10 @@ class LevelExport(unittest.TestCase):
         document["layouts"][0]["player"] = [32, 0]
         with self.assertRaisesRegex(ValueError, "player contains an invalid coordinate"):
             model.validate_document(document)
+
+    def test_editor_markers_are_clipped_to_the_visible_32_by_28_map(self):
+        self.assertTrue(LevelStudio.marker_is_visible([31, 27]))
+        self.assertFalse(LevelStudio.marker_is_visible([22, 30]))
 
     def test_capacity_is_enforced(self):
         document = copy.deepcopy(self.document)

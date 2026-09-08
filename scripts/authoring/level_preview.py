@@ -16,6 +16,9 @@ SCREEN_HEIGHT = 224
 TILE_SIZE = 8
 MAP_WIDTH = SCREEN_WIDTH // TILE_SIZE
 MAP_HEIGHT = SCREEN_HEIGHT // TILE_SIZE
+PLANE_A_SCROLL_X = 0
+PLANE_B_SCROLL_X = -1
+SPRITE_SCROLL_X = -1
 
 VRAM_ASSETS = (
     (0x200, "level_tiles"),
@@ -88,9 +91,10 @@ def table_words(path: Path, label: str) -> list[int]:
 
 
 def md_color(word: int) -> str:
-    red = ((word >> 1) & 7) * 255 // 7
-    green = ((word >> 5) & 7) * 255 // 7
-    blue = ((word >> 9) & 7) * 255 // 7
+    # Gens expands each three-bit Mega Drive DAC channel in steps of $24.
+    red = ((word >> 1) & 7) * 0x24
+    green = ((word >> 5) & 7) * 0x24
+    blue = ((word >> 9) & 7) * 0x24
     return f"#{red:02x}{green:02x}{blue:02x}"
 
 
@@ -206,25 +210,37 @@ class LevelPreview:
                 screen_x = (x + target_x) % SCREEN_WIDTH
                 frame[screen_y][screen_x] = palette[palette_base + colour_index]
 
-    def draw_tilemap(
-        self,
-        frame: list[list[int]],
-        palette: list[int],
+    @staticmethod
+    def write_tilemap(
+        plane: list[list[int]],
         x: int,
         y: int,
         words: list[int],
         width: int,
         height: int,
-        *,
-        transparent: bool = True,
     ) -> None:
+        """Replace tilemap cells exactly as a VDP tilemap write does."""
         for row in range(height):
             for column in range(width):
+                target_x = x + column
+                target_y = y + row
+                if 0 <= target_x < MAP_WIDTH and 0 <= target_y < MAP_HEIGHT:
+                    plane[target_y][target_x] = words[row * width + column]
+
+    def draw_plane(
+        self,
+        frame: list[list[int]],
+        palette: list[int],
+        plane: list[list[int]],
+        *,
+        pixel_offset_x: int = 0,
+    ) -> None:
+        for y, row in enumerate(plane):
+            for x, word in enumerate(row):
                 self.draw_tile(
                     frame, palette,
-                    (x + column) * TILE_SIZE, (y + row) * TILE_SIZE,
-                    words[row * width + column],
-                    transparent=transparent,
+                    x * TILE_SIZE + pixel_offset_x, y * TILE_SIZE,
+                    word, transparent=True,
                 )
 
     def draw_mapping(
@@ -288,31 +304,24 @@ class LevelPreview:
     ) -> list[list[int]]:
         theme = round_theme(round_number)
         palette = self.palette_for_round(round_number)
-        background_word = self.tables[f"Level_BackgroundTileData{theme['tileset']}"][0]
-        background_colour = palette[((background_word >> 13) & 3) * 16]
-        frame = [[background_colour] * SCREEN_WIDTH for _ in range(SCREEN_HEIGHT)]
-        for y in range(MAP_HEIGHT):
-            for x in range(MAP_WIDTH):
-                self.draw_tile(frame, palette, x * TILE_SIZE, y * TILE_SIZE, background_word)
+        plane_a = [[0] * MAP_WIDTH for _ in range(MAP_HEIGHT)]
+        plane_b = [[0] * MAP_WIDTH for _ in range(MAP_HEIGHT)]
 
         grid = layout["collision"]
         for y in range(2, 26):
             for x in range(MAP_WIDTH):
-                word = self.ground_word(grid, x, y, theme["tileset"])
-                self.draw_tile(frame, palette, x * TILE_SIZE, y * TILE_SIZE, word, transparent=True)
+                plane_b[y][x] = self.ground_word(grid, x, y, theme["tileset"])
         for x in range(MAP_WIDTH):
             if not grid[2][x]:
-                word = self.tables[f"Level_GroundTileData{theme['tileset']}"][3]
-                self.draw_tile(frame, palette, x * TILE_SIZE, 2 * TILE_SIZE, word, transparent=True)
+                plane_b[2][x] = self.tables[f"Level_GroundTileData{theme['tileset']}"][3]
 
         upper = self.tables[f"Level_UpperGroundData{theme['tileset']}"]
         lower = self.tables[f"Level_LowerGroundData{theme['tileset']}"]
         for x in range(0, MAP_WIDTH, 4):
-            self.draw_tilemap(frame, palette, x, 0, upper, 4, 2)
-            self.draw_tilemap(frame, palette, x, 26, lower, 4, 2)
+            self.write_tilemap(plane_b, x, 0, upper, 4, 2)
+            self.write_tilemap(plane_b, x, 26, lower, 4, 2)
 
-        # The game's two tilemap planes are composed with the decorative
-        # object plane above the ground plane. Colour zero remains transparent.
+        # Background objects live on Plane A, above the ground map on Plane B.
         objects = (
             ("player", "Level_BgObject0Data", 3, 3),
             ("entry_arrow", "Level_BgObject1Data", 2, 2),
@@ -320,7 +329,9 @@ class LevelPreview:
             ("exit_door", "Level_BgObject2Data", 2, 3),
         )
         for field, label, width, height in objects:
-            self.draw_tilemap(frame, palette, *layout[field], self.tables[label], width, height)
+            self.write_tilemap(
+                plane_a, *layout[field], self.tables[label], width, height
+            )
 
         group3 = GROUP3_THEMES[theme["group3"]]
         dynamic_groups = (
@@ -330,26 +341,39 @@ class LevelPreview:
         )
         for field, label, width, height in dynamic_groups:
             for x, y in layout[field]:
-                self.draw_tilemap(frame, palette, x, y, self.tables[label], width, height)
+                self.write_tilemap(plane_a, x, y, self.tables[label], width, height)
 
-        self.draw_tilemap(
-            frame, palette, layout["player"][0], layout["player"][1],
+        # These later writes replace cells on Plane B; transparent pixels show
+        # the backdrop, not the tile that occupied the cell beforehand.
+        self.write_tilemap(
+            plane_b, layout["player"][0], layout["player"][1],
             self.tables["Level_DrawCatDoorData"], 3, 3,
         )
-        self.draw_tilemap(
-            frame, palette, layout["player"][0], layout["player"][1] - 1,
+        self.write_tilemap(
+            plane_b, layout["player"][0], layout["player"][1] - 1,
             self.tables["UI_EntryArrowFrame1"], 3, 1,
         )
 
+        frame = [[palette[0]] * SCREEN_WIDTH for _ in range(SCREEN_HEIGHT)]
+        self.draw_plane(frame, palette, plane_b, pixel_offset_x=PLANE_B_SCROLL_X)
+        self.draw_plane(frame, palette, plane_a, pixel_offset_x=PLANE_A_SCROLL_X)
+
         self.draw_mapping(
             frame, palette, "Player_WalkFrame1",
-            layout["player"][0] * 8 + 12, layout["player"][1] * 8 + 24,
+            layout["player"][0] * 8 + 12 + SPRITE_SCROLL_X,
+            layout["player"][1] * 8 + 24,
         )
         chick_mapping = f"Chick_ThrownAnim{theme['chick']}Data0"
         for x, y in layout["spawners"]:
-            self.draw_mapping(frame, palette, chick_mapping, x * 8 + 8, y * 8 + 8)
+            self.draw_mapping(
+                frame, palette, chick_mapping,
+                x * 8 + 8 + SPRITE_SCROLL_X, y * 8 + 8,
+            )
 
         for field, mapping in (("chicks_a", "Cat_WalkFrame0"), ("chicks_b", "Cat_WalkAltFrame0")):
             for x, y in layout[field]:
-                self.draw_mapping(frame, palette, mapping, x * 8 + 8, y * 8 + 16)
+                self.draw_mapping(
+                    frame, palette, mapping,
+                    x * 8 + 8 + SPRITE_SCROLL_X, y * 8 + 16,
+                )
         return frame
