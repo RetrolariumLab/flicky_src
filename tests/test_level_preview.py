@@ -35,9 +35,31 @@ class LevelPreviewRendering(unittest.TestCase):
         self.assertEqual(level_preview.round_theme(47)["palette"], 11)
 
     def test_cram_channels_follow_megadrive_bgr_word_order(self) -> None:
-        self.assertEqual(level_preview.md_color(0x00E), "#ff0000")
-        self.assertEqual(level_preview.md_color(0x0E0), "#00ff00")
-        self.assertEqual(level_preview.md_color(0xE00), "#0000ff")
+        self.assertEqual(level_preview.md_color(0x00E), "#fc0000")
+        self.assertEqual(level_preview.md_color(0x0E0), "#00fc00")
+        self.assertEqual(level_preview.md_color(0xE00), "#0000fc")
+
+    def test_upper_ground_replaces_background_tilemap_cells(self) -> None:
+        layout = self.levels["layouts"][self.levels["round_layouts"][3]]
+        frame = self.preview.render(layout, 4)
+        palette = self.preview.palette_for_round(4)
+        background_word = self.preview.tables["Level_BackgroundTileData1"][0]
+        upper = self.preview.tables["Level_UpperGroundData1"]
+
+        found_transparent_sample = False
+        for screen_y in range(16):
+            for plane_x in range(32):
+                word = upper[(screen_y // 8) * 4 + plane_x // 8]
+                tile = self.preview.tile(word & 0x7FF)
+                colour = tile[screen_y % 8][plane_x % 8]
+                screen_x = (plane_x + level_preview.PLANE_B_SCROLL_X) % 256
+                background = self.preview.tile(background_word & 0x7FF)
+                background_colour = background[screen_y % 8][screen_x % 8]
+                if colour or not background_colour:
+                    continue
+                self.assertEqual(frame[screen_y][screen_x], palette[0])
+                found_transparent_sample = True
+        self.assertTrue(found_transparent_sample)
 
     def test_vram_indices_resolve_to_editable_graphics(self) -> None:
         assets = {entry["id"]: entry for entry in self.graphics["assets"]}

@@ -55,6 +55,9 @@ preview composes the real editable level tiles, theme palette, upper and lower
 ground, background-object tilemaps, sprite mappings, Flicky, collectible chicks,
 and both enemy groups. The optional two-times grid and placement outlines sit
 above the game image instead of replacing it with abstract markers.
+Object outlines are visible by default. The separate `Collision flags` overlay
+shows hidden bit-7/6/5 collision metadata only when requested and clips its
+markers to the visible 32-by-28 map; those flags are not game artwork.
 
 The editor can change the 32-column collision grid, player and door positions,
 background objects, six collectible/throwable chicks, both enemy groups, and the three

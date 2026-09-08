@@ -88,6 +88,7 @@ class LevelStudio:
         self.round_number = tk.IntVar(value=1)
         self.show_grid = tk.BooleanVar(value=False)
         self.show_markers = tk.BooleanVar(value=True)
+        self.show_collision_flags = tk.BooleanVar(value=False)
         self.object_key: tuple[str, int | None, bool] | None = None
         self.x_value = tk.IntVar(value=0)
         self.y_value = tk.IntVar(value=0)
@@ -118,8 +119,12 @@ class LevelStudio:
             toolbar, text="Grid", variable=self.show_grid, command=self.redraw
         ).pack(side="left", padx=(4, 0))
         ttk.Checkbutton(
-            toolbar, text="Markers", variable=self.show_markers, command=self.redraw
+            toolbar, text="Objects", variable=self.show_markers, command=self.redraw
         ).pack(side="left")
+        ttk.Checkbutton(
+            toolbar, text="Collision flags", variable=self.show_collision_flags,
+            command=self.redraw,
+        ).pack(side="left", padx=(4, 0))
 
         body = ttk.Frame(self.root, padding=(6, 0, 6, 6))
         body.pack(fill="both", expand=True)
@@ -202,19 +207,25 @@ class LevelStudio:
                 value = layout[field]
                 pairs = [value] if field in {"player", "entry_arrow", "cat_door", "exit_door"} else value
                 self.draw_markers(field, pairs)
-        for field in SPECIAL_FIELDS:
-            self.draw_markers(field, special[field], inset=5, dashed=True)
+        if self.show_collision_flags.get():
+            for field in SPECIAL_FIELDS:
+                self.draw_markers(field, special[field], inset=5, dashed=True)
 
         selected = self.selected_key()
         if selected is not None:
             field, index, special_owner = selected
             owner = special if special_owner else layout
             pair = owner[field] if index is None else owner[field][index]
-            self.canvas.create_rectangle(
-                pair[0] * CELL + 1, pair[1] * CELL + 1,
-                (pair[0] + 1) * CELL - 1, (pair[1] + 1) * CELL - 1,
-                outline="#ffffff", width=3,
-            )
+            if self.marker_is_visible(pair):
+                self.canvas.create_rectangle(
+                    pair[0] * CELL + 1, pair[1] * CELL + 1,
+                    (pair[0] + 1) * CELL - 1, (pair[1] + 1) * CELL - 1,
+                    outline="#ffffff", width=3,
+                )
+
+    @staticmethod
+    def marker_is_visible(pair: list[int]) -> bool:
+        return 0 <= pair[0] < MAP_WIDTH and 0 <= pair[1] < MAP_HEIGHT
 
     def draw_markers(
         self,
@@ -224,6 +235,8 @@ class LevelStudio:
         dashed: bool = False,
     ) -> None:
         for index, (x, y) in enumerate(pairs):
+            if not self.marker_is_visible([x, y]):
+                continue
             self.canvas.create_rectangle(
                 x * CELL + inset, y * CELL + inset,
                 (x + 1) * CELL - inset, (y + 1) * CELL - inset,
