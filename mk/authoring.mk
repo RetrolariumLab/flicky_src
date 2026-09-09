@@ -22,7 +22,12 @@ build-content: init-content _require-assets _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) authoring.build_content \
 		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
 		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
-		--asset-manifest $(ASSET_MANIFEST)
+		--asset-manifest $(ASSET_MANIFEST) \
+		--level-workspace "$(CONTENT_LEVEL_WORKSPACE)" \
+		--graphics-workspace "$(CONTENT_GRAPHICS_WORKSPACE)" \
+		--semantics-workspace "$(CONTENT_SEMANTICS_WORKSPACE)" \
+		--sequences-workspace "$(CONTENT_SEQUENCES_WORKSPACE)" \
+		--sound-workspace "$(CONTENT_SOUND_WORKSPACE)"
 
 # The release gate builds directly from tracked baselines, so a developer's
 # current workspace may remain edited while preservation compatibility runs.

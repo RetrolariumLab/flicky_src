@@ -62,7 +62,17 @@ class GraphicsStudioActions(unittest.TestCase):
             studio.build_rom()
 
         studio.save.assert_called_once_with()
-        popen.assert_called_once_with(["make", "build-content"], cwd=Path("project"))
+        command = popen.call_args.args[0]
+        self.assertEqual(command[:2], ["make", "build-content"])
+        self.assertEqual(
+            command[2:],
+            [
+                f"CONTENT_GRAPHICS_WORKSPACE={Path('graphics.json').resolve().as_posix()}",
+                f"CONTENT_SEMANTICS_WORKSPACE={Path('semantics.json').resolve().as_posix()}",
+                f"CONTENT_SEQUENCES_WORKSPACE={Path('sequences.json').resolve().as_posix()}",
+            ],
+        )
+        self.assertEqual(popen.call_args.kwargs, {"cwd": Path("project")})
         studio.status.set.assert_called_once_with("Started make build-content")
 
 

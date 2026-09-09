@@ -12,6 +12,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from authoring import graphics_studio, level_studio, sound_studio
+from authoring.studio_build import build_content_command
 
 
 class ProcessStub:
@@ -136,6 +137,19 @@ def smoke_level(project: Path, workspace: Path) -> None:
         invoke_button(root, "Stop")
         if popen.call_count != 2 or run.call_count != 1:
             raise RuntimeError("Level Studio did not reach build and playtest adapters")
+        expected = build_content_command(
+            {
+                "level_layouts": workspace / "level/levels.json",
+                "graphics_assets": workspace / "graphics/graphics.json",
+                "graphics_semantics": workspace / "graphics/semantics.json",
+                "graphics_sequences": workspace / "graphics/sequences.json",
+            }
+        )
+        if (
+            popen.call_args_list[0].args[0] != expected
+            or run.call_args.args[0] != expected
+        ):
+            raise RuntimeError("Level Studio did not propagate its workspace inputs")
         exercise_dirty_close(app, level_studio.messagebox)
     print("[OK] Level Studio Save, Build ROM, Playtest, Stop, and dirty-close actions")
 
@@ -155,6 +169,15 @@ def smoke_graphics(project: Path, workspace: Path) -> None:
         invoke_button(root, "Build ROM")
         if popen.call_count != 1:
             raise RuntimeError("Graphics Studio did not reach the build adapter")
+        expected = build_content_command(
+            {
+                "graphics_assets": workspace / "graphics/graphics.json",
+                "graphics_semantics": workspace / "graphics/semantics.json",
+                "graphics_sequences": workspace / "graphics/sequences.json",
+            }
+        )
+        if popen.call_args.args[0] != expected:
+            raise RuntimeError("Graphics Studio did not propagate its workspace inputs")
         exercise_dirty_close(app, graphics_studio.messagebox)
     print("[OK] Graphics Studio Save, Build ROM, and dirty-close actions")
 
@@ -178,6 +201,11 @@ def smoke_sound(project: Path, workspace: Path) -> None:
         invoke_button(root, "Stop")
         if popen.call_count != 1 or ThreadStub.starts != 2:
             raise RuntimeError("Sound Studio did not reach build and preview adapters")
+        expected = build_content_command(
+            {"z80_sound_banks": workspace / "sound/z80_sound_data.asm"}
+        )
+        if popen.call_args.args[0] != expected:
+            raise RuntimeError("Sound Studio did not propagate its workspace input")
         exercise_dirty_close(app, sound_studio.messagebox)
     print("[OK] Sound Studio Save, Build ROM, previews, Stop, and dirty-close actions")
 

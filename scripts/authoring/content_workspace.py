@@ -9,7 +9,7 @@ import json
 import shutil
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 
 EXPECTED_STUDIOS = ("level", "graphics", "sound")
@@ -152,9 +152,26 @@ def initialize(root: Path, manifest: dict[str, Any], force: bool = False) -> int
     return created
 
 
-def validate_workspace(root: Path, manifest: dict[str, Any], zero_edit: bool = False) -> None:
+def workspace_path(
+    root: Path,
+    manifest: dict[str, Any],
+    artifact: dict[str, Any],
+    overrides: Mapping[str, Path] | None = None,
+) -> Path:
+    """Resolve the effective path for one editable artifact."""
+    if overrides and artifact["id"] in overrides:
+        return overrides[artifact["id"]].resolve()
+    return (root / manifest["workspace"] / artifact["workspace"]).resolve()
+
+
+def validate_workspace(
+    root: Path,
+    manifest: dict[str, Any],
+    zero_edit: bool = False,
+    overrides: Mapping[str, Path] | None = None,
+) -> None:
     for artifact in manifest["artifacts"]:
-        workspace = root / manifest["workspace"] / artifact["workspace"]
+        workspace = workspace_path(root, manifest, artifact, overrides)
         if not workspace.is_file():
             fail(f"workspace artifact not found: {workspace}; run make init-content")
         if artifact["kind"] == "assembly_source":

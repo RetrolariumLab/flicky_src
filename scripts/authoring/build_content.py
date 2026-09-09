@@ -28,11 +28,37 @@ from authoring.graphics_sequences_model import (
 from authoring.level_studio_model import apply_document, export_document, load_document
 
 
+WORKSPACE_ARGUMENTS = {
+    "level_layouts": "level_workspace",
+    "graphics_assets": "graphics_workspace",
+    "graphics_semantics": "semantics_workspace",
+    "graphics_sequences": "sequences_workspace",
+    "z80_sound_banks": "sound_workspace",
+}
+
+
 def run(command: list[str], root: Path) -> None:
     print(f"[RUN] {' '.join(command)}")
     result = subprocess.run(command, cwd=root)
     if result.returncode:
         raise SystemExit(result.returncode)
+
+
+def resolve_workspace_paths(
+    root: Path, manifest: dict, overrides: dict[str, str | None]
+) -> dict[str, Path]:
+    """Resolve explicit inputs, falling back to manifest-owned workspace paths."""
+    artifacts = {artifact["id"]: artifact for artifact in manifest["artifacts"]}
+    paths: dict[str, Path] = {}
+    for artifact_id in WORKSPACE_ARGUMENTS:
+        value = overrides.get(artifact_id)
+        if value is None:
+            value = str(
+                Path(manifest["workspace"]) / artifacts[artifact_id]["workspace"]
+            )
+        path = Path(value)
+        paths[artifact_id] = (path if path.is_absolute() else root / path).resolve()
+    return paths
 
 
 def main() -> int:
@@ -44,11 +70,24 @@ def main() -> int:
     parser.add_argument("--as-args", default="-maxerrors 2")
     parser.add_argument("--original-rom", default="Flicky (UE) [!].bin")
     parser.add_argument("--asset-manifest", default="assets/manifest.json")
+    parser.add_argument("--level-workspace")
+    parser.add_argument("--graphics-workspace")
+    parser.add_argument("--semantics-workspace")
+    parser.add_argument("--sequences-workspace")
+    parser.add_argument("--sound-workspace")
     parser.add_argument("--zero-edit", action="store_true")
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
     manifest = load_manifest(root / args.manifest)
+    workspace_paths = resolve_workspace_paths(
+        root,
+        manifest,
+        {
+            artifact_id: getattr(args, argument)
+            for artifact_id, argument in WORKSPACE_ARGUMENTS.items()
+        },
+    )
     artifact = next(item for item in manifest["artifacts"] if item["id"] == "z80_sound_banks")
     baseline_source = root / artifact["baseline"]
     if args.zero_edit:
@@ -56,8 +95,8 @@ def main() -> int:
         build_dir = root / "build" / "content" / "zero-edit"
         rom_output = build_dir / "flicky.bin"
     else:
-        validate_workspace(root, manifest)
-        sound_source = root / manifest["workspace"] / artifact["workspace"]
+        validate_workspace(root, manifest, overrides=workspace_paths)
+        sound_source = workspace_paths["z80_sound_banks"]
         build_dir = root / "build" / "content"
         rom_output = root / manifest["output"]
     driver_output = build_dir / "z80_driver.bin"
@@ -99,45 +138,29 @@ def main() -> int:
         driver_output.relative_to(root),
         sound_output.relative_to(root),
     )
-    level_artifact = next(
-        item for item in manifest["artifacts"] if item["id"] == "level_layouts"
-    )
     if args.zero_edit:
         level_document = export_document(root)
     else:
-        level_document = load_document(
-            root / manifest["workspace"] / level_artifact["workspace"]
-        )
+        level_document = load_document(workspace_paths["level_layouts"])
     apply_document(level_document, staged_main.parent)
-    graphics_artifact = next(
-        item for item in manifest["artifacts"] if item["id"] == "graphics_assets"
-    )
     if args.zero_edit:
         graphics_document = export_graphics_document(root)
     else:
-        graphics_document = load_graphics_document(
-            root / manifest["workspace"] / graphics_artifact["workspace"]
-        )
+        graphics_document = load_graphics_document(workspace_paths["graphics_assets"])
     graphics_outputs = build_graphics_assets(graphics_document, root, build_dir)
     redirect_graphics_includes(staged_main.parent, graphics_outputs)
-    semantics_artifact = next(
-        item for item in manifest["artifacts"] if item["id"] == "graphics_semantics"
-    )
     if args.zero_edit:
         semantics_document = export_graphics_semantics(root)
     else:
         semantics_document = load_graphics_semantics(
-            root / manifest["workspace"] / semantics_artifact["workspace"]
+            workspace_paths["graphics_semantics"]
         )
     apply_graphics_semantics(semantics_document, root, staged_main.parent)
-    sequences_artifact = next(
-        item for item in manifest["artifacts"] if item["id"] == "graphics_sequences"
-    )
     if args.zero_edit:
         sequences_document = export_graphics_sequences(root)
     else:
         sequences_document = load_graphics_sequences(
-            root / manifest["workspace"] / sequences_artifact["workspace"]
+            workspace_paths["graphics_sequences"]
         )
     apply_graphics_sequences(sequences_document, root, staged_main.parent)
     rom_command = [

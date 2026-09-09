@@ -60,6 +60,18 @@ class MakeInterfaceTests(unittest.TestCase):
         self.assertIn("$(MAKE) smoke-studios-workstation", recipe)
         self.assertEqual(recipe[-1], "$(MAKE) source-2-audit")
 
+    def test_content_build_passes_every_workspace_selector(self):
+        root = Path(__file__).resolve().parents[2]
+        recipe = " ".join(makefile_recipe("build-content", root))
+        for option in (
+            "--level-workspace",
+            "--graphics-workspace",
+            "--semantics-workspace",
+            "--sequences-workspace",
+            "--sound-workspace",
+        ):
+            self.assertIn(option, recipe)
+
 
 if __name__ == "__main__":
     unittest.main()

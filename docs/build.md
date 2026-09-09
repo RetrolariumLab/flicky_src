@@ -86,9 +86,12 @@ Everything generated is disposable and ignored by git:
 | `fbuilt.bin` | The assembled ROM |
 | `build/` | Symbol map, format round-trip results, runtime captures, summaries |
 
-`make clean` removes them. Nothing in a release depends on anything surviving
-there, which is deliberate: a stale artifact must not be able to mask a
-regression.
+`make clean` removes only resolved, project-approved generated paths, including
+the build tree and Python caches below the tooling and test trees. It never
+selects a directory merely because it is named `tmp`, so ignored editor content
+such as `content/workspace/tmp` survives. Nothing in a release depends on a
+generated artifact surviving, which prevents stale output from masking a
+regression without putting user work at risk.
 
 ## When the build disagrees
 

@@ -22,6 +22,7 @@ from authoring.graphics_sequences_model import (
     load_document as load_sequences,
     validate_document as validate_sequences,
 )
+from authoring.studio_build import build_content_command
 
 
 PIXEL = 40
@@ -630,7 +631,14 @@ class GraphicsStudio:
     def build_rom(self) -> None:
         if not self.save():
             return
-        subprocess.Popen(["make", "build-content"], cwd=self.project)
+        command = build_content_command(
+            {
+                "graphics_assets": self.workspace,
+                "graphics_semantics": self.semantics_workspace,
+                "graphics_sequences": self.sequences_workspace,
+            }
+        )
+        subprocess.Popen(command, cwd=self.project)
         self.status.set("Started make build-content")
 
     def close(self) -> None:

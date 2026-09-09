@@ -26,6 +26,12 @@ make check-content-zero-edit   # prove tracked baselines reproduce the ROM
 `make init-content FORCE=true` intentionally resets workspace artifacts to
 their tracked baselines. Ordinary initialization never overwrites an edit.
 
+The Studio launchers may open alternate workspace files. Save, Build ROM, and
+Level Studio Playtest propagate those exact resolved paths through Make to the
+content builder; the builder validates and consumes them instead of silently
+falling back to `content/workspace`. The workstation smoke checks these command
+boundaries for all three Studios.
+
 The first editable artifact is the Z80 sound-data translation unit. Its
 editable build may differ from the reference bytes, but it must remain exactly
 2,804 bytes so the following ROM regions do not move. The resident driver is
