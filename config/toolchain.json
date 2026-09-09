@@ -110,9 +110,9 @@
       "source": "https://github.com/oranguthang/gens_automation.git",
       "source_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a",
       "provenance": "source-built",
-      "verification": "make verify-toolchain",
+      "verification": "make verify-emulator",
       "identity": "source_commit_and_binary_hash",
-      "identity_note": "The checkout must match the pinned source commit when it is present, and the executable must match the approved SHA-256 before any runtime evidence or playtest is accepted. Rebuilt binaries require an explicit manifest hash update after review.",
+      "identity_note": "Runtime commands require the selected executable's checkout to match the pinned source commit and its bytes to match the approved SHA-256 before any capture or playtest. make build-gens prepares only that pinned revision and rejects mismatched existing checkouts. Rebuilt binaries require an explicit manifest hash update after review.",
       "files": {
         "any": [
           {

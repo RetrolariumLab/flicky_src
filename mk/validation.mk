@@ -25,6 +25,13 @@ $(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_BIN) | _require-toolchain
 # Validation
 # ---------------------------------------------------------------------------
 
+verify-emulator:
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain \
+		--config $(TOOLCHAIN_MANIFEST) --only emulator --require-emulator \
+		$(EMULATOR_EXECUTABLE)
+
+_require-emulator: verify-emulator
+
 # Style, semantic source invariants, and repository-wide checks. None of these
 # substitute for "make verify": a green lint says nothing about byte identity.
 lint:

@@ -26,3 +26,12 @@ def build_content_command(workspaces: Mapping[str, Path]) -> list[str]:
             path = workspaces[artifact_id].resolve().as_posix()
             command.append(f"{variable}={path}")
     return command
+
+
+def verify_emulator_command(gens: Path) -> list[str]:
+    """Return the public verification command for the exact emulator path."""
+    return [
+        "make",
+        "verify-emulator",
+        f"GENS_EXE={gens.resolve().as_posix()}",
+    ]

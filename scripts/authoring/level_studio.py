@@ -14,7 +14,7 @@ from typing import Any
 
 from authoring.level_preview import LevelPreview, SCREEN_HEIGHT, SCREEN_WIDTH, md_color
 from authoring.level_studio_model import MAP_HEIGHT, MAP_WIDTH, atomic_write_json, load_document, validate_document
-from authoring.studio_build import build_content_command
+from authoring.studio_build import build_content_command, verify_emulator_command
 from runtime.level_playtest import playtest_command, playtest_environment
 
 
@@ -415,6 +415,14 @@ class LevelStudio:
                 "Build ../gens_automation/Output/Gens.exe with make build-gens",
             )
             self.status.set("Gens not found")
+            return
+        verification = subprocess.run(verify_emulator_command(gens), cwd=self.project)
+        if verification.returncode:
+            messagebox.showerror(
+                "Unapproved Gens build",
+                "The selected Gens executable did not pass make verify-emulator",
+            )
+            self.status.set("Gens verification failed")
             return
         self.stop_playtest(update_status=False)
         round_number = max(1, min(48, self.round_number.get()))

@@ -12,7 +12,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from authoring import graphics_studio, level_studio, sound_studio
-from authoring.studio_build import build_content_command
+from authoring.studio_build import build_content_command, verify_emulator_command
 
 
 class ProcessStub:
@@ -135,7 +135,7 @@ def smoke_level(project: Path, workspace: Path) -> None:
         invoke_button(root, "Build ROM")
         invoke_button(root, "Playtest")
         invoke_button(root, "Stop")
-        if popen.call_count != 2 or run.call_count != 1:
+        if popen.call_count != 2 or run.call_count != 2:
             raise RuntimeError("Level Studio did not reach build and playtest adapters")
         expected = build_content_command(
             {
@@ -147,9 +147,12 @@ def smoke_level(project: Path, workspace: Path) -> None:
         )
         if (
             popen.call_args_list[0].args[0] != expected
-            or run.call_args.args[0] != expected
+            or run.call_args_list[0].args[0] != expected
         ):
             raise RuntimeError("Level Studio did not propagate its workspace inputs")
+        gens = project.parent / "gens_automation/Output/Gens.exe"
+        if run.call_args_list[1].args[0] != verify_emulator_command(gens):
+            raise RuntimeError("Level Studio did not verify its selected emulator")
         exercise_dirty_close(app, level_studio.messagebox)
     print("[OK] Level Studio Save, Build ROM, Playtest, Stop, and dirty-close actions")
 

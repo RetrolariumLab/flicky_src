@@ -56,6 +56,7 @@ RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 SOURCE_2_MANIFEST ?= config/source_reconstruction_2_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-executable "binary_converter=$(P2BIN)"
+EMULATOR_EXECUTABLE = --require-executable "emulator=$(GENS_EXE)"
 ROM_LAYOUT ?= config/linker/rom_layout.json
 SOURCE_STRUCTURE ?= config/reconstruction/source_structure.json
 LISTING ?= build/main.lst
@@ -87,7 +88,6 @@ SOUND_TRACE_FRAMES ?= build/sound_trace/frames
 # Emulator: a sibling checkout, like fceux_automation in the NES projects.
 GENS_DIR ?= ../gens_automation
 GENS_EXE ?= $(GENS_DIR)/Output/Gens.exe
-GENS_REPO ?= https://github.com/oranguthang/gens_automation.git
 # Its Docker cross-build, which needs no Visual Studio. Override both to build
 # with MSBuild instead: GENS_MAKEFILE=Makefile GENS_TARGET=release
 GENS_MAKEFILE ?= Makefile.docker
@@ -118,14 +118,14 @@ include $(MAKE_FRAGMENTS)
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation check-source-structure init split check-assets \
+.PHONY: all build verify z80-check z80-data-check verify-toolchain verify-emulator verify-layout verify-relocation check-source-structure init split check-assets \
         compare lint format format-check scaffold-check tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios smoke-studios-workstation \
         test release-audit release-check source-2-audit source-2-release-audit source-2-check source-2-pre-tag-check source-2-tag-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens build-ymfm-renderer stop help \
-        _require-assets _require-movie _require-toolchain
+        _require-assets _require-movie _require-toolchain _require-emulator
 
 all: build
 
@@ -248,7 +248,8 @@ help:
 	@echo "  make smoke-studios-workstation Exercise real Tk windows and public actions"
 	@echo ""
 	@echo "Validation:"
-	@echo "  make verify-toolchain          Hash-check the vendored assembler"
+	@echo "  make verify-toolchain          Hash-check the selected build tools"
+	@echo "  make verify-emulator           Check the selected Gens binary and checkout"
 	@echo "  make verify-layout             Check the ROM layout contract"
 	@echo "  make verify-relocation         Pack the ROM and check relocatable sound loads"
 	@echo "  make lint                      Style, naming and repository checks"
@@ -283,7 +284,7 @@ help:
 	@echo "  make rename                    Apply workflow/rename_batch.csv"
 	@echo ""
 	@echo "Emulator:"
-	@echo "  make build-gens                Clone and cross-build Gens in Docker ($(GENS_DIR))"
+	@echo "  make build-gens                Build the manifest-pinned Gens revision in Docker"
 	@echo "  make build-ymfm-renderer       Rebuild the standalone VGM-to-WAV helper"
 	@echo "  make stop                      Kill running emulator processes"
 	@echo ""

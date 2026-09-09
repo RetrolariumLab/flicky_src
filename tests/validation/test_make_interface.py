@@ -6,6 +6,7 @@ from pathlib import Path
 from scripts.validation.make_interface import (
     makefile_paths,
     makefile_recipe,
+    makefile_text,
     makefile_targets,
 )
 
@@ -46,6 +47,7 @@ class MakeInterfaceTests(unittest.TestCase):
         for target in (
             "format-check",
             "scaffold-check",
+            "verify-emulator",
             "source-2-check",
             "source-2-pre-tag-check",
             "source-2-tag-check",
@@ -93,6 +95,56 @@ class MakeInterfaceTests(unittest.TestCase):
         build = result.stdout.index("build.build_z80_driver")
         self.assertLess(verification, build)
         self.assertIn("--require-executable", result.stdout)
+
+    def test_runtime_launch_verifies_the_selected_emulator_first(self):
+        root = Path(__file__).resolve().parents[2]
+        result = subprocess.run(
+            [
+                "make",
+                "-n",
+                "-B",
+                "reference",
+                "MOVIE=longplay",
+                "GENS_EXE=alternate/Gens.exe",
+            ],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        verification = result.stdout.index("validation.verify_toolchain")
+        launch = result.stdout.index("-screenshot-interval")
+        self.assertLess(verification, launch)
+        self.assertIn(
+            '--require-executable "emulator=alternate/Gens.exe"', result.stdout
+        )
+
+    def test_every_make_runtime_launch_requires_emulator_verification(self):
+        root = Path(__file__).resolve().parents[2]
+        text = makefile_text(root)
+        for target in (
+            "reference",
+            "analyze",
+            "trace-runtime",
+            "playtest-level",
+            "smoke-level-playtest",
+            "trace-sound",
+        ):
+            with self.subTest(target=target):
+                declaration = next(
+                    line for line in text.splitlines() if line.startswith(f"{target}:")
+                )
+                self.assertIn("_require-emulator", declaration)
+
+    def test_emulator_build_uses_the_manifest_pin_before_compilation(self):
+        root = Path(__file__).resolve().parents[2]
+        recipe = " ".join(makefile_recipe("build-gens", root))
+        prepare = recipe.index("build.prepare_gens_checkout")
+        compile_step = recipe.index("$(MAKE) -C")
+        verify = recipe.index("validation.verify_toolchain")
+        self.assertLess(prepare, compile_step)
+        self.assertLess(compile_step, verify)
+        self.assertNotIn("git clone", recipe)
 
 
 if __name__ == "__main__":

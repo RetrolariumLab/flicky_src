@@ -151,7 +151,8 @@ only spells `init` after the swap.
 ## Running it
 
 ```bash
-make build-gens        # Cross-build the emulator in Docker, no Visual Studio
+make build-gens        # Prepare the pinned revision and cross-build in Docker
+make verify-emulator   # Verify the resolved GENS_EXE before a runtime launch
 make trace-runtime     # Capture, then validate
 make validate-runtime  # Re-validate an existing capture
 ```
@@ -161,6 +162,10 @@ the emulator's path, size and SHA-256 alongside the ROM's SHA-1, and the
 validation summary carries it. Before capture, the toolchain gate requires both
 the pinned emulator checkout commit and the approved executable SHA-256. A
 substituted or unreviewed rebuild is rejected rather than accepted as evidence.
+`make build-gens` creates a detached checkout at the manifest revision when the
+sibling directory is absent. It refuses to build an existing checkout with a
+different origin, commit, or tracked source changes; it never updates from an
+advancing default branch.
 
 Captures are written under `build/runtime/`, which is ignored. Regenerating
 them into an ignored directory is deliberate: a stale local capture must not be

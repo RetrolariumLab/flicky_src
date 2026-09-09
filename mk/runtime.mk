@@ -9,7 +9,7 @@ ifndef MOVIE
 endif
 
 # Generate reference screenshots and memory dumps from a known-good ROM.
-reference: _require-movie
+reference: _require-movie | _require-emulator
 	@$(PYTHON) -c "import os; os.makedirs('reference/$(MOVIE)', exist_ok=True)"
 	"$(GENS_EXE)" \
 		-rom $(ROM) \
@@ -21,9 +21,10 @@ reference: _require-movie
 
 # Stub each procedure with an early RTS and diff the result against the
 # reference capture. MEMORY=true also records memory diffs.
-analyze: _require-movie
+analyze: _require-movie | _require-emulator
 	@$(PYTHON) $(RUN_SCRIPT) workflow.analyze_procedures \
 		--project-dir . --source $(SRC) --rom $(ROM) \
+		--gens "$(GENS_EXE)" \
 		--movie $(MOVIE_FILE_$(MOVIE)) \
 		--reference reference/$(MOVIE) --diffs diffs/$(MOVIE) \
 		--procedures-file $(PROCEDURES_FILE) \
@@ -35,7 +36,7 @@ analyze: _require-movie
 
 # Capture the declared scenarios, then validate them. Needs the instrumented
 # Gens build; without it the runner stops rather than producing nothing quietly.
-trace-runtime: verify symbols
+trace-runtime: verify symbols | _require-emulator
 	@$(PYTHON) $(RUN_SCRIPT) runtime.run_runtime_scenarios 		--scenarios $(RUNTIME_SCENARIOS) --gens "$(GENS_EXE)" 		--rom $(ROM) --output-dir $(RUNTIME_DIR)
 	@$(MAKE) validate-runtime
 
@@ -60,8 +61,12 @@ report: _require-movie
 # ---------------------------------------------------------------------------
 
 build-gens:
-	@$(PYTHON) -c "import os, subprocess; d = '$(GENS_DIR)'; os.path.isdir(d) or subprocess.run(['git', 'clone', '$(GENS_REPO)', d], check=True)"
+	@$(PYTHON) $(RUN_SCRIPT) build.prepare_gens_checkout \
+		--config $(TOOLCHAIN_MANIFEST) --checkout "$(GENS_DIR)"
 	@$(MAKE) -C $(GENS_DIR) -f $(GENS_MAKEFILE) $(GENS_TARGET)
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain \
+		--config $(TOOLCHAIN_MANIFEST) --only emulator --require-emulator \
+		--require-executable "emulator=$(GENS_DIR)/Output/Gens.exe"
 
 build-ymfm-renderer:
 	docker build --platform linux/amd64 --file tools/ymfm_renderer/Dockerfile \
