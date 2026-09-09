@@ -54,6 +54,7 @@ NON_ENGLISH_SCRIPT = re.compile(
 )
 GENERIC_COMMIT_TITLES = {"fix", "update", "changes", "wip"}
 LABEL_RENAME_REGISTRY = Path("config/reconstruction/label_renames.json")
+LABEL_PROVENANCE_NARRATIVE = Path("docs/provenance.md")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -574,13 +575,22 @@ def validate_label_rename_registry(
         errors.append("required documents do not name the canonical label registry once")
     if references.count(canonical) != 1:
         errors.append("provenance does not name the canonical label registry once")
-    narrative = root / "docs/provenance/labels.md"
-    if (
-        narrative.is_file()
-        and "../../config/reconstruction/label_renames.json"
-        not in narrative.read_text(encoding="utf-8")
+    narrative = root / LABEL_PROVENANCE_NARRATIVE
+    if not narrative.is_file():
+        errors.append("top-level label provenance narrative is missing")
+    elif "../config/reconstruction/label_renames.json" not in narrative.read_text(
+        encoding="utf-8"
     ):
         errors.append("label provenance narrative does not link the canonical registry")
+
+    tracked = git_lines(root, "ls-files")
+    obsolete = [
+        relative
+        for relative in tracked
+        if relative.startswith(("docs/adr/", "docs/provenance/"))
+    ]
+    if obsolete:
+        errors.append(f"retired documentation directories remain tracked: {obsolete}")
 
 
 def validate_project_claims(

@@ -132,10 +132,10 @@ class Source2Audit(unittest.TestCase):
             root = Path(directory)
             canonical = root / "config/reconstruction/label_renames.json"
             duplicate = root / "docs/label_renames.json"
-            narrative = root / "docs/provenance/labels.md"
+            narrative = root / "docs/provenance.md"
             canonical.parent.mkdir(parents=True)
             duplicate.parent.mkdir(parents=True)
-            narrative.parent.mkdir(parents=True)
+            narrative.parent.mkdir(parents=True, exist_ok=True)
             registry = {
                 "schema_version": 1,
                 "rename_columns": ["original", "current", "current_path"],
@@ -147,7 +147,7 @@ class Source2Audit(unittest.TestCase):
             canonical.write_text(json.dumps(registry), encoding="utf-8")
             duplicate.write_text(json.dumps(registry), encoding="utf-8")
             narrative.write_text(
-                "[registry](../../config/reconstruction/label_renames.json)\n",
+                "[registry](../config/reconstruction/label_renames.json)\n",
                 encoding="utf-8",
             )
             subprocess.run(["git", "init", "-q"], cwd=root, check=True)
@@ -163,6 +163,11 @@ class Source2Audit(unittest.TestCase):
             errors: list[str] = []
             source_2_audit.validate_label_rename_registry(root, release, errors)
             self.assertTrue(any("not unique" in error for error in errors), errors)
+
+    def test_live_documentation_uses_only_top_level_provenance(self):
+        self.assertTrue((ROOT / "docs/provenance.md").is_file())
+        self.assertFalse((ROOT / "docs/adr").exists())
+        self.assertFalse((ROOT / "docs/provenance").exists())
 
     def test_public_release_audit_runs_end_to_end(self):
         result = subprocess.run(

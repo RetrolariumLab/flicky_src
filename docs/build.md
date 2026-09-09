@@ -73,12 +73,35 @@ so the autodetect will look for one that does not exist.
 `build` and `verify` both depend on it. This runs *before* the assembler, so a
 swapped binary is named as the problem instead of surfacing as an unexplained
 diff. See [`bin/README.md`](../bin/README.md) for the provenance and
-[ADR 1](adr/0001-as-assembler.md) for why AS.
+the rationale below for why AS remains part of the build contract.
 
 `AS_BIN` and `P2BIN` can point at another filesystem location, but they do not
 waive identity checks. The verifier resolves and hashes the exact executable
 paths selected by those variables before every assembly or conversion target,
 including standalone Z80 builds and listing generation.
+
+## Why AS and p2bin
+
+Byte identity makes the assembler an architectural choice rather than a matter
+of taste: it determines which encodings are reachable and how data directives,
+alignment, and padding behave. ca65 cannot assemble 68000 code. vasm is actively
+maintained, but the established Mega Drive disassembly syntax targets AS and its
+optimization defaults differ from the source this project inherited.
+
+The project therefore vendors AS 1.42 Beta [Bld 212] and the Sonic-disassembly
+variant of Clownacy's `p2bin` at commit
+`e26d8aa8c43e285bac5e3b7df3be1adae515994f`. The whole 68000 program is one
+translation unit, while the Z80 program and data are separate checked
+translation units. Exact executable origins, sizes, and SHA-256 values live in
+`config/toolchain.json`; alternate `AS_BIN` and `P2BIN` paths must match those
+approved identities before use.
+
+The converter always receives `-p=FF`, because its `$00` default would corrupt
+the cartridge's 18,015-byte `$FF` padding gap. AS emits one object and `p2bin`
+flattens it, so there is no linker script: include order owns placement and
+`config/linker/rom_layout.json` supplies the independently checked layout
+contract. Vendoring the tools makes supported clean builds self-contained but
+leaves macOS unsupported because no matching binary set is provided.
 
 ## What gets written
 
@@ -122,8 +145,8 @@ module by name instead of by offset.
 **`make verify-layout` fails but `make verify` passes.** The layout declaration
 is stale rather than the build being wrong. That happens when a module
 legitimately changes size; update `config/linker/rom_layout.json` deliberately, which
-is the intended cost of moving code. See
-[ADR 2](adr/0002-rom-layout-contract.md).
+is the intended cost of moving code. See the rationale in
+[`source_layout.md`](source_layout.md#why-the-layout-is-machine-readable).
 
 ## The full gate
 
