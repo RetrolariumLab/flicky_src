@@ -14,6 +14,7 @@ from tkinter import messagebox, ttk
 from authoring import sound_studio_model as model
 from authoring.sound_sequencer import SoundSequencer
 from authoring.sound_vgm import write_vgm
+from authoring.studio_build import build_content_command
 
 try:
     import winsound
@@ -502,7 +503,8 @@ class SoundStudio:
 
     def build_rom(self) -> None:
         if self.save():
-            subprocess.Popen(["make", "build-content"], cwd=self.project)
+            command = build_content_command({"z80_sound_banks": self.workspace})
+            subprocess.Popen(command, cwd=self.project)
             self.status.set("Started make build-content")
 
     def preview(self, header_id: str) -> None:

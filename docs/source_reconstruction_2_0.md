@@ -82,7 +82,10 @@ Studio action, enforces the source granularity and directory policy, smoke-tests
 direct level entry in Gens, and audits the 2.0 manifest, documents,
 Make targets, format strengths, supported Studio inventory, predecessor tag,
 and ancestry. It also captures and compares the real Z80 sound-register stream
-through `make verify-sound-sequencer`.
+through `make verify-sound-sequencer`. Cleanup is constrained to resolved
+generated paths and is regression-tested against an ignored workspace `tmp`
+directory. Studio build and playtest actions pass their exact selected inputs
+into the content builder, including alternate workspace files.
 
 The annotated `source-reconstruction-2.0` tag is created only after that gate
 passes on the release commit with a clean worktree. ROMs, extracted assets,

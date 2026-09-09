@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 19
+    "commit_count": 20
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -166,14 +166,17 @@
     {
       "id": "release-review-hardening",
       "kind": "tooling",
-      "summary": "Enforce the approved emulator binary, make Graphics Studio builds fail closed on save errors, and exercise every Tk Studio action on a real workstation runtime.",
+      "summary": "Enforce trusted runtime and editor inputs, fail closed on invalid saves, exercise every Tk Studio action, and restrict cleanup to approved generated paths.",
       "commits": [
+        "6ea7b8341bbfe29019012c61de65389a51b913c8",
         "release-commit"
       ],
       "evidence": [
         "verify-toolchain",
         "smoke-studios-workstation",
-        "tests/authoring/test_graphics_studio.py"
+        "tests/authoring/test_graphics_studio.py",
+        "tests/authoring/test_studio_build.py",
+        "tests/build/test_clean_project.py"
       ]
     }
   ],
@@ -337,6 +340,24 @@
         "files": [
           "config/authoring/content_studios.json",
           "scripts/authoring/studio_workstation_smoke.py"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "workspace_input_safety": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "build-content",
+          "clean",
+          "smoke-studios-workstation"
+        ],
+        "files": [
+          "scripts/authoring/studio_build.py",
+          "scripts/build/clean_project.py",
+          "tests/authoring/test_studio_build.py",
+          "tests/build/test_clean_project.py"
         ],
         "scenarios": [],
         "artifacts": []

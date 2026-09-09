@@ -14,6 +14,7 @@ from typing import Any
 
 from authoring.level_preview import LevelPreview, SCREEN_HEIGHT, SCREEN_WIDTH, md_color
 from authoring.level_studio_model import MAP_HEIGHT, MAP_WIDTH, atomic_write_json, load_document, validate_document
+from authoring.studio_build import build_content_command
 from runtime.level_playtest import playtest_command, playtest_environment
 
 
@@ -382,15 +383,25 @@ class LevelStudio:
     def build_rom(self) -> None:
         if not self.save():
             return
-        subprocess.Popen(["make", "build-content"], cwd=self.project)
+        subprocess.Popen(self.content_build_command(), cwd=self.project)
         self.status.set("Started make build-content")
+
+    def content_build_command(self) -> list[str]:
+        return build_content_command(
+            {
+                "level_layouts": self.workspace,
+                "graphics_assets": self.graphics_workspace,
+                "graphics_semantics": self.semantics_workspace,
+                "graphics_sequences": self.sequences_workspace,
+            }
+        )
 
     def playtest(self) -> None:
         if not self.save():
             return
         self.status.set("Building editable ROM for playtest...")
         self.root.update_idletasks()
-        result = subprocess.run(["make", "build-content"], cwd=self.project)
+        result = subprocess.run(self.content_build_command(), cwd=self.project)
         if result.returncode:
             messagebox.showerror("Build failed", "make build-content failed")
             self.status.set("Playtest build failed")
