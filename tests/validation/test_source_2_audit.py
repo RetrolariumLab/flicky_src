@@ -21,11 +21,19 @@ class Source2Audit(unittest.TestCase):
             path.write_text(json.dumps(document), encoding="utf-8")
             return source_2_audit.validate_source_2(ROOT, path, require_ready)
 
-    def test_project_contract_is_valid_development_state(self):
+    def test_project_contract_is_valid_tag_ready_state(self):
         self.assertEqual(source_2_audit.validate_source_2(ROOT, self.path), [])
+        self.assertEqual(
+            source_2_audit.validate_source_2(
+                ROOT, self.path, require_ready=True
+            ),
+            [],
+        )
 
     def test_development_manifest_fails_ready_audit(self):
-        errors = self.validate_copy(self.manifest, True)
+        document = json.loads(json.dumps(self.manifest))
+        document["status"] = "development"
+        errors = self.validate_copy(document, True)
         self.assertIn("Source Reconstruction 2.0 manifest is not tag-ready", errors)
 
     def test_public_schema_version_is_checked(self):
@@ -70,7 +78,7 @@ class Source2Audit(unittest.TestCase):
         errors = self.validate_copy(document)
         self.assertIn("sound fidelity timing tolerance exceeds 2.1 frames", errors)
 
-    def test_public_development_audit_runs_end_to_end(self):
+    def test_public_release_audit_runs_end_to_end(self):
         result = subprocess.run(
             [
                 sys.executable,

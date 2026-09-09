@@ -62,7 +62,7 @@ Any difference means the edit was wrong, not that the gate is too strict.
 ## Current status
 
 Source Reconstruction 1.0 is preserved and complete; Source Reconstruction
-2.0 is in release preparation on its release branch. Its aggregate
+2.0 is a tag-ready candidate on its release branch. Its aggregate
 `make source-2-check`
 starts with the permanent 1.0 gate, then verifies relocatability, zero-edit
 content identity, all three Studio models, direct level playtesting, sound-

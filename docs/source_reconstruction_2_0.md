@@ -7,11 +7,11 @@ contract do not change. The tagged 1.0 commit remains an ancestor of this
 release, and the canonical build still reproduces SHA-1
 `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96` byte for byte.
 
-The current branch is a development candidate, not yet a release. Its public
-manifest records the project-owned schema, release line, scope, evidence, and
-gates without exposing review-system metadata. The status changes to
-`tag-ready` only after the remaining history and clean-tree checks have been
-reviewed and satisfied.
+The current branch is a tag-ready candidate, not yet a tagged release. Its
+public manifest records the project-owned schema, release line, scope,
+evidence, and gates. The candidate has passed the aggregate, history, and
+clean-tree checks; publication still requires owner review and an annotated
+tag on this exact commit.
 
 The release adds three capability groups:
 
@@ -91,7 +91,7 @@ ignored local data.
 The release sequence is explicit:
 
 ```bash
-make source-2-audit          # valid while status is development
+make source-2-audit          # validate the project-owned release manifest
 make source-2-check          # full 1.0 gate followed by all 2.0 checks
 make source-2-pre-tag-check  # requires tag-ready status and a clean tree
 # create the annotated tag only after human review

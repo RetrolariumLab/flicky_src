@@ -51,7 +51,7 @@ class MakeInterfaceTests(unittest.TestCase):
         ):
             self.assertIn(f"make {target}", result.stdout)
 
-    def test_source_2_check_uses_the_development_audit(self):
+    def test_source_2_check_uses_the_manifest_audit(self):
         root = Path(__file__).resolve().parents[2]
         recipe = makefile_recipe("source-2-check", root)
         self.assertEqual(recipe[0], "$(MAKE) release-check")

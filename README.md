@@ -15,9 +15,9 @@ itself. `src/main.s` is no longer a source file: it is an index of 36
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is in
-release preparation on top of it, with isolated Level, Graphics, and Sound
-studios. The
+Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is a
+tag-ready release candidate on top of it, with isolated Level, Graphics, and
+Sound studios. The
 data formats have codecs, the symbol map is exported for debuggers, twelve scenarios
 replay under the emulator and are checked against 68 declared facts about work
 RAM, and `make release-check` audits the whole release contract. See
@@ -130,7 +130,7 @@ make sound-studio              # Open the music and SFX editor
 make preview-sound SOUND=zMusic81Header  # Render standalone VGM and WAV audio
 make verify-sound-sequencer    # Compare Python YM2612 writes with the real Z80 driver
 make check-studios             # Validate Studio models without opening GUI
-make source-2-audit            # Check the development manifest
+make source-2-audit            # Check the Source 2.0 manifest
 make source-2-check            # Complete 1.0 + 2.0 acceptance gate
 make source-2-pre-tag-check    # Clean-tree check before creating the tag
 make source-2-tag-check        # Verify the annotated tag at HEAD
