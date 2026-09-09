@@ -41,10 +41,14 @@ FORBIDDEN_PREFIXES = ("data/artnem/", "data/arteni/", "data/artunc/", "data/soun
 
 
 def tracked_files() -> list[Path]:
+    """Return committed and untracked non-ignored files in the working tree."""
     result = subprocess.run(
-        ["git", "ls-files"], capture_output=True, text=True, check=False
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        capture_output=True,
+        text=True,
+        check=False,
     )
-    return [Path(line) for line in result.stdout.splitlines() if line]
+    return sorted({Path(line) for line in result.stdout.splitlines() if line})
 
 
 def is_text(path: Path) -> bool:

@@ -20,7 +20,7 @@ There was a live example: the entry point was recorded as `$000200` while
 
 ## Decision
 
-Declare the layout in `config/rom_layout.json` — memory regions, ROM landmarks
+Declare the layout in `config/linker/rom_layout.json` — memory regions, ROM landmarks
 by symbol, the padding gap, the shared includes that emit no bytes, and the
 address range of all 43 modules — and check it with
 `scripts/validation/verify_layout.py` (`make verify-layout`), which is part of the gate.
@@ -39,6 +39,6 @@ The declaration has to be regenerated when the layout legitimately changes, whic
 is the intended cost: moving a module is a deliberate act and should require
 saying so.
 
-`config/rom_layout.json` is recorded in the release manifest as a
+`config/linker/rom_layout.json` is recorded in the release manifest as a
 `layout_deviation` from the recommended `config/linker/`, with this file as the
 equivalent control.

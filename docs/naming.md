@@ -100,7 +100,7 @@ make format
 make verify
 ```
 
-A rename also changes what `docs/provenance/label_renames.json` should say, and
+A rename also changes what `config/reconstruction/label_renames.json` should say, and
 `make test` fails until it does: the table has to cover the source exactly.
 
 `make lint` checks the vocabulary itself. Every symbol must begin with one of

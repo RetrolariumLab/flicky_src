@@ -75,7 +75,7 @@ def main() -> int:
     parser.add_argument("--gens", type=Path, required=True)
     parser.add_argument("--rom", type=Path, default=Path("fbuilt.bin"))
     parser.add_argument("--movie", type=Path, default=Path("movies/flicky_longplay.gmv"))
-    parser.add_argument("--config", type=Path, default=Path("config/gens_sound_trace.cfg"))
+    parser.add_argument("--config", type=Path, default=Path("config/runtime/gens_sound_trace.cfg"))
     parser.add_argument("--trace", type=Path, default=Path("build/sound_trace/gens.csv"))
     parser.add_argument("--frames", type=Path, default=Path("build/sound_trace/frames"))
     parser.add_argument("--start-frame", type=int, default=320)

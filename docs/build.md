@@ -108,12 +108,12 @@ short.
 
 **`make verify` reports a differing offset.** The source now assembles to
 something else. Find the module owning that address in
-`config/rom_layout.json` -- or run `make verify-layout`, which reports a moved
+`config/linker/rom_layout.json` -- or run `make verify-layout`, which reports a moved
 module by name instead of by offset.
 
 **`make verify-layout` fails but `make verify` passes.** The layout declaration
 is stale rather than the build being wrong. That happens when a module
-legitimately changes size; update `config/rom_layout.json` deliberately, which
+legitimately changes size; update `config/linker/rom_layout.json` deliberately, which
 is the intended cost of moving code. See
 [ADR 2](adr/0002-rom-layout-contract.md).
 

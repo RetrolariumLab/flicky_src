@@ -14,7 +14,7 @@ and `make verify` fails immediately.
 A module owns one coherent subsystem, the helpers only it uses, and the data
 those helpers consume. The preferred range is **300-700 lines**. Both bounds,
 and the reason for every source outside them, are enforced by
-`make check-source-structure` from `config/source_structure.json`. A procedure
+`make check-source-structure` from `config/reconstruction/source_structure.json`. A procedure
 is never cut in half, and a small table stays beside the code that reads it.
 
 The policy covers the 68000 tree, Z80 tree, entrypoint indexes and shared

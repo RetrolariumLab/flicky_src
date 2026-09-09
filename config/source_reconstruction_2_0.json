@@ -1,15 +1,662 @@
 {
   "schema_version": 1,
-  "release": "Source Reconstruction 2.0",
   "release_line": "2.0",
+  "release": {
+    "name": "Source Reconstruction 2.0",
+    "version": "2.0"
+  },
+  "release_kind": "baseline",
   "tag": "source-reconstruction-2.0",
-  "status": "tag-ready",
+  "publish_remote": "origin",
+  "status": "development",
   "predecessor": {
     "manifest": "config/source_reconstruction_1_0.json",
     "tag": "source-reconstruction-1.0",
     "commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "gate": "release-check"
   },
+  "delta_history": {
+    "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
+    "tip": "pending",
+    "commit_count": null
+  },
+  "included_scope": [
+    "canonical-preservation-profile",
+    "semantic-68000-source",
+    "semantic-z80-source",
+    "semantic-sound-data",
+    "authored-data-codecs",
+    "isolated-content-authoring",
+    "level-studio",
+    "graphics-studio",
+    "sound-studio",
+    "direct-level-playtest",
+    "standalone-sound-preview",
+    "sound-sequencer-fidelity"
+  ],
+  "excluded_scope": [
+    {
+      "id": "additional-revisions",
+      "status": "not_applicable",
+      "reason": "The release accepts only the canonical Flicky (UE) [!] cartridge image."
+    },
+    {
+      "id": "additional-platform-profiles",
+      "status": "not_applicable",
+      "reason": "The release accepts only the Sega Mega Drive / Genesis cartridge platform."
+    },
+    {
+      "id": "experimental-build-profiles",
+      "status": "not_applicable",
+      "reason": "The relocation build is a controlled regression test, not an accepted output profile."
+    },
+    {
+      "id": "systematic-relocation",
+      "status": "unsupported",
+      "reason": "Source 2.0 verifies one packed-layout regression but does not claim the systematic relocation capability reserved for a later major release."
+    },
+    {
+      "id": "byte-exact-nemesis-recompression",
+      "status": "partial",
+      "reason": "DATA-002 records that all six streams re-encode to smaller valid streams with identical pixels but not the original run splitting."
+    },
+    {
+      "id": "japanese-guide-text-editor",
+      "status": "partial",
+      "reason": "The Japanese guide remains editable as raw glyph-index assembly data but is not exposed by Graphics Studio."
+    },
+    {
+      "id": "additional-static-screen-editors",
+      "status": "unsupported",
+      "reason": "Non-animated screen layouts outside the five declared authoring artifacts remain outside the 2.0 editor scope."
+    }
+  ],
+  "delta": [
+    {
+      "id": "predecessor-evidence-corrections",
+      "kind": "evidence",
+      "summary": "Repin the source-built emulator and record relocation evidence for DATA-001 and CODE-002 before the 2.0 authoring work.",
+      "commits": [
+        "e797e5964633a12a68074bc4df9a4b0c8adb9855",
+        "312c9407ab6760dc5778b52c2dc1f49d1215bbb0",
+        "3d9f56e5eae3a3d7edfa4186081918e3e522d7e2",
+        "b162e5e9e6a05d0d628828efebda7998d22d510c"
+      ],
+      "evidence": [
+        "docs/unknowns.md",
+        "config/toolchain.json",
+        "verify-relocation"
+      ]
+    },
+    {
+      "id": "semantic-z80-source",
+      "kind": "source",
+      "summary": "Replace the resident Z80 driver and its sound banks with symbolic assembler-owned source and compiler-resolved pointers.",
+      "commits": [
+        "9ef65d570ae7118cce74aa35d3ab983fd7a0202b"
+      ],
+      "evidence": [
+        "src/sound/z80/driver.asm",
+        "src/sound/z80/data.asm",
+        "z80-check",
+        "z80-data-check"
+      ]
+    },
+    {
+      "id": "content-authoring-baseline",
+      "kind": "tooling",
+      "summary": "Add isolated level, graphics, text, palette, mapping, animation, music, SFX, and FM-voice authoring with zero-edit reconstruction.",
+      "commits": [
+        "9fcfcfc63de524a7b07c05a72a9a205105633796",
+        "c9f5e0eda5bfbca5d5933ac75fd93d7751068ec2",
+        "8b012f6ad546c1d1ed3e19d3527c71252a4c84d2",
+        "d07b49bb0d4b354a47a2bc956d13f898ce58bbad"
+      ],
+      "evidence": [
+        "config/authoring/content_studios.json",
+        "check-content-zero-edit",
+        "check-studios"
+      ]
+    },
+    {
+      "id": "semantic-repository-layout",
+      "kind": "source",
+      "summary": "Organize assembly and project tooling by semantic owner and align Make, config, tests, and release metadata with the Source 2.0 quality boundary.",
+      "commits": [
+        "b75e67b65a899a058afd5134b0c8062515240fe1",
+        "ee536136572abd99643913e23ca4e94f85d8aac3",
+        "0111bf7083a22e4802a1d465c37e5055b050950f",
+        "release-commit"
+      ],
+      "evidence": [
+        "config/reconstruction/source_structure.json",
+        "mk/validation.mk",
+        "tests/validation",
+        "docs/source_layout.md"
+      ]
+    },
+    {
+      "id": "editor-runtime-quality",
+      "kind": "tooling",
+      "summary": "Render Level Studio from real VDP data, add direct round playtesting, and provide standalone sound preview verified against the real Z80 register stream.",
+      "commits": [
+        "74ddc1cd6adf4b8b3565d4647895a04efcf547af",
+        "6d5e1ac513324bcb648543d1e589d5a0ed094da1",
+        "ab75d93ec74ab156354d6ea45f6cb7973ddf3da0"
+      ],
+      "evidence": [
+        "smoke-level-playtest",
+        "verify-sound-sequencer",
+        "docs/content_authoring.md"
+      ]
+    }
+  ],
+  "requirements": {
+    "preservation_gate": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "release-check"
+        ],
+        "files": [
+          "config/source_reconstruction_1_0.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "semantic_source_layout": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "check-source-structure",
+          "z80-check",
+          "z80-data-check"
+        ],
+        "files": [
+          "src/main.s",
+          "config/reconstruction/source_structure.json",
+          "src/sound/z80/driver.asm",
+          "src/sound/z80/data.asm"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "z80-driver",
+          "z80-sound-data"
+        ]
+      }
+    },
+    "canonical_identity": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "verify",
+          "check-content-zero-edit"
+        ],
+        "files": [
+          "assets/manifest.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "build_isolation": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "verify",
+          "build-content",
+          "verify-relocation"
+        ],
+        "files": [
+          "config/authoring/content_studios.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "profiles": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "verify"
+        ],
+        "files": [
+          "assets/manifest.json"
+        ],
+        "scenarios": [
+          "scenarios/runtime_scenarios.json"
+        ],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "runtime_coverage": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "trace"
+        ],
+        "files": [
+          "config/toolchain.json"
+        ],
+        "scenarios": [
+          "scenarios/runtime_scenarios.json"
+        ],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "codec_round_trips": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "roundtrip-formats",
+          "check-content-zero-edit"
+        ],
+        "files": [
+          "config/authoring/data_formats.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "authoring_bounds": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "validate-content",
+          "check-content-zero-edit"
+        ],
+        "files": [
+          "config/authoring/content_studios.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "headless_editor_models": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "check-studios"
+        ],
+        "files": [
+          "scripts/authoring/level_studio_model.py",
+          "scripts/authoring/graphics_studio_model.py",
+          "scripts/authoring/sound_studio_model.py"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "editor_runtime_actions": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "smoke-level-playtest",
+          "verify-sound-sequencer"
+        ],
+        "files": [
+          "scripts/runtime/level_playtest.py",
+          "scripts/validation/verify_sound_trace.py"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "make_interface": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "lint",
+          "test",
+          "format-check",
+          "scaffold-check"
+        ],
+        "files": [
+          "Makefile",
+          "mk/authoring.mk",
+          "mk/runtime.mk",
+          "mk/validation.mk",
+          "mk/workflow.mk"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "documentation": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "lint"
+        ],
+        "files": [
+          "docs/index.md",
+          "docs/source_layout.md",
+          "docs/content_authoring.md",
+          "docs/validation.md",
+          "docs/unknowns.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "toolchain": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "verify-toolchain"
+        ],
+        "files": [
+          "config/toolchain.json",
+          "bin/README.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "licensing_provenance": {
+      "status": "satisfied",
+      "evidence": {
+        "targets": [
+          "release-audit"
+        ],
+        "files": [
+          "docs/provenance/labels.md",
+          "config/reconstruction/label_renames.json",
+          "movies/README.md"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    },
+    "aggregate_gate": {
+      "status": "planned",
+      "evidence": {
+        "targets": [
+          "source-2-check",
+          "source-2-pre-tag-check",
+          "source-2-tag-check"
+        ],
+        "files": [
+          "config/source_reconstruction_2_0.json"
+        ],
+        "scenarios": [],
+        "artifacts": [
+          "flicky-rom"
+        ]
+      }
+    },
+    "history_integrity": {
+      "status": "planned",
+      "evidence": {
+        "targets": [
+          "source-2-pre-tag-check"
+        ],
+        "files": [
+          "config/source_reconstruction_2_0.json"
+        ],
+        "scenarios": [],
+        "artifacts": []
+      }
+    }
+  },
+  "reference": {
+    "name": "Flicky (UE) [!]",
+    "rom_sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
+    "rom_sha256": "4DF1A91E08376AE773A6EB8E5ABE310F94CA39D8F81583B91A9477FEDCB68C11",
+    "rom_size": 131072,
+    "padding_byte": "0xFF"
+  },
+  "profiles": [
+    {
+      "id": "canonical",
+      "status": "supported",
+      "artifact": "flicky-rom",
+      "identity": "byte-identical",
+      "layout": "config/linker/rom_layout.json",
+      "inputs": [
+        "Flicky (UE) [!].bin",
+        "data/**"
+      ],
+      "output": "fbuilt.bin",
+      "capabilities": [
+        "preservation",
+        "semantic-source",
+        "content-authoring",
+        "runtime-evidence"
+      ]
+    }
+  ],
+  "runtime_coverage": [
+    {
+      "profile_id": "canonical",
+      "mode": "direct",
+      "manifest": "scenarios/runtime_scenarios.json",
+      "scenarios": [
+        "longplay-sega-screen",
+        "longplay-title-screen",
+        "longplay-guide-screen",
+        "longplay-round-1",
+        "longplay-chickens-counting",
+        "longplay-score-screen",
+        "longplay-round-3-bonus",
+        "longplay-girl-in-window-appeared",
+        "longplay-credits",
+        "demos-sega-screen",
+        "demos-title-screen",
+        "demos-demo-play-round-1"
+      ]
+    }
+  ],
+  "toolchain": {
+    "manifest": "config/toolchain.json",
+    "verification": "make verify-toolchain"
+  },
+  "aggregate_gates": {
+    "pre_tag": [
+      "make source-2-pre-tag-check"
+    ],
+    "post_tag": [
+      "make source-2-tag-check"
+    ]
+  },
+  "required_documents": [
+    "README.md",
+    "CONTRIBUTING.md",
+    "docs/index.md",
+    "docs/roadmap.md",
+    "docs/subsystems.md",
+    "docs/source_layout.md",
+    "docs/build.md",
+    "docs/validation.md",
+    "docs/content_authoring.md",
+    "docs/data_formats.md",
+    "docs/debugger_workflow.md",
+    "docs/unknowns.md",
+    "docs/provenance/labels.md",
+    "config/reconstruction/label_renames.json",
+    "docs/source_reconstruction_1_0.md",
+    "docs/source_reconstruction_2_0.md",
+    "docs/z80_sound_driver.md",
+    "docs/adr/0001-as-assembler.md",
+    "docs/adr/0002-rom-layout-contract.md",
+    "docs/adr/0003-runtime-evidence-is-state.md"
+  ],
+  "layout_deviations": [
+    {
+      "rule_id": "canonical-entrypoint-extension",
+      "actual_path": "src/main.s",
+      "reason": "The established AS 68000 translation-unit convention uses .s; standalone Z80 translation units use .asm.",
+      "equivalent_control": "The manifest names src/main.s, config/linker/rom_layout.json owns its include order, and make verify-layout checks that order against the built image."
+    },
+    {
+      "rule_id": "audio-directory-name",
+      "actual_path": "src/sound/",
+      "reason": "The project uses the Mega Drive-facing term sound for the 68000 host, Z80 driver, music, and SFX ownership boundary.",
+      "equivalent_control": "All sound source is contained under src/sound and both Z80 translation units have byte-identity gates."
+    },
+    {
+      "rule_id": "private-extracted-data-directory",
+      "actual_path": "data/",
+      "reason": "The preserved 1.0 workflow extracts private cartridge segments into data/ rather than assets/generated/.",
+      "equivalent_control": "The directory is ignored, assets/manifest.json owns every range and hash, make check-assets verifies it, and release-audit checks reachable history for payloads."
+    },
+    {
+      "rule_id": "additional-make-workflow-fragment",
+      "actual_path": "mk/workflow.mk",
+      "reason": "The repository retains a distinct reverse-engineering workflow in addition to build, validation, runtime, and authoring.",
+      "equivalent_control": "The root Makefile includes the fragment explicitly and tests collect the public Make interface across all fragments."
+    }
+  ],
+  "licensing": [
+    {
+      "component": "project_tooling_and_documentation",
+      "category": "own_project_tools",
+      "origin": "Written for this repository",
+      "license_id_or_status": "licensed",
+      "redistribution": "allowed",
+      "notes": "Scripts, tests, configs and docs. This licence does not extend to the reconstructed game source."
+    },
+    {
+      "component": "reconstructed_game_source",
+      "category": "reconstructed_game_source",
+      "origin": "Disassembled from Flicky (UE) [!] for Sega Mega Drive, (C) Sega 1991",
+      "license_id_or_status": "license_not_granted",
+      "redistribution": "not_permitted",
+      "notes": "Reconstruction grants no licence to the original code or data; no game image is distributed."
+    },
+    {
+      "component": "as_macro_assembler",
+      "category": "bundled_external_tools",
+      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus the Sonic-disassembly p2bin variant",
+      "license_id_or_status": "licensed",
+      "redistribution": "allowed",
+      "notes": "Vendored under bin/ with SHA-256 for every file; see bin/README.md."
+    },
+    {
+      "component": "gens_automation",
+      "category": "external_unbundled",
+      "origin": "https://github.com/oranguthang/gens_automation",
+      "license_id_or_status": "external_unbundled",
+      "redistribution": "not_bundled",
+      "notes": "Sibling checkout pinned by config/toolchain.json."
+    },
+    {
+      "component": "ymfm",
+      "category": "bundled_external_source",
+      "origin": "https://github.com/aaronsgiles/ymfm commit 81aec25ccbb98f4873a255f7551ac4dadac59b4a",
+      "license_id_or_status": "licensed",
+      "redistribution": "allowed",
+      "notes": "Minimal YM2612 dependencies and BSD-3-Clause license are vendored under third_party/ymfm."
+    },
+    {
+      "component": "reference_rom",
+      "category": "private_user_supplied",
+      "origin": "Supplied by the user from their own cartridge dump",
+      "license_id_or_status": "private_user_supplied",
+      "redistribution": "not_permitted",
+      "notes": "Never tracked; only hashes, sizes, and extraction recipes are committed."
+    },
+    {
+      "component": "input_recordings",
+      "category": "imported_materials",
+      "origin": "Gens movie recordings of Flicky; see movies/README.md",
+      "license_id_or_status": "unknown",
+      "redistribution": "allowed",
+      "notes": "Controller input only, no game code or data; both recordings are hash-pinned by the runtime scenario manifest."
+    }
+  ],
+  "provenance": {
+    "references": [
+      "config/reconstruction/label_renames.json",
+      "docs/provenance/labels.md",
+      "docs/unknowns.md",
+      "bin/README.md",
+      "movies/README.md",
+      "assets/manifest.json"
+    ],
+    "private_inputs_tracked": false,
+    "private_dependencies": [
+      {
+        "id": "reference-rom",
+        "role": "Byte-identity reference and source of extracted segments",
+        "size": 131072,
+        "sha256": "4DF1A91E08376AE773A6EB8E5ABE310F94CA39D8F81583B91A9477FEDCB68C11"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "flicky-rom",
+      "profile": "canonical",
+      "build_target": "verify",
+      "path": "fbuilt.bin",
+      "size": 131072,
+      "sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
+      "sha256": "4DF1A91E08376AE773A6EB8E5ABE310F94CA39D8F81583B91A9477FEDCB68C11",
+      "tracked": false
+    },
+    {
+      "id": "z80-driver",
+      "profile": "canonical",
+      "build_target": "z80-check",
+      "path": "build/z80_driver.bin",
+      "size": 4070,
+      "sha1": "325b37d1788486bd569ff21c8d97e323e27c0f0c",
+      "sha256": "18abfc930dd4136cb746ccc4b443e0ceb88b5d7fe18d3c9215490bc3329a8b67",
+      "tracked": false
+    },
+    {
+      "id": "z80-sound-data",
+      "profile": "canonical",
+      "build_target": "z80-data-check",
+      "path": "build/z80_sound_data.bin",
+      "size": 2804,
+      "sha1": "2f24a87aaa3f971819f801b1907a767e277c35a1",
+      "sha256": "c1579c6b184da6a174591e0950cb5128edfdf64464b4d9212a6b63cb9214b3fb",
+      "tracked": false
+    }
+  ],
+  "release_commands": [
+    "verify-toolchain",
+    "check-assets",
+    "lint",
+    "test",
+    "roundtrip-formats",
+    "verify",
+    "verify-layout",
+    "symbols",
+    "trace",
+    "release-audit",
+    "verify-relocation",
+    "check-content-zero-edit",
+    "validate-content",
+    "check-studios",
+    "smoke-level-playtest",
+    "verify-sound-sequencer",
+    "source-2-audit",
+    "source-2-check",
+    "source-2-pre-tag-check",
+    "source-2-tag-check",
+    "format-check",
+    "scaffold-check"
+  ],
   "preservation_compatibility": {
     "canonical_rom_sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
     "canonical_rom_size": 131072,
@@ -22,20 +669,30 @@
     "z80_driver_gate": "z80-check",
     "z80_sound_data_source": "src/sound/z80/data.asm",
     "z80_sound_data_gate": "z80-data-check",
-    "source_structure_manifest": "config/source_structure.json",
+    "source_structure_manifest": "config/reconstruction/source_structure.json",
     "source_structure_gate": "check-source-structure",
-    "format_manifest": "config/data_formats.json",
+    "format_manifest": "config/authoring/data_formats.json",
     "exact_round_trips": 9,
     "semantic_round_trips": 6,
     "opaque_extracted_segments": 2,
-    "residual_uncertainty": ["DATA-002", "RAM-001", "RAM-002", "RAM-003", "CODE-001"]
+    "residual_uncertainty": [
+      "DATA-002",
+      "RAM-001",
+      "RAM-002",
+      "RAM-003",
+      "CODE-001"
+    ]
   },
   "authoring": {
     "status": "satisfied",
-    "manifest": "config/content_studios.json",
+    "manifest": "config/authoring/content_studios.json",
     "studio_count": 3,
     "artifact_count": 5,
-    "supported_studios": ["level", "graphics", "sound"],
+    "supported_studios": [
+      "level",
+      "graphics",
+      "sound"
+    ],
     "headless_gate": "check-studios",
     "editable_build_gate": "build-content",
     "level_playtest_target": "playtest-level",
@@ -44,64 +701,13 @@
     "sound_fidelity_gate": "verify-sound-sequencer",
     "sound_fidelity": {
       "header": "zMusic85Header",
-      "gens_frames": [320, 457],
-      "exact_ordered_ym2612_writes": 2624,
+      "gens_frames": [
+        320,
+        457
+      ],
+      "exact_ordered_chip_writes": 2624,
       "max_timing_error_frames": 2.1,
       "emulator_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a"
     }
-  },
-  "conditional_scope": {
-    "revisions": {
-      "status": "not_applicable",
-      "reason": "The project claims one canonical JUE cartridge image and no additional revision identity."
-    },
-    "platform_profiles": {
-      "status": "not_applicable",
-      "reason": "The project claims only the Sega Mega Drive / Genesis cartridge platform."
-    },
-    "experimental_builds": {
-      "status": "not_applicable",
-      "reason": "Source 2.0 adds isolated content authoring and does not claim behavior-changing builds."
-    }
-  },
-  "documented_exclusions": [
-    {
-      "id": "byte_exact_nemesis_recompression",
-      "registry": "DATA-002",
-      "reason": "All six streams re-encode to smaller valid streams with identical pixels, but not the original heuristic split."
-    },
-    {
-      "id": "japanese_guide_text_editor",
-      "reason": "The Japanese guide uses raw glyph bytes rather than the printable ASCII records exposed by Graphics Studio. It remains editable as semantic assembly source."
-    }
-  ],
-  "required_documents": [
-    "README.md",
-    "docs/content_authoring.md",
-    "docs/data_formats.md",
-    "docs/z80_sound_driver.md",
-    "docs/source_layout.md",
-    "docs/unknowns.md",
-    "docs/source_reconstruction_2_0.md"
-  ],
-  "required_targets": [
-    "release-check",
-    "verify-relocation",
-    "check-content-zero-edit",
-    "validate-content",
-    "check-studios",
-    "level-studio",
-    "playtest-level",
-    "smoke-level-playtest",
-    "graphics-studio",
-    "sound-studio",
-    "preview-sound",
-    "build-ymfm-renderer",
-    "trace-sound",
-    "verify-sound-sequencer",
-    "check-source-structure",
-    "source-2-audit",
-    "source-2-release-audit",
-    "source-2-check"
-  ]
+  }
 }

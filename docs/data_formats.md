@@ -105,7 +105,7 @@ built into the ROM for attract mode.
 ## Round trips
 
 `make roundtrip-formats` decodes every segment and checks it against the claim
-recorded in `config/data_formats.json`. Three claims are possible and they are
+recorded in `config/authoring/data_formats.json`. Three claims are possible and they are
 not interchangeable.
 
 **`exact`** -- decoding and re-encoding returns the original bytes. Nine

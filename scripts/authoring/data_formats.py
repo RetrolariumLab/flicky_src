@@ -161,7 +161,7 @@ def check_nemesis(data: bytes) -> tuple[bool, str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", default="config/data_formats.json")
+    parser.add_argument("--manifest", default="config/authoring/data_formats.json")
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--summary", help="Write a JSON summary here")
     args = parser.parse_args()

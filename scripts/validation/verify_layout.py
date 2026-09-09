@@ -142,7 +142,7 @@ def check_image(layout: dict, rom: Path, errors: list[str]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--layout", default="config/rom_layout.json")
+    parser.add_argument("--layout", default="config/linker/rom_layout.json")
     parser.add_argument("--listing", default="build/main.lst")
     parser.add_argument("--rom", default="fbuilt.bin")
     args = parser.parse_args()

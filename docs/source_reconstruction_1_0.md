@@ -39,14 +39,14 @@ extracted from it, or any build output.
 | The reconstruction is faithful | `make verify` compares against the cartridge dump and reports the first differing offset |
 | The source can be navigated | 43 modules under a 700-line cap, mapped in [`source_layout.md`](source_layout.md) and [`subsystems.md`](subsystems.md) |
 | Names follow a checked vocabulary | Every symbol names a subsystem, derives from one, or is a declared hardware or header exception; `make lint` rejects the rest |
-| Every name traces to the disassembly | `docs/provenance/label_renames.json` maps all 1,717 imported labels to their current names and paths, held to the source in both directions by `make test` |
+| Every name traces to the disassembly | `config/reconstruction/label_renames.json` maps all 1,717 imported labels to their current names and paths, held to the source in both directions by `make test` |
 | Names mean something | Zero address-derived identifiers across 1,979 definitions, enforced by `make lint --strict-naming` |
 | The memory map is known | 194 named work RAM fields in [`ram_fields.md`](ram_fields.md), raw addresses rejected outside `src/memory/` |
-| Authored data is understood | 8 of 17 segments round-trip byte for byte; the rest declare a weaker claim in `config/data_formats.json` |
+| Authored data is understood | 8 of 17 segments round-trip byte for byte; the rest declare a weaker claim in `config/authoring/data_formats.json` |
 | Uncertainty is explicit | 8 entries in [`unknowns.md`](unknowns.md), seven open and one resolved, each referenced from the source, checked both ways by lint |
 | Behaviour is observed, not assumed | 12 movie replays under the emulator, 68 expectations about work RAM checked against the captures |
 | The toolchain is the declared one | SHA-256 for every vendored binary in `config/toolchain.json`, checked by `make verify-toolchain` before the assembler runs |
-| The ROM layout is declared, not implied | `config/rom_layout.json` holds 43 module ranges, 9 landmarks and the padding gap; `make verify-layout` checks all three against the build |
+| The ROM layout is declared, not implied | `config/linker/rom_layout.json` holds 43 module ranges, 9 landmarks and the padding gap; `make verify-layout` checks all three against the build |
 | The release boundary is machine-checked | The public manifest uses schema version 1, and `make release-audit` resolves every requirement's evidence to a real file, target or scenario |
 | The tooling itself is checked | 155 unit tests over the formatter, the linters, the codecs, the state-dump reader, the symbol export and this audit |
 | The contract holds together | `make release-audit` cross-checks the manifests, milestones, documents, targets, toolchain and full git history |

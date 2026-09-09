@@ -15,8 +15,9 @@ itself. `src/main.s` is no longer a source file: it is an index of 36
 address-ordered modules, and every symbol in them says what it is for -- there
 are no disassembler-generated names left anywhere in the source.
 
-Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is
-tag-ready on top of it, with isolated Level, Graphics, and Sound studios. The
+Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is in
+release preparation on top of it, with isolated Level, Graphics, and Sound
+studios. The
 data formats have codecs, the symbol map is exported for debuggers, twelve scenarios
 replay under the emulator and are checked against 68 declared facts about work
 RAM, and `make release-check` audits the whole release contract. See
@@ -59,11 +60,15 @@ flicky_src/
 |   |-- windows_i386/       # asw.exe, p2bin.exe, message catalogs
 |   |-- linux_x86_64/       # asl, p2bin, message catalogs
 |   `-- README.md           # Provenance, hashes, why -p=FF matters
-|-- config/                 # Build and release contracts
-|   |-- rom_layout.json     # Memory map, landmarks, padding gap, module ranges
-|   |-- source_structure.json # 300-700-line policy and justified exceptions
-|   |-- toolchain.json      # Toolchain hashes, pinned commits, supported hosts
-|   `-- source_reconstruction_1_0.json   # The release manifest
+|-- config/                 # Build, authoring, runtime, and release contracts
+|   |-- authoring/          # Studio inventory and editable data formats
+|   |-- debugger/           # Symbol-resolved breakpoints and watches
+|   |-- linker/             # ROM map, landmarks, padding gap, module ranges
+|   |-- reconstruction/     # 300-700-line source policy and exceptions
+|   |-- runtime/            # Emulator capture configuration
+|   |-- toolchain.json      # Toolchain hashes, pins, and supported hosts
+|   |-- source_reconstruction_1_0.json
+|   `-- source_reconstruction_2_0.json
 |-- data/                   # Extracted binary segments (ignored, from make split)
 |-- docs/                   # See docs/index.md
 |   |-- adr/                # Decisions that would be expensive to reverse
@@ -76,7 +81,7 @@ flicky_src/
 |   |-- runtime/            # Emulator capture and state validation
 |   |-- validation/         # Static, binary and release gates
 |   `-- workflow/           # Reverse-engineering maintenance tools
-|-- tests/                  # Unit tests for the tooling
+|-- tests/                  # Tests mirroring authoring/runtime/validation
 |-- src/
 |   |-- compression/        # Nemesis and Enigma decompressors
 |   |-- data/               # Binary includes and the large data tables
@@ -88,7 +93,8 @@ flicky_src/
 |   |-- system/             # Boot, entry point, interrupts, DMA, input
 |   `-- main.s              # Address-ordered include index, the entrypoint
 |-- tools/                  # C and Python decompressors
-`-- Makefile
+|-- mk/                     # Authoring, runtime, validation, workflow recipes
+`-- Makefile                # Public interface and build primitives
 ```
 
 ## Make targets
@@ -111,7 +117,7 @@ make test           # Unit tests for the Python tooling
 make roundtrip-formats   # Decode and re-encode the authored data
 make symbols        # Export build/main.sym for debuggers
 make verify-toolchain  # Hash-check the vendored assembler before it runs
-make verify-layout     # Check the ROM layout against config/rom_layout.json
+make verify-layout     # Check the ROM layout against config/linker/rom_layout.json
 make check-source-structure # Enforce 300-700 lines, justified exceptions, paths
 make release-check  # The complete acceptance gate
 
@@ -124,6 +130,10 @@ make sound-studio              # Open the music and SFX editor
 make preview-sound SOUND=zMusic81Header  # Render standalone VGM and WAV audio
 make verify-sound-sequencer    # Compare Python YM2612 writes with the real Z80 driver
 make check-studios             # Validate Studio models without opening GUI
+make source-2-audit            # Check the development manifest
+make source-2-check            # Complete 1.0 + 2.0 acceptance gate
+make source-2-pre-tag-check    # Clean-tree check before creating the tag
+make source-2-tag-check        # Verify the annotated tag at HEAD
 ```
 
 The toolchain folder is chosen from the host platform; override it with

@@ -18,6 +18,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from validation.make_interface import makefile_targets, makefile_text
+
 MILESTONE_RE = re.compile(r"^###\s+(\d+)\.\s+.*?-\s+(\w[\w ]*)$", re.MULTILINE)
 
 MANIFEST_SCHEMA_VERSION = 1
@@ -156,11 +158,6 @@ def check_requirements(contract: dict, errors: list[str]) -> int:
             if not Path(relative).is_file():
                 errors.append(f"requirement {identifier}: cites a missing scenario file {relative}")
     return len(requirements)
-
-
-def makefile_targets() -> set[str]:
-    text = Path("Makefile").read_text(encoding="utf-8")
-    return set(re.findall(r"^([A-Za-z][\w.-]*):", text, re.MULTILINE))
 
 
 def check_profiles_and_artifacts(contract: dict, errors: list[str]) -> None:
@@ -339,7 +336,7 @@ def check_manifests(contract: dict, errors: list[str]) -> None:
             f"contract says {contract['evidence']['runtime_scenarios']}"
         )
 
-    formats = load(Path("config/data_formats.json"))
+    formats = load(Path("config/authoring/data_formats.json"))
     exact = sum(1 for a in formats["artifacts"] if a["round_trip"] == "exact")
     semantic = sum(1 for a in formats["artifacts"] if a["round_trip"] == "semantic")
     # The 1.0 contract records the minimum evidence shipped at that milestone.
@@ -357,16 +354,16 @@ def check_manifests(contract: dict, errors: list[str]) -> None:
             f"contract requires at least {required_understood}"
         )
     if len(formats["artifacts"]) != contract["evidence"]["extracted_segments"]:
-        errors.append("config/data_formats.json does not cover every extracted segment")
+        errors.append("config/authoring/data_formats.json does not cover every extracted segment")
 
-    layout = load(Path("config/rom_layout.json"))
+    layout = load(Path("config/linker/rom_layout.json"))
     if layout["rom_image"]["size"] != reference["rom_size"]:
-        errors.append("config/rom_layout.json size disagrees with the release contract")
+        errors.append("config/linker/rom_layout.json size disagrees with the release contract")
     if layout["rom_image"]["padding_byte"].lower() != reference["padding_byte"].lower():
-        errors.append("config/rom_layout.json padding byte disagrees with the release contract")
+        errors.append("config/linker/rom_layout.json padding byte disagrees with the release contract")
     if len(layout["modules"]) != contract["evidence"]["modules"]:
         errors.append(
-            f"config/rom_layout.json declares {len(layout['modules'])} modules, "
+            f"config/linker/rom_layout.json declares {len(layout['modules'])} modules, "
             f"contract says {contract['evidence']['modules']}"
         )
 
@@ -404,8 +401,9 @@ def check_make_targets(contract: dict, errors: list[str]) -> None:
         if target not in targets:
             errors.append(f"Makefile has no target '{target}'")
 
-    gate = re.search(r"^release-check:\n((?:\t.*\n)+)", Path("Makefile").read_text(
-        encoding="utf-8"), re.MULTILINE)
+    gate = re.search(
+        r"^release-check:\n((?:\t.*\n)+)", makefile_text(), re.MULTILINE
+    )
     if not gate:
         errors.append("Makefile has no release-check recipe")
         return
