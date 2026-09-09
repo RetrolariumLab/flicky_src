@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 23
+    "commit_count": 24
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -213,7 +213,7 @@
       "kind": "tooling",
       "summary": "Verify the selected emulator before every runtime launch and prepare builds only from the pinned source revision.",
       "commits": [
-        "release-commit"
+        "e504eee8fbf17c0bab38c3d51f24efc2cdbf368f"
       ],
       "evidence": [
         "verify-emulator",
@@ -221,6 +221,20 @@
         "tests/build/test_prepare_gens_checkout.py",
         "tests/validation/test_toolchain.py",
         "tests/validation/test_make_interface.py"
+      ]
+    },
+    {
+      "id": "isolated-runtime-capture",
+      "kind": "tooling",
+      "summary": "Capture runtime evidence in a fresh isolated tree and publish only complete runs so stale files cannot satisfy validation.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "scripts/runtime/run_runtime_scenarios.py",
+        "tests/runtime/test_runtime_scenarios.py",
+        "docs/runtime_evidence.md",
+        "trace"
       ]
     }
   ],
@@ -318,7 +332,9 @@
           "trace"
         ],
         "files": [
-          "config/toolchain.json"
+          "config/toolchain.json",
+          "scripts/runtime/run_runtime_scenarios.py",
+          "tests/runtime/test_runtime_scenarios.py"
         ],
         "scenarios": [
           "scenarios/runtime_scenarios.json"

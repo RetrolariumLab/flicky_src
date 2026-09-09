@@ -172,6 +172,12 @@ them into an ignored directory is deliberate: a stale local capture must not be
 able to mask a regression. `make release-check` runs `make trace`, so the gate
 captures fresh rather than trusting whatever is on disk.
 
+Each invocation writes every selected scenario and its provenance into a new
+isolated staging directory. Only a complete run replaces the prior recognized
+capture tree. A crash, nonzero exit, or successful emulator invocation that
+produces no frames leaves the old tree unpublished and makes the capture command
+fail, so validation can only observe files produced together by one run.
+
 A movie can only be replayed from its start, so the emulator writes every frame
 up to a scenario's last, and the runner deletes the ones outside the window as
 soon as that scenario finishes. It reports how much it dropped. Without it a

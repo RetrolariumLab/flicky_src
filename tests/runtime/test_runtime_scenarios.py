@@ -3,7 +3,11 @@ import json
 import struct
 import tempfile
 import unittest
+from contextlib import redirect_stderr
+from io import StringIO
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -197,6 +201,118 @@ class Pruning(unittest.TestCase):
             self.assertEqual(
                 self.files(directory), ["notes.txt", "reference.png", "summary.json"]
             )
+
+
+class CaptureIsolation(unittest.TestCase):
+    def fixture(self, root: Path) -> tuple[dict, Path, Path, Path]:
+        gens = root / "Gens.exe"
+        gens.write_bytes(b"emulator")
+        rom = root / "game.bin"
+        rom.write_bytes(b"rom")
+        movie = root / "movie.gmv"
+        movie.write_bytes(b"movie")
+        scenarios = root / "scenarios.json"
+        spec = {
+            "schema_version": 2,
+            "rom_sha1": hashlib.sha1(rom.read_bytes()).hexdigest(),
+            "movies": {
+                "movie": {
+                    "path": str(movie),
+                    "sha1": hashlib.sha1(movie.read_bytes()).hexdigest(),
+                }
+            },
+            "capture": {"interval": 20, "frameskip": 0},
+            "scenarios": [
+                {
+                    "id": "synthetic",
+                    "movie": "movie",
+                    "first_frame": 20,
+                    "last_frame": 40,
+                }
+            ],
+        }
+        scenarios.write_text(json.dumps(spec), encoding="utf-8")
+        return spec, gens, rom, scenarios
+
+    def stale_capture(self, output: Path) -> Path:
+        target = output / "synthetic"
+        target.mkdir(parents=True)
+        stale = target / "000020.png"
+        stale.write_bytes(b"stale")
+        (target / "000020.genstate").write_bytes(b"stale state")
+        (target / "obsolete.txt").write_text("old run", encoding="utf-8")
+        (output / "capture_info.json").write_text("{}", encoding="utf-8")
+        return stale
+
+    def test_no_output_run_cannot_reuse_stale_capture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec, gens, rom, scenarios = self.fixture(root)
+            output = root / "runtime"
+            stale = self.stale_capture(output)
+            with (
+                patch.object(
+                    run_runtime_scenarios.subprocess,
+                    "run",
+                    return_value=SimpleNamespace(returncode=0),
+                ) as run,
+                redirect_stderr(StringIO()),
+            ):
+                result = run_runtime_scenarios.capture_scenarios(
+                    spec, gens, rom, scenarios, output
+                )
+
+            self.assertEqual(result, 1)
+            self.assertEqual(stale.read_bytes(), b"stale")
+            screenshot_dir = Path(
+                run.call_args.args[0][
+                    run.call_args.args[0].index("-screenshot-dir") + 1
+                ]
+            )
+            self.assertNotEqual(screenshot_dir.parent, output)
+            self.assertFalse(screenshot_dir.exists())
+
+    def test_successful_run_replaces_the_entire_previous_capture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec, gens, rom, scenarios = self.fixture(root)
+            output = root / "runtime"
+            stale = self.stale_capture(output)
+
+            def capture(command):
+                target = Path(command[command.index("-screenshot-dir") + 1])
+                (target / "000020.png").write_bytes(b"fresh")
+                (target / "000020.genstate").write_bytes(b"fresh state")
+                return SimpleNamespace(returncode=0)
+
+            with patch.object(run_runtime_scenarios.subprocess, "run", side_effect=capture):
+                result = run_runtime_scenarios.capture_scenarios(
+                    spec, gens, rom, scenarios, output
+                )
+
+            self.assertEqual(result, 0)
+            self.assertNotEqual(stale.read_bytes(), b"stale")
+            self.assertFalse((output / "synthetic/obsolete.txt").exists())
+            self.assertEqual(
+                (output / "synthetic/000020.png").read_bytes(), b"fresh"
+            )
+            self.assertTrue((output / "capture_info.json").is_file())
+
+    def test_unrecognized_output_tree_is_never_replaced(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec, gens, rom, scenarios = self.fixture(root)
+            output = root / "runtime"
+            output.mkdir()
+            sentinel = output / "user-content.txt"
+            sentinel.write_text("keep", encoding="utf-8")
+
+            with self.assertRaises(SystemExit):
+                run_runtime_scenarios.capture_scenarios(
+                    spec, gens, rom, scenarios, output
+                )
+
+            self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep")
 
 
 class CaptureProvenance(unittest.TestCase):

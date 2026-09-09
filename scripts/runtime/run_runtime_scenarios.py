@@ -6,8 +6,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 import subprocess
 import sys
+import tempfile
+import uuid
 from pathlib import Path
 
 
@@ -79,6 +82,132 @@ def prune_to_window(directory: Path, first: int, last: int) -> tuple[int, int]:
     return removed, freed
 
 
+def replaceable_capture_root(output_root: Path) -> bool:
+    """Return whether an existing output is empty or owned by this runner."""
+    if not output_root.exists():
+        return True
+    if output_root.is_symlink() or not output_root.is_dir():
+        return False
+    return not any(output_root.iterdir()) or (output_root / "capture_info.json").is_file()
+
+
+def publish_capture(staging: Path, output_root: Path) -> None:
+    """Atomically expose one complete run, then remove the previous capture."""
+    backup = output_root.with_name(
+        f".{output_root.name}.previous-{uuid.uuid4().hex}"
+    )
+    moved_previous = False
+    try:
+        if output_root.exists():
+            output_root.replace(backup)
+            moved_previous = True
+        staging.replace(output_root)
+    except OSError:
+        if moved_previous and backup.exists() and not output_root.exists():
+            backup.replace(output_root)
+        raise
+    if moved_previous:
+        shutil.rmtree(backup)
+
+
+def capture_scenarios(
+    spec: dict,
+    gens: Path,
+    rom: Path,
+    scenarios_path: Path,
+    output_root: Path,
+    only: str | None = None,
+) -> int:
+    """Capture into an isolated directory and publish only a complete run."""
+    scenarios = spec["scenarios"]
+    if only:
+        scenarios = [scenario for scenario in scenarios if scenario["id"] == only]
+        if not scenarios:
+            fail(f"no scenario with id {only}")
+
+    output_root = output_root.resolve()
+    if not replaceable_capture_root(output_root):
+        fail(f"refusing to replace unrecognized capture directory: {output_root}")
+    output_root.parent.mkdir(parents=True, exist_ok=True)
+
+    provenance = capture_provenance(gens, rom, scenarios_path)
+    capture = spec["capture"]
+    failures = 0
+
+    with tempfile.TemporaryDirectory(
+        prefix=f".{output_root.name}.capture-", dir=output_root.parent
+    ) as temporary:
+        staging = Path(temporary)
+        (staging / "capture_info.json").write_text(
+            json.dumps(provenance, indent=2) + "\n", encoding="utf-8", newline=""
+        )
+        print(
+            f"[INFO] emulator sha256 {provenance['emulator']['sha256'][:16]}..., "
+            "recorded for this isolated capture"
+        )
+
+        for scenario in scenarios:
+            movie = spec["movies"][scenario["movie"]]
+            target = staging / scenario["id"]
+            target.mkdir()
+            command = [
+                str(gens),
+                "-rom", str(rom),
+                "-play", movie["path"],
+                "-screenshot-interval", str(capture["interval"]),
+                "-screenshot-dir", str(target),
+                "-max-frames", str(scenario["last_frame"]),
+                "-save-state-dumps",
+                "-turbo",
+                "-frameskip", str(capture["frameskip"]),
+                "-nosound",
+            ]
+            print(
+                f"[RUN] {scenario['id']}: frames "
+                f"{scenario['first_frame']}-{scenario['last_frame']}"
+            )
+            result = subprocess.run(command)
+            if result.returncode != 0:
+                print(
+                    f"[ERROR] {scenario['id']}: emulator exited {result.returncode}",
+                    file=sys.stderr,
+                )
+                failures += 1
+                continue
+            produced = sorted(target.glob("*.png"))
+            if not produced:
+                print(f"[ERROR] {scenario['id']}: no frames captured", file=sys.stderr)
+                failures += 1
+                continue
+
+            removed, freed = prune_to_window(
+                target, scenario["first_frame"], scenario["last_frame"]
+            )
+            kept = sorted(target.glob("*.png"))
+            if not kept:
+                print(
+                    f"[ERROR] {scenario['id']}: nothing captured inside frames "
+                    f"{scenario['first_frame']}-{scenario['last_frame']}",
+                    file=sys.stderr,
+                )
+                failures += 1
+                continue
+            note = (
+                f", dropped {removed} outside the window "
+                f"({freed // (1024 * 1024)} MB)"
+            )
+            print(f"[OK] {scenario['id']}: {len(kept)} frames staged{note}")
+
+        if failures:
+            print(f"[FAIL] {failures} scenario(s) did not capture", file=sys.stderr)
+            return 1
+
+        publish_capture(staging, output_root)
+
+    print(f"[OK] captured {len(scenarios)} scenario(s) into {output_root}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scenarios", default="scenarios/runtime_scenarios.json")
@@ -103,69 +232,14 @@ def main() -> int:
 
     check_inputs(spec, Path(args.rom))
 
-    scenarios = spec["scenarios"]
-    if args.only:
-        scenarios = [s for s in scenarios if s["id"] == args.only]
-        if not scenarios:
-            fail(f"no scenario with id {args.only}")
-
-    output_root = Path(args.output_dir)
-    output_root.mkdir(parents=True, exist_ok=True)
-    provenance = capture_provenance(gens, Path(args.rom), Path(args.scenarios))
-    (output_root / "capture_info.json").write_text(
-        json.dumps(provenance, indent=2) + "\n", encoding="utf-8", newline=""
+    return capture_scenarios(
+        spec,
+        gens,
+        Path(args.rom),
+        Path(args.scenarios),
+        Path(args.output_dir),
+        args.only,
     )
-    print(f"[INFO] emulator sha256 {provenance['emulator']['sha256'][:16]}..., "
-          f"recorded in {output_root / 'capture_info.json'}")
-
-    capture = spec["capture"]
-    failures = 0
-
-    for scenario in scenarios:
-        movie = spec["movies"][scenario["movie"]]
-        target = output_root / scenario["id"]
-        target.mkdir(parents=True, exist_ok=True)
-        command = [
-            str(gens),
-            "-rom", args.rom,
-            "-play", movie["path"],
-            "-screenshot-interval", str(capture["interval"]),
-            "-screenshot-dir", str(target),
-            "-max-frames", str(scenario["last_frame"]),
-            "-save-state-dumps",
-            "-turbo",
-            "-frameskip", str(capture["frameskip"]),
-            "-nosound",
-        ]
-        print(f"[RUN] {scenario['id']}: frames {scenario['first_frame']}-{scenario['last_frame']}")
-        result = subprocess.run(command)
-        if result.returncode != 0:
-            print(f"[ERROR] {scenario['id']}: emulator exited {result.returncode}", file=sys.stderr)
-            failures += 1
-            continue
-        produced = sorted(target.glob("*.png"))
-        if not produced:
-            print(f"[ERROR] {scenario['id']}: no frames captured", file=sys.stderr)
-            failures += 1
-            continue
-
-        removed, freed = prune_to_window(
-            target, scenario["first_frame"], scenario["last_frame"]
-        )
-        kept = sorted(target.glob("*.png"))
-        if not kept:
-            print(f"[ERROR] {scenario['id']}: nothing captured inside frames "
-                  f"{scenario['first_frame']}-{scenario['last_frame']}", file=sys.stderr)
-            failures += 1
-            continue
-        note = f", dropped {removed} outside the window ({freed // (1024 * 1024)} MB)"
-        print(f"[OK] {scenario['id']}: {len(kept)} frames in {target}{note}")
-
-    if failures:
-        print(f"[FAIL] {failures} scenario(s) did not capture", file=sys.stderr)
-        return 1
-    print(f"[OK] captured {len(scenarios)} scenario(s) into {output_root}")
-    return 0
 
 
 if __name__ == "__main__":
