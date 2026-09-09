@@ -80,8 +80,8 @@ typo fails in a second rather than after a movie replay.
 
 `make source-2-check` preserves that entire 1.0 gate as its first step. The
 release workflow then uses `make source-2-pre-tag-check` on the clean release
-commit and `make source-2-tag-check` after creating the annotated tag. A green
-development audit is intentionally weaker than either tag-state check.
+commit and `make source-2-tag-check` after creating the annotated tag. The
+ordinary manifest audit is intentionally weaker than either tag-state check.
 
 `make scaffold-check` is the public-clone subset: repository lint, both
 release-manifest audits, synthetic Enigma codec cases, Make-interface tests,

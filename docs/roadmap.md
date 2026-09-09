@@ -218,7 +218,7 @@ worktree.
 Fixed-layout hacks and bug fixes belong to a separate entrypoint and a separate
 output. The preservation build stays the default and the gate stays permanent.
 
-### 12. Source Reconstruction 2.0 - In Progress
+### 12. Source Reconstruction 2.0 - Complete
 
 The resident Z80 driver and sound banks are semantic, assembler-owned source.
 An isolated content pipeline provides Level, Graphics, and Sound studios over
@@ -236,10 +236,10 @@ trace, and the machine-readable 2.0 contract.
 supported, the zero-edit ROM is exact, residual uncertainty is explicit, and
 `make source-2-check` passes.
 
-The implementation goals above are met, but release preparation is still in
-progress. The repository is being aligned with its current public release
-policy, including history, language, clean-tree, pre-tag, and post-tag audits.
-This milestone becomes Complete only on the reviewed release commit.
+The implementation goals and release preparation are complete. The rewritten
+draft history, public language, manifest, aggregate gate, and clean-tree checks
+are aligned on the tag-ready candidate. Publication remains a separate owner
+action: create the annotated tag only after final review of this exact commit.
 
 ## Permanent invariants
 
