@@ -199,10 +199,10 @@ deviations, licensing and provenance, plus a per-requirement status with
 evidence that has to resolve to a real file, target or scenario.
 
 Two of its requirements had nothing behind them and now do. The toolchain is
-checked against recorded SHA-256 hashes *before* the assembler runs rather than
-after the ROM disagrees, and the emulator is pinned by upstream commit because a
-locally cross-built MinGW binary has no stable hash. The ROM layout moved out of
-prose into `config/linker/rom_layout.json` and is checked against three separate ground
+checked against recorded SHA-256 hashes *before* any executable runs, and the
+source-built emulator must match both its pinned checkout and its approved
+binary hash. The ROM layout moved out of prose into
+`config/linker/rom_layout.json` and is checked against three separate ground
 truths -- the assembler's own listing, its symbol table and the built image.
 
 *Exit criterion:* `make release-audit` verifies the manifest against reality,

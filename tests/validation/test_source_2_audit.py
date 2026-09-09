@@ -78,6 +78,18 @@ class Source2Audit(unittest.TestCase):
         errors = self.validate_copy(document)
         self.assertIn("sound fidelity timing tolerance exceeds 2.1 frames", errors)
 
+    def test_sound_fidelity_rejects_an_unapproved_emulator_hash(self):
+        document = json.loads(json.dumps(self.manifest))
+        document["authoring"]["sound_fidelity"]["emulator_sha256"] = "0" * 64
+        errors = self.validate_copy(document)
+        self.assertIn("sound fidelity emulator hash differs from toolchain pin", errors)
+
+    def test_workstation_gate_matches_the_studio_manifest(self):
+        document = json.loads(json.dumps(self.manifest))
+        document["authoring"]["workstation_gate"] = "check-studios"
+        errors = self.validate_copy(document)
+        self.assertIn("workstation Studio gate differs from its manifest", errors)
+
     def test_public_release_audit_runs_end_to_end(self):
         result = subprocess.run(
             [

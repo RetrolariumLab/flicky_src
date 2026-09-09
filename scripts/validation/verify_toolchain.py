@@ -5,10 +5,9 @@ A byte-identical ROM is only evidence if the thing that produced it is known.
 This runs before the build rather than after it, so a swapped assembler is
 caught by name instead of showing up as a mysterious diff.
 
-The emulator is pinned differently from the assembler. It is cross-built
-locally rather than vendored, and a MinGW PE carries build-time fields, so its
-identity is the upstream commit; the hash of the binary that actually ran is
-recorded rather than required.
+Source-built tools retain their upstream commit provenance, but the executable
+that actually runs must also match an approved hash. This prevents a different
+binary beside a correctly pinned checkout from producing accepted evidence.
 """
 
 from __future__ import annotations
@@ -40,22 +39,11 @@ def check_files(entries: list[dict], errors: list[str], notes: list[str]) -> int
     for entry in entries:
         path = Path(entry["path"])
         if not path.is_file():
-            if entry.get("observed_only"):
-                notes.append(f"{path} is not present; nothing to record")
-                continue
             errors.append(f"{path} is missing")
             continue
 
         actual = sha256_of(path)
         size = path.stat().st_size
-        if entry.get("observed_only"):
-            if actual != entry["sha256"]:
-                notes.append(
-                    f"{path} is a different build than the one 1.0 captured with "
-                    f"(sha256 {actual[:16]}...); the commit is what is pinned"
-                )
-            continue
-
         if size != entry["size"]:
             errors.append(f"{path} is {size} bytes, expected {entry['size']}")
         if actual != entry["sha256"]:

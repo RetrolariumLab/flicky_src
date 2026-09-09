@@ -76,6 +76,7 @@ source-2-check:
 	$(MAKE) check-content-zero-edit
 	$(MAKE) validate-content
 	$(MAKE) check-studios
+	$(MAKE) smoke-studios-workstation
 	$(MAKE) smoke-level-playtest
 	$(MAKE) verify-sound-sequencer
 	$(MAKE) source-2-audit

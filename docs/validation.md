@@ -1,6 +1,6 @@
 # Validation
 
-Eight layers, in increasing cost and decreasing frequency. They check different
+Nine layers, in increasing cost and decreasing frequency. They check different
 things and none of them substitutes for another.
 
 ```bash
@@ -13,6 +13,7 @@ make test                 # focused unit tests for the Python tooling
 make roundtrip-formats    # decode and re-encode the authored data formats
 make trace                # emulator evidence for gameplay transactions
 make verify-sound-sequencer # Python audio writes against the real Z80 driver
+make smoke-studios-workstation # Real Tk windows and public editor actions
 make release-check        # everything above, in order
 make source-2-audit       # validate the current 2.0 contract state
 make source-2-check       # complete 1.0 gate, then every 2.0 gate
@@ -22,11 +23,11 @@ make scaffold-check       # static clone checks without a private ROM
 
 ## What each layer can tell you
 
-**`make verify-toolchain`** hashes the vendored assembler and its message
-catalogs against `config/toolchain.json` and refuses to go on if they differ. It
-runs before the assembler rather than after, so a swapped binary is reported by
-name instead of appearing as an unexplained byte difference. `build` and
-`verify` both depend on it.
+**`make verify-toolchain`** hashes every executable and the assembler message
+catalogs against `config/toolchain.json` and refuses to go on if they differ.
+For source-built Gens it also checks the available checkout commit. A substituted
+emulator beside the pinned checkout is therefore rejected before capture,
+playtest, or sound tracing begins. `build` and `verify` both depend on the gate.
 
 **`make lint`** reads text. It knows that a label sits at column zero, that no
 symbol carries a ROM address, that every evidence tag resolves to a registry
@@ -69,6 +70,12 @@ and requires 2,624 ordered non-timer writes to equal the standalone Python
 sequencer exactly. Their sample positions must also agree with the
 frame-resolution Gens trace within 2.1 frames. A missing, truncated, value-,
 order-, or timing-divergent trace fails the Source 2.0 gate.
+
+**`make smoke-studios-workstation`** starts genuine Tk roots, constructs every
+Studio view, invokes the Save, Build ROM, preview/play, Stop, and dirty-close
+paths declared for that Studio, and fails if an action does not reach its
+validated adapter boundary. Temporary workspace copies keep the smoke isolated
+from local authored content.
 
 ## The rule
 

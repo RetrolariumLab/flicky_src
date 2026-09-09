@@ -47,6 +47,14 @@ the command line. A format is not supported merely because the GUI can display
 it: headless load, validation, save, and zero-edit reproduction are all part of
 the claim.
 
+`make smoke-studios-workstation` creates real Tk windows for all three Studios
+and invokes their public buttons against temporary copies of the workspace. It
+covers Save and Build ROM everywhere, Level Studio Playtest and Stop, both Sound
+Studio previews and Stop, plus cancel and confirm paths for closing every dirty
+window. External build, emulator, and audio adapters are intercepted only after
+the GUI reaches them; their underlying behavior is covered separately by the
+content-build, level-playtest, and sound-fidelity gates.
+
 ## Level Studio
 
 `make level-studio` opens the current visual editor. It exposes all 48 round

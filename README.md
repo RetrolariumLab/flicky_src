@@ -130,6 +130,7 @@ make sound-studio              # Open the music and SFX editor
 make preview-sound SOUND=zMusic81Header  # Render standalone VGM and WAV audio
 make verify-sound-sequencer    # Compare Python YM2612 writes with the real Z80 driver
 make check-studios             # Validate Studio models without opening GUI
+make smoke-studios-workstation # Exercise real Tk windows and public Studio actions
 make source-2-audit            # Check the Source 2.0 manifest
 make source-2-check            # Complete 1.0 + 2.0 acceptance gate
 make source-2-pre-tag-check    # Clean-tree check before creating the tag

@@ -13,6 +13,13 @@ from typing import Any
 
 
 EXPECTED_STUDIOS = ("level", "graphics", "sound")
+EXPECTED_WORKSTATION_ACTIONS = {
+    "level": ("save", "build", "playtest", "stop", "dirty-close"),
+    "graphics": ("save", "build", "dirty-close"),
+    "sound": (
+        "save", "build", "preview-song", "preview-sfx", "stop", "dirty-close",
+    ),
+}
 
 
 def fail(message: str) -> None:
@@ -57,6 +64,15 @@ def validate_manifest(document: dict[str, Any]) -> list[str]:
         for artifact in studio.get("artifacts", []):
             if artifact not in known:
                 errors.append(f"studio {studio.get('id')} names unknown artifact {artifact}")
+        if studio.get("status") == "supported":
+            expected_actions = EXPECTED_WORKSTATION_ACTIONS.get(studio.get("id"), ())
+            if tuple(studio.get("workstation_actions", ())) != expected_actions:
+                errors.append(
+                    f"studio {studio.get('id')} workstation actions differ"
+                )
+    if all(studio.get("status") == "supported" for studio in studios):
+        if document.get("workstation_smoke") != "smoke-studios-workstation":
+            errors.append("workstation smoke target differs")
     for artifact in document.get("artifacts", []):
         identifier = artifact.get("id", "<missing>")
         if artifact.get("studio") not in EXPECTED_STUDIOS:

@@ -66,3 +66,6 @@ check-studios: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio --check
 	@$(PYTHON) $(RUN_SCRIPT) authoring.graphics_studio --check
 	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_studio --check
+
+smoke-studios-workstation: init-content
+	@$(PYTHON) $(RUN_SCRIPT) authoring.studio_workstation_smoke

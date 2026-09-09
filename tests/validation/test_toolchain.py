@@ -18,8 +18,8 @@ class Manifest(unittest.TestCase):
                 self.assertTrue(component.get(field), f"{component.get('id')}: {field}")
 
     def test_a_source_built_component_pins_a_commit(self):
-        # A locally built binary has no stable hash, so the commit is the
-        # identity. Without one, nothing says which build ran.
+        # A source-built component keeps its source identity in addition to
+        # the approved hash of the executable that actually runs.
         for component in CONFIG["components"]:
             if component["provenance"] == "source-built":
                 self.assertRegex(component["source_commit"] or "", r"^[0-9a-f]{40}$")
@@ -36,7 +36,7 @@ class Manifest(unittest.TestCase):
             for entries in component["files"].values():
                 for entry in entries:
                     path = ROOT / entry["path"]
-                    if not path.is_file() or entry.get("observed_only"):
+                    if not path.is_file():
                         continue
                     digest = hashlib.sha256(path.read_bytes()).hexdigest()
                     self.assertEqual(digest, entry["sha256"], entry["path"])
@@ -84,20 +84,27 @@ class Verification(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("missing", errors[0])
 
-    def test_an_observed_only_file_only_produces_a_note(self):
-        # The emulator is pinned by commit, so a different local build is
-        # recorded rather than rejected.
+    def test_a_substituted_emulator_binary_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "Gens.exe"
             path.write_bytes(b"a build")
             entry = self.entry(path)
-            entry["observed_only"] = True
             entry["sha256"] = "0" * 64
             errors, notes = [], []
             verify_toolchain.check_files([entry], errors, notes)
-            self.assertEqual(errors, [])
-            self.assertEqual(len(notes), 1)
-            self.assertIn("different build", notes[0])
+            self.assertEqual(notes, [])
+            self.assertEqual(len(errors), 1)
+            self.assertIn("does not match the recorded build", errors[0])
+
+    def test_emulator_manifest_enforces_commit_and_binary_hash(self):
+        emulator = next(
+            component for component in CONFIG["components"]
+            if component["id"] == "emulator"
+        )
+        self.assertEqual(emulator["identity"], "source_commit_and_binary_hash")
+        for entries in emulator["files"].values():
+            for entry in entries:
+                self.assertNotIn("observed_only", entry)
 
 
 if __name__ == "__main__":
