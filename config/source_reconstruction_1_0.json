@@ -399,7 +399,7 @@
           "scripts/validation/verify_toolchain.py",
           "bin/README.md"
         ],
-        "note": "SHA-256 for every vendored binary and message catalog, checked before use. The emulator is pinned by upstream commit because it is cross-built locally and a MinGW PE is not reproducible byte for byte; the hash of the build that produced this release's captures is recorded."
+        "note": "SHA-256 for every executable and message catalog is checked before use. The source-built emulator must match both its pinned checkout commit and the approved executable hash used by the runtime evidence."
       }
     },
     "runtime_coverage": {

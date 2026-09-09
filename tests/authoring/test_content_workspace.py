@@ -46,6 +46,15 @@ class ManifestValidation(unittest.TestCase):
         path = ROOT / "config" / "authoring" / "content_studios.json"
         self.assertEqual(content_workspace.validate_manifest(json.loads(path.read_text())), [])
 
+    def test_supported_studios_declare_workstation_actions(self):
+        path = ROOT / "config" / "authoring" / "content_studios.json"
+        document = json.loads(path.read_text())
+        for studio in document["studios"]:
+            self.assertEqual(
+                tuple(studio["workstation_actions"]),
+                content_workspace.EXPECTED_WORKSTATION_ACTIONS[studio["id"]],
+            )
+
     def test_parent_paths_are_rejected(self):
         document = manifest()
         document["artifacts"][0]["workspace"] = "../outside.asm"

@@ -115,7 +115,7 @@ include $(MAKE_FRAGMENTS)
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation check-source-structure init split check-assets \
         compare lint format format-check scaffold-check tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
-        init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios \
+        init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios smoke-studios-workstation \
         test release-audit release-check source-2-audit source-2-release-audit source-2-check source-2-pre-tag-check source-2-tag-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens build-ymfm-renderer stop help \
@@ -239,6 +239,7 @@ help:
 	@echo "  make trace-sound               Capture the real Z80 chip-register stream"
 	@echo "  make verify-sound-sequencer    Compare Python playback with Gens"
 	@echo "  make check-studios             Load Studio models without opening a GUI"
+	@echo "  make smoke-studios-workstation Exercise real Tk windows and public actions"
 	@echo ""
 	@echo "Validation:"
 	@echo "  make verify-toolchain          Hash-check the vendored assembler"

@@ -158,10 +158,9 @@ make validate-runtime  # Re-validate an existing capture
 
 Each capture records what produced it. `build/runtime/capture_info.json` holds
 the emulator's path, size and SHA-256 alongside the ROM's SHA-1, and the
-validation summary carries it. The emulator is pinned by upstream commit rather
-than by hash -- it is cross-built locally and a MinGW PE has no stable one -- so
-the commit says which source and this says which binary. A capture nobody can
-attribute is not evidence.
+validation summary carries it. Before capture, the toolchain gate requires both
+the pinned emulator checkout commit and the approved executable SHA-256. A
+substituted or unreviewed rebuild is rejected rather than accepted as evidence.
 
 Captures are written under `build/runtime/`, which is ignored. Regenerating
 them into an ignored directory is deliberate: a stale local capture must not be

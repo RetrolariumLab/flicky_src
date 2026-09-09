@@ -77,8 +77,9 @@ status.
 1.0 `make release-check` first, including the twelve emulator scenarios. It
 then verifies relocation, constructs and compares the independent zero-edit
 content ROM, validates every local workspace artifact, loads all Studio models
-without a display server, enforces the source granularity and directory policy,
-smoke-tests direct level entry in Gens, and audits the 2.0 manifest, documents,
+without a display server, creates real Tk windows to exercise every declared
+Studio action, enforces the source granularity and directory policy, smoke-tests
+direct level entry in Gens, and audits the 2.0 manifest, documents,
 Make targets, format strengths, supported Studio inventory, predecessor tag,
 and ancestry. It also captures and compares the real Z80 sound-register stream
 through `make verify-sound-sequencer`.

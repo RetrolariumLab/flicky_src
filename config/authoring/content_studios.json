@@ -10,19 +10,22 @@
       "id": "level",
       "name": "Level Studio",
       "status": "supported",
-      "artifacts": ["level_layouts"]
+      "artifacts": ["level_layouts"],
+      "workstation_actions": ["save", "build", "playtest", "stop", "dirty-close"]
     },
     {
       "id": "graphics",
       "name": "Graphics Studio",
       "status": "supported",
-      "artifacts": ["graphics_assets", "graphics_semantics", "graphics_sequences"]
+      "artifacts": ["graphics_assets", "graphics_semantics", "graphics_sequences"],
+      "workstation_actions": ["save", "build", "dirty-close"]
     },
     {
       "id": "sound",
       "name": "Sound Studio",
       "status": "supported",
       "artifacts": ["z80_sound_banks"],
+      "workstation_actions": ["save", "build", "preview-song", "preview-sfx", "stop", "dirty-close"],
       "preview": {
         "sequencer": "scripts/authoring/sound_sequencer.py",
         "register_stream": "VGM 1.50",
@@ -33,6 +36,7 @@
       }
     }
   ],
+  "workstation_smoke": "smoke-studios-workstation",
   "artifacts": [
     {
       "id": "graphics_assets",

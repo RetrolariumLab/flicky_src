@@ -43,11 +43,9 @@ def check_inputs(spec: dict, rom: Path) -> None:
 def capture_provenance(gens: Path, rom: Path, scenarios: Path) -> dict:
     """Record which binaries produced a capture.
 
-    The emulator is pinned by upstream commit rather than by hash, because it is
-    cross-built locally and a MinGW PE has no stable one. That makes it worth
-    writing down the hash of the build that actually ran: the commit says which
-    source, this says which binary, and a capture nobody can attribute is not
-    evidence.
+    The runtime gate verifies both the pinned source checkout and the approved
+    executable hash before this runner starts. Recording the same hash here
+    binds each capture to the exact binary that produced it.
     """
     return {
         "emulator": {

@@ -587,7 +587,7 @@ class GraphicsStudio:
             return
         self.select_animation()
 
-    def save(self) -> None:
+    def save(self) -> bool:
         try:
             validate_document(self.document, self.project)
             validate_semantics(self.semantics, self.project)
@@ -597,11 +597,12 @@ class GraphicsStudio:
             atomic_write_sequences(self.sequences_workspace, self.sequences)
         except (OSError, ValueError) as error:
             messagebox.showerror("Cannot save", str(error))
-            return
+            return False
         self.saved = copy.deepcopy(self.document)
         self.saved_semantics = copy.deepcopy(self.semantics)
         self.saved_sequences = copy.deepcopy(self.sequences)
         self.status.set("Saved")
+        return True
 
     def reload(self) -> None:
         self.document = load_document(self.workspace)
@@ -627,7 +628,8 @@ class GraphicsStudio:
         self.select_animation()
 
     def build_rom(self) -> None:
-        self.save()
+        if not self.save():
+            return
         subprocess.Popen(["make", "build-content"], cwd=self.project)
         self.status.set("Started make build-content")
 

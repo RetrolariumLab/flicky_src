@@ -391,6 +391,25 @@ def validate_toolchain(
                 errors.append(
                     f"toolchain component {component.get('id', '<unknown>')} lacks {field}"
                 )
+    emulator = next(
+        (component for component in components if component.get("id") == "emulator"),
+        None,
+    )
+    if emulator is None:
+        errors.append("toolchain manifest has no emulator component")
+    else:
+        if emulator.get("identity") != "source_commit_and_binary_hash":
+            errors.append("emulator identity does not require commit and binary hash")
+        emulator_files = [
+            entry
+            for entries in emulator.get("files", {}).values()
+            for entry in entries
+        ]
+        if not emulator_files:
+            errors.append("emulator has no approved executable")
+        for entry in emulator_files:
+            if entry.get("observed_only"):
+                errors.append("emulator executable hash is observational only")
     if not any(
         host.get("supported_status") == "supported"
         for host in document.get("hosts", [])
@@ -504,6 +523,8 @@ def validate_project_claims(
         }
         if known != claimed:
             errors.append("content studios do not claim every artifact exactly once")
+        if content.get("workstation_gate") != studios.get("workstation_smoke"):
+            errors.append("workstation Studio gate differs from its manifest")
 
     fidelity = content.get("sound_fidelity", {})
     if content.get("sound_fidelity_gate") != "verify-sound-sequencer":
@@ -526,6 +547,10 @@ def validate_project_claims(
             "source_commit"
         ):
             errors.append("sound fidelity emulator commit differs from toolchain pin")
+        emulator_files = components.get("emulator", {}).get("files", {}).get("any", [])
+        approved_hashes = {entry.get("sha256") for entry in emulator_files}
+        if fidelity.get("emulator_sha256") not in approved_hashes:
+            errors.append("sound fidelity emulator hash differs from toolchain pin")
 
     semantic = release.get("semantic_source", {})
     formats_path = root / semantic.get("format_manifest", "")

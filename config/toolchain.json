@@ -92,15 +92,14 @@
       "source_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a",
       "provenance": "source-built",
       "verification": "make verify-toolchain",
-      "identity": "source_commit",
-      "identity_note": "The binary is cross-built locally rather than vendored, and a MinGW PE carries build-time fields, so the commit is what is pinned. The observed hash below records the build this release's captures came from; a rebuild of the same commit is accepted, and the hash that actually ran is written to build/runtime/capture_info.json and carried into the validation summary.",
+      "identity": "source_commit_and_binary_hash",
+      "identity_note": "The checkout must match the pinned source commit when it is present, and the executable must match the approved SHA-256 before any runtime evidence or playtest is accepted. Rebuilt binaries require an explicit manifest hash update after review.",
       "files": {
         "any": [
           {
             "path": "../gens_automation/Output/Gens.exe",
             "size": 9658397,
-            "sha256": "d536817f33cc9871e2749bc0d5ced8956502d3182541a07e1d44279fdf45d141",
-            "observed_only": true
+            "sha256": "d536817f33cc9871e2749bc0d5ced8956502d3182541a07e1d44279fdf45d141"
           }
         ]
       }

@@ -19,6 +19,7 @@ class MakeInterfaceTests(unittest.TestCase):
         self.assertIn(root / "mk" / "authoring.mk", paths)
         self.assertIn("source-2-check", makefile_targets(root))
         self.assertIn("level-studio", makefile_targets(root))
+        self.assertIn("smoke-studios-workstation", makefile_targets(root))
         self.assertIn("scaffold-check", makefile_targets(root))
         self.assertIn("format-check", makefile_targets(root))
 
@@ -48,6 +49,7 @@ class MakeInterfaceTests(unittest.TestCase):
             "source-2-check",
             "source-2-pre-tag-check",
             "source-2-tag-check",
+            "smoke-studios-workstation",
         ):
             self.assertIn(f"make {target}", result.stdout)
 
@@ -55,6 +57,7 @@ class MakeInterfaceTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         recipe = makefile_recipe("source-2-check", root)
         self.assertEqual(recipe[0], "$(MAKE) release-check")
+        self.assertIn("$(MAKE) smoke-studios-workstation", recipe)
         self.assertEqual(recipe[-1], "$(MAKE) source-2-audit")
 
 
