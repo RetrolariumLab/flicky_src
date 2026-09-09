@@ -168,7 +168,7 @@ not required. Independent Song and SFX dropdowns select their first entries by
 default and open the chosen sound in the editor as soon as the selection
 changes. The sequencer emits the YM2612/SN76489 register stream as VGM;
 the small local `ymfm_renderer.exe` frontend renders it through the pinned
-BSD-licensed ymfm core and plays the resulting WAV. Channel checkboxes mute
+BSD-licensed [ymfm core](../third_party/ymfm/UPSTREAM.md) and plays the resulting WAV. Channel checkboxes mute
 individual tracks, and `Stop` cancels both an outstanding render and playback.
 The same headless path is available as
 `make preview-sound SOUND=zMusic81Header`.

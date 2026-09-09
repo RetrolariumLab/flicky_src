@@ -71,6 +71,30 @@ because it uses raw glyph indexes. These boundaries are recorded in
 `config/source_reconstruction_2_0.json` rather than hidden by the release
 status.
 
+## Documentation corpus review
+
+The release documentation was reviewed as one reader-facing corpus, starting
+from `README.md` and `docs/index.md` and following every local Markdown link.
+The task-oriented build, source-layout, subsystem, authoring, validation,
+runtime, format, debugger, naming, RAM, unknowns, and provenance documents are
+retained separately because each answers a distinct reader question. The two
+release-boundary documents remain separate because 1.0 is an immutable
+historical baseline, and the numbered ADRs remain separate because each owns
+one independently reversible decision. No thematic document cluster needed
+consolidation or deletion. The shared `source_` filename prefix is an explicit
+exception: source layout and versioned release boundaries have different
+audiences, owners, and lifecycles.
+
+This review corrected a malformed roadmap sentence and made the runtime-state
+ADR and bundled ymfm provenance directly reachable from the public navigation
+graph. `make lint` now inventories every tracked Markdown file, rejects an
+orphan, flags documents beyond the review size limit, and rejects flat clusters
+of three or more peer documents with the same filename prefix. Label provenance
+has one machine-readable owner,
+`config/reconstruction/label_renames.json`; the prose in
+`docs/provenance/labels.md` explains and links that registry without duplicating
+it, and the Source 2.0 audit rejects another registry path or shape.
+
 ## Acceptance gate
 
 `make source-2-check` is the aggregate acceptance gate. It runs the complete

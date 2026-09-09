@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 20
+    "commit_count": 21
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -169,7 +169,7 @@
       "summary": "Enforce trusted runtime and editor inputs, fail closed on invalid saves, exercise every Tk Studio action, and restrict cleanup to approved generated paths.",
       "commits": [
         "6ea7b8341bbfe29019012c61de65389a51b913c8",
-        "release-commit"
+        "d098a47eb06b9390e29289fbc55e9d849961f41c"
       ],
       "evidence": [
         "verify-toolchain",
@@ -177,6 +177,21 @@
         "tests/authoring/test_graphics_studio.py",
         "tests/authoring/test_studio_build.py",
         "tests/build/test_clean_project.py"
+      ]
+    },
+    {
+      "id": "documentation-corpus-review",
+      "kind": "documentation",
+      "summary": "Review the documentation as one navigable corpus and enforce the single canonical label-rename registry.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "docs/index.md",
+        "docs/source_reconstruction_2_0.md",
+        "config/reconstruction/label_renames.json",
+        "lint",
+        "source-2-audit"
       ]
     }
   ],

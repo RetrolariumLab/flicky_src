@@ -90,6 +90,53 @@ class Source2Audit(unittest.TestCase):
         errors = self.validate_copy(document)
         self.assertIn("workstation Studio gate differs from its manifest", errors)
 
+    def test_manifest_names_the_canonical_label_registry_once(self):
+        document = json.loads(json.dumps(self.manifest))
+        document["provenance"]["references"].remove(
+            "config/reconstruction/label_renames.json"
+        )
+        errors = self.validate_copy(document)
+        self.assertIn(
+            "provenance does not name the canonical label registry once", errors
+        )
+
+    def test_duplicate_label_registry_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            canonical = root / "config/reconstruction/label_renames.json"
+            duplicate = root / "docs/label_renames.json"
+            narrative = root / "docs/provenance/labels.md"
+            canonical.parent.mkdir(parents=True)
+            duplicate.parent.mkdir(parents=True)
+            narrative.parent.mkdir(parents=True)
+            registry = {
+                "schema_version": 1,
+                "rename_columns": ["original", "current", "current_path"],
+                "addition_columns": ["current", "current_path"],
+                "counts": {"renames": 0, "project_additions": 0},
+                "renames": [],
+                "project_additions": [],
+            }
+            canonical.write_text(json.dumps(registry), encoding="utf-8")
+            duplicate.write_text(json.dumps(registry), encoding="utf-8")
+            narrative.write_text(
+                "[registry](../../config/reconstruction/label_renames.json)\n",
+                encoding="utf-8",
+            )
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            release = {
+                "required_documents": [
+                    "config/reconstruction/label_renames.json"
+                ],
+                "provenance": {
+                    "references": ["config/reconstruction/label_renames.json"]
+                },
+            }
+            errors: list[str] = []
+            source_2_audit.validate_label_rename_registry(root, release, errors)
+            self.assertTrue(any("not unique" in error for error in errors), errors)
+
     def test_public_release_audit_runs_end_to_end(self):
         result = subprocess.run(
             [
