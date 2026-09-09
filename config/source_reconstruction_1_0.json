@@ -284,7 +284,7 @@
         "files": [
           "config/reconstruction/label_renames.json",
           "docs/unknowns.md",
-          "docs/provenance/labels.md",
+          "docs/provenance.md",
           "docs/naming.md"
         ],
         "note": "Seven open questions with stable IDs, and a provenance table mapping every imported label to its current name. Every evidence tag except the plain observation tag names a registry entry, and every entry is referenced back; lint checks both directions and the table is held to the source in both."
@@ -428,7 +428,7 @@
           "config/source_reconstruction_1_0.json",
           "bin/README.md",
           "movies/README.md",
-          "docs/provenance/labels.md"
+          "docs/provenance.md"
         ]
       }
     },
@@ -509,12 +509,6 @@
       "actual_path": "config/linker/rom_layout.json",
       "reason": "There is no linker: AS emits one object and p2bin flattens it, so there is no linker script to own the layout.",
       "equivalent_control": "config/linker/rom_layout.json declares the memory regions, the ROM landmarks, the padding gap and all 36 module ranges, and make verify-layout checks every one against the build."
-    },
-    {
-      "rule_id": "docs/adr/",
-      "actual_path": "docs/adr/",
-      "reason": "Adopted; the decisions that were previously only in commit messages are recorded there.",
-      "equivalent_control": "Listed in required_documents and checked by release-audit."
     }
   ],
   "licensing": [
@@ -578,7 +572,7 @@
   "provenance": {
     "references": [
       "config/reconstruction/label_renames.json",
-      "docs/provenance/labels.md",
+      "docs/provenance.md",
       "docs/unknowns.md",
       "bin/README.md",
       "movies/README.md",
@@ -624,11 +618,8 @@
     "docs/validation.md",
     "docs/unknowns.md",
     "docs/source_reconstruction_1_0.md",
-    "docs/provenance/labels.md",
+    "docs/provenance.md",
     "config/reconstruction/label_renames.json",
-    "docs/adr/0001-as-assembler.md",
-    "docs/adr/0002-rom-layout-contract.md",
-    "docs/adr/0003-runtime-evidence-is-state.md",
     "bin/README.md",
     "movies/README.md"
   ],

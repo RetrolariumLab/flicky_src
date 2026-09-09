@@ -12,9 +12,8 @@
 | [`validation.md`](validation.md) | Which check proves what |
 | [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
 | [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) | What the 2.0 authoring release adds and how it is accepted |
-| [`provenance/labels.md`](provenance/labels.md) | Where every name and every extracted byte came from |
-| [`provenance/source_2_0_rewrite.md`](provenance/source_2_0_rewrite.md) | How the unpublished Source 2.0 draft maps to the reviewed history |
-| [ADR 1](adr/0001-as-assembler.md), [ADR 2](adr/0002-rom-layout-contract.md), [ADR 3](adr/0003-runtime-evidence-is-state.md) | Why the assembler, ROM layout contract, and runtime evidence model were chosen |
+| [`provenance.md`](provenance.md) | Where every name and every extracted byte came from |
+| [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md#draft-history-reconstruction) | How the unpublished Source 2.0 draft maps to the reviewed history |
 
 ## Working on the source
 

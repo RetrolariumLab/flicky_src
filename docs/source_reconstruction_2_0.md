@@ -71,29 +71,64 @@ because it uses raw glyph indexes. These boundaries are recorded in
 `config/source_reconstruction_2_0.json` rather than hidden by the release
 status.
 
+## Draft-history reconstruction
+
+The unpublished 2.0 draft was reconstructed on the owner-approved modernization
+branch from immutable local `main` at
+`3d9f56e5eae3a3d7edfa4186081918e3e522d7e2`. The rewrite preserves established
+architectural boundaries while preventing changed files from creating new
+historical copies of obsolete review metadata.
+
+| Previous commit | Replacement commit | Scope | Reason |
+| --- | --- | --- | --- |
+| `0d7875881571dcf073acc7e2baad6c4f00f28a4c` | `b162e5e9e6a05d0d628828efebda7998d22d510c` | Correct the checksum-error documentation link. | Preserve the one-file change while recording the current co-author accurately. |
+| `3bb9ca0ebbc492070ef4ce1eee7a92150bba18a8` | `9ef65d570ae7118cce74aa35d3ab983fd7a0202b` | Reconstruct the Z80 driver and sound data. | Replay the complete atomic subsystem change onto the approved base. |
+| `e911d088d9c9af49cdeae0878552855921d568c0` | `9fcfcfc63de524a7b07c05a72a9a205105633796` | Isolate content authoring. | Preserve the build boundary and zero-edit identity evidence. |
+| `fc9b3f856390571589d2d5d5f388d1967e335aee` | `c9f5e0eda5bfbca5d5933ac75fd93d7751068ec2` | Add level authoring and Level Studio. | Preserve one complete editor-model vertical slice. |
+| `8227525f7b3635c1beb99330c843f7f4703188d2` | `8b012f6ad546c1d1ed3e19d3527c71252a4c84d2` | Add graphics authoring and adopt project-owned release metadata. | Keep the codec, model, GUI, and test boundary while removing obsolete provenance before changed files create new draft blobs. |
+| `7d16bd7f68161d660f77d9ad2773ab850c9d0c15` | `d07b49bb0d4b354a47a2bc956d13f898ce58bbad` | Add music, SFX, and FM voice authoring. | Preserve the semantic sound-authoring boundary. |
+| `d51297d3a15364ef6a2a649dd3b921cc9b31b5d1` | `b75e67b65a899a058afd5134b0c8062515240fe1` | Define the 2.0 project gate. | Preserve the first complete machine-readable acceptance boundary. |
+| `ddf6a5c9537ee553e435db1588fc44c570c1df66` | `ee536136572abd99643913e23ca4e94f85d8aac3` | Organize assembly by semantic owner. | Preserve the address-safe source reorganization as one reviewable change. |
+| `d838db42acc3855c1419a902ffdaf60c0304a048` | `0111bf7083a22e4802a1d465c37e5055b050950f` | Organize scripts by responsibility. | Keep moves, imports, subprocess paths, and tests atomic. |
+| `6c153b1f5c2491b622540e0467d354532942c352` | `74ddc1cd6adf4b8b3565d4647895a04efcf547af` | Complete Level Studio rendering and playtesting. | Preserve the editor-to-runtime vertical slice. |
+| `7ccca4955f2ae494081025083405ceec92cdd175` | `6d5e1ac513324bcb648543d1e589d5a0ed094da1` | Add standalone sound preview and trace comparison. | Preserve the sequencer, renderer, toolchain, and fidelity evidence together. |
+| `696702e95e8f5871fe50ee14b982771ecd1c071c` | `ab75d93ec74ab156354d6ea45f6cb7973ddf3da0` | Match Level Studio to VDP presentation. | Preserve the focused visual-correctness fix and regressions. |
+| `fc1d2bc33d4e7dc0e2e05cd9525e876fcfef7f6b` | `d0963008aa19c7b80e0acb778a93f50730a949db` | Modernize repository layout and the public release interface. | Combine the structural draft with project-owned manifest and audit policy so obsolete review provenance is absent from the candidate tree. |
+
+Every replacement is nonempty. Author and committer dates are monotonic in
+parent order: direct replays retain their timestamps, while combined cleanup
+uses a timestamp within the interval represented by its source work.
+
+Remote-tracked history remains unchanged. Historical release-policy metadata
+at or before the base, together with old local branches and tags, is outside
+this rewrite and deferred to explicit owner review. The candidate neither
+rewrites published objects nor deletes recovery refs.
+
 ## Documentation corpus review
 
 The release documentation was reviewed as one reader-facing corpus, starting
 from `README.md` and `docs/index.md` and following every local Markdown link.
 The task-oriented build, source-layout, subsystem, authoring, validation,
-runtime, format, debugger, naming, RAM, unknowns, and provenance documents are
-retained separately because each answers a distinct reader question. The two
-release-boundary documents remain separate because 1.0 is an immutable
-historical baseline, and the numbered ADRs remain separate because each owns
-one independently reversible decision. No thematic document cluster needed
-consolidation or deletion. The shared `source_` filename prefix is an explicit
-exception: source layout and versioned release boundaries have different
-audiences, owners, and lifecycles.
+runtime, format, debugger, naming, RAM, unknowns, and provenance documents each
+answer a distinct reader question. Assembler choice and converter consequences
+are consolidated in `docs/build.md`; ROM-layout rationale is in
+`docs/source_layout.md`; runtime evidence design is in
+`docs/runtime_evidence.md`. The release history and rewrite map live in this
+release-boundary document, and the human label/data account is the single
+top-level `docs/provenance.md`.
 
-This review corrected a malformed roadmap sentence and made the runtime-state
-ADR and bundled ymfm provenance directly reachable from the public navigation
-graph. `make lint` now inventories every tracked Markdown file, rejects an
-orphan, flags documents beyond the review size limit, and rejects flat clusters
-of three or more peer documents with the same filename prefix. Label provenance
-has one machine-readable owner,
-`config/reconstruction/label_renames.json`; the prose in
-`docs/provenance/labels.md` explains and links that registry without duplicating
-it, and the Source 2.0 audit rejects another registry path or shape.
+The 1.0 and 2.0 release-boundary documents remain separate because 1.0 is an
+immutable historical baseline. The shared `source_` filename prefix is an
+explicit exception: source layout and versioned release boundaries have
+different audiences, owners, and lifecycles. `make lint` inventories every
+tracked Markdown file, rejects an orphan, flags documents beyond the review
+size limit, and rejects unexplained flat clusters of three or more peer
+documents with the same filename prefix.
+
+Label provenance has one machine-readable owner:
+`config/reconstruction/label_renames.json`. `docs/provenance.md` explains and
+links that registry without duplicating it, and the 2.0 audit rejects another
+registry path or shape.
 
 ## Acceptance gate
 

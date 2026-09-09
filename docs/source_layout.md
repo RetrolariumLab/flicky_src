@@ -9,6 +9,27 @@ global and cross-module branches need no declaration. That also means **the
 include order is the ROM layout**. Moving an include moves code in the output
 and `make verify` fails immediately.
 
+## Why the layout is machine-readable
+
+Without a linker script, include order once left placement described only by a
+prose table. That was too weak: a growing module, a reordered include, or a
+moved landmark could make the table silently wrong while byte verification
+reported only an unnamed offset. The concrete failure that prompted the
+contract was `Boot_EntryPoint`: it had been documented at `$000200`, but
+`Sys_ErrorTrap` occupies six bytes and the symbol is actually at `$000206`.
+
+`config/linker/rom_layout.json` now declares memory regions, symbol landmarks,
+the padding gap, shared non-emitting includes, and every byte-emitting module
+range. `make verify-layout` checks three independent build facts: module ranges
+from the assembler's include listing, landmarks from its symbol table, and the
+padding gap from the built image. A mismatch therefore names the module or
+landmark instead of presenting a raw ROM offset.
+
+Legitimate layout changes must update the declaration, which makes movement a
+deliberate reviewed operation. The release manifests record this file as the
+equivalent control for a project that has no linker configuration to enforce
+placement.
+
 ## Granularity policy
 
 A module owns one coherent subsystem, the helpers only it uses, and the data

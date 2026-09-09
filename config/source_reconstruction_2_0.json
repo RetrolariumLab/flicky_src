@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 24
+    "commit_count": 25
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -159,7 +159,7 @@
         "a3563d133e0d04bd950d30ec67ee9956366f4628"
       ],
       "evidence": [
-        "docs/provenance/source_2_0_rewrite.md",
+        "docs/source_reconstruction_2_0.md",
         "config/source_reconstruction_2_0.json"
       ]
     },
@@ -228,13 +228,30 @@
       "kind": "tooling",
       "summary": "Capture runtime evidence in a fresh isolated tree and publish only complete runs so stale files cannot satisfy validation.",
       "commits": [
-        "release-commit"
+        "130a6e920e7b4574d88366018eedeb510ca4f64e"
       ],
       "evidence": [
         "scripts/runtime/run_runtime_scenarios.py",
         "tests/runtime/test_runtime_scenarios.py",
         "docs/runtime_evidence.md",
         "trace"
+      ]
+    },
+    {
+      "id": "documentation-architecture",
+      "kind": "documentation",
+      "summary": "Consolidate decision rationale, label provenance, and draft-history evidence into the top-level thematic documentation corpus.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "docs/build.md",
+        "docs/source_layout.md",
+        "docs/runtime_evidence.md",
+        "docs/provenance.md",
+        "docs/source_reconstruction_2_0.md",
+        "lint",
+        "source-2-audit"
       ]
     }
   ],
@@ -500,7 +517,7 @@
           "release-audit"
         ],
         "files": [
-          "docs/provenance/labels.md",
+          "docs/provenance.md",
           "config/reconstruction/label_renames.json",
           "movies/README.md"
         ],
@@ -612,15 +629,11 @@
     "docs/data_formats.md",
     "docs/debugger_workflow.md",
     "docs/unknowns.md",
-    "docs/provenance/labels.md",
-    "docs/provenance/source_2_0_rewrite.md",
+    "docs/provenance.md",
     "config/reconstruction/label_renames.json",
     "docs/source_reconstruction_1_0.md",
     "docs/source_reconstruction_2_0.md",
-    "docs/z80_sound_driver.md",
-    "docs/adr/0001-as-assembler.md",
-    "docs/adr/0002-rom-layout-contract.md",
-    "docs/adr/0003-runtime-evidence-is-state.md"
+    "docs/z80_sound_driver.md"
   ],
   "layout_deviations": [
     {
@@ -709,7 +722,7 @@
   "provenance": {
     "references": [
       "config/reconstruction/label_renames.json",
-      "docs/provenance/labels.md",
+      "docs/provenance.md",
       "docs/unknowns.md",
       "bin/README.md",
       "movies/README.md",

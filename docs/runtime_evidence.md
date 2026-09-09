@@ -12,6 +12,23 @@ behaviour. `make verify` proves the bytes are right; only a replay proves the
 bytes still *do* what they used to after a change to the tooling, the data
 extraction or the build.
 
+## Why state is the release evidence
+
+The first runtime validator compared screenshots when a reference directory
+was available. Because no reference capture is tracked, that path degraded to
+counting frames and reporting that there was nothing to compare: useful as an
+emulator liveness check, but not evidence about the game. Committing hundreds
+of megabytes of PNGs would make the check sensitive to emulator rendering
+changes and still report only that a frame differs.
+
+The accepted evidence therefore asserts 68000 work-RAM fields by symbol. It
+names the field, frame, expected value, and observed value on failure, remains
+stable across irrelevant rendering changes, and keeps only each declared frame
+window. The full capture fell from about 1.2 GB to roughly 113 MB. Optional
+pixel comparison remains available for a user-supplied reference, while the
+manifest explicitly excludes it from the release claim; a visual-only defect
+that never changes an asserted field remains outside this layer.
+
 ## What a scenario declares
 
 `scenarios/runtime_scenarios.json` pins the inputs, names the frame ranges

@@ -70,9 +70,7 @@ flicky_src/
 |   |-- source_reconstruction_1_0.json
 |   `-- source_reconstruction_2_0.json
 |-- data/                   # Extracted binary segments (ignored, from make split)
-|-- docs/                   # See docs/index.md
-|   |-- adr/                # Decisions that would be expensive to reverse
-|   `-- provenance/         # Where names and extracted bytes came from
+|-- docs/                   # Task-oriented guides; see docs/index.md
 |-- movies/                 # Gens input recordings and their scene indexes
 |-- scenarios/              # Runtime scenarios and their state expectations
 |-- scripts/                # Categorized tooling, dispatched by run.py
