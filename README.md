@@ -116,7 +116,8 @@ make help           # Everything, including the analysis workflow
 make test           # Unit tests for the Python tooling
 make roundtrip-formats   # Decode and re-encode the authored data
 make symbols        # Export build/main.sym for debuggers
-make verify-toolchain  # Hash-check the vendored assembler before it runs
+make verify-toolchain  # Hash-check the selected build tools before they run
+make verify-emulator   # Check the selected Gens executable and source revision
 make verify-layout     # Check the ROM layout against config/linker/rom_layout.json
 make check-source-structure # Enforce 300-700 lines, justified exceptions, paths
 make release-check  # The complete acceptance gate
@@ -161,14 +162,18 @@ diffs emulator screenshots against a reference capture. It needs the
 instrumented Gens build from
 [gens_automation](https://github.com/oranguthang/gens_automation) as a sibling
 checkout; `make build-gens` cross-compiles it in Docker, so Visual Studio is
-optional.
+optional. The command reads the exact source revision from
+`config/toolchain.json`: it checks out that revision for a new clone and rejects
+an existing checkout at any other revision before compiling. Every public
+capture and playtest also verifies the resolved `GENS_EXE` against the approved
+binary hash before launch.
 
 The same sibling build contains a Z80 sound-port tracer. `make trace-sound`
 captures the title music into `build/sound_trace/`, using an isolated sound-on
 configuration rather than modifying the user's `Gens.cfg`.
 
 ```bash
-make build-gens                 # Clone it to ../gens_automation and cross-build in Docker
+make build-gens                 # Check out the pinned revision and cross-build in Docker
 make reference MOVIE=longplay   # Capture the reference frames
 make find-unanalyzed            # List procedures still to analyze
 make analyze MOVIE=longplay     # Stub and diff

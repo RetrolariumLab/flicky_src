@@ -4,7 +4,8 @@ Nine layers, in increasing cost and decreasing frequency. They check different
 things and none of them substitutes for another.
 
 ```bash
-make verify-toolchain     # the assembler is the one this release was built with
+make verify-toolchain     # the build tools are the approved binaries
+make verify-emulator      # selected Gens comes from the pinned source
 make lint                 # style, naming, documentation, evidence registry
 make check-source-structure # 300-700 lines, exceptions, filename prefixes
 make verify               # byte identity with the reference ROM -- the gate
@@ -23,11 +24,13 @@ make scaffold-check       # static clone checks without a private ROM
 
 ## What each layer can tell you
 
-**`make verify-toolchain`** hashes every executable and the assembler message
-catalogs against `config/toolchain.json` and refuses to go on if they differ.
-For source-built Gens it also checks the available checkout commit. A substituted
-emulator beside the pinned checkout is therefore rejected before capture,
-playtest, or sound tracing begins. `build` and `verify` both depend on the gate.
+**`make verify-toolchain`** hashes the selected assembler and converter plus the
+assembler message catalogs against `config/toolchain.json` and refuses to go on
+if they differ. `build` and `verify` both depend on the gate. **`make
+verify-emulator`** separately checks the resolved Gens executable and requires
+its checkout to match the pinned source commit. Runtime targets depend on that
+check, so a substituted emulator is rejected before capture, playtest, or sound
+tracing begins.
 
 **`make lint`** reads text. It knows that a label sits at column zero, that no
 symbol carries a ROM address, that every evidence tag resolves to a registry
@@ -63,6 +66,10 @@ reports it as an offset.
 declared values of work RAM at each scenario's frames. It is the only layer
 that observes behaviour rather than bytes, and the only one that needs an
 emulator build -- `make build-gens` cross-compiles it in Docker.
+That setup command selects the revision pinned by `config/toolchain.json` and
+rejects a mismatched existing checkout. Runtime targets run `make
+verify-emulator` before launch, hashing the resolved `GENS_EXE` rather than a
+fixed default path.
 
 **`make verify-sound-sequencer`** uses that instrumented emulator as an audio
 oracle. It captures actual Z80 writes to the YM2612, aligns title song `$85`,

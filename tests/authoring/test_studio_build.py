@@ -6,10 +6,21 @@ from unittest.mock import Mock, patch
 
 from authoring import build_content
 from authoring.build_content import resolve_workspace_paths
-from authoring.studio_build import build_content_command
+from authoring.studio_build import build_content_command, verify_emulator_command
 
 
 class StudioBuildInputsTests(unittest.TestCase):
+    def test_emulator_command_verifies_the_exact_resolved_path(self):
+        gens = Path("alternate/emulator/Gens.exe")
+        self.assertEqual(
+            verify_emulator_command(gens),
+            [
+                "make",
+                "verify-emulator",
+                f"GENS_EXE={gens.resolve().as_posix()}",
+            ],
+        )
+
     def test_studio_command_propagates_exact_resolved_paths(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

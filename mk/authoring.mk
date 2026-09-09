@@ -40,11 +40,11 @@ check-content-zero-edit: _require-assets _require-toolchain
 level-studio: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio
 
-playtest-level: build-content
+playtest-level: build-content | _require-emulator
 	@$(PYTHON) $(RUN_SCRIPT) runtime.level_playtest --gens "$(GENS_EXE)" \
 		--rom "$(CONTENT_ROM)" --round "$(or $(ROUND),1)"
 
-smoke-level-playtest: build-content
+smoke-level-playtest: build-content | _require-emulator
 	@$(PYTHON) $(RUN_SCRIPT) runtime.level_playtest --gens "$(GENS_EXE)" \
 		--rom "$(CONTENT_ROM)" --round "$(or $(ROUND),26)" --check
 
@@ -58,7 +58,7 @@ preview-sound: init-content
 	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_preview $(SOUND) \
 		--seconds $(SOUND_SECONDS) --renderer "$(YMFM_RENDERER)"
 
-trace-sound: verify
+trace-sound: verify | _require-emulator
 	@$(PYTHON) $(RUN_SCRIPT) runtime.capture_sound_trace --gens "$(GENS_EXE)" \
 		--rom "$(ROM)" --config "$(SOUND_TRACE_CONFIG)" \
 		--trace "$(SOUND_TRACE_FILE)" --frames "$(SOUND_TRACE_FRAMES)"

@@ -174,6 +174,26 @@ class Verification(unittest.TestCase):
                     self.assertIn("does not match the recorded build", result.stderr)
                     self.assertNotIn("[RUN]", result.stdout)
 
+    def test_make_rejects_a_mismatched_emulator_override_before_launch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            substitute = Path(tmp) / "Gens.exe"
+            substitute.write_bytes(b"not the approved emulator")
+            result = subprocess.run(
+                [
+                    "make",
+                    "-B",
+                    "reference",
+                    "MOVIE=longplay",
+                    f"GENS_EXE={substitute}",
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("does not match the recorded build", result.stderr)
+            self.assertNotIn("-screenshot-interval", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
