@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -54,6 +55,60 @@ class PayloadPolicy(unittest.TestCase):
         errors: list[str] = []
         lint_project.check_payload_policy([Path("bin/windows_i386/asw.exe")], errors)
         self.assertEqual(errors, [])
+
+
+class DocumentationCorpus(unittest.TestCase):
+    def check(self, documents: dict[str, str]) -> list[str]:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            texts: dict[Path, str] = {}
+            for relative, text in documents.items():
+                path = Path(relative)
+                absolute = root / path
+                absolute.parent.mkdir(parents=True, exist_ok=True)
+                absolute.write_text(text, encoding="utf-8")
+                texts[path] = text
+            errors: list[str] = []
+            lint_project.check_documentation_corpus(root, list(texts), texts, errors)
+            return errors
+
+    def test_orphaned_markdown_is_rejected(self):
+        errors = self.check(
+            {
+                "README.md": "[Index](docs/index.md)\n",
+                "docs/index.md": "# Index\n",
+                "docs/orphan.md": "# Orphan\n",
+            }
+        )
+        self.assertTrue(any("not reachable" in error for error in errors), errors)
+
+    def test_flat_repeated_prefix_cluster_is_rejected(self):
+        errors = self.check(
+            {
+                "README.md": "[Index](docs/index.md)\n",
+                "docs/index.md": "[A](enemy_cat.md) [B](enemy_lizard.md) [C](enemy_snake.md)\n",
+                "docs/enemy_cat.md": "# Cat\n",
+                "docs/enemy_lizard.md": "# Lizard\n",
+                "docs/enemy_snake.md": "# Snake\n",
+            }
+        )
+        self.assertTrue(any("prefix 'enemy'" in error for error in errors), errors)
+
+    def test_oversized_document_is_rejected_for_review(self):
+        errors = self.check(
+            {
+                "README.md": "[Index](docs/index.md)\n",
+                "docs/index.md": "# Index\n" + "line\n" * 600,
+            }
+        )
+        self.assertTrue(any("documentation review limit" in error for error in errors), errors)
+
+
+class DocumentedPrefixExceptions(unittest.TestCase):
+    def test_source_documents_are_an_acknowledged_mixed_purpose_cluster(self):
+        self.assertIn(
+            (Path("docs"), "source"), lint_project.DOCUMENT_PREFIX_EXCEPTIONS
+        )
 
 
 class ProjectIsClean(unittest.TestCase):

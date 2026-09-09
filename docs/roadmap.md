@@ -192,9 +192,8 @@ reachable history.
 
 ### 9. Machine-readable release policy - Complete
 
-The release manifest was rewritten to the shape
-The project release manifest defines scope in
-and out, delta, profiles, runtime coverage, artifacts, aggregate gates, layout
+The project release manifest defines scope in and out, delta, profiles,
+runtime coverage, artifacts, aggregate gates, layout
 deviations, licensing and provenance, plus a per-requirement status with
 evidence that has to resolve to a real file, target or scenario.
 

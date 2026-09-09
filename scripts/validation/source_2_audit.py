@@ -53,6 +53,7 @@ NON_ENGLISH_SCRIPT = re.compile(
     "]"
 )
 GENERIC_COMMIT_TITLES = {"fix", "update", "changes", "wip"}
+LABEL_RENAME_REGISTRY = Path("config/reconstruction/label_renames.json")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -495,6 +496,66 @@ def validate_documents_and_provenance(
                 errors.append(f"provenance reference is missing: {relative}")
 
 
+def validate_label_rename_registry(
+    root: Path, release: dict[str, Any], errors: list[str]
+) -> None:
+    """Require one canonical, machine-readable label provenance registry."""
+    canonical = LABEL_RENAME_REGISTRY.as_posix()
+    tracked_json = git_lines(root, "ls-files", "*.json")
+    named_registries = [
+        relative
+        for relative in tracked_json
+        if Path(relative).name == "label_renames.json"
+    ]
+    shaped_registries: list[str] = []
+    for relative in tracked_json:
+        try:
+            document = load_json(root / relative)
+        except ValueError:
+            continue
+        if "rename_columns" in document and "renames" in document:
+            shaped_registries.append(relative)
+    if named_registries != [canonical] or shaped_registries != [canonical]:
+        found = sorted(set(named_registries + shaped_registries))
+        errors.append(
+            "label rename registry is not unique at "
+            f"{canonical}: {found or ['none']}"
+        )
+        return
+
+    table = load_json(root / canonical)
+    if table.get("schema_version") != 1:
+        errors.append("label rename registry schema_version is not 1")
+    if table.get("rename_columns") != ["original", "current", "current_path"]:
+        errors.append("label rename registry columns are invalid")
+    if table.get("addition_columns") != ["current", "current_path"]:
+        errors.append("label addition registry columns are invalid")
+    renames = table.get("renames")
+    additions = table.get("project_additions")
+    counts = table.get("counts", {})
+    if not isinstance(renames, list) or counts.get("renames") != len(renames):
+        errors.append("label rename registry count is stale")
+    if (
+        not isinstance(additions, list)
+        or counts.get("project_additions") != len(additions)
+    ):
+        errors.append("label addition registry count is stale")
+
+    required = release.get("required_documents", [])
+    references = release.get("provenance", {}).get("references", [])
+    if required.count(canonical) != 1:
+        errors.append("required documents do not name the canonical label registry once")
+    if references.count(canonical) != 1:
+        errors.append("provenance does not name the canonical label registry once")
+    narrative = root / "docs/provenance/labels.md"
+    if (
+        narrative.is_file()
+        and "../../config/reconstruction/label_renames.json"
+        not in narrative.read_text(encoding="utf-8")
+    ):
+        errors.append("label provenance narrative does not link the canonical registry")
+
+
 def validate_project_claims(
     root: Path, release: dict[str, Any], errors: list[str]
 ) -> None:
@@ -773,6 +834,7 @@ def validate_source_2(
     validate_toolchain(root, release, errors)
     validate_make_contract(root, release, targets, errors)
     validate_documents_and_provenance(root, release, errors)
+    validate_label_rename_registry(root, release, errors)
     validate_project_claims(root, release, errors)
     validate_history(root, release, predecessor, errors, pre_tag or require_tag)
     validate_tag_state(root, release, errors, pre_tag, require_tag)

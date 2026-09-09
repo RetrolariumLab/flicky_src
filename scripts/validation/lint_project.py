@@ -33,6 +33,14 @@ def strip_code_spans(line: str) -> str:
 
 
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)#]+)(?:#[^)]*)?\)")
+DOCUMENTATION_ROOTS = {Path("README.md"), Path("docs/index.md")}
+DOCUMENT_LINE_REVIEW_LIMIT = 600
+DOCUMENT_PREFIX_CLUSTER_SIZE = 3
+# Source layout and versioned release boundaries answer different questions;
+# docs/source_reconstruction_2_0.md records why this reviewed cluster stays split.
+DOCUMENT_PREFIX_EXCEPTIONS = {
+    (Path("docs"), "source"),
+}
 
 # Payloads that must never enter the repository, in the working tree or in any
 # reachable commit.
@@ -87,6 +95,81 @@ def check_markdown_links(path: Path, text: str, errors: list[str]) -> None:
         resolved = (path.parent / target).resolve()
         if not resolved.exists():
             errors.append(f"{path}: link target does not exist: {target}")
+
+
+def check_documentation_corpus(
+    root: Path,
+    files: list[Path],
+    texts: dict[Path, str],
+    errors: list[str],
+) -> tuple[int, int, int]:
+    """Check that tracked Markdown forms a navigable, reviewable corpus."""
+    documents = {path for path in files if path.suffix.lower() == ".md"}
+    if not documents:
+        errors.append("no tracked Markdown documents found")
+        return 0, 0, 0
+
+    missing_roots = DOCUMENTATION_ROOTS - documents
+    for path in sorted(missing_roots):
+        errors.append(f"documentation entry point is missing: {path}")
+
+    root = root.resolve()
+    links: dict[Path, set[Path]] = {path: set() for path in documents}
+    maximum_lines = 0
+    for path in sorted(documents):
+        text = texts.get(path)
+        if text is None:
+            continue
+        line_count = len(text.splitlines())
+        maximum_lines = max(maximum_lines, line_count)
+        if line_count > DOCUMENT_LINE_REVIEW_LIMIT:
+            errors.append(
+                f"{path}: {line_count} lines exceeds the "
+                f"{DOCUMENT_LINE_REVIEW_LIMIT}-line documentation review limit"
+            )
+        for target in MARKDOWN_LINK_RE.findall(text):
+            if target.startswith(("http://", "https://", "mailto:")):
+                continue
+            resolved = (root / path.parent / target).resolve()
+            try:
+                relative = resolved.relative_to(root)
+            except ValueError:
+                continue
+            if relative in documents:
+                links[path].add(relative)
+
+    reachable = set(DOCUMENTATION_ROOTS & documents)
+    pending = list(reachable)
+    while pending:
+        source = pending.pop()
+        for target in links[source] - reachable:
+            reachable.add(target)
+            pending.append(target)
+    for path in sorted(documents - reachable):
+        errors.append(
+            f"{path}: document is not reachable from README.md or docs/index.md"
+        )
+
+    prefix_groups: dict[tuple[Path, str], list[Path]] = {}
+    for path in documents:
+        parts = re.split(r"[_-]", path.stem, maxsplit=1)
+        if len(parts) < 2:
+            continue
+        key = (path.parent, parts[0].lower())
+        prefix_groups.setdefault(key, []).append(path)
+    reviewed_prefixes = 0
+    for (parent, prefix), paths in sorted(prefix_groups.items()):
+        if len(paths) >= DOCUMENT_PREFIX_CLUSTER_SIZE:
+            if (parent, prefix) in DOCUMENT_PREFIX_EXCEPTIONS:
+                reviewed_prefixes += 1
+                continue
+            names = ", ".join(str(path) for path in sorted(paths))
+            errors.append(
+                f"documentation prefix '{prefix}' is repeated across "
+                f"{len(paths)} peer files: {names}"
+            )
+
+    return len(documents), maximum_lines, reviewed_prefixes
 
 
 def check_payload_policy(files: list[Path], errors: list[str]) -> None:
@@ -175,6 +258,9 @@ def main() -> int:
 
     tag_count, used_ids = check_evidence(files, texts, errors)
     entry_count = check_registry(used_ids, errors)
+    document_count, maximum_document_lines, reviewed_prefixes = (
+        check_documentation_corpus(Path.cwd(), files, texts, errors)
+    )
 
     if errors:
         for error in errors[:60]:
@@ -186,6 +272,11 @@ def main() -> int:
 
     print(f"[OK] {len(texts)} tracked text files clean; no ROM-derived payload tracked")
     print(f"[OK] {tag_count} evidence tags resolve against {entry_count} registry entries")
+    print(
+        f"[OK] {document_count} Markdown documents form one linked corpus; "
+        f"largest document is {maximum_document_lines} lines; "
+        f"{reviewed_prefixes} justified prefix cluster"
+    )
     return 0
 
 
