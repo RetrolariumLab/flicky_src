@@ -1,6 +1,8 @@
+import copy
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -112,6 +114,32 @@ class ContractShape(unittest.TestCase):
     def test_every_layout_deviation_names_an_equivalent_control(self):
         for entry in CONTRACT["layout_deviations"]:
             self.assertTrue(entry["equivalent_control"], entry["rule_id"])
+
+    def test_build_tools_pin_exact_source_revisions(self):
+        errors: list[str] = []
+        release_audit.check_toolchain(CONTRACT, errors)
+        self.assertEqual(errors, [])
+
+    def test_converter_without_source_or_binary_origin_is_rejected(self):
+        toolchain = json.loads(
+            (ROOT / "config/toolchain.json").read_text(encoding="utf-8")
+        )
+        converter = next(
+            component
+            for component in toolchain["components"]
+            if component["id"] == "binary_converter"
+        )
+        converter["source_commit"] = None
+        converter.pop("binary_provenance")
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "toolchain.json"
+            manifest.write_text(json.dumps(toolchain), encoding="utf-8")
+            contract = copy.deepcopy(CONTRACT)
+            contract["toolchain"]["manifest"] = str(manifest)
+            errors: list[str] = []
+            release_audit.check_toolchain(contract, errors)
+        self.assertTrue(any("no exact source revision" in error for error in errors))
+        self.assertTrue(any("no exact binary origin" in error for error in errors))
 
     def test_the_gate_runs_the_declared_commands_in_the_declared_order(self):
         # check_make_targets compares the release-check recipe against

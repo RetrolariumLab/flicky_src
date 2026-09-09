@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 21
+    "commit_count": 22
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -184,7 +184,7 @@
       "kind": "documentation",
       "summary": "Review the documentation as one navigable corpus and enforce the single canonical label-rename registry.",
       "commits": [
-        "release-commit"
+        "e9f538ec179ba0c34f9d7c5b7e9d005c1866cd50"
       ],
       "evidence": [
         "docs/index.md",
@@ -192,6 +192,20 @@
         "config/reconstruction/label_renames.json",
         "lint",
         "source-2-audit"
+      ]
+    },
+    {
+      "id": "toolchain-executable-verification",
+      "kind": "tooling",
+      "summary": "Verify the selected assembler and converter paths before use and pin the converter source and binary origins.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "config/toolchain.json",
+        "verify-toolchain",
+        "tests/validation/test_toolchain.py",
+        "tests/validation/test_make_interface.py"
       ]
     }
   ],
@@ -621,7 +635,7 @@
     {
       "component": "as_macro_assembler",
       "category": "bundled_external_tools",
-      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus the Sonic-disassembly p2bin variant",
+      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus Clownacy p2bin at commit e26d8aa8c43e285bac5e3b7df3be1adae515994f",
       "license_id_or_status": "licensed",
       "redistribution": "allowed",
       "notes": "Vendored under bin/ with SHA-256 for every file; see bin/README.md."

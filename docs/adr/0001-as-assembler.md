@@ -20,8 +20,10 @@ the same binaries.
 
 ## Decision
 
-Vendor AS 1.42 Beta [Bld 212] and the Sonic-disassembly `p2bin`, under
-`bin/<platform>/`, and assemble the whole project as a single translation unit.
+Vendor AS 1.42 Beta [Bld 212] and Clownacy's Sonic-disassembly `p2bin` at
+commit `e26d8aa8c43e285bac5e3b7df3be1adae515994f`, under `bin/<platform>/`, and
+assemble the whole project as a single translation unit. The executable build
+origins and hashes are recorded in `config/toolchain.json`.
 
 `p2bin` is invoked with `-p=FF`. This is not a detail: the cartridge pads unused
 space with `$FF`, and p2bin's default of `$00` corrupts 18,015 bytes in the
@@ -42,6 +44,10 @@ Vendoring binaries makes the build reproducible from a fresh clone but puts
 executables in the repository. They are general-purpose tools containing no game
 code, hashed in `config/toolchain.json` and checked by `make verify-toolchain`
 before they are ever run.
+
+Selecting alternate `AS_BIN` or `P2BIN` paths changes only the location, not
+the accepted identity: the resolved files must match the platform's approved
+size and SHA-256 before their build target starts.
 
 macOS is not covered: no `bin/macos_*` is vendored, and the Makefile's autodetect
 will look for a directory that does not exist.

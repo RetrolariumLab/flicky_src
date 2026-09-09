@@ -75,6 +75,11 @@ swapped binary is named as the problem instead of surfacing as an unexplained
 diff. See [`bin/README.md`](../bin/README.md) for the provenance and
 [ADR 1](adr/0001-as-assembler.md) for why AS.
 
+`AS_BIN` and `P2BIN` can point at another filesystem location, but they do not
+waive identity checks. The verifier resolves and hashes the exact executable
+paths selected by those variables before every assembly or conversion target,
+including standalone Z80 builds and listing generation.
+
 ## What gets written
 
 Everything generated is disposable and ignored by git:

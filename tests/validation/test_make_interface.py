@@ -72,6 +72,28 @@ class MakeInterfaceTests(unittest.TestCase):
         ):
             self.assertIn(option, recipe)
 
+    def test_standalone_z80_build_verifies_selected_tools_first(self):
+        root = Path(__file__).resolve().parents[2]
+        result = subprocess.run(
+            [
+                "make",
+                "-n",
+                "-B",
+                "z80-check",
+                "Z80_REFERENCE=assets/manifest.json",
+                "Z80_BIN=build/tool-order-z80.bin",
+                "Z80_OBJ=build/tool-order-z80.p",
+            ],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        verification = result.stdout.index("validation.verify_toolchain")
+        build = result.stdout.index("build.build_z80_driver")
+        self.assertLess(verification, build)
+        self.assertIn("--require-executable", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

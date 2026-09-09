@@ -537,7 +537,7 @@
     {
       "component": "as_macro_assembler",
       "category": "bundled_external_tools",
-      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus the Sonic-disassembly p2bin variant",
+      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus Clownacy p2bin at commit e26d8aa8c43e285bac5e3b7df3be1adae515994f",
       "license_id_or_status": "licensed",
       "redistribution": "allowed",
       "notes": "Vendored unmodified under bin/ with SHA-256 for every file. Contains no game code or data. See bin/README.md."

@@ -1,5 +1,6 @@
 import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -23,6 +24,22 @@ class Manifest(unittest.TestCase):
         for component in CONFIG["components"]:
             if component["provenance"] == "source-built":
                 self.assertRegex(component["source_commit"] or "", r"^[0-9a-f]{40}$")
+
+    def test_the_converter_pins_its_actual_source_and_binary_origins(self):
+        converter = next(
+            component
+            for component in CONFIG["components"]
+            if component["id"] == "binary_converter"
+        )
+        self.assertEqual(converter["source"], "https://github.com/Clownacy/p2bin")
+        self.assertRegex(converter["source_commit"], r"^[0-9a-f]{40}$")
+        self.assertEqual(
+            set(converter["binary_provenance"]),
+            {"windows_i386", "linux_x86_64"},
+        )
+        for provenance in converter["binary_provenance"].values():
+            self.assertRegex(provenance["origin_commit"], r"^[0-9a-f]{40}$")
+            self.assertTrue(provenance["origin"].startswith("https://github.com/"))
 
     def test_every_recorded_file_has_a_hash_and_a_size(self):
         for component in CONFIG["components"]:
@@ -73,8 +90,10 @@ class Verification(unittest.TestCase):
             path.write_bytes(b"assemblES")  # same length, different bytes
             errors, notes = [], []
             verify_toolchain.check_files([entry], errors, notes)
-            self.assertEqual(len(errors), 1)
-            self.assertIn("does not match the recorded build", errors[0])
+            self.assertTrue(
+                any("does not match the recorded build" in error for error in errors),
+                errors,
+            )
 
     def test_a_missing_binary_is_an_error(self):
         errors, notes = [], []
@@ -105,6 +124,55 @@ class Verification(unittest.TestCase):
         for entries in emulator["files"].values():
             for entry in entries:
                 self.assertNotIn("observed_only", entry)
+
+    def test_selected_executable_path_is_hashed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            approved = Path(tmp) / "approved.exe"
+            approved.write_bytes(b"approved tool")
+            component = {
+                "id": "assembler",
+                "files": {
+                    "test": [dict(self.entry(approved), executable=True)]
+                },
+            }
+            substitute = Path(tmp) / "substitute.exe"
+            substitute.write_bytes(b"substitute!!")
+            errors, notes = [], []
+            verify_toolchain.check_selected_executables(
+                [component],
+                "test",
+                {"assembler": substitute},
+                errors,
+                notes,
+            )
+            self.assertTrue(
+                any("does not match the recorded build" in error for error in errors),
+                errors,
+            )
+
+    def test_make_rejects_mismatched_tool_overrides_before_z80_build(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            substitute = Path(tmp) / "substitute.exe"
+            substitute.write_bytes(b"not an approved build tool")
+            for variable in ("AS_BIN", "P2BIN"):
+                with self.subTest(variable=variable):
+                    result = subprocess.run(
+                        [
+                            "make",
+                            "-B",
+                            "z80-check",
+                            f"{variable}={substitute}",
+                            "Z80_REFERENCE=assets/manifest.json",
+                            f"Z80_BIN={Path(tmp) / (variable + '.bin')}",
+                            f"Z80_OBJ={Path(tmp) / (variable + '.p')}",
+                        ],
+                        cwd=ROOT,
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn("does not match the recorded build", result.stderr)
+                    self.assertNotIn("[RUN]", result.stdout)
 
 
 if __name__ == "__main__":
