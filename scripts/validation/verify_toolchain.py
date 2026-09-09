@@ -18,6 +18,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 
 def sha256_of(path: Path) -> str:
@@ -56,6 +57,62 @@ def check_files(entries: list[dict], errors: list[str], notes: list[str]) -> int
     return checked
 
 
+def selected_executable_entry(
+    component: dict[str, Any], key: str, errors: list[str]
+) -> dict[str, Any] | None:
+    """Return the one approved executable identity for a component and host."""
+    files = component.get("files", {})
+    entries = files.get(key, files.get("any", []))
+    executable_entries = [entry for entry in entries if entry.get("executable")]
+    if len(executable_entries) != 1:
+        errors.append(
+            f"{component.get('id', '<unknown>')}: expected exactly one approved "
+            f"executable for {key}, found {len(executable_entries)}"
+        )
+        return None
+    return executable_entries[0]
+
+
+def check_selected_executables(
+    components: list[dict[str, Any]],
+    key: str,
+    selections: dict[str, Path],
+    errors: list[str],
+    notes: list[str],
+) -> int:
+    """Hash the resolved executables that the caller is about to invoke."""
+    by_id = {component.get("id"): component for component in components}
+    checked = 0
+    for identifier, selected in selections.items():
+        component = by_id.get(identifier)
+        if component is None:
+            errors.append(f"selected executable names unknown component {identifier}")
+            continue
+        expected = selected_executable_entry(component, key, errors)
+        if expected is None:
+            continue
+        selected_entry = dict(expected)
+        selected_entry["path"] = str(selected.resolve())
+        checked += check_files([selected_entry], errors, notes)
+    return checked
+
+
+def parse_selections(values: list[str], errors: list[str]) -> dict[str, Path]:
+    selections: dict[str, Path] = {}
+    for value in values:
+        identifier, separator, path = value.partition("=")
+        if not separator or not identifier or not path:
+            errors.append(
+                f"invalid executable selection {value!r}; expected COMPONENT=PATH"
+            )
+            continue
+        if identifier in selections:
+            errors.append(f"duplicate executable selection for {identifier}")
+            continue
+        selections[identifier] = Path(path)
+    return selections
+
+
 def check_commit(component: dict, errors: list[str], notes: list[str]) -> None:
     """For a source-built component, the pinned commit is the identity."""
     wanted = component.get("source_commit")
@@ -92,6 +149,13 @@ def main() -> int:
     parser.add_argument("--platform", help="Toolchain subdirectory, else autodetected")
     parser.add_argument("--only", help="Check one component id")
     parser.add_argument(
+        "--require-executable",
+        action="append",
+        default=[],
+        metavar="COMPONENT=PATH",
+        help="Hash the resolved executable path that the caller will invoke",
+    )
+    parser.add_argument(
         "--require-emulator", action="store_true",
         help="Fail when the emulator is absent instead of only noting it",
     )
@@ -103,6 +167,7 @@ def main() -> int:
     errors: list[str] = []
     notes: list[str] = []
     checked = 0
+    selections = parse_selections(args.require_executable, errors)
 
     for component in config["components"]:
         if args.only and component["id"] != args.only:
@@ -127,6 +192,10 @@ def main() -> int:
 
         checked += check_files(entries, errors, notes)
 
+    selected_checked = check_selected_executables(
+        config["components"], key, selections, errors, notes
+    )
+
     for note in notes:
         print(f"[INFO] {note}")
     if errors:
@@ -135,7 +204,15 @@ def main() -> int:
         print(f"[FAIL] toolchain does not match {args.config}", file=sys.stderr)
         return 1
 
-    print(f"[OK] toolchain matches {args.config}: {checked} file(s) verified for {key}")
+    selected_note = (
+        f", {selected_checked} selected executable(s) verified"
+        if selections
+        else ""
+    )
+    print(
+        f"[OK] toolchain matches {args.config}: {checked} manifest file(s) "
+        f"verified for {key}{selected_note}"
+    )
     return 0
 
 

@@ -14,8 +14,14 @@ no Flicky code, data, or graphics, and no part of any Sega ROM.
 
 - **AS Macro Assembler** by Alfred Arnold — <http://john.ccac.rwth-aachen.de:8000/as/>
 - Version reported by the executables: `Macro Assembler 1.42 Beta [Bld 212]`
-- `p2bin` here is the Sonic-disassembly variant that accepts `-p=` padding and
-  `-z=` Z80 compression options, as used by the s1/s2/s3k disassemblies.
+- `p2bin` is Clownacy's Sonic-disassembly converter from
+  <https://github.com/Clownacy/p2bin>, pinned to commit
+  `e26d8aa8c43e285bac5e3b7df3be1adae515994f`. It accepts the required `-p=`
+  padding and `-z=` Z80 compression options.
+- The Windows executable is the Microsoft Visual C++ 12.0 rebuild recorded by
+  `sonicretro/s1disasm` commit `da7457dae9ad2b5dc2147b04c347d81b0dafca8d`.
+  The Linux executable is the build recorded by commit
+  `1ce386fc63bcef58d53f87d51a2e8620ff24de9a` in the same repository.
 
 The same binaries are used by the sibling `alien_soldier_src` project; the
 Windows files are byte-identical to the ones vendored there.
@@ -25,6 +31,9 @@ Windows files are byte-identical to the ones vendored there.
 The Makefile selects a subdirectory from the host OS and architecture, and
 `AS_MSGPATH` is pointed at it so the assembler finds its message catalogs.
 Override the choice with `make PLATFORM=<subdirectory>`.
+`AS_BIN` and `P2BIN` may select another location only when the resolved files
+match the approved executable identities for that platform. The build hashes
+those selected paths before invoking either program.
 
 | File | Bytes | SHA-256 |
 | --- | ---: | --- |

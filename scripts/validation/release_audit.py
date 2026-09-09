@@ -239,6 +239,32 @@ def check_toolchain(contract: dict, errors: list[str]) -> None:
         for field in ("version", "source", "provenance", "verification"):
             if not component.get(field):
                 errors.append(f"toolchain {identifier}: missing {field}")
+        if identifier in {"assembler", "binary_converter"} and not any(
+            component.get(field)
+            for field in ("source_release", "source_commit", "source_archive_sha256")
+        ):
+            errors.append(f"toolchain {identifier}: no exact source revision pinned")
+        if identifier == "binary_converter":
+            if not re.fullmatch(
+                r"[0-9a-f]{40}", component.get("source_commit") or ""
+            ):
+                errors.append("toolchain binary_converter: source commit is not exact")
+            if component.get("identity") != "source_commit_and_binary_hash":
+                errors.append(
+                    "toolchain binary_converter: identity does not require source "
+                    "commit and binary hash"
+                )
+            binary_provenance = component.get("binary_provenance", {})
+            for platform in component.get("files", {}):
+                origin = binary_provenance.get(platform, {})
+                if not origin.get("origin") or not origin.get("origin_commit"):
+                    errors.append(
+                        f"toolchain binary_converter: {platform} has no exact binary origin"
+                    )
+                elif not re.fullmatch(r"[0-9a-f]{40}", origin["origin_commit"]):
+                    errors.append(
+                        f"toolchain binary_converter: {platform} origin commit is not exact"
+                    )
         if component.get("provenance") == "source-built" and not component.get("source_commit"):
             errors.append(f"toolchain {identifier}: source-built but no source_commit pinned")
         files = component.get("files", {})

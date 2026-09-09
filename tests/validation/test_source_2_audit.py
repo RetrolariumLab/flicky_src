@@ -84,6 +84,33 @@ class Source2Audit(unittest.TestCase):
         errors = self.validate_copy(document)
         self.assertIn("sound fidelity emulator hash differs from toolchain pin", errors)
 
+    def test_converter_source_revision_is_required(self):
+        toolchain_path = ROOT / self.manifest["toolchain"]["manifest"]
+        toolchain = json.loads(toolchain_path.read_text(encoding="utf-8"))
+        converter = next(
+            component
+            for component in toolchain["components"]
+            if component["id"] == "binary_converter"
+        )
+        self.assertRegex(converter["source_commit"], r"^[0-9a-f]{40}$")
+
+    def test_converter_without_binary_origin_fails_the_release_audit(self):
+        toolchain_path = ROOT / self.manifest["toolchain"]["manifest"]
+        toolchain = json.loads(toolchain_path.read_text(encoding="utf-8"))
+        converter = next(
+            component
+            for component in toolchain["components"]
+            if component["id"] == "binary_converter"
+        )
+        converter.pop("binary_provenance")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "toolchain.json"
+            path.write_text(json.dumps(toolchain), encoding="utf-8")
+            document = json.loads(json.dumps(self.manifest))
+            document["toolchain"]["manifest"] = str(path)
+            errors = self.validate_copy(document)
+        self.assertTrue(any("no exact binary origin" in error for error in errors))
+
     def test_workstation_gate_matches_the_studio_manifest(self):
         document = json.loads(json.dumps(self.manifest))
         document["authoring"]["workstation_gate"] = "check-studios"

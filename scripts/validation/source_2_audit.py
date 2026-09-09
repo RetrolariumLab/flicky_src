@@ -392,6 +392,33 @@ def validate_toolchain(
                 errors.append(
                     f"toolchain component {component.get('id', '<unknown>')} lacks {field}"
                 )
+        if component.get("id") in {"assembler", "binary_converter"} and not any(
+            component.get(field)
+            for field in ("source_release", "source_commit", "source_archive_sha256")
+        ):
+            errors.append(
+                f"toolchain component {component.get('id')} has no exact source revision"
+            )
+        if component.get("id") == "binary_converter":
+            if not re.fullmatch(
+                r"[0-9a-f]{40}", component.get("source_commit") or ""
+            ):
+                errors.append("binary converter source commit is not exact")
+            if component.get("identity") != "source_commit_and_binary_hash":
+                errors.append(
+                    "binary converter identity does not require source commit and binary hash"
+                )
+            binary_provenance = component.get("binary_provenance", {})
+            for platform in component.get("files", {}):
+                origin = binary_provenance.get(platform, {})
+                if not origin.get("origin") or not origin.get("origin_commit"):
+                    errors.append(
+                        f"binary converter {platform} has no exact binary origin"
+                    )
+                elif not re.fullmatch(r"[0-9a-f]{40}", origin["origin_commit"]):
+                    errors.append(
+                        f"binary converter {platform} origin commit is not exact"
+                    )
     emulator = next(
         (component for component in components if component.get("id") == "emulator"),
         None,

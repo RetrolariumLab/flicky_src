@@ -55,6 +55,7 @@ RUNTIME_SUMMARY ?= build/runtime_scenarios.json
 RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 SOURCE_2_MANIFEST ?= config/source_reconstruction_2_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
+TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-executable "binary_converter=$(P2BIN)"
 ROM_LAYOUT ?= config/linker/rom_layout.json
 SOURCE_STRUCTURE ?= config/reconstruction/source_structure.json
 LISTING ?= build/main.lst
@@ -133,21 +134,21 @@ all: build
 # ---------------------------------------------------------------------------
 
 # Assemble and report byte identity as a warning.
-build: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
+build: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_BIN)
 	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # The permanent gate: any difference from the reference ROM fails the build.
-verify: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
+verify: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_BIN)
 	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
 		--verify
 
-$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_REFERENCE)
+$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_REFERENCE) | _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_SOURCE) --obj $(Z80_OBJ) --output $(Z80_BIN) \
 		--reference $(Z80_REFERENCE) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
@@ -155,7 +156,7 @@ $(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/bui
 
 z80-check: $(Z80_BIN)
 
-$(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_DATA_REFERENCE)
+$(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_DATA_REFERENCE) | _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_DATA_SOURCE) --obj $(Z80_DATA_OBJ) --output $(Z80_DATA_BIN) \
 		--reference $(Z80_DATA_REFERENCE) --reference-offset 12 \
@@ -165,7 +166,7 @@ $(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80
 z80-data-check: $(Z80_DATA_BIN)
 
 # Validate the reference ROM, extract data, then build and verify.
-init:
+init: _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.init_project \
 		--orig-rom "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST) \
 		--data-dir $(DATA_DIR) --data-addrs $(DATA_ADDRS) \
@@ -188,10 +189,10 @@ _require-assets:
 
 # The assembler is checked before it is used, not after the ROM disagrees.
 verify-toolchain:
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST)
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST) $(TOOLCHAIN_EXECUTABLES)
 
 _require-toolchain:
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST)
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST) $(TOOLCHAIN_EXECUTABLES)
 
 # ---------------------------------------------------------------------------
 # Data tools

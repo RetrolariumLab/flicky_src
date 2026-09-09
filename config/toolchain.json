@@ -7,6 +7,7 @@
       "version": "1.42 Beta [Bld 212]",
       "role": "Assembles src/main.s into build/main.p",
       "source": "http://john.ccac.rwth-aachen.de:8000/as/",
+      "source_release": "1.42 Beta [Bld 212]",
       "source_commit": null,
       "provenance": "bundled",
       "verification": "make verify-toolchain",
@@ -14,6 +15,7 @@
         "windows_i386": [
           {
             "path": "bin/windows_i386/asw.exe",
+            "executable": true,
             "size": 2718552,
             "sha256": "02bcdccc6a887aa94d382059e4f4a83a0d5bd87246aa586e1b6692c1c2e3c896"
           },
@@ -36,6 +38,7 @@
         "linux_x86_64": [
           {
             "path": "bin/linux_x86_64/asl",
+            "executable": true,
             "size": 2372248,
             "sha256": "be2ffab7be719e9c2b5452655be8ce40ad9888d04084e397687f23b6f8b85f1c"
           },
@@ -59,17 +62,32 @@
     },
     {
       "id": "binary_converter",
-      "name": "p2bin (Sonic-disassembly variant)",
-      "version": "accepts -p= padding and -z= Z80 compression",
+      "name": "Clownacy p2bin",
+      "version": "e26d8aa8c43e285bac5e3b7df3be1adae515994f",
       "role": "Converts build/main.p into the flat 128 KiB ROM image with -p=FF",
-      "source": "http://john.ccac.rwth-aachen.de:8000/as/",
-      "source_commit": null,
+      "source": "https://github.com/Clownacy/p2bin",
+      "source_commit": "e26d8aa8c43e285bac5e3b7df3be1adae515994f",
       "provenance": "bundled",
       "verification": "make verify-toolchain",
+      "identity": "source_commit_and_binary_hash",
+      "identity_note": "This Sonic-disassembly converter revision provides the required -p= padding and -z= Z80 compression options. Each executable is accepted only when the resolved path matches its approved size and SHA-256.",
+      "binary_provenance": {
+        "windows_i386": {
+          "origin": "https://github.com/sonicretro/s1disasm",
+          "origin_commit": "da7457dae9ad2b5dc2147b04c347d81b0dafca8d",
+          "build": "Recompiled from the pinned p2bin source with Microsoft Visual C++ 12.0"
+        },
+        "linux_x86_64": {
+          "origin": "https://github.com/sonicretro/s1disasm",
+          "origin_commit": "1ce386fc63bcef58d53f87d51a2e8620ff24de9a",
+          "build": "Published Linux x86-64 build of the pinned p2bin source"
+        }
+      },
       "files": {
         "windows_i386": [
           {
             "path": "bin/windows_i386/p2bin.exe",
+            "executable": true,
             "size": 28672,
             "sha256": "1323430afdfa630ab56ce76f0286ccbb05a04566126411d4b7d673f2a08115eb"
           }
@@ -77,6 +95,7 @@
         "linux_x86_64": [
           {
             "path": "bin/linux_x86_64/p2bin",
+            "executable": true,
             "size": 31040,
             "sha256": "969c1df15a15ef32bc25124093228dab3b81906d772f37fc873e00bb70a94459"
           }
@@ -98,6 +117,7 @@
         "any": [
           {
             "path": "../gens_automation/Output/Gens.exe",
+            "executable": true,
             "size": 9658397,
             "sha256": "d536817f33cc9871e2749bc0d5ced8956502d3182541a07e1d44279fdf45d141"
           }
@@ -119,6 +139,7 @@
         "windows_i386": [
           {
             "path": "bin/windows_i386/ymfm_renderer.exe",
+            "executable": true,
             "size": 2640167,
             "sha256": "6815d01e7e0e5af7ead14947758001a433b73e871e486a421e230a91e48d7191"
           }
