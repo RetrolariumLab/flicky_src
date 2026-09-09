@@ -175,5 +175,5 @@ all 2,624 audible YM2612 writes match the Python sequencer exactly, and their
 timing agrees with the frame-resolution trace within 2.1 frames. Registers
 `$24-$27` are deliberately omitted from the value comparison because they are
 the driver's timer scheduling traffic. The capture uses
-`config/gens_sound_trace.cfg`, so a persisted sound-off development setting
+`config/runtime/gens_sound_trace.cfg`, so a persisted sound-off development setting
 cannot silently produce an empty trace.

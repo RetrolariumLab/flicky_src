@@ -29,16 +29,19 @@ is a different reconstruction.
 
 ## Current baseline
 
-- `src/main.s` is an index of 43 address-ordered modules; the largest is under
-  700 lines and the mean is around 240.
+- `src/main.s` is an index of 36 address-ordered ROM modules. The source-
+  structure gate covers 50 assembly files across the 68000 and Z80 trees,
+  keeping each in the preferred 300-700-line range or requiring a documented
+  exception.
 - The build reproduces the reference ROM exactly, verified against the dump
   itself rather than against a copy of a previous build.
-- Every symbol is semantic. Zero address-derived identifiers remain across
-  1,979 definitions, and `make lint --strict-naming` refuses new ones.
-- All 194 work RAM fields are named and grouped in
+- Every symbol is semantic. Zero address-derived identifiers remain, and
+  `make lint --strict-naming` refuses new ones.
+- All declared work RAM fields are named and grouped in
   [`ram_fields.md`](ram_fields.md).
-- Six open questions are recorded in [`unknowns.md`](unknowns.md), each tied to
-  the source location that raises it.
+- Five open entries and three resolved entries are recorded in
+  [`unknowns.md`](unknowns.md), each tied to the source location that raises
+  it.
 - Seventeen extracted data segments are validated by SHA-1 before every build.
 
 ## Source and data policy
@@ -50,11 +53,11 @@ altered.
 
 Data stays in the source when a contributor can meaningfully read or edit it:
 pointer tables, animation scripts, palettes, level object placement, collision
-flags, sprite mappings. Data is extracted only when it is an opaque authored
-asset -- compressed tile art, the Z80 driver images, the packed level streams.
+flags, sprite mappings, and the Z80 driver and sound banks. Cartridge-derived
+segments are extracted only as fixed-slot art or as reconstruction references.
 Extraction is allowed only when the boundaries are proven, the checksum is
-recorded in `assets/manifest.json`, the labels stay visible in the source, and
-the rebuild remains byte-identical.
+recorded in `assets/manifest.json`, the source-facing labels remain visible,
+and the preservation rebuild remains byte-identical.
 
 ## Evidence rules
 
@@ -199,7 +202,7 @@ Two of its requirements had nothing behind them and now do. The toolchain is
 checked against recorded SHA-256 hashes *before* the assembler runs rather than
 after the ROM disagrees, and the emulator is pinned by upstream commit because a
 locally cross-built MinGW binary has no stable hash. The ROM layout moved out of
-prose into `config/rom_layout.json` and is checked against three separate ground
+prose into `config/linker/rom_layout.json` and is checked against three separate ground
 truths -- the assembler's own listing, its symbol table and the built image.
 
 *Exit criterion:* `make release-audit` verifies the manifest against reality,
@@ -215,7 +218,7 @@ worktree.
 Fixed-layout hacks and bug fixes belong to a separate entrypoint and a separate
 output. The preservation build stays the default and the gate stays permanent.
 
-### 12. Source Reconstruction 2.0 - Complete
+### 12. Source Reconstruction 2.0 - In Progress
 
 The resident Z80 driver and sound banks are semantic, assembler-owned source.
 An isolated content pipeline provides Level, Graphics, and Sound studios over
@@ -225,12 +228,18 @@ edited level records, pixels, text, palettes, mappings, animations, event
 streams, and FM voices have each been exercised through a complete ROM build.
 
 The aggregate `make source-2-check` starts with the permanent 1.0 release gate,
-then checks relocation, content identity, every headless Studio model, and the
-machine-readable 2.0 contract.
+then checks relocation, content identity and validation, every headless Studio
+model, direct level playtesting, the Python sound sequencer against a real Z80
+trace, and the machine-readable 2.0 contract.
 
 *Exit criterion:* the 1.0 predecessor tag is an ancestor, all three studios are
 supported, the zero-edit ROM is exact, residual uncertainty is explicit, and
 `make source-2-check` passes.
+
+The implementation goals above are met, but release preparation is still in
+progress. The repository is being aligned with its current public release
+policy, including history, language, clean-tree, pre-tag, and post-tag audits.
+This milestone becomes Complete only on the reviewed release commit.
 
 ## Permanent invariants
 

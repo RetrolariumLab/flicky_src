@@ -61,18 +61,18 @@ Any difference means the edit was wrong, not that the gate is too strict.
 ## Current status
 
 Source Reconstruction 1.0 is preserved and complete; Source Reconstruction
-2.0 is tag-ready on its release branch. The byte-identity gate compares against the cartridge dump, the
-source is modular and
-consistently styled, every symbol is semantic, the subsystems and the memory
-map are documented, the authored data formats have codecs, the symbol map is
-exported, twelve scenarios replay under the emulator with 68 checked
-expectations about work RAM, and `make release-check` audits the whole
-contract.
+2.0 is in release preparation on its release branch. Its aggregate
+`make source-2-check`
+starts with the permanent 1.0 gate, then verifies relocatability, zero-edit
+content identity, all three Studio models, direct level playtesting, sound-
+sequencer fidelity, and the machine-readable 2.0 contract.
 
 See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe,
 [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for the preserved
 base, and [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) for the
 authoring release.
 
-Seven questions are open in [`unknowns.md`](unknowns.md), and one is resolved:
-CODE-002 records the defect class byte identity cannot see.
+Five entries remain open in [`unknowns.md`](unknowns.md), and three are
+resolved. The open entries record four questions about the original program
+and the non-byte-exact Nemesis encoder; none is hidden by the 2.0 release
+claim.

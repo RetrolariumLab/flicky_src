@@ -241,7 +241,7 @@ def inspect(root: Path, manifest: dict[str, Any]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("init", "validate", "inspect"))
-    parser.add_argument("--manifest", default="config/content_studios.json")
+    parser.add_argument("--manifest", default="config/authoring/content_studios.json")
     parser.add_argument("--root", default=".")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--zero-edit", action="store_true")

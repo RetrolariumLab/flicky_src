@@ -41,7 +41,7 @@ never tracked.
 
 ## Breakpoints and watches
 
-`config/debugger_breakpoints.json` and `config/debugger_watches.json` name
+`config/debugger/breakpoints.json` and `config/debugger/watches.json` name
 symbols, never addresses. `make symbols` resolves them and fails if any name no
 longer exists, so a rename that breaks a debugging aid is caught at build time
 rather than the next time somebody tries to use it.

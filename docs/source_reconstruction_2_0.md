@@ -7,6 +7,12 @@ contract do not change. The tagged 1.0 commit remains an ancestor of this
 release, and the canonical build still reproduces SHA-1
 `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96` byte for byte.
 
+The current branch is a development candidate, not yet a release. Its public
+manifest records the project-owned schema, release line, scope, evidence, and
+gates without exposing review-system metadata. The status changes to
+`tag-ready` only after the remaining history and clean-tree checks have been
+reviewed and satisfied.
+
 The release adds three capability groups:
 
 1. The complete 4,070-byte resident Z80 driver and 2,804-byte resident sound
@@ -81,3 +87,13 @@ The annotated `source-reconstruction-2.0` tag is created only after that gate
 passes on the release commit with a clean worktree. ROMs, extracted assets,
 workspace JSON/ASM, generated content builds, and emulator captures remain
 ignored local data.
+
+The release sequence is explicit:
+
+```bash
+make source-2-audit          # valid while status is development
+make source-2-check          # full 1.0 gate followed by all 2.0 checks
+make source-2-pre-tag-check  # requires tag-ready status and a clean tree
+# create the annotated tag only after human review
+make source-2-tag-check      # verifies the tag type and exact target
+```

@@ -37,7 +37,7 @@ def run(command: list[str], root: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", default="config/content_studios.json")
+    parser.add_argument("--manifest", default="config/authoring/content_studios.json")
     parser.add_argument("--root", default=".")
     parser.add_argument("--as-bin", required=True)
     parser.add_argument("--p2bin", required=True)

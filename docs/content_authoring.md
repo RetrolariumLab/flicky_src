@@ -34,7 +34,7 @@ pipelines.
 
 ## Studio contract
 
-`config/content_studios.json` is the machine-readable inventory. A studio
+`config/authoring/content_studios.json` is the machine-readable inventory. A studio
 moves from `planned` through `foundation` to `supported`; the status must never
 claim more than its headless model can validate. The intended supported set is:
 

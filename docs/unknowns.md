@@ -175,7 +175,7 @@ reused, even after the entry is resolved.
   same period, whose compressor is likely the same tool. If a splitting rule
   reproduces those byte for byte, it should reproduce these. Until then the
   formats are proven semantically -- decode, re-encode, decode again yields the
-  same pixels -- and `config/data_formats.json` records `semantic` rather than
+  same pixels -- and `config/authoring/data_formats.json` records `semantic` rather than
   `exact` for them so the weaker claim is visible.
 
 ### SND-001 The Z80 driver itself is not disassembled

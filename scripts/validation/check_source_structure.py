@@ -83,7 +83,7 @@ def check(root: Path, config: dict) -> tuple[list[str], dict[str, int]]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="config/source_structure.json")
+    parser.add_argument("--config", default="config/reconstruction/source_structure.json")
     parser.add_argument("--root", default=".")
     args = parser.parse_args()
 

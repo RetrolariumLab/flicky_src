@@ -83,7 +83,7 @@ and the whole gate before proposing.
 
 ## Commit messages
 
-The project follows the shared release contract's rules, because the history is
+The project follows its documented release policy, because the history is
 part of the evidence: a reader tracing why a byte moved has only the commit that
 moved it.
 

@@ -25,7 +25,7 @@ hex digits, so generation 1 cannot come back.
 
 ## Reading a name's origin
 
-[`label_renames.json`](label_renames.json) maps every label, equate and macro
+[`label_renames.json`](../../config/reconstruction/label_renames.json) maps every label, equate and macro
 the imported disassembly defined to the name this reconstruction gave it, and
 the file that now holds it:
 
@@ -48,7 +48,7 @@ Game_StartRound:
                 jsr     Sys_InitTitleScreen             ; was: sub_12A94
 ```
 
-`tests/test_label_provenance.py` holds the table to the source in both
+`tests/validation/test_label_provenance.py` holds the table to the source in both
 directions. Every entry must name a symbol that exists at the path it declares,
 every symbol in `src/` must have an entry, every imported label must be
 accounted for, and no `; was:` may come back.

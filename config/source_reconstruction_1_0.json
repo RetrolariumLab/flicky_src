@@ -33,14 +33,14 @@
       "status": "unsupported",
       "reason": "Both Z80 driver images are copied verbatim and never disassembled. They are executable code inside binary assets, which the source boundary rule otherwise forbids, so the exclusion is named here rather than left implicit.",
       "registry": "SND-001",
-      "control": "Both images are hash-pinned in assets/manifest.json, owned by a named module, and their ROM ranges are declared in config/rom_layout.json."
+      "control": "Both images are hash-pinned in assets/manifest.json, owned by a named module, and their ROM ranges are declared in config/linker/rom_layout.json."
     },
     {
       "id": "byte_exact_recompression",
       "status": "partial",
       "reason": "Eight of seventeen extracted segments round-trip byte for byte. The six Nemesis segments round-trip only semantically, and Enigma has no encoder.",
       "registry": "DATA-002",
-      "control": "config/data_formats.json declares the weaker claim per segment and make roundtrip-formats enforces exactly the claim declared."
+      "control": "config/authoring/data_formats.json declares the weaker claim per segment and make roundtrip-formats enforces exactly the claim declared."
     },
     {
       "id": "frame_image_comparison",
@@ -87,7 +87,7 @@
       ],
       "evidence": [
         "source_boundary",
-        "files:config/rom_layout.json"
+        "files:config/linker/rom_layout.json"
       ]
     },
     {
@@ -146,7 +146,7 @@
       ],
       "evidence": [
         "claims_need_evidence",
-        "files:config/data_formats.json"
+        "files:config/authoring/data_formats.json"
       ]
     },
     {
@@ -196,13 +196,13 @@
       ],
       "evidence": [
         "source_boundary",
-        "files:config/rom_layout.json"
+        "files:config/linker/rom_layout.json"
       ]
     },
     {
       "id": "checked_naming_and_provenance_table",
       "kind": "source",
-      "summary": "The inline '; was:' markers became docs/provenance/label_renames.json, which maps all 1,717 imported labels to their current names and paths; the naming vocabulary in docs/naming.md is now enforced by make lint rather than only documented.",
+      "summary": "The inline '; was:' markers became config/reconstruction/label_renames.json, which maps all 1,717 imported labels to their current names and paths; the naming vocabulary in docs/naming.md is now enforced by make lint rather than only documented.",
       "commits": [
         "release-commit"
       ],
@@ -268,7 +268,7 @@
         ],
         "files": [
           "src/main.s",
-          "config/rom_layout.json",
+          "config/linker/rom_layout.json",
           "docs/source_layout.md",
           "assets/manifest.json"
         ],
@@ -282,7 +282,7 @@
           "lint"
         ],
         "files": [
-          "docs/provenance/label_renames.json",
+          "config/reconstruction/label_renames.json",
           "docs/unknowns.md",
           "docs/provenance/labels.md",
           "docs/naming.md"
@@ -381,7 +381,7 @@
           "lint"
         ],
         "files": [
-          "config/data_formats.json",
+          "config/authoring/data_formats.json",
           "docs/unknowns.md",
           "docs/validation.md"
         ],
@@ -506,9 +506,9 @@
   "layout_deviations": [
     {
       "rule_id": "config/linker/",
-      "actual_path": "config/rom_layout.json",
+      "actual_path": "config/linker/rom_layout.json",
       "reason": "There is no linker: AS emits one object and p2bin flattens it, so there is no linker script to own the layout.",
-      "equivalent_control": "config/rom_layout.json declares the memory regions, the ROM landmarks, the padding gap and all 36 module ranges, and make verify-layout checks every one against the build."
+      "equivalent_control": "config/linker/rom_layout.json declares the memory regions, the ROM landmarks, the padding gap and all 36 module ranges, and make verify-layout checks every one against the build."
     },
     {
       "rule_id": "docs/adr/",
@@ -577,7 +577,7 @@
   ],
   "provenance": {
     "references": [
-      "docs/provenance/label_renames.json",
+      "config/reconstruction/label_renames.json",
       "docs/provenance/labels.md",
       "docs/unknowns.md",
       "bin/README.md",
@@ -625,7 +625,7 @@
     "docs/unknowns.md",
     "docs/source_reconstruction_1_0.md",
     "docs/provenance/labels.md",
-    "docs/provenance/label_renames.json",
+    "config/reconstruction/label_renames.json",
     "docs/adr/0001-as-assembler.md",
     "docs/adr/0002-rom-layout-contract.md",
     "docs/adr/0003-runtime-evidence-is-state.md",

@@ -43,10 +43,10 @@ DATA_DIR ?= data
 DATA_ADDRS ?= $(DATA_DIR)/data_addrs.txt
 SCRIPTS_DIR ?= scripts
 RUN_SCRIPT ?= $(SCRIPTS_DIR)/run.py
-DATA_FORMAT_MANIFEST ?= config/data_formats.json
+DATA_FORMAT_MANIFEST ?= config/authoring/data_formats.json
 DATA_FORMAT_SUMMARY ?= build/data_formats.json
-DEBUG_BREAKPOINTS ?= config/debugger_breakpoints.json
-DEBUG_WATCHES ?= config/debugger_watches.json
+DEBUG_BREAKPOINTS ?= config/debugger/breakpoints.json
+DEBUG_WATCHES ?= config/debugger/watches.json
 SYMBOL_FILE ?= build/main.sym
 DEBUG_SUMMARY ?= build/debug_symbols.json
 RUNTIME_SCENARIOS ?= scenarios/runtime_scenarios.json
@@ -55,8 +55,8 @@ RUNTIME_SUMMARY ?= build/runtime_scenarios.json
 RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
 SOURCE_2_MANIFEST ?= config/source_reconstruction_2_0.json
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
-ROM_LAYOUT ?= config/rom_layout.json
-SOURCE_STRUCTURE ?= config/source_structure.json
+ROM_LAYOUT ?= config/linker/rom_layout.json
+SOURCE_STRUCTURE ?= config/reconstruction/source_structure.json
 LISTING ?= build/main.lst
 M68K_SOURCE_FILES := $(shell $(PYTHON) -c "from pathlib import Path; print(' '.join(p.as_posix() for p in Path('src').rglob('*') if p.suffix in {'.s', '.inc'}))")
 Z80_SOURCE ?= src/sound/z80/driver.asm
@@ -68,13 +68,13 @@ Z80_DATA_SOURCE ?= src/sound/z80/data.asm
 Z80_DATA_OBJ ?= build/z80_sound_data.p
 Z80_DATA_BIN ?= build/z80_sound_data.bin
 Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
-CONTENT_MANIFEST ?= config/content_studios.json
+CONTENT_MANIFEST ?= config/authoring/content_studios.json
 CONTENT_WORKSPACE ?= content/workspace
 CONTENT_ROM ?= build/content/flicky.bin
 YMFM_RENDERER ?= bin/windows_i386/ymfm_renderer.exe
 SOUND ?= zMusic81Header
 SOUND_SECONDS ?= 30
-SOUND_TRACE_CONFIG ?= config/gens_sound_trace.cfg
+SOUND_TRACE_CONFIG ?= config/runtime/gens_sound_trace.cfg
 SOUND_TRACE_FILE ?= build/sound_trace/gens.csv
 SOUND_TRACE_FRAMES ?= build/sound_trace/frames
 
@@ -106,13 +106,17 @@ BATCH_COUNT ?= 40
 # refuses any that come back.
 STRICT_NAMING ?= --strict-naming
 
+MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk mk/workflow.mk
+
+include $(MAKE_FRAGMENTS)
+
 .DEFAULT_GOAL := build
 
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-layout verify-relocation check-source-structure init split check-assets \
-        compare lint format tools unpack-data \
+        compare lint format format-check scaffold-check tools unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios \
-        test release-audit release-check source-2-audit source-2-release-audit source-2-check clean \
+        test release-audit release-check source-2-audit source-2-release-audit source-2-check source-2-pre-tag-check source-2-tag-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
         prepare-batch rename build-gens build-ymfm-renderer stop help \
         _require-assets _require-movie _require-toolchain
@@ -155,75 +159,6 @@ $(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80
 
 z80-data-check: $(Z80_DATA_BIN)
 
-# ---------------------------------------------------------------------------
-# Isolated content authoring
-# ---------------------------------------------------------------------------
-
-# Initialize only missing workspace files. Existing edits are never replaced;
-# use FORCE=true only when intentionally resetting them to tracked baselines.
-init-content:
-	@$(PYTHON) $(RUN_SCRIPT) authoring.content_workspace init \
-		--manifest $(CONTENT_MANIFEST) $(if $(filter true,$(FORCE)),--force,)
-
-inspect-content:
-	@$(PYTHON) $(RUN_SCRIPT) authoring.content_workspace inspect \
-		--manifest $(CONTENT_MANIFEST)
-
-validate-content:
-	@$(PYTHON) $(RUN_SCRIPT) authoring.content_workspace validate \
-		--manifest $(CONTENT_MANIFEST)
-
-# Editable builds have their own generated source tree and ROM. The strict
-# preservation artifacts used by make verify are neither read nor overwritten.
-build-content: init-content _require-assets _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) authoring.build_content \
-		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
-		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
-		--asset-manifest $(ASSET_MANIFEST)
-
-# The release gate builds directly from tracked baselines, so a developer's
-# current workspace may remain edited while preservation compatibility runs.
-check-content-zero-edit: _require-assets _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) authoring.build_content --zero-edit \
-		--manifest $(CONTENT_MANIFEST) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
-		--as-args "$(AS_ARGS)" --original-rom "$(ORIGINAL_ROM)" \
-		--asset-manifest $(ASSET_MANIFEST)
-
-level-studio: init-content
-	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio
-
-playtest-level: build-content
-	@$(PYTHON) $(RUN_SCRIPT) runtime.level_playtest --gens "$(GENS_EXE)" \
-		--rom "$(CONTENT_ROM)" --round "$(or $(ROUND),1)"
-
-smoke-level-playtest: build-content
-	@$(PYTHON) $(RUN_SCRIPT) runtime.level_playtest --gens "$(GENS_EXE)" \
-		--rom "$(CONTENT_ROM)" --round "$(or $(ROUND),26)" --check
-
-graphics-studio: init-content
-	@$(PYTHON) $(RUN_SCRIPT) authoring.graphics_studio
-
-sound-studio: init-content
-	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_studio
-
-preview-sound: init-content
-	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_preview $(SOUND) \
-		--seconds $(SOUND_SECONDS) --renderer "$(YMFM_RENDERER)"
-
-trace-sound: verify
-	@$(PYTHON) $(RUN_SCRIPT) runtime.capture_sound_trace --gens "$(GENS_EXE)" \
-		--rom "$(ROM)" --config "$(SOUND_TRACE_CONFIG)" \
-		--trace "$(SOUND_TRACE_FILE)" --frames "$(SOUND_TRACE_FRAMES)"
-
-verify-sound-sequencer: trace-sound
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_sound_trace \
-		--trace "$(SOUND_TRACE_FILE)"
-
-check-studios: init-content
-	@$(PYTHON) $(RUN_SCRIPT) authoring.level_studio --check
-	@$(PYTHON) $(RUN_SCRIPT) authoring.graphics_studio --check
-	@$(PYTHON) $(RUN_SCRIPT) authoring.sound_studio --check
-
 # Validate the reference ROM, extract data, then build and verify.
 init:
 	@$(PYTHON) $(RUN_SCRIPT) build.init_project \
@@ -253,89 +188,6 @@ verify-toolchain:
 _require-toolchain:
 	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST)
 
-# AS has no linker, so the include order in src/main.s is the ROM layout itself.
-# This makes that layout a declaration the build has to agree with. It reads the
-# listing for the module addresses, so it has to depend on one being there.
-verify-layout: $(LISTING)
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_layout \
-		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
-
-verify-relocation: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_relocation \
-		--source $(SRC) --sound-data $(Z80_DATA_BIN) \
-		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
-
-# Compare an existing build without reassembling.
-compare:
-	@$(PYTHON) $(RUN_SCRIPT) validation.compare_roms \
-		--built $(ROM) --original "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST)
-
-# Listing file, used by extract_data_addrs.py and the debugger workflow.
-# -i lets modules under src/ resolve their binclude paths from the project root.
-$(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_BIN)
-	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
-	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
-
-# ---------------------------------------------------------------------------
-# Validation
-# ---------------------------------------------------------------------------
-
-# Style, semantic source invariants, and repository-wide checks. None of these
-# substitute for "make verify": a green lint says nothing about byte identity.
-lint:
-	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src
-	@$(PYTHON) $(RUN_SCRIPT) validation.lint_source $(STRICT_NAMING)
-	@$(PYTHON) $(RUN_SCRIPT) validation.check_source_structure --config $(SOURCE_STRUCTURE)
-	@$(PYTHON) $(RUN_SCRIPT) validation.lint_project
-
-check-source-structure:
-	@$(PYTHON) $(RUN_SCRIPT) validation.check_source_structure --config $(SOURCE_STRUCTURE)
-
-# Focused unit tests for the Python tooling, so a bug in a check cannot
-# quietly pass everything it is supposed to catch.
-test:
-	@$(PYTHON) -m unittest discover -s tests -p "test_*.py"
-
-# Check the repository against the machine-readable release contract.
-release-audit:
-	@$(PYTHON) $(RUN_SCRIPT) validation.release_audit --contract $(RELEASE_CONTRACT)
-
-# The complete acceptance gate, in increasing cost. Recursive $(MAKE) calls
-# keep the order explicit even under a parallel build.
-release-check:
-	$(MAKE) verify-toolchain
-	$(MAKE) check-assets
-	$(MAKE) lint
-	$(MAKE) test
-	$(MAKE) roundtrip-formats
-	$(MAKE) verify
-	$(MAKE) verify-layout
-	$(MAKE) symbols
-	$(MAKE) trace
-	$(MAKE) release-audit
-
-source-2-audit:
-	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit --manifest $(SOURCE_2_MANIFEST)
-
-source-2-release-audit:
-	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit --manifest $(SOURCE_2_MANIFEST) --require-ready
-
-source-2-check:
-	$(MAKE) release-check
-	$(MAKE) verify-relocation
-	$(MAKE) check-content-zero-edit
-	$(MAKE) validate-content
-	$(MAKE) check-studios
-	$(MAKE) smoke-level-playtest
-	$(MAKE) verify-sound-sequencer
-	$(MAKE) source-2-release-audit
-
-# Deterministic whitespace, label-layout and case normalization, then re-check.
-# Formatting must never move a byte, so verify afterwards.
-format:
-	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src --fix
-	@$(MAKE) lint
-
 # ---------------------------------------------------------------------------
 # Data tools
 # ---------------------------------------------------------------------------
@@ -353,117 +205,6 @@ roundtrip-formats: _require-assets
 clean:
 	@$(PYTHON) $(RUN_SCRIPT) build.clean_project
 
-# Export the symbol map and resolve the debugger configs against it.
-symbols: $(LISTING)
-	@$(PYTHON) $(RUN_SCRIPT) validation.debug_symbols 		--listing $(LISTING) 		--breakpoints $(DEBUG_BREAKPOINTS) --watches $(DEBUG_WATCHES) 		--sym $(SYMBOL_FILE) --summary $(DEBUG_SUMMARY)
-
-# ---------------------------------------------------------------------------
-# Emulator analysis (requires MOVIE=longplay|demos)
-# ---------------------------------------------------------------------------
-
-_require-movie:
-ifndef MOVIE
-	@echo "ERROR: MOVIE parameter required. Use MOVIE=longplay or MOVIE=demos."
-	@exit 1
-endif
-
-# Generate reference screenshots and memory dumps from a known-good ROM.
-reference: _require-movie
-	@$(PYTHON) -c "import os; os.makedirs('reference/$(MOVIE)', exist_ok=True)"
-	"$(GENS_EXE)" \
-		-rom $(ROM) \
-		-play $(MOVIE_FILE_$(MOVIE)) \
-		-screenshot-interval $(ANALYSIS_INTERVAL) \
-		-screenshot-dir reference/$(MOVIE) \
-		$(if $(MAX_FRAMES_$(MOVIE)),-max-frames $(MAX_FRAMES_$(MOVIE)),) \
-		-save-state-dumps -turbo -frameskip 0 -nosound
-
-# Stub each procedure with an early RTS and diff the result against the
-# reference capture. MEMORY=true also records memory diffs.
-analyze: _require-movie
-	@$(PYTHON) $(RUN_SCRIPT) workflow.analyze_procedures \
-		--project-dir . --source $(SRC) --rom $(ROM) \
-		--movie $(MOVIE_FILE_$(MOVIE)) \
-		--reference reference/$(MOVIE) --diffs diffs/$(MOVIE) \
-		--procedures-file $(PROCEDURES_FILE) \
-		--workers $(ANALYSIS_WORKERS) --grid-cols $(ANALYSIS_GRID_COLS) \
-		--frameskip $(ANALYSIS_FRAMESKIP) --interval $(ANALYSIS_INTERVAL) \
-		$(if $(MAX_FRAMES_$(MOVIE)),--max-frames $(MAX_FRAMES_$(MOVIE)),) \
-		--max-diffs $(ANALYSIS_MAX_DIFFS) --diff-color $(ANALYSIS_DIFF_COLOR) \
-		$(if $(filter true,$(MEMORY)),--memory-diffs,)
-
-# Capture the declared scenarios, then validate them. Needs the instrumented
-# Gens build; without it the runner stops rather than producing nothing quietly.
-trace-runtime: verify symbols
-	@$(PYTHON) $(RUN_SCRIPT) runtime.run_runtime_scenarios 		--scenarios $(RUNTIME_SCENARIOS) --gens "$(GENS_EXE)" 		--rom $(ROM) --output-dir $(RUNTIME_DIR)
-	@$(MAKE) validate-runtime
-
-validate-runtime:
-	@$(PYTHON) $(RUN_SCRIPT) runtime.validate_runtime_scenarios 		--scenarios $(RUNTIME_SCENARIOS) --capture-dir $(RUNTIME_DIR) 		--summary $(RUNTIME_SUMMARY)
-
-trace: symbols trace-runtime
-
-find-unanalyzed:
-	@$(PYTHON) -c "import os; os.makedirs('$(WORKFLOW_DIR)', exist_ok=True)"
-	@$(PYTHON) $(RUN_SCRIPT) workflow.find_unnamed_procedures \
-		--list --exclude-analyzed analysis_results.csv --output $(PROCEDURES_FILE)
-
-report: _require-movie
-	@$(PYTHON) -c "import os; os.makedirs('$(WORKFLOW_DIR)', exist_ok=True)"
-	@$(PYTHON) $(RUN_SCRIPT) workflow.generate_analysis_report \
-		--project-dir . --movie $(MOVIE) --output-dir $(WORKFLOW_DIR)
-
-# ---------------------------------------------------------------------------
-# Documentation workflow
-# ---------------------------------------------------------------------------
-
-set-movie: _require-movie
-	@$(PYTHON) -c "import os; os.makedirs('$(WORKFLOW_DIR)', exist_ok=True)"
-	@echo $(MOVIE) > $(WORKFLOW_DIR)/.movie
-	@echo "Movie type set to: $(MOVIE)"
-
-show-movie:
-	@if [ -f $(WORKFLOW_DIR)/.movie ]; then \
-		echo "Current movie: $$(cat $(WORKFLOW_DIR)/.movie)"; \
-	else \
-		echo "No movie set. Use: make set-movie MOVIE=longplay"; \
-	fi
-
-prepare-batch:
-	@if [ ! -f $(WORKFLOW_DIR)/.movie ]; then \
-		echo "ERROR: no movie set. Run: make set-movie MOVIE=longplay"; exit 1; \
-	fi
-	@$(PYTHON) $(RUN_SCRIPT) workflow.prepare_batch \
-		--report $(WORKFLOW_DIR)/analysis_report_$$(cat $(WORKFLOW_DIR)/.movie).csv \
-		--count $(BATCH_COUNT) \
-		--output $(WORKFLOW_DIR)/batch_procedures.txt --source $(SRC)
-
-rename:
-	@if [ ! -f $(WORKFLOW_DIR)/rename_batch.csv ]; then \
-		echo "ERROR: $(WORKFLOW_DIR)/rename_batch.csv not found."; \
-		echo "Create it with columns: old_name,new_name,description"; exit 1; \
-	fi
-	@$(PYTHON) $(RUN_SCRIPT) workflow.rename_procedures \
-		--source $(SRC) --database $(WORKFLOW_DIR)/rename_batch.csv \
-		--report $(WORKFLOW_DIR)/analysis_report_$$(cat $(WORKFLOW_DIR)/.movie).csv
-	@echo "Renames applied. A new name can change a shared label column,"
-	@echo "so run: make format && make verify"
-
-# ---------------------------------------------------------------------------
-# Emulator checkout
-# ---------------------------------------------------------------------------
-
-build-gens:
-	@$(PYTHON) -c "import os, subprocess; d = '$(GENS_DIR)'; os.path.isdir(d) or subprocess.run(['git', 'clone', '$(GENS_REPO)', d], check=True)"
-	@$(MAKE) -C $(GENS_DIR) -f $(GENS_MAKEFILE) $(GENS_TARGET)
-
-build-ymfm-renderer:
-	docker build --platform linux/amd64 --file tools/ymfm_renderer/Dockerfile \
-		--output type=local,dest=bin/windows_i386 .
-
-stop:
-	-@taskkill //F //IM Gens.exe 2>/dev/null || true
-	@echo "Stopped running emulators."
 
 # ---------------------------------------------------------------------------
 
@@ -505,11 +246,15 @@ help:
 	@echo "  make verify-relocation         Pack the ROM and check relocatable sound loads"
 	@echo "  make lint                      Style, naming and repository checks"
 	@echo "  make format                    Apply the deterministic fixes, then lint"
+	@echo "  make format-check              Check formatting without changing files"
+	@echo "  make scaffold-check            Static checks that need no private ROM"
 	@echo "  make test                      Unit tests for the Python tooling"
 	@echo "  make release-audit             Check the 1.0 release contract"
 	@echo "  make release-check             The complete acceptance gate"
 	@echo "  make source-2-audit            Check the Source 2.0 manifest"
 	@echo "  make source-2-check            Run 1.0 plus every Source 2.0 gate"
+	@echo "  make source-2-pre-tag-check    Validate a clean tag-ready release commit"
+	@echo "  make source-2-tag-check        Validate the annotated release tag at HEAD"
 	@echo ""
 	@echo "Data tools:"
 	@echo "  make tools                     Build the C decompressors"
