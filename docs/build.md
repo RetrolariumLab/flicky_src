@@ -50,6 +50,9 @@ otherwise resolve that relative to the module's own directory.
 **Converting.** `p2bin` flattens the object into the cartridge image. The
 `-p=FF` is not optional: the cartridge pads unused space with `$FF` and p2bin
 defaults to `$00`, which would corrupt 18,015 bytes in the middle of the image.
+The converter writes a temporary sibling first and replaces the destination
+atomically only after successful conversion, preserving a prior valid ROM when
+the converter fails or is interrupted.
 
 **Comparing.** `scripts/validation/compare_roms.py` compares the result with the dump byte
 by byte and reports the first difference. A matching hash is not accepted as a

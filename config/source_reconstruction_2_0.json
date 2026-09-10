@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 26
+    "commit_count": 27
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -259,7 +259,7 @@
       "kind": "tooling",
       "summary": "Make the shared Python format codecs canonical, retire redundant C decoders, and place the native YMFM frontend under its authoring owner.",
       "commits": [
-        "release-commit"
+        "f63d285b6546743be14b37b66e09807b8444277b"
       ],
       "evidence": [
         "scripts/formats",
@@ -269,6 +269,20 @@
         "tests/authoring/test_data_formats.py",
         "build-ymfm-renderer",
         "roundtrip-formats"
+      ]
+    },
+    {
+      "id": "atomic-rom-output",
+      "kind": "tooling",
+      "summary": "Preserve an existing verified ROM until p2bin has produced a successful replacement in the destination directory.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "scripts/build/build_rom.py",
+        "tests/build/test_build_rom.py",
+        "docs/build.md",
+        "verify"
       ]
     }
   ],

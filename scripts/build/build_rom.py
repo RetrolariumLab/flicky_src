@@ -9,6 +9,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -83,14 +84,28 @@ def link(obj: Path, output: Path, p2bin: Path, padding: str) -> None:
 
     The padding byte matters for byte identity: the original cartridge pads
     unused space with $FF, so p2bin must be told to do the same. Its default
-    of $00 silently produces a ROM that differs in every gap.
+    of $00 silently produces a ROM that differs in every gap. Conversion uses
+    a sibling temporary file so a failed process cannot damage a valid ROM.
     """
-    if output.exists():
-        output.unlink()
-    if run([str(p2bin.resolve()), str(obj), str(output), f"-p={padding}"]) != 0:
-        fail("p2bin conversion failed")
-    if not output.is_file():
-        fail(f"ROM not produced: {output}")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        dir=output.parent,
+        prefix=f".{output.name}.",
+        suffix=".tmp",
+    )
+    os.close(descriptor)
+    temporary = Path(temporary_name)
+    temporary.unlink()
+    try:
+        if run(
+            [str(p2bin.resolve()), str(obj), str(temporary), f"-p={padding}"]
+        ) != 0:
+            fail("p2bin conversion failed")
+        if not temporary.is_file():
+            fail(f"ROM not produced: {temporary}")
+        temporary.replace(output)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def first_difference(built: bytes, original: bytes) -> int | None:
