@@ -2,22 +2,15 @@
 """
 Decompress Nemesis and Enigma compressed data from Flicky ROM.
 
-Uses Python decompressor modules:
-- tools/nemesis_dec.py for Nemesis compression
-- tools/enigma_dec.py for Enigma compression
+Uses the canonical Python codecs from ``scripts/formats``.
 """
 
+import argparse
 import os
 import sys
-import argparse
 from pathlib import Path
 
-# Add tools directory to path for imports
-TOOLS_DIR = Path(__file__).resolve().parents[2] / 'tools'
-sys.path.insert(0, str(TOOLS_DIR))
-
-import nemesis_dec
-import enigma_dec
+from formats import enigma_dec, nemesis_dec
 
 
 def decompress_nemesis(input_file: Path, output_file: Path) -> tuple:

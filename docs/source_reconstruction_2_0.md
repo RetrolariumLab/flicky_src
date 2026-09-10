@@ -130,6 +130,21 @@ Label provenance has one machine-readable owner:
 links that registry without duplicating it, and the 2.0 audit rejects another
 registry path or shape.
 
+## Tool ownership follow-up
+
+The shared Nemesis and Enigma codecs now live in the importable
+`scripts/formats` package, which is below both extraction and authoring in the
+dependency graph. Their former C decoder copies and separate build entrypoint
+were retired because the tested Python implementations cover the supported
+decode and round-trip behavior. This leaves one implementation owner for each
+format instead of two copies that could drift.
+
+The YMFM renderer remains native C++: only its small project frontend and
+container recipe moved under `scripts/authoring/ymfm_renderer`. The upstream
+YMFM core stays under `third_party/ymfm`, and
+`python scripts/run.py authoring.build_ymfm_renderer` exposes the native build
+through the same Python command surface as the other project tooling.
+
 ## Acceptance gate
 
 `make source-2-check` is the aggregate acceptance gate. It runs the complete

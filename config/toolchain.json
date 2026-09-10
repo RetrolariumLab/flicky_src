@@ -134,7 +134,7 @@
       "provenance": "source-built",
       "verification": "make verify-toolchain",
       "identity": "source_commit_and_binary_hash",
-      "identity_note": "The minimal required ymfm sources and BSD-3-Clause license are vendored unchanged under third_party/ymfm; tools/ymfm_renderer is the project-specific VGM/WAV frontend.",
+      "identity_note": "The minimal required ymfm sources and BSD-3-Clause license are vendored unchanged under third_party/ymfm; scripts/authoring/ymfm_renderer is the project-specific native VGM/WAV frontend, built through the Python command surface.",
       "files": {
         "windows_i386": [
           {

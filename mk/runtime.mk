@@ -69,8 +69,8 @@ build-gens:
 		--require-executable "emulator=$(GENS_DIR)/Output/Gens.exe"
 
 build-ymfm-renderer:
-	docker build --platform linux/amd64 --file tools/ymfm_renderer/Dockerfile \
-		--output type=local,dest=bin/windows_i386 .
+	@$(PYTHON) $(RUN_SCRIPT) authoring.build_ymfm_renderer \
+		--output-dir bin/windows_i386
 
 stop:
 	-@taskkill //F //IM Gens.exe 2>/dev/null || true

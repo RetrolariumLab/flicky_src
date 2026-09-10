@@ -119,7 +119,7 @@ include $(MAKE_FRAGMENTS)
 .DEFAULT_GOAL := build
 
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-emulator verify-layout verify-relocation check-source-structure init split check-assets \
-        compare lint format format-check scaffold-check tools unpack-data \
+        compare lint format format-check scaffold-check unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
         init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios smoke-studios-workstation \
         test release-audit release-check source-2-audit source-2-release-audit source-2-check source-2-pre-tag-check source-2-tag-check clean \
@@ -198,9 +198,6 @@ _require-toolchain:
 # Data tools
 # ---------------------------------------------------------------------------
 
-tools:
-	@$(MAKE) -C tools all
-
 unpack-data:
 	@$(PYTHON) $(RUN_SCRIPT) build.unpack_data --data-dir $(DATA_DIR) -v
 
@@ -265,7 +262,6 @@ help:
 	@echo "  make source-2-tag-check        Validate the annotated release tag at HEAD"
 	@echo ""
 	@echo "Data tools:"
-	@echo "  make tools                     Build the C decompressors"
 	@echo "  make unpack-data               Decompress Nemesis/Enigma segments"
 	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
 	@echo "  make symbols                   Export $(SYMBOL_FILE) for debuggers"

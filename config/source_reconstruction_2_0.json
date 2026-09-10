@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 25
+    "commit_count": 26
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -242,7 +242,7 @@
       "kind": "documentation",
       "summary": "Consolidate decision rationale, label provenance, and draft-history evidence into the top-level thematic documentation corpus.",
       "commits": [
-        "release-commit"
+        "47b3d0ff2dc6defeef3cc952a2c8abf6e16ca513"
       ],
       "evidence": [
         "docs/build.md",
@@ -252,6 +252,23 @@
         "docs/source_reconstruction_2_0.md",
         "lint",
         "source-2-audit"
+      ]
+    },
+    {
+      "id": "tooling-package-consolidation",
+      "kind": "tooling",
+      "summary": "Make the shared Python format codecs canonical, retire redundant C decoders, and place the native YMFM frontend under its authoring owner.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "scripts/formats",
+        "scripts/authoring/build_ymfm_renderer.py",
+        "scripts/authoring/ymfm_renderer/main.cpp",
+        "tests/authoring/test_build_ymfm_renderer.py",
+        "tests/authoring/test_data_formats.py",
+        "build-ymfm-renderer",
+        "roundtrip-formats"
       ]
     }
   ],

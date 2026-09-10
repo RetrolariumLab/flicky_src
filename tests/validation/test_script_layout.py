@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "scripts"
-CATEGORIES = {"authoring", "build", "runtime", "validation", "workflow"}
+CATEGORIES = {"authoring", "build", "formats", "runtime", "validation", "workflow"}
 
 
 class ScriptLayout(unittest.TestCase):

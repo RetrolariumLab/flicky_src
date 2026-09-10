@@ -5,15 +5,9 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
-
-import enigma_dec  # noqa: E402
-import enigma_enc  # noqa: E402
-import nemesis_dec  # noqa: E402
-import nemesis_enc  # noqa: E402
+from formats import enigma_dec, enigma_enc, nemesis_dec, nemesis_enc
 
 
 # --------------------------------------------------------------------------

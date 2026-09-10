@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Nemesis Decompressor - Python port from C/68000
-Based on working C implementation in tools/nemesis_dec.c
-"""
+"""Decode Nemesis tile streams using the format implemented by the game."""
 
 
 def decompress(data: bytes) -> bytes:
