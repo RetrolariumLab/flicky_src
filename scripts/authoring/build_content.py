@@ -142,7 +142,7 @@ def main() -> int:
         level_document = export_document(root)
     else:
         level_document = load_document(workspace_paths["level_layouts"])
-    apply_document(level_document, staged_main.parent)
+    apply_document(level_document, staged_main.parent, root)
     if args.zero_edit:
         graphics_document = export_graphics_document(root)
     else:

@@ -187,7 +187,7 @@ def validate_workspace(
         elif artifact["kind"] == "level_document":
             from authoring.level_studio_model import load_document, validate_document
 
-            validate_document(load_document(workspace))
+            validate_document(load_document(workspace), root)
         elif artifact["kind"] == "graphics_document":
             from authoring.graphics_studio_model import load_document, validate_document
 

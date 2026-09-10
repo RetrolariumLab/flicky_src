@@ -66,6 +66,10 @@
       "studio": "level",
       "kind": "level_document",
       "workspace": "level/levels.json",
+      "capacities": {
+        "level_data_bytes": 21101,
+        "special_tiles_bytes": 1676
+      },
       "staged_outputs": [
         "src/data/tables.s",
         "src/data/level_layout.s"

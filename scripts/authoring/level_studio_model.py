@@ -17,6 +17,8 @@ MAP_WIDTH = 32
 MAP_HEIGHT = 28
 MAP_SIZE = MAP_WIDTH * MAP_HEIGHT
 MAP_STREAM_START = 0x40
+CAPACITY_FIELDS = ("level_data_bytes", "special_tiles_bytes")
+DEFAULT_PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 LABEL_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$")
 DIRECTIVE_RE = re.compile(r"^dc\.(b|w)\s+(.+)$", re.IGNORECASE)
@@ -32,6 +34,31 @@ def parse_integer(value: str) -> int:
     if value.startswith("$"):
         return int(value[1:], 16)
     return int(value, 10)
+
+
+def canonical_capacities(root: Path | None = None) -> dict[str, int]:
+    project = (root or DEFAULT_PROJECT_ROOT).resolve()
+    manifest_path = project / "config/authoring/content_studios.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    artifact = next(
+        (
+            item
+            for item in manifest.get("artifacts", [])
+            if item.get("id") == "level_layouts"
+        ),
+        None,
+    )
+    if artifact is None:
+        raise ValueError(f"level_layouts artifact is missing from {manifest_path}")
+    capacities = artifact.get("capacities")
+    if not isinstance(capacities, dict) or set(capacities) != set(CAPACITY_FIELDS):
+        raise ValueError("level_layouts must declare both canonical capacity fields")
+    if any(
+        not isinstance(capacities[field], int) or capacities[field] <= 0
+        for field in CAPACITY_FIELDS
+    ):
+        raise ValueError("canonical level capacities must be positive integers")
+    return {field: capacities[field] for field in CAPACITY_FIELDS}
 
 
 def source_range(text: str, start: str, end: str) -> str:
@@ -311,6 +338,15 @@ def export_document(root: Path) -> dict[str, Any]:
     # p2bin fills whatever remains with the canonical $FF byte.
     level_capacity = ROUND_COUNT * 2 + sum(len(block) for block in level_blocks) + 0x465F
     special_capacity = ROUND_COUNT * 2 + sum(len(block) for block in special_blocks)
+    capacities = canonical_capacities(root)
+    source_capacities = {
+        "level_data_bytes": level_capacity,
+        "special_tiles_bytes": special_capacity,
+    }
+    if source_capacities != capacities:
+        raise ValueError(
+            "source-derived level capacities differ from the authoring manifest"
+        )
     return {
         "schema_version": 1,
         "profile": "canonical",
@@ -322,19 +358,22 @@ def export_document(root: Path) -> dict[str, Any]:
             "Level_SpecialTiles0",
             "Level_SpecialTiles",
         ),
-        "capacities": {
-            "level_data_bytes": level_capacity,
-            "special_tiles_bytes": special_capacity,
-        },
+        "capacities": capacities,
         "layouts": layouts,
     }
 
 
-def validate_document(document: dict[str, Any]) -> tuple[list[list[int]], list[list[int]]]:
+def validate_document(
+    document: dict[str, Any],
+    root: Path | None = None,
+) -> tuple[list[list[int]], list[list[int]]]:
     if document.get("schema_version") != 1 or document.get("profile") != "canonical":
         raise ValueError("unsupported level document schema or profile")
     if document.get("map") != {"width": MAP_WIDTH, "height": MAP_HEIGHT}:
         raise ValueError("level map geometry differs from 32x28")
+    capacities = canonical_capacities(root)
+    if document.get("capacities") != capacities:
+        raise ValueError("level document capacities differ from the authoring manifest")
     layouts = document.get("layouts")
     if not isinstance(layouts, list) or len(layouts) != LEVEL_COUNT:
         raise ValueError(f"level document must contain {LEVEL_COUNT} unique layouts")
@@ -350,7 +389,6 @@ def validate_document(document: dict[str, Any]) -> tuple[list[list[int]], list[l
             raise ValueError(f"{field} must contain {ROUND_COUNT} valid layout indices")
     levels = [encode_level(layout) for layout in layouts]
     specials = [encode_special(layout) for layout in layouts]
-    capacities = document.get("capacities", {})
     level_used = ROUND_COUNT * 2 + sum(len(block) for block in levels)
     special_used = ROUND_COUNT * 2 + sum(len(block) for block in specials)
     if level_used > capacities.get("level_data_bytes", 0):
@@ -393,7 +431,11 @@ def render_level_section(document: dict[str, Any], levels: list[list[int]]) -> s
     return "\n".join(lines) + "\n"
 
 
-def render_special_section(document: dict[str, Any], specials: list[list[int]]) -> str:
+def render_special_section(
+    document: dict[str, Any],
+    specials: list[list[int]],
+    special_capacity: int,
+) -> str:
     lines = [
         "Level_SpecialTilePointers:".ljust(32)
         + f"dc.w    Level_SpecialTiles{document['round_special_layouts'][0]}-Sys_GameEntryPoint"
@@ -403,7 +445,7 @@ def render_special_section(document: dict[str, Any], specials: list[list[int]]) 
     for index, values in enumerate(specials):
         lines.extend(render_values(f"Level_SpecialTiles{index}", "dc.w", values, 20))
     used = ROUND_COUNT * 2 + sum(len(block) for block in specials)
-    padding = document["capacities"]["special_tiles_bytes"] - used
+    padding = special_capacity - used
     if padding:
         if padding % 2:
             raise ValueError("special-tile padding must remain word aligned")
@@ -420,8 +462,13 @@ def replace_source_range(path: Path, start: str, end: str, replacement: str) -> 
     path.write_text(text[:begin] + replacement + text[finish:], encoding="utf-8", newline="\n")
 
 
-def apply_document(document: dict[str, Any], staged_source: Path) -> None:
-    levels, specials = validate_document(document)
+def apply_document(
+    document: dict[str, Any],
+    staged_source: Path,
+    root: Path | None = None,
+) -> None:
+    levels, specials = validate_document(document, root)
+    capacities = canonical_capacities(root)
     replace_source_range(
         staged_source / "data/tables.s",
         "Level_DataPointers:",
@@ -432,7 +479,11 @@ def apply_document(document: dict[str, Any], staged_source: Path) -> None:
         staged_source / "data/level_layout.s",
         "Level_SpecialTilePointers:",
         "Lizard_JumpArcTable:",
-        render_special_section(document, specials),
+        render_special_section(
+            document,
+            specials,
+            capacities["special_tiles_bytes"],
+        ),
     )
 
 
@@ -462,12 +513,12 @@ def main() -> int:
                 print(f"[OK] Level workspace already exists: {workspace}")
                 return 0
             document = export_document(root)
-            validate_document(document)
+            validate_document(document, root)
             atomic_write_json(workspace, document)
             print(f"[OK] Exported {LEVEL_COUNT} unique layouts and {ROUND_COUNT} round slots")
         else:
             document = load_document(workspace)
-            levels, specials = validate_document(document)
+            levels, specials = validate_document(document, root)
             print(
                 f"[OK] Valid level document: {len(levels)} layouts, "
                 f"{sum(len(value) for value in levels)} data bytes, "
