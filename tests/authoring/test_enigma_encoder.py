@@ -1,13 +1,7 @@
 import random
-import sys
 import unittest
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "tools"))
-
-import enigma_dec  # noqa: E402
-import enigma_enc  # noqa: E402
+from formats import enigma_dec, enigma_enc
 
 
 def words(values: list[int]) -> bytes:

@@ -173,6 +173,11 @@ individual tracks, and `Stop` cancels both an outstanding render and playback.
 The same headless path is available as
 `make preview-sound SOUND=zMusic81Header`.
 
+The renderer remains a native C++ frontend at
+`scripts/authoring/ymfm_renderer/main.cpp`; the Python command surface builds
+it reproducibly with `make build-ymfm-renderer`. The third-party YMFM sources
+remain separately owned under `third_party/ymfm`.
+
 Fidelity is executable rather than assumed. `make verify-sound-sequencer`
 replays the pinned longplay in the instrumented sibling Gens build, captures
 the writes made by the real Z80 to both YM2612 ports, locates the start of

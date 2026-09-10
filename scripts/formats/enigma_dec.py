@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Enigma Decompressor - Python port from C/68000
-Based on working C implementation in tools/enigma_dec.c
-"""
+"""Decode Enigma tilemaps using the format implemented by the game."""
 
 
 def decompress(data: bytes, base_tile: int = 0) -> bytes:

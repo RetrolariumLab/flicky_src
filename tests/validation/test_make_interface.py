@@ -146,6 +146,13 @@ class MakeInterfaceTests(unittest.TestCase):
         self.assertLess(compile_step, verify)
         self.assertNotIn("git clone", recipe)
 
+    def test_ymfm_build_uses_the_python_command_surface(self):
+        root = Path(__file__).resolve().parents[2]
+        recipe = " ".join(makefile_recipe("build-ymfm-renderer", root))
+
+        self.assertIn("authoring.build_ymfm_renderer", recipe)
+        self.assertNotIn("docker build", recipe)
+
 
 if __name__ == "__main__":
     unittest.main()

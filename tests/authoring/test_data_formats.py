@@ -1,14 +1,11 @@
 import json
-import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "tools"))
 
 from authoring import data_formats  # noqa: E402
-import nemesis_dec  # noqa: E402
-import nemesis_enc  # noqa: E402
+from formats import nemesis_dec, nemesis_enc  # noqa: E402
 
 
 class PaletteCompact(unittest.TestCase):

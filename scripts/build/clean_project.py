@@ -22,8 +22,7 @@ EXACT_TARGETS = (
     "rename_log.txt",
 )
 ROOT_GLOBS = ("flicky_backup_*.s",)
-TOOLS_GLOBS = ("*.exe", "*.o")
-CACHE_ROOTS = ("scripts", "tests", "tools")
+CACHE_ROOTS = ("scripts", "tests")
 
 
 def resolved_inside(root: Path, path: Path) -> Path:
@@ -42,9 +41,6 @@ def approved_targets(root: Path) -> list[Path]:
     """Return only project-owned generated paths that cleanup may remove."""
     candidates = [root / relative for relative in EXACT_TARGETS]
     candidates.extend(path for pattern in ROOT_GLOBS for path in root.glob(pattern))
-    tools = root / "tools"
-    if tools.is_dir():
-        candidates.extend(path for pattern in TOOLS_GLOBS for path in tools.glob(pattern))
     for relative in CACHE_ROOTS:
         cache_root = root / relative
         if cache_root.is_dir():

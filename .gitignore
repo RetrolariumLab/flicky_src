@@ -12,8 +12,6 @@ flicky.asm
 *.p
 *.lst
 temp.asm
-tools/*.exe
-tools/*.o
 
 # Emulator evidence and analysis output (regenerated, never authoritative)
 reference/

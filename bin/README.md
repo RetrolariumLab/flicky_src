@@ -63,4 +63,5 @@ recorded in `assets/manifest.json` and applied by `scripts/build/build_rom.py`.
 AS is distributed under its own license; see the upstream site. It is included
 here unmodified for reproducibility. `ymfm_renderer.exe` links the unmodified
 BSD-3-Clause ymfm core vendored with its license under `third_party/ymfm`; its
-project-specific frontend is in `tools/ymfm_renderer`.
+project-specific native frontend is in `scripts/authoring/ymfm_renderer` and is
+built through `python scripts/run.py authoring.build_ymfm_renderer`.

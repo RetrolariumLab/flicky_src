@@ -74,8 +74,9 @@ flicky_src/
 |-- movies/                 # Gens input recordings and their scene indexes
 |-- scenarios/              # Runtime scenarios and their state expectations
 |-- scripts/                # Categorized tooling, dispatched by run.py
-|   |-- authoring/          # Content models and visual studios
+|   |-- authoring/          # Content models, studios, and native preview support
 |   |-- build/              # Assembly, extraction and housekeeping
+|   |-- formats/            # Shared Nemesis and Enigma Python codecs
 |   |-- runtime/            # Emulator capture and state validation
 |   |-- validation/         # Static, binary and release gates
 |   `-- workflow/           # Reverse-engineering maintenance tools
@@ -90,7 +91,6 @@ flicky_src/
 |   |-- sound/              # 68000 host plus modular Z80 driver and sound data
 |   |-- system/             # Boot, entry point, interrupts, DMA, input
 |   `-- main.s              # Address-ordered include index, the entrypoint
-|-- tools/                  # C and Python decompressors
 |-- mk/                     # Authoring, runtime, validation, workflow recipes
 `-- Makefile                # Public interface and build primitives
 ```
@@ -106,7 +106,6 @@ make check-assets   # Validate data/ against assets/manifest.json
 make split          # Re-extract data segments (the only writer of data/)
 make lint           # Style, naming, documentation and evidence checks
 make format         # Apply the deterministic fixes, then lint
-make tools          # Build the C decompressors
 make unpack-data    # Decompress the Nemesis and Enigma segments
 make clean          # Remove build artifacts; extracted data is kept
 make help           # Everything, including the analysis workflow

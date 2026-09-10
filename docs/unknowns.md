@@ -159,18 +159,19 @@ reused, even after the entry is resolved.
 
 - **Status:** open
 - **Confidence:** high
-- **Location:** `src/compression/nemesis_enigma.s`, `tools/nemesis_enc.py`,
-  `tools/enigma_enc.py`
-- **Evidence:** `tools/nemesis_enc.py` re-encodes using the code table carried
-  by the original stream, so the only remaining freedom is how the nybble
-  sequence is split into runs. A greedy split and a bit-optimal split both
+- **Location:** `src/compression/nemesis_enigma.s`,
+  `scripts/formats/nemesis_enc.py`, `scripts/formats/enigma_enc.py`
+- **Evidence:** `scripts/formats/nemesis_enc.py` re-encodes using the code table
+  carried by the original stream, so the only remaining freedom is how the
+  nybble sequence is split into runs. A greedy split and a bit-optimal split both
   produce valid streams that decode to identical pixels, and neither reproduces
   the original bytes. The optimal split is consistently *smaller* than the
   original -- 117 against 128 bytes for `ExitTiles`, 6,037 against 6,052 for
   `LevelTiles` -- which shows the original compressor was not minimising size
   and used a heuristic that has not been identified. Enigma is no longer part
-  of the unknown: `tools/enigma_enc.py` exactly reproduces the ten-byte Sega
-  tilemap and round-trips arbitrary word streams through the decoder.
+  of the unknown: `scripts/formats/enigma_enc.py` exactly reproduces the
+  ten-byte Sega tilemap and round-trips arbitrary word streams through the
+  decoder.
 - **Experiment:** Compare against Nemesis streams from other Sega titles of the
   same period, whose compressor is likely the same tool. If a splitting rule
   reproduces those byte for byte, it should reproduce these. Until then the

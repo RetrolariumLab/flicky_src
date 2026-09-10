@@ -1,14 +1,11 @@
 import copy
-import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "tools"))
 
-import enigma_dec  # noqa: E402
 from authoring import graphics_studio_model as model  # noqa: E402
-import nemesis_dec  # noqa: E402
+from formats import enigma_dec, nemesis_dec  # noqa: E402
 
 
 class GraphicsDocument(unittest.TestCase):
