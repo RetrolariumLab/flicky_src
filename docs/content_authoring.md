@@ -142,6 +142,10 @@ byte capacities. The trusted limits live in
 against that manifest and cannot raise either limit. Labels in the staged
 assembly make all references compiler-resolved.
 
+Level collision baselines are accepted only as complete byte streams with the
+terminator in the final position. Validation rejects trailing serialized data
+before it can shift the following object fields in generated assembly.
+
 The Japanese guide strings and additional non-animated screen layouts remain
 outside the current machine-readable artifacts and are not yet claimed as
 supported.

@@ -34,6 +34,50 @@ class LevelExport(unittest.TestCase):
         terminator = levels[0].index(0)
         self.assertEqual(model.decode_collision(levels[0][:terminator + 1]), grid)
 
+    def test_validated_level_output_decodes_to_the_intended_fields(self):
+        document = copy.deepcopy(self.document)
+        layout = document["layouts"][0]
+        layout["baseline_bytes"] = []
+        layout["collision"][4][4] = 1 - layout["collision"][4][4]
+
+        levels, _specials = model.validate_document(document)
+        decoded = model.decode_level(levels[0])
+
+        for field in (
+            "collision",
+            "player",
+            "entry_arrow",
+            "cat_door",
+            "exit_door",
+            "background_group_3",
+            "background_group_4",
+            "background_group_5",
+            "spawners",
+            "chicks_a",
+            "chicks_b",
+        ):
+            with self.subTest(field=field):
+                self.assertEqual(decoded[field], layout[field])
+
+    def test_collision_baseline_rejects_data_after_terminator(self):
+        document = copy.deepcopy(self.document)
+        layout = document["layouts"][0]
+        layout["baseline_bytes"] = []
+        layout["baseline_collision_stream"].append(0xFF)
+
+        with self.assertRaisesRegex(ValueError, "data after its terminator"):
+            model.validate_document(document)
+
+    def test_collision_baseline_rejects_non_byte_values(self):
+        for invalid in (-1, 256, "0", True):
+            with self.subTest(invalid=invalid):
+                document = copy.deepcopy(self.document)
+                layout = document["layouts"][0]
+                layout["baseline_bytes"] = []
+                layout["baseline_collision_stream"][0] = invalid
+                with self.assertRaisesRegex(ValueError, "byte integers"):
+                    model.validate_document(document)
+
     def test_object_coordinate_outside_grid_is_rejected(self):
         document = copy.deepcopy(self.document)
         document["layouts"][0]["player"] = [32, 0]
