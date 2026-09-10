@@ -18,7 +18,7 @@
   "delta_history": {
     "base_commit": "c60d7711f912dcc92bf294c11a84534ec9db6a98",
     "tip": "release-commit",
-    "commit_count": 28
+    "commit_count": 29
   },
   "included_scope": [
     "canonical-preservation-profile",
@@ -290,7 +290,7 @@
       "kind": "tooling",
       "summary": "Enforce level and special-tile capacities from trusted project configuration and reject altered workspace limits.",
       "commits": [
-        "release-commit"
+        "9e51e82bd141b64a6817245d61ed8741de52740f"
       ],
       "evidence": [
         "config/authoring/content_studios.json",
@@ -298,6 +298,21 @@
         "tests/authoring/test_level_studio_model.py",
         "docs/content_authoring.md",
         "check-content-zero-edit"
+      ]
+    },
+    {
+      "id": "authoring-negative-path-validation",
+      "kind": "tooling",
+      "summary": "Reject malformed collision baselines and report graphics workspace errors cleanly through the public launcher.",
+      "commits": [
+        "release-commit"
+      ],
+      "evidence": [
+        "scripts/authoring/level_studio_model.py",
+        "scripts/authoring/graphics_studio_model.py",
+        "tests/authoring/test_level_studio_model.py",
+        "tests/authoring/test_graphics_studio_model.py",
+        "docs/content_authoring.md"
       ]
     }
   ],

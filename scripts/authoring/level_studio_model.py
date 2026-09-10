@@ -110,10 +110,17 @@ def pointer_indices(text: str, table: str, next_label: str, prefix: str) -> list
 
 
 def decode_collision(stream: list[int]) -> list[list[int]]:
+    if not isinstance(stream, list) or any(
+        type(command) is not int or not 0 <= command <= 0xFF
+        for command in stream
+    ):
+        raise ValueError("collision stream must contain byte integers")
     grid = [0] * MAP_SIZE
     cursor = MAP_STREAM_START
-    for command in stream:
+    for index, command in enumerate(stream):
         if command == 0:
+            if index != len(stream) - 1:
+                raise ValueError("collision stream contains data after its terminator")
             return [grid[row * MAP_WIDTH:(row + 1) * MAP_WIDTH] for row in range(MAP_HEIGHT)]
         if command & 0x80:
             length = command & 0x3F

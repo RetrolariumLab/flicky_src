@@ -1,4 +1,7 @@
 import copy
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -6,6 +9,45 @@ ROOT = Path(__file__).resolve().parents[2]
 
 from authoring import graphics_studio_model as model  # noqa: E402
 from formats import enigma_dec, nemesis_dec  # noqa: E402
+
+
+class GraphicsModelCli(unittest.TestCase):
+    def run_validate(self, workspace: Path) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                "scripts/run.py",
+                "authoring.graphics_studio_model",
+                "validate",
+                "--workspace",
+                str(workspace),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+
+    def test_missing_workspace_reports_a_public_command_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "missing.json"
+            result = self.run_validate(workspace)
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("[ERROR]", result.stderr)
+        self.assertIn("missing.json", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_malformed_workspace_reports_a_public_command_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "malformed.json"
+            workspace.write_text("{not-json", encoding="utf-8")
+            result = self.run_validate(workspace)
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("[ERROR]", result.stderr)
+        self.assertIn("Expecting property name", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
 
 
 class GraphicsDocument(unittest.TestCase):
