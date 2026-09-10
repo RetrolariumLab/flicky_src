@@ -75,7 +75,7 @@ class LevelStudio:
         self.project = project
         self.workspace = workspace
         self.document = load_document(workspace)
-        validate_document(self.document)
+        validate_document(self.document, self.project)
         self.saved = copy.deepcopy(self.document)
         self.graphics_workspace = graphics_workspace
         self.semantics_workspace = semantics_workspace
@@ -313,7 +313,7 @@ class LevelStudio:
         else:
             owner[field][index] = pair
         try:
-            validate_document(self.document)
+            validate_document(self.document, self.project)
         except ValueError as error:
             self.document = copy.deepcopy(self.saved)
             messagebox.showerror("Invalid edit", str(error))
@@ -359,7 +359,7 @@ class LevelStudio:
 
     def save(self) -> bool:
         try:
-            validate_document(self.document)
+            validate_document(self.document, self.project)
             atomic_write_json(self.workspace, self.document)
         except (OSError, ValueError) as error:
             messagebox.showerror("Cannot save", str(error))
@@ -370,7 +370,7 @@ class LevelStudio:
 
     def reload(self) -> None:
         self.document = load_document(self.workspace)
-        validate_document(self.document)
+        validate_document(self.document, self.project)
         self.preview = LevelPreview.load(
             self.project,
             self.graphics_workspace,
@@ -470,7 +470,7 @@ def main() -> int:
     semantics_workspace = project / args.semantics
     sequences_workspace = project / args.sequences
     document = load_document(workspace)
-    validate_document(document)
+    validate_document(document, project)
     preview = LevelPreview.load(
         project, graphics_workspace, semantics_workspace, sequences_workspace
     )

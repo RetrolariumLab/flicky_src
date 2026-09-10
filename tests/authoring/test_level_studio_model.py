@@ -44,11 +44,36 @@ class LevelExport(unittest.TestCase):
         self.assertTrue(LevelStudio.marker_is_visible([31, 27]))
         self.assertFalse(LevelStudio.marker_is_visible([22, 30]))
 
-    def test_capacity_is_enforced(self):
+    def test_level_capacity_is_enforced_from_project_configuration(self):
         document = copy.deepcopy(self.document)
-        document["capacities"]["level_data_bytes"] = 1
-        with self.assertRaisesRegex(ValueError, "capacity is 1"):
+        for layout in document["layouts"]:
+            for field in (
+                "background_group_3",
+                "background_group_4",
+                "background_group_5",
+            ):
+                layout[field] = [[0, 0]] * 255
+        with self.assertRaisesRegex(ValueError, "capacity is 21101"):
             model.validate_document(document)
+
+    def test_special_tile_capacity_is_enforced_from_project_configuration(self):
+        document = copy.deepcopy(self.document)
+        for layout in document["layouts"]:
+            for field in ("flag_7", "flag_7_6", "flag_5"):
+                layout[field] = [[0, 0]] * 255
+        with self.assertRaisesRegex(ValueError, "capacity is 1676"):
+            model.validate_document(document)
+
+    def test_editable_capacity_metadata_cannot_raise_either_limit(self):
+        for field in ("level_data_bytes", "special_tiles_bytes"):
+            with self.subTest(field=field):
+                document = copy.deepcopy(self.document)
+                document["capacities"][field] = 1_000_000
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "capacities differ from the authoring manifest",
+                ):
+                    model.validate_document(document)
 
     def test_generated_sections_replace_only_declared_ranges(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -59,7 +84,7 @@ class LevelExport(unittest.TestCase):
                     (ROOT / "src" / "data" / name).read_text(encoding="utf-8"),
                     encoding="utf-8",
                 )
-            model.apply_document(self.document, staged)
+            model.apply_document(self.document, staged, ROOT)
             self.assertIn(
                 "Level_Data35:",
                 (staged / "data" / "tables.s").read_text(encoding="utf-8"),

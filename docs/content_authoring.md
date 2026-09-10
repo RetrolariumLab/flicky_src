@@ -137,8 +137,10 @@ width and height, tile index, palette, priority, and flip flags. The GUI draws
 the pieces around their object origin. Animation records expose their delay and
 every fixed frame slot, for both object-sprite and tilemap animation formats.
 Piece and frame counts remain fixed so generated records retain their original
-byte capacities; labels in the staged assembly make all references compiler-
-resolved.
+byte capacities. The trusted limits live in
+`config/authoring/content_studios.json`; workspace capacity fields are checked
+against that manifest and cannot raise either limit. Labels in the staged
+assembly make all references compiler-resolved.
 
 The Japanese guide strings and additional non-animated screen layouts remain
 outside the current machine-readable artifacts and are not yet claimed as
