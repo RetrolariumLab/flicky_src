@@ -108,11 +108,12 @@
       "version": "docker-mingw-build",
       "role": "Replays movies for runtime evidence and traces real Z80 chip-register writes",
       "source": "https://github.com/oranguthang/gens_automation.git",
-      "source_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a",
+      "source_commit": "e14b92535acf85755321788634bf9179b621d8c0",
+      "pe_timestamp": 1788831343,
       "provenance": "source-built",
       "verification": "make verify-emulator",
       "identity": "source_commit_and_binary_hash",
-      "identity_note": "Runtime commands require the selected executable's checkout to match the pinned source commit and its bytes to match the approved SHA-256 before any capture or playtest. make build-gens prepares only that pinned revision and rejects mismatched existing checkouts. Rebuilt binaries require an explicit manifest hash update after review.",
+      "identity_note": "Runtime commands require the selected executable's checkout to match the pinned source commit and its bytes to match the approved SHA-256 before any capture or playtest. make build-gens prepares only that pinned revision and rejects mismatched existing checkouts. The Docker build stamps the PE timestamp and checksum to reproduce the approved executable bytes; any other binary difference requires an explicit manifest hash update after review.",
       "files": {
         "any": [
           {

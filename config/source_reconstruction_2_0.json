@@ -908,7 +908,7 @@
       ],
       "exact_ordered_chip_writes": 2624,
       "max_timing_error_frames": 2.1,
-      "emulator_commit": "f62b2cf50cb1697eff335e846c8270e7b81f2d2a",
+      "emulator_commit": "e14b92535acf85755321788634bf9179b621d8c0",
       "emulator_sha256": "d536817f33cc9871e2749bc0d5ced8956502d3182541a07e1d44279fdf45d141"
     }
   }

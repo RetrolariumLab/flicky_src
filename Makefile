@@ -171,6 +171,10 @@ init: _require-toolchain
 		--orig-rom "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST) \
 		--data-dir $(DATA_DIR) --data-addrs $(DATA_ADDRS) \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
+		--z80-source $(Z80_SOURCE) --z80-obj $(Z80_OBJ) \
+		--z80-output $(Z80_BIN) --z80-reference $(Z80_REFERENCE) \
+		--z80-data-source $(Z80_DATA_SOURCE) --z80-data-obj $(Z80_DATA_OBJ) \
+		--z80-data-output $(Z80_DATA_BIN) --z80-data-reference $(Z80_DATA_REFERENCE) \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # Extract binary segments from the reference ROM. This is the only command

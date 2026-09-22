@@ -32,6 +32,14 @@ def main() -> int:
     parser.add_argument("--as-bin", default="bin/asw.exe", help="AS assembler")
     parser.add_argument("--p2bin", default="bin/p2bin.exe", help="p2bin converter")
     parser.add_argument("--as-args", default="-maxerrors 2", help="AS arguments")
+    parser.add_argument("--z80-source", default="src/sound/z80/driver.asm")
+    parser.add_argument("--z80-obj", default="build/z80_driver.p")
+    parser.add_argument("--z80-output", default="build/z80_driver.bin")
+    parser.add_argument("--z80-reference", default="data/sound/data_z80_part1.bin")
+    parser.add_argument("--z80-data-source", default="src/sound/z80/data.asm")
+    parser.add_argument("--z80-data-obj", default="build/z80_sound_data.p")
+    parser.add_argument("--z80-data-output", default="build/z80_sound_data.bin")
+    parser.add_argument("--z80-data-reference", default="data/sound/data_z80_part2.bin")
     args = parser.parse_args()
 
     runner = Path(__file__).resolve().parents[1] / "run.py"
@@ -82,6 +90,34 @@ def main() -> int:
         fail("Extracted segments do not match the manifest")
 
     step(3, 3, "Building and verifying the ROM")
+    for source, obj, output, reference, extra in (
+        (args.z80_source, args.z80_obj, args.z80_output, args.z80_reference, []),
+        (
+            args.z80_data_source,
+            args.z80_data_obj,
+            args.z80_data_output,
+            args.z80_data_reference,
+            ["--reference-offset", "12", "--description", "Z80 sound-data banks"],
+        ),
+    ):
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(runner),
+                "build.build_z80_driver",
+                "--source", source,
+                "--obj", obj,
+                "--output", output,
+                "--reference", reference,
+                "--as-bin", args.as_bin,
+                "--p2bin", args.p2bin,
+                "--as-args", args.as_args,
+                *extra,
+            ]
+        )
+        if result.returncode != 0:
+            fail(f"Z80 component build failed: {source}")
+
     result = subprocess.run(
         [
             sys.executable,

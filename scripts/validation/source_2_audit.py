@@ -709,7 +709,18 @@ def validate_history(
 ) -> None:
     if not predecessor:
         return
-    commits = git_lines(root, "rev-list", "--reverse", f"{predecessor}..HEAD")
+    tip = git_output(root, "rev-parse", "HEAD")
+    tag = release.get("tag", "")
+    # A published baseline keeps its original delta when development continues.
+    if not pre_tag and tag and git_lines(root, "tag", "--list", tag):
+        tagged_commit = git_output(root, "rev-list", "-n", "1", tag)
+        ancestor = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", tagged_commit, tip],
+            cwd=root, capture_output=True, check=False,
+        )
+        if ancestor.returncode == 0:
+            tip = tagged_commit
+    commits = git_lines(root, "rev-list", "--reverse", f"{predecessor}..{tip}")
     commit_set = set(commits)
 
     for commit in commits:
@@ -738,7 +749,7 @@ def validate_history(
                 has_pending = True
                 continue
             if reference == "release-commit":
-                covered.add(git_output(root, "rev-parse", "HEAD"))
+                covered.add(tip)
                 continue
             try:
                 resolved = git_output(root, "rev-parse", f"{reference}^{{commit}}")
@@ -764,7 +775,7 @@ def validate_history(
     elif history.get("base_commit") != predecessor:
         errors.append("delta_history base differs from predecessor")
     elif pre_tag:
-        if history.get("tip") not in {"release-commit", git_output(root, "rev-parse", "HEAD")}:
+        if history.get("tip") not in {"release-commit", tip}:
             errors.append("tag-ready delta_history tip is not the release commit")
         if history.get("commit_count") != len(commits):
             errors.append("tag-ready delta_history commit count is stale")

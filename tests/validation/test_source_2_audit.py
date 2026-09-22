@@ -272,6 +272,44 @@ class HistoryPolicy(unittest.TestCase):
             source_2_audit.validate_history(root, release, base, errors, False)
             self.assertTrue(any("empty commit" in error for error in errors), errors)
 
+    def test_tagged_delta_history_stops_at_release_commit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "Release Test"], cwd=root, check=True)
+            subprocess.run(
+                ["git", "config", "user.email", "test@example.invalid"],
+                cwd=root, check=True,
+            )
+            readme = root / "README.md"
+            readme.write_text("base\n", encoding="utf-8")
+            subprocess.run(["git", "add", "README.md"], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "Create base"], cwd=root, check=True)
+            base = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=root, check=True,
+                capture_output=True, text=True,
+            ).stdout.strip()
+            readme.write_text("release\n", encoding="utf-8")
+            subprocess.run(["git", "commit", "-qam", "Create release"], cwd=root, check=True)
+            subprocess.run(
+                ["git", "tag", "-a", "test-release", "-m", "Release"],
+                cwd=root, check=True,
+            )
+            readme.write_text("later\n", encoding="utf-8")
+            subprocess.run(["git", "commit", "-qam", "Continue development"], cwd=root, check=True)
+
+            release = {
+                "tag": "test-release",
+                "delta": [{
+                    "id": "fixture", "kind": "test", "summary": "Cover release commit.",
+                    "evidence": ["README.md"], "commits": ["release-commit"],
+                }],
+                "delta_history": {"base_commit": base, "tip": "release-commit", "commit_count": 1},
+            }
+            errors: list[str] = []
+            source_2_audit.validate_history(root, release, base, errors, False)
+            self.assertEqual(errors, [])
+
 
 if __name__ == "__main__":
     unittest.main()

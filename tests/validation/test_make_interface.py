@@ -141,9 +141,11 @@ class MakeInterfaceTests(unittest.TestCase):
         recipe = " ".join(makefile_recipe("build-gens", root))
         prepare = recipe.index("build.prepare_gens_checkout")
         compile_step = recipe.index("$(MAKE) -C")
+        stamp = recipe.index("build.stamp_gens_executable")
         verify = recipe.index("validation.verify_toolchain")
         self.assertLess(prepare, compile_step)
-        self.assertLess(compile_step, verify)
+        self.assertLess(compile_step, stamp)
+        self.assertLess(stamp, verify)
         self.assertNotIn("git clone", recipe)
 
     def test_ymfm_build_uses_the_python_command_surface(self):

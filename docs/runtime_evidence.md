@@ -183,6 +183,10 @@ substituted or unreviewed rebuild is rejected rather than accepted as evidence.
 sibling directory is absent. It refuses to build an existing checkout with a
 different origin, commit, or tracked source changes; it never updates from an
 advancing default branch.
+After Docker builds Gens, the command stamps the PE timestamp and checksum from
+`config/toolchain.json` and accepts the result only if its complete SHA-256
+matches the approved executable. This makes repeated builds byte-identical
+despite the linker's build-time timestamp.
 
 Captures are written under `build/runtime/`, which is ignored. Regenerating
 them into an ignored directory is deliberate: a stale local capture must not be

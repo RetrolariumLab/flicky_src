@@ -64,6 +64,8 @@ build-gens:
 	@$(PYTHON) $(RUN_SCRIPT) build.prepare_gens_checkout \
 		--config $(TOOLCHAIN_MANIFEST) --checkout "$(GENS_DIR)"
 	@$(MAKE) -C $(GENS_DIR) -f $(GENS_MAKEFILE) $(GENS_TARGET)
+	@$(PYTHON) $(RUN_SCRIPT) build.stamp_gens_executable \
+		--config $(TOOLCHAIN_MANIFEST) --executable "$(GENS_DIR)/Output/Gens.exe"
 	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain \
 		--config $(TOOLCHAIN_MANIFEST) --only emulator --require-emulator \
 		--require-executable "emulator=$(GENS_DIR)/Output/Gens.exe"
