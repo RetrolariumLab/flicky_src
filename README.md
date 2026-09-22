@@ -164,6 +164,8 @@ optional. The command reads the exact source revision from
 an existing checkout at any other revision before compiling. Every public
 capture and playtest also verifies the resolved `GENS_EXE` against the approved
 binary hash before launch.
+The cross-build sets the PE timestamp and checksum recorded in the manifest so
+rebuilding the same source reproduces that approved binary hash.
 
 The same sibling build contains a Z80 sound-port tracer. `make trace-sound`
 captures the title music into `build/sound_trace/`, using an isolated sound-on
