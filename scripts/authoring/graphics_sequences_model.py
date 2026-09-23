@@ -12,23 +12,49 @@ from typing import Any
 MAPPING_SOURCE = "data/tables.s"
 ANIMATION_SOURCES = (
     "game/bonus/objects.s",
-    "game/enemies/cat.s",
-    "game/actors/chick.s",
-    "game/enemies/lizard.s",
+    "game/actors/chirp.s",
+    "game/actors/window_girl_and_throwable.s",
+    "game/enemies/tiger.s",
     "game/actors/player.s",
-    "game/enemies/snake.s",
+    "game/enemies/iggy.s",
     "game/enemies/spawner.s",
     "rendering/hud.s",
 )
 LEGACY_SOURCE_PATHS = {
     "game/bonus_objects.s": "game/bonus/objects.s",
-    "game/cat.s": "game/enemies/cat.s",
-    "game/chick.s": "game/actors/chick.s",
-    "game/lizard.s": "game/enemies/lizard.s",
+    "game/cat.s": "game/actors/chirp.s",
+    "game/chick.s": "game/actors/window_girl_and_throwable.s",
+    "game/lizard.s": "game/enemies/tiger.s",
     "game/player.s": "game/actors/player.s",
-    "game/snake.s": "game/enemies/snake.s",
+    "game/snake.s": "game/enemies/iggy.s",
     "game/spawner.s": "game/enemies/spawner.s",
+    "game/actors/chick.s": "game/actors/window_girl_and_throwable.s",
+    "game/actors/exit_and_throwable.s": "game/actors/window_girl_and_throwable.s",
+    "game/enemies/cat.s": "game/actors/chirp.s",
+    "game/enemies/lizard.s": "game/enemies/tiger.s",
+    "game/enemies/snake.s": "game/enemies/iggy.s",
 }
+
+
+def current_object_name(identifier: str) -> str:
+    """Upgrade sprite mapping names from before the object identity correction."""
+    for old, new in (
+        ("Chick_Thrown", "Throwable_Thrown"),
+        ("Cat_", "Chirp_"),
+        ("Lizard_", "Tiger_"),
+        ("Snake_", "Iggy_"),
+        ("BonusCat_OuterFrame", "BonusSeesaw_Frame"),
+        ("BonusCat_InnerFrame", "BonusTiger_Frame"),
+        ("BonusCat_AnimOuter", "BonusSeesaw_Anim"),
+        ("BonusCat_AnimInner", "BonusTiger_Anim"),
+        ("ExitDoor_OpenFrame", "WindowGirl_Frame"),
+        ("ExitDoor_AnimOpen", "WindowGirl_AnimIdle"),
+    ):
+        if identifier.startswith(old):
+            return new + identifier[len(old):]
+    return identifier
+
+
 LABEL_RE = re.compile(r"^(?P<label>[A-Za-z_][A-Za-z0-9_]*):", re.MULTILINE)
 DIRECTIVE_RE = re.compile(r"^\s*dc\.(?P<size>[bw])\s+(?P<values>[^;]+?)\s*$")
 NUMBER_RE = re.compile(r"^(?:\$[0-9A-Fa-f]+|[0-9]+)$")
@@ -281,6 +307,10 @@ def load_document(path: Path) -> dict[str, Any]:
         source = animation.get("source")
         if source in LEGACY_SOURCE_PATHS:
             animation["source"] = LEGACY_SOURCE_PATHS[source]
+        animation["id"] = current_object_name(animation["id"])
+        animation["frames"] = [current_object_name(frame) for frame in animation["frames"]]
+    for mapping in document.get("mappings", []):
+        mapping["id"] = current_object_name(mapping["id"])
     return document
 
 

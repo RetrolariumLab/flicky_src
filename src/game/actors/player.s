@@ -88,7 +88,7 @@ Player_ProcessInput_Apply:
                 move.l  d1,(Ram_CameraVelocityX).w
 
 Player_ProcessInput_CheckJump:
-                bsr.w   Player_ThrowChick
+                bsr.w   Player_ThrowItem
                 tst.b   $38(a0)
                 bne.w   Player_ProcessInput_Airborne
                 btst    #0,$3A(a0)
@@ -177,28 +177,28 @@ Player_ClearAirState:
                 clr.l   $2C(a0)
                 rts
 
-; Player throws held chick when button pressed
-Player_ThrowChick:
+; Player throws held item when button pressed
+Player_ThrowItem:
                 btst    #1,$3A(a0)
-                beq.s   Player_ThrowChick_Return
+                beq.s   Player_ThrowItem_Return
                 move.b  (Ram_Joypad).w,d0
                 andi.b  #$70,d0
-                beq.s   Player_ThrowChick_Return
+                beq.s   Player_ThrowItem_Return
                 tst.b   $3B(a0)
-                beq.s   Player_ThrowChick_Return
-                movea.l (Ram_HeldChickObject).w,a1
+                beq.s   Player_ThrowItem_Return
+                movea.l (Ram_HeldItemObject).w,a1
                 move.w  #4,$34(a1)
                 tst.b   $39(a0)
-                beq.s   Player_ThrowChick_SetVelocity
+                beq.s   Player_ThrowItem_SetVelocity
                 move.w  #$FFFC,$34(a1)
 
-Player_ThrowChick_SetVelocity:
+Player_ThrowItem_SetVelocity:
                 move.w  #8,$3C(a1)
                 move.l  $30(a0),$30(a1)
                 clr.b   $3B(a0)
                 bclr    #1,$3A(a0)
 
-Player_ThrowChick_Return:
+Player_ThrowItem_Return:
                 rts
 
 ; Player ground check: standing on solid

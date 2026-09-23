@@ -56,8 +56,10 @@ The categories in use are those the subsystem split already established:
 `Sys_` `Int_` `Gfx_` `DMA_` `Nem_` `Eni_` `Input_` `Sound_` `Text_` `Math_`
 `Game_` `Level_` `Object_` `Sprite_` `Anim_` `Camera_` `Collision_` `Score_`
 `Timer_` `UI_` `Title_` `Guide_` `RoundSelect_` `Demo_` `Bonus_` `Ending_`
-`Player_` `Chick_` `Cat_` `Lizard_` `Snake_` `Spawner_` `Enemy_` `Obj_` `Data_`
-`Ram_` `Unused_`
+`Player_` `Chirp_` `Tiger_` `Iggy_` `Throwable_` `Spawner_` `Enemy_` `Obj_` `Data_`
+`BonusChick_` `BonusSeesaw_` `BonusTiger_` `WindowGirl_` `Ram_` `Unused_`
+
+`BonusChick_`, `BonusSeesaw_` and `BonusTiger_` describe the bonus-round actors.
 
 Add a category only when an existing one genuinely does not fit.
 
@@ -65,14 +67,12 @@ Add a category only when an existing one genuinely does not fit.
 
 1. Prefer the role over the address: `Player_CheckGround`, never `sub_1407E`.
 2. Add subsystem context when a bare description would collide. Two routines
-   may both check a wall; only one of them is `Cat_CheckWallCollision`.
+   may both check a wall; only one of them is `Tiger_CheckWallCollision`.
 3. Keep a number when it is part of a decoded format, such as a state index or
    an opcode. Do not keep it when it is a ROM offset.
-4. Record the original name as provenance on the line that defines the symbol:
-
-   ```asm
-   Player_CheckGround:  ; was: sub_1407E
-   ```
+4. Update `config/reconstruction/label_renames.json` when changing a symbol.
+   It records the imported name, current name and current source path. Inline
+   `; was:` comments are rejected by the provenance test.
 
 5. A plausible reading is not evidence. If the purpose is unclear, keep a
    neutral name (`Ram_UnknownState03`, `Level_UnidentifiedTable`) and open an
@@ -95,8 +95,10 @@ refuses to run if a target name already exists, if two renames collide, or if a
 source name is not defined anywhere -- so a typo cannot silently do nothing.
 
 ```bash
-python scripts/run.py workflow.rename_symbols workflow/rename_batch.csv
+python scripts/run.py workflow.rename_symbols workflow/rename_batch.csv --no-provenance
 make format
+make lint
+make test
 make verify
 ```
 

@@ -606,72 +606,72 @@
     ],
     [
       "dword_15B94",
-      "Lizard_JumpArcTable",
+      "Tiger_JumpArcTable",
       "src/data/level_layout.s"
     ],
     [
       "dword_15B94_End",
-      "Lizard_JumpArcTable_End",
+      "Tiger_JumpArcTable_End",
       "src/data/level_layout.s"
     ],
     [
       "byte_15D28",
-      "Lizard_JumpSpeedIndex",
+      "Tiger_JumpSpeedIndex",
       "src/data/level_layout.s"
     ],
     [
       "dword_15D14",
-      "Lizard_JumpSpeedTable",
+      "Tiger_JumpSpeedTable",
       "src/data/level_layout.s"
     ],
     [
       "word_1AA1A",
-      "BonusCat_InnerFrame0",
+      "BonusTiger_Frame0",
       "src/data/tables.s"
     ],
     [
       "word_1AA2E",
-      "BonusCat_InnerFrame1",
+      "BonusTiger_Frame1",
       "src/data/tables.s"
     ],
     [
       "word_1AA42",
-      "BonusCat_InnerFrame2",
+      "BonusTiger_Frame2",
       "src/data/tables.s"
     ],
     [
       "word_1AA56",
-      "BonusCat_InnerFrame3",
+      "BonusTiger_Frame3",
       "src/data/tables.s"
     ],
     [
       "word_1AA6A",
-      "BonusCat_InnerFrame4",
+      "BonusTiger_Frame4",
       "src/data/tables.s"
     ],
     [
       "word_1AA96",
-      "BonusCat_OuterFrame0",
+      "BonusSeesaw_Frame0",
       "src/data/tables.s"
     ],
     [
       "word_1AAA4",
-      "BonusCat_OuterFrame1",
+      "BonusSeesaw_Frame1",
       "src/data/tables.s"
     ],
     [
       "word_1AAB2",
-      "BonusCat_OuterFrame2",
+      "BonusSeesaw_Frame2",
       "src/data/tables.s"
     ],
     [
       "word_1AABA",
-      "BonusCat_OuterFrame3",
+      "BonusSeesaw_Frame3",
       "src/data/tables.s"
     ],
     [
       "word_1AAC8",
-      "BonusCat_OuterFrame4",
+      "BonusSeesaw_Frame4",
       "src/data/tables.s"
     ],
     [
@@ -681,122 +681,122 @@
     ],
     [
       "word_1A848",
-      "Cat_CarriedAltFrame0",
+      "Chirp_CarriedAltFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A850",
-      "Cat_CarriedAltFrame1",
+      "Chirp_CarriedAltFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A858",
-      "Cat_CarriedAltFrame2",
+      "Chirp_CarriedAltFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A7E8",
-      "Cat_CarriedFrame0",
+      "Chirp_CarriedFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A7F0",
-      "Cat_CarriedFrame1",
+      "Chirp_CarriedFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A7F8",
-      "Cat_CarriedFrame2",
+      "Chirp_CarriedFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A838",
-      "Cat_IdleAltFrame0",
+      "Chirp_IdleAltFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A840",
-      "Cat_IdleAltFrame1",
+      "Chirp_IdleAltFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A7D8",
-      "Cat_IdleFrame0",
+      "Chirp_IdleFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A7E0",
-      "Cat_IdleFrame1",
+      "Chirp_IdleFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A860",
-      "Cat_StunnedAltFrame0",
+      "Chirp_StunnedAltFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A868",
-      "Cat_StunnedAltFrame1",
+      "Chirp_StunnedAltFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A870",
-      "Cat_StunnedAltFrame2",
+      "Chirp_StunnedAltFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A800",
-      "Cat_StunnedFrame0",
+      "Chirp_StunnedFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A808",
-      "Cat_StunnedFrame1",
+      "Chirp_StunnedFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A810",
-      "Cat_StunnedFrame2",
+      "Chirp_StunnedFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A818",
-      "Cat_WalkAltFrame0",
+      "Chirp_WalkAltFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A820",
-      "Cat_WalkAltFrame1",
+      "Chirp_WalkAltFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A828",
-      "Cat_WalkAltFrame2",
+      "Chirp_WalkAltFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A830",
-      "Cat_WalkAltFrame3",
+      "Chirp_WalkAltFrame3",
       "src/data/tables.s"
     ],
     [
       "word_1A7B8",
-      "Cat_WalkFrame0",
+      "Chirp_WalkFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A7C0",
-      "Cat_WalkFrame1",
+      "Chirp_WalkFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A7C8",
-      "Cat_WalkFrame2",
+      "Chirp_WalkFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A7D0",
-      "Cat_WalkFrame3",
+      "Chirp_WalkFrame3",
       "src/data/tables.s"
     ],
     [
@@ -831,452 +831,452 @@
     ],
     [
       "word_1A4E8",
-      "Chick_ThrownAnim0Data0",
+      "Throwable_ThrownAnim0Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A4F8",
-      "Chick_ThrownAnim0Data1",
+      "Throwable_ThrownAnim0Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A508",
-      "Chick_ThrownAnim0Data2",
+      "Throwable_ThrownAnim0Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A4F0",
-      "Chick_ThrownAnim0Data3",
+      "Throwable_ThrownAnim0Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A510",
-      "Chick_ThrownAnim0Data4",
+      "Throwable_ThrownAnim0Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A500",
-      "Chick_ThrownAnim0Data5",
+      "Throwable_ThrownAnim0Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A6C8",
-      "Chick_ThrownAnim10Data0",
+      "Throwable_ThrownAnim10Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A6D8",
-      "Chick_ThrownAnim10Data1",
+      "Throwable_ThrownAnim10Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A6E8",
-      "Chick_ThrownAnim10Data2",
+      "Throwable_ThrownAnim10Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A6D0",
-      "Chick_ThrownAnim10Data3",
+      "Throwable_ThrownAnim10Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A6F0",
-      "Chick_ThrownAnim10Data4",
+      "Throwable_ThrownAnim10Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A6E0",
-      "Chick_ThrownAnim10Data5",
+      "Throwable_ThrownAnim10Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A6F8",
-      "Chick_ThrownAnim11Data0",
+      "Throwable_ThrownAnim11Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A708",
-      "Chick_ThrownAnim11Data1",
+      "Throwable_ThrownAnim11Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A718",
-      "Chick_ThrownAnim11Data2",
+      "Throwable_ThrownAnim11Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A700",
-      "Chick_ThrownAnim11Data3",
+      "Throwable_ThrownAnim11Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A720",
-      "Chick_ThrownAnim11Data4",
+      "Throwable_ThrownAnim11Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A710",
-      "Chick_ThrownAnim11Data5",
+      "Throwable_ThrownAnim11Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A728",
-      "Chick_ThrownAnim12Data0",
+      "Throwable_ThrownAnim12Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A738",
-      "Chick_ThrownAnim12Data1",
+      "Throwable_ThrownAnim12Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A748",
-      "Chick_ThrownAnim12Data2",
+      "Throwable_ThrownAnim12Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A730",
-      "Chick_ThrownAnim12Data3",
+      "Throwable_ThrownAnim12Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A750",
-      "Chick_ThrownAnim12Data4",
+      "Throwable_ThrownAnim12Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A740",
-      "Chick_ThrownAnim12Data5",
+      "Throwable_ThrownAnim12Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A758",
-      "Chick_ThrownAnim13Data0",
+      "Throwable_ThrownAnim13Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A768",
-      "Chick_ThrownAnim13Data1",
+      "Throwable_ThrownAnim13Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A778",
-      "Chick_ThrownAnim13Data2",
+      "Throwable_ThrownAnim13Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A760",
-      "Chick_ThrownAnim13Data3",
+      "Throwable_ThrownAnim13Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A780",
-      "Chick_ThrownAnim13Data4",
+      "Throwable_ThrownAnim13Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A770",
-      "Chick_ThrownAnim13Data5",
+      "Throwable_ThrownAnim13Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A788",
-      "Chick_ThrownAnim14Data0",
+      "Throwable_ThrownAnim14Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A798",
-      "Chick_ThrownAnim14Data1",
+      "Throwable_ThrownAnim14Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A7A8",
-      "Chick_ThrownAnim14Data2",
+      "Throwable_ThrownAnim14Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A790",
-      "Chick_ThrownAnim14Data3",
+      "Throwable_ThrownAnim14Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A7B0",
-      "Chick_ThrownAnim14Data4",
+      "Throwable_ThrownAnim14Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A7A0",
-      "Chick_ThrownAnim14Data5",
+      "Throwable_ThrownAnim14Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A518",
-      "Chick_ThrownAnim1Data0",
+      "Throwable_ThrownAnim1Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A528",
-      "Chick_ThrownAnim1Data1",
+      "Throwable_ThrownAnim1Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A538",
-      "Chick_ThrownAnim1Data2",
+      "Throwable_ThrownAnim1Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A520",
-      "Chick_ThrownAnim1Data3",
+      "Throwable_ThrownAnim1Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A540",
-      "Chick_ThrownAnim1Data4",
+      "Throwable_ThrownAnim1Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A530",
-      "Chick_ThrownAnim1Data5",
+      "Throwable_ThrownAnim1Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A548",
-      "Chick_ThrownAnim2Data0",
+      "Throwable_ThrownAnim2Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A558",
-      "Chick_ThrownAnim2Data1",
+      "Throwable_ThrownAnim2Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A568",
-      "Chick_ThrownAnim2Data2",
+      "Throwable_ThrownAnim2Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A550",
-      "Chick_ThrownAnim2Data3",
+      "Throwable_ThrownAnim2Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A570",
-      "Chick_ThrownAnim2Data4",
+      "Throwable_ThrownAnim2Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A560",
-      "Chick_ThrownAnim2Data5",
+      "Throwable_ThrownAnim2Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A578",
-      "Chick_ThrownAnim3Data0",
+      "Throwable_ThrownAnim3Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A588",
-      "Chick_ThrownAnim3Data1",
+      "Throwable_ThrownAnim3Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A598",
-      "Chick_ThrownAnim3Data2",
+      "Throwable_ThrownAnim3Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A580",
-      "Chick_ThrownAnim3Data3",
+      "Throwable_ThrownAnim3Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A5A0",
-      "Chick_ThrownAnim3Data4",
+      "Throwable_ThrownAnim3Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A590",
-      "Chick_ThrownAnim3Data5",
+      "Throwable_ThrownAnim3Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A5A8",
-      "Chick_ThrownAnim4Data0",
+      "Throwable_ThrownAnim4Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A5B8",
-      "Chick_ThrownAnim4Data1",
+      "Throwable_ThrownAnim4Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A5C8",
-      "Chick_ThrownAnim4Data2",
+      "Throwable_ThrownAnim4Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A5B0",
-      "Chick_ThrownAnim4Data3",
+      "Throwable_ThrownAnim4Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A5D0",
-      "Chick_ThrownAnim4Data4",
+      "Throwable_ThrownAnim4Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A5C0",
-      "Chick_ThrownAnim4Data5",
+      "Throwable_ThrownAnim4Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A5D8",
-      "Chick_ThrownAnim5Data0",
+      "Throwable_ThrownAnim5Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A5E8",
-      "Chick_ThrownAnim5Data1",
+      "Throwable_ThrownAnim5Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A5F8",
-      "Chick_ThrownAnim5Data2",
+      "Throwable_ThrownAnim5Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A5E0",
-      "Chick_ThrownAnim5Data3",
+      "Throwable_ThrownAnim5Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A600",
-      "Chick_ThrownAnim5Data4",
+      "Throwable_ThrownAnim5Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A5F0",
-      "Chick_ThrownAnim5Data5",
+      "Throwable_ThrownAnim5Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A608",
-      "Chick_ThrownAnim6Data0",
+      "Throwable_ThrownAnim6Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A618",
-      "Chick_ThrownAnim6Data1",
+      "Throwable_ThrownAnim6Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A628",
-      "Chick_ThrownAnim6Data2",
+      "Throwable_ThrownAnim6Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A610",
-      "Chick_ThrownAnim6Data3",
+      "Throwable_ThrownAnim6Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A630",
-      "Chick_ThrownAnim6Data4",
+      "Throwable_ThrownAnim6Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A620",
-      "Chick_ThrownAnim6Data5",
+      "Throwable_ThrownAnim6Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A638",
-      "Chick_ThrownAnim7Data0",
+      "Throwable_ThrownAnim7Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A648",
-      "Chick_ThrownAnim7Data1",
+      "Throwable_ThrownAnim7Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A658",
-      "Chick_ThrownAnim7Data2",
+      "Throwable_ThrownAnim7Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A640",
-      "Chick_ThrownAnim7Data3",
+      "Throwable_ThrownAnim7Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A660",
-      "Chick_ThrownAnim7Data4",
+      "Throwable_ThrownAnim7Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A650",
-      "Chick_ThrownAnim7Data5",
+      "Throwable_ThrownAnim7Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A668",
-      "Chick_ThrownAnim8Data0",
+      "Throwable_ThrownAnim8Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A678",
-      "Chick_ThrownAnim8Data1",
+      "Throwable_ThrownAnim8Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A688",
-      "Chick_ThrownAnim8Data2",
+      "Throwable_ThrownAnim8Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A670",
-      "Chick_ThrownAnim8Data3",
+      "Throwable_ThrownAnim8Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A690",
-      "Chick_ThrownAnim8Data4",
+      "Throwable_ThrownAnim8Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A680",
-      "Chick_ThrownAnim8Data5",
+      "Throwable_ThrownAnim8Data5",
       "src/data/tables.s"
     ],
     [
       "word_1A698",
-      "Chick_ThrownAnim9Data0",
+      "Throwable_ThrownAnim9Data0",
       "src/data/tables.s"
     ],
     [
       "word_1A6A8",
-      "Chick_ThrownAnim9Data1",
+      "Throwable_ThrownAnim9Data1",
       "src/data/tables.s"
     ],
     [
       "word_1A6B8",
-      "Chick_ThrownAnim9Data2",
+      "Throwable_ThrownAnim9Data2",
       "src/data/tables.s"
     ],
     [
       "word_1A6A0",
-      "Chick_ThrownAnim9Data3",
+      "Throwable_ThrownAnim9Data3",
       "src/data/tables.s"
     ],
     [
       "word_1A6C0",
-      "Chick_ThrownAnim9Data4",
+      "Throwable_ThrownAnim9Data4",
       "src/data/tables.s"
     ],
     [
       "word_1A6B0",
-      "Chick_ThrownAnim9Data5",
+      "Throwable_ThrownAnim9Data5",
       "src/data/tables.s"
     ],
     [
@@ -1296,12 +1296,12 @@
     ],
     [
       "word_1AD82",
-      "ExitDoor_OpenFrame0",
+      "WindowGirl_Frame0",
       "src/data/tables.s"
     ],
     [
       "word_1AD8A",
-      "ExitDoor_OpenFrame1",
+      "WindowGirl_Frame1",
       "src/data/tables.s"
     ],
     [
@@ -1711,122 +1711,122 @@
     ],
     [
       "word_1AA7E",
-      "Lizard_DeathFrame0",
+      "Tiger_DeathFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AA86",
-      "Lizard_DeathFrame1",
+      "Tiger_DeathFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1AA8E",
-      "Lizard_DeathFrame2",
+      "Tiger_DeathFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A992",
-      "Lizard_JumpFrame0",
+      "Tiger_JumpFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A9AE",
-      "Lizard_JumpFrame2",
+      "Tiger_JumpFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A9B6",
-      "Lizard_JumpFrame3",
+      "Tiger_JumpFrame3",
       "src/data/tables.s"
     ],
     [
       "word_1A9CA",
-      "Lizard_JumpFrame4",
+      "Tiger_JumpFrame4",
       "src/data/tables.s"
     ],
     [
       "word_1A9D2",
-      "Lizard_JumpFrame5",
+      "Tiger_JumpFrame5",
       "src/data/tables.s"
     ],
     [
       "word_1A9E6",
-      "Lizard_JumpFrame6",
+      "Tiger_JumpFrame6",
       "src/data/tables.s"
     ],
     [
       "word_1A9EE",
-      "Lizard_JumpFrame7",
+      "Tiger_JumpFrame7",
       "src/data/tables.s"
     ],
     [
       "word_1A926",
-      "Lizard_RunFrame1",
+      "Tiger_RunFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A93A",
-      "Lizard_RunFrame2",
+      "Tiger_RunFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A94E",
-      "Lizard_RunFrame3",
+      "Tiger_RunFrame3",
       "src/data/tables.s"
     ],
     [
       "word_1A95C",
-      "Lizard_RunFrame4",
+      "Tiger_RunFrame4",
       "src/data/tables.s"
     ],
     [
       "word_1A970",
-      "Lizard_StateJump_SelectFrameData0",
+      "Tiger_StateJump_SelectFrameData0",
       "src/data/tables.s"
     ],
     [
       "word_1A97E",
-      "Lizard_StateJump_SelectFrameData1",
+      "Tiger_StateJump_SelectFrameData1",
       "src/data/tables.s"
     ],
     [
       "word_1A918",
-      "Lizard_StateLocateData",
+      "Tiger_StateLocateData",
       "src/data/tables.s"
     ],
     [
       "word_1AA02",
-      "Lizard_StunnedFrame0",
+      "Tiger_StunnedFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AA0A",
-      "Lizard_StunnedFrame1",
+      "Tiger_StunnedFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1AA12",
-      "Lizard_StunnedFrame2",
+      "Tiger_StunnedFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A8F8",
-      "Lizard_WaitFrame0",
+      "Tiger_WaitFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A900",
-      "Lizard_WaitFrame1",
+      "Tiger_WaitFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A908",
-      "Lizard_WaitFrame2",
+      "Tiger_WaitFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A910",
-      "Lizard_WaitFrame3",
+      "Tiger_WaitFrame3",
       "src/data/tables.s"
     ],
     [
@@ -1916,147 +1916,147 @@
     ],
     [
       "word_1ABBC",
-      "Snake_DownFrame0",
+      "Iggy_DownFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1ABC4",
-      "Snake_DownFrame1",
+      "Iggy_DownFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1AB94",
-      "Snake_LeftFrame0",
+      "Iggy_LeftFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AB9C",
-      "Snake_LeftFrame1",
+      "Iggy_LeftFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1ABA4",
-      "Snake_LeftFrame2",
+      "Iggy_LeftFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1ABF6",
-      "Snake_MoveDown_TurnRightData",
+      "Iggy_MoveDown_TurnRightData",
       "src/data/tables.s"
     ],
     [
       "word_1AC64",
-      "Snake_MoveLeft_StartTurnData",
+      "Iggy_MoveLeft_StartTurnData",
       "src/data/tables.s"
     ],
     [
       "word_1ABE8",
-      "Snake_MoveLeft_TurnDownData",
+      "Iggy_MoveLeft_TurnDownData",
       "src/data/tables.s"
     ],
     [
       "word_1AC20",
-      "Snake_MoveLeft_TurnUpData",
+      "Iggy_MoveLeft_TurnUpData",
       "src/data/tables.s"
     ],
     [
       "word_1AC4C",
-      "Snake_MoveRight_StartTurnData",
+      "Iggy_MoveRight_StartTurnData",
       "src/data/tables.s"
     ],
     [
       "word_1AC04",
-      "Snake_MoveRight_TurnDownData",
+      "Iggy_MoveRight_TurnDownData",
       "src/data/tables.s"
     ],
     [
       "word_1ABCC",
-      "Snake_MoveRight_TurnUpData",
+      "Iggy_MoveRight_TurnUpData",
       "src/data/tables.s"
     ],
     [
       "word_1AC12",
-      "Snake_MoveUp_StartTurnData",
+      "Iggy_MoveUp_StartTurnData",
       "src/data/tables.s"
     ],
     [
       "word_1AC2E",
-      "Snake_MoveUp_TurnLeftData",
+      "Iggy_MoveUp_TurnLeftData",
       "src/data/tables.s"
     ],
     [
       "word_1ABDA",
-      "Snake_MoveUp_TurnRightData",
+      "Iggy_MoveUp_TurnRightData",
       "src/data/tables.s"
     ],
     [
       "word_1AB7C",
-      "Snake_RightFrame0",
+      "Iggy_RightFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AB84",
-      "Snake_RightFrame1",
+      "Iggy_RightFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1AB8C",
-      "Snake_RightFrame2",
+      "Iggy_RightFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1AC6C",
-      "Snake_SpawnFrame0",
+      "Iggy_SpawnFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AC7A",
-      "Snake_SpawnFrame1",
+      "Iggy_SpawnFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1AC88",
-      "Snake_SpawnFrame2",
+      "Iggy_SpawnFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1AC96",
-      "Snake_SpawnFrame3",
+      "Iggy_SpawnFrame3",
       "src/data/tables.s"
     ],
     [
       "word_1AB74",
-      "Snake_StateSpawnData",
+      "Iggy_StateSpawnData",
       "src/data/tables.s"
     ],
     [
       "word_1AC3C",
-      "Snake_TurnAFrame0",
+      "Iggy_TurnAFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AC44",
-      "Snake_TurnAFrame1",
+      "Iggy_TurnAFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1AC54",
-      "Snake_TurnBFrame0",
+      "Iggy_TurnBFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1AC5C",
-      "Snake_TurnBFrame1",
+      "Iggy_TurnBFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1ABAC",
-      "Snake_UpFrame0",
+      "Iggy_UpFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1ABB4",
-      "Snake_UpFrame1",
+      "Iggy_UpFrame1",
       "src/data/tables.s"
     ],
     [
@@ -2316,17 +2316,17 @@
     ],
     [
       "byte_166B4",
-      "BonusCat_AnimInner",
+      "BonusTiger_Anim",
       "src/game/bonus/objects.s"
     ],
     [
       "byte_166A2",
-      "BonusCat_AnimOuter",
+      "BonusSeesaw_Anim",
       "src/game/bonus/objects.s"
     ],
     [
       "off_1669A",
-      "BonusCat_AnimPointers",
+      "Bonus_SeesawTigerAnimPointers",
       "src/game/bonus/objects.s"
     ],
     [
@@ -2411,7 +2411,7 @@
     ],
     [
       "loc_16768",
-      "BonusChick_StateWait_CheckCat",
+      "BonusChick_StateWait_CheckSeesaw",
       "src/game/bonus/objects.s"
     ],
     [
@@ -2721,42 +2721,42 @@
     ],
     [
       "sub_16600",
-      "Obj_BonusCatInner",
+      "Obj_BonusTiger",
       "src/game/bonus/objects.s"
     ],
     [
       "locret_16646",
-      "Obj_BonusCatInner_Return",
+      "Obj_BonusTiger_Return",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_16624",
-      "Obj_BonusCatInner_SetPosition",
+      "Obj_BonusTiger_SetPosition",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_16638",
-      "Obj_BonusCatInner_Update",
+      "Obj_BonusTiger_Update",
       "src/game/bonus/objects.s"
     ],
     [
       "sub_165BA",
-      "Obj_BonusCatOuter",
+      "Obj_BonusSeesaw",
       "src/game/bonus/objects.s"
     ],
     [
       "locret_165FE",
-      "Obj_BonusCatOuter_Return",
+      "Obj_BonusSeesaw_Return",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_165DE",
-      "Obj_BonusCatOuter_SetPosition",
+      "Obj_BonusSeesaw_SetPosition",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_165F0",
-      "Obj_BonusCatOuter_Update",
+      "Obj_BonusSeesaw_Update",
       "src/game/bonus/objects.s"
     ],
     [
@@ -2926,663 +2926,663 @@
     ],
     [
       "byte_14EA2",
-      "Cat_AnimCarried",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimCarried",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14EAA",
-      "Cat_AnimCarriedAlt",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimCarriedAlt",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14E96",
-      "Cat_AnimIdle",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimIdle",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14E9C",
-      "Cat_AnimIdleAlt",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimIdleAlt",
+      "src/game/actors/chirp.s"
     ],
     [
       "off_14E12",
-      "Cat_AnimPointers",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimPointers",
+      "src/game/actors/chirp.s"
     ],
     [
       "off_14E22",
-      "Cat_AnimPointersAlt",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimPointersAlt",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14EB2",
-      "Cat_AnimStunned",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimStunned",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14EBC",
-      "Cat_AnimStunnedAlt",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimStunnedAlt",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14E32",
-      "Cat_AnimWalk",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimWalk",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14E64",
-      "Cat_AnimWalkAlt",
-      "src/game/enemies/cat.s"
+      "Chirp_AnimWalkAlt",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14A6A",
-      "Cat_ChainDirectionPointers",
-      "src/game/enemies/cat.s"
+      "Chirp_ChainDirectionPointers",
+      "src/game/actors/chirp.s"
     ],
     [
       "byte_14A58",
-      "Cat_ChainPositionPointers",
-      "src/game/enemies/cat.s"
+      "Chirp_ChainPositionPointers",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14D52",
-      "Cat_CheckPlayerPickup",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckPlayerPickup",
+      "src/game/actors/chirp.s"
     ],
     [
       "locret_14D84",
-      "Cat_CheckPlayerPickup_Return",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckPlayerPickup_Return",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14BDC",
-      "Cat_CheckWallCollision",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckWallCollision",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14BE8",
-      "Cat_CheckWallCollision_Probe",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckWallCollision_Probe",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14BD0",
-      "Cat_ClearVelocity",
-      "src/game/enemies/cat.s"
+      "Chirp_ClearVelocity",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14918",
-      "Cat_StateFollowing",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14A12",
-      "Cat_StateFollowing_Animate",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_Animate",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_1497C",
-      "Cat_StateFollowing_CheckDelivery",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_CheckDelivery",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14928",
-      "Cat_StateFollowing_CheckHit",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_CheckHit",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_149F2",
-      "Cat_StateFollowing_CheckRoundEnd",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_CheckRoundEnd",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_149D2",
-      "Cat_StateFollowing_DelayLoop",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_DelayLoop",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_149CE",
-      "Cat_StateFollowing_DeliverDelay",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_DeliverDelay",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14A4E",
-      "Cat_StateFollowing_Draw",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_Draw",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14A48",
-      "Cat_StateFollowing_FrameUp",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_FrameUp",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14A3C",
-      "Cat_StateFollowing_SelectFrame",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_SelectFrame",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14A2A",
-      "Cat_StateFollowing_SetFacing",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_SetFacing",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14940",
-      "Cat_StateFollowing_TrackChain",
-      "src/game/enemies/cat.s"
+      "Chirp_StateFollowing_TrackChain",
+      "src/game/actors/chirp.s"
     ],
     [
       "nullsub_4",
-      "Cat_StateIdle",
-      "src/game/enemies/cat.s"
+      "Chirp_StateIdle",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_148AA",
-      "Cat_StatePatrol",
-      "src/game/enemies/cat.s"
+      "Chirp_StatePatrol",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_1490E",
-      "Cat_StatePatrol_Animate",
-      "src/game/enemies/cat.s"
+      "Chirp_StatePatrol_Animate",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_148C6",
-      "Cat_StatePatrol_Bounce",
-      "src/game/enemies/cat.s"
+      "Chirp_StatePatrol_Bounce",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_148DA",
-      "Cat_StatePatrol_CheckPlayer",
-      "src/game/enemies/cat.s"
+      "Chirp_StatePatrol_CheckPlayer",
+      "src/game/actors/chirp.s"
     ],
     [
       "locret_14916",
-      "Cat_StatePatrol_Return",
-      "src/game/enemies/cat.s"
+      "Chirp_StatePatrol_Return",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14D86",
-      "Cat_StateStunWalk",
-      "src/game/enemies/cat.s"
+      "Chirp_StateStunWalk",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14DB8",
-      "Cat_StateStunWalk_Animate",
-      "src/game/enemies/cat.s"
+      "Chirp_StateStunWalk_Animate",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14DD0",
-      "Cat_StateStunWalk_CheckPickup",
-      "src/game/enemies/cat.s"
+      "Chirp_StateStunWalk_CheckPickup",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14DA2",
-      "Cat_StateStunWalk_Move",
-      "src/game/enemies/cat.s"
+      "Chirp_StateStunWalk_Move",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_1489A",
-      "Cat_StateTable",
-      "src/game/enemies/cat.s"
+      "Chirp_StateTable",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14C6A",
-      "Cat_StateWalkAlt",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14D16",
-      "Cat_StateWalkAlt_Animate",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_Animate",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14CC4",
-      "Cat_StateWalkAlt_CheckWall",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_CheckWall",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14D28",
-      "Cat_StateWalkAlt_Draw",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_Draw",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14CE0",
-      "Cat_StateWalkAlt_Falling",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_Falling",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14CDE",
-      "Cat_StateWalkAlt_Finish",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_Finish",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14D08",
-      "Cat_StateWalkAlt_KeepFalling",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_KeepFalling",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14C96",
-      "Cat_StateWalkAlt_Move",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_Move",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14CD0",
-      "Cat_StateWalkAlt_Probe",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_Probe",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14C90",
-      "Cat_StateWalkAlt_SetFrame",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalkAlt_SetFrame",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14B42",
-      "Cat_StateWalking",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14BC6",
-      "Cat_StateWalking_AccelerateRight",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_AccelerateRight",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14C2E",
-      "Cat_StateWalking_Animate",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_Animate",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14C40",
-      "Cat_StateWalking_Draw",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_Draw",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14BF8",
-      "Cat_StateWalking_Falling",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_Falling",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14BF6",
-      "Cat_StateWalking_Finish",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_Finish",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14C20",
-      "Cat_StateWalking_KeepFalling",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_KeepFalling",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14B76",
-      "Cat_StateWalking_Move",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_Move",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14BA4",
-      "Cat_StateWalking_OnGround",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_OnGround",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14B70",
-      "Cat_StateWalking_SetFrame",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_SetFrame",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14BBA",
-      "Cat_StateWalking_Stop",
-      "src/game/enemies/cat.s"
+      "Chirp_StateWalking_Stop",
+      "src/game/actors/chirp.s"
     ],
     [
       "dword_14D32",
-      "Cat_WalkAltSpeedTable",
-      "src/game/enemies/cat.s"
+      "Chirp_WalkAltSpeedTable",
+      "src/game/actors/chirp.s"
     ],
     [
       "dword_14C4A",
-      "Cat_WalkSpeedTable",
-      "src/game/enemies/cat.s"
+      "Chirp_WalkSpeedTable",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14A7C",
-      "Chick_AwardPoints",
-      "src/game/enemies/cat.s"
+      "Chirp_AwardPoints",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14AF0",
-      "Chick_CheckEnemyHit",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckEnemyHit",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14B12",
-      "Chick_CheckEnemyHit_DropLoop",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckEnemyHit_DropLoop",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14B26",
-      "Chick_CheckEnemyHit_DropNext",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckEnemyHit_DropNext",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14AF6",
-      "Chick_CheckEnemyHit_Loop",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckEnemyHit_Loop",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14B30",
-      "Chick_CheckEnemyHit_Next",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckEnemyHit_Next",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14B3C",
-      "Chick_CheckEnemyHit_Return",
-      "src/game/enemies/cat.s"
+      "Chirp_CheckEnemyHit_Return",
+      "src/game/actors/chirp.s"
     ],
     [
       "dword_14AC0",
-      "Chick_DeliveryScoreTable",
-      "src/game/enemies/cat.s"
+      "Chirp_DeliveryScoreTable",
+      "src/game/actors/chirp.s"
     ],
     [
       "word_14AE0",
-      "Chick_PopupSlotTable",
-      "src/game/enemies/cat.s"
+      "Chirp_PopupSlotTable",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_1483E",
-      "Obj_Cat",
-      "src/game/enemies/cat.s"
+      "Obj_Chirp",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_14874",
-      "Obj_Cat_Dispatch",
-      "src/game/enemies/cat.s"
+      "Obj_Chirp_Dispatch",
+      "src/game/actors/chirp.s"
     ],
     [
       "locret_14898",
-      "Obj_Cat_Return",
-      "src/game/enemies/cat.s"
+      "Obj_Chirp_Return",
+      "src/game/actors/chirp.s"
     ],
     [
       "loc_1485A",
-      "Obj_Cat_SetPosition",
-      "src/game/enemies/cat.s"
+      "Obj_Chirp_SetPosition",
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14DD4",
       "Score_CalcTimeBonus",
-      "src/game/enemies/cat.s"
+      "src/game/actors/chirp.s"
     ],
     [
       "locret_14DF8",
       "Score_CalcTimeBonus_Return",
-      "src/game/enemies/cat.s"
+      "src/game/actors/chirp.s"
     ],
     [
       "dword_14DFA",
       "Score_TimeBonusTable",
-      "src/game/enemies/cat.s"
+      "src/game/actors/chirp.s"
     ],
     [
       "sub_14662",
-      "Chick_CheckOffscreen",
-      "src/game/actors/chick.s"
+      "Throwable_CheckOffscreen",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14684",
-      "Chick_CheckOffscreen_Despawn",
-      "src/game/actors/chick.s"
+      "Throwable_CheckOffscreen_Despawn",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "locret_14686",
-      "Chick_CheckOffscreen_Return",
-      "src/game/actors/chick.s"
+      "Throwable_CheckOffscreen_Return",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_145BC",
-      "Chick_StateFollowing",
-      "src/game/actors/chick.s"
+      "Throwable_StateFollowing",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_145FC",
-      "Chick_StateFollowing_FacingLeft",
-      "src/game/actors/chick.s"
+      "Throwable_StateFollowing_FacingLeft",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_145EE",
-      "Chick_StateFollowing_OnGround",
-      "src/game/actors/chick.s"
+      "Throwable_StateFollowing_OnGround",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14602",
-      "Chick_StateFollowing_Store",
-      "src/game/actors/chick.s"
+      "Throwable_StateFollowing_Store",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_145D0",
-      "Chick_StateFollowing_Track",
-      "src/game/actors/chick.s"
+      "Throwable_StateFollowing_Track",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_14588",
-      "Chick_StateIdle",
-      "src/game/actors/chick.s"
+      "Throwable_StateIdle",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_145B6",
-      "Chick_StateIdle_Move",
-      "src/game/actors/chick.s"
+      "Throwable_StateIdle_Move",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_1457C",
-      "Chick_StateTable",
-      "src/game/actors/chick.s"
+      "Throwable_StateTable",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_14610",
-      "Chick_StateThrown",
-      "src/game/actors/chick.s"
+      "Throwable_StateThrown",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_1465C",
-      "Chick_StateThrown_CheckRange",
-      "src/game/actors/chick.s"
+      "Throwable_StateThrown_CheckRange",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14650",
-      "Chick_StateThrown_Move",
-      "src/game/actors/chick.s"
+      "Throwable_StateThrown_Move",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_1463C",
-      "Chick_StateThrown_ReduceRound",
-      "src/game/actors/chick.s"
+      "Throwable_StateThrown_ReduceRound",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14648",
-      "Chick_StateThrown_SelectAnim",
-      "src/game/actors/chick.s"
+      "Throwable_StateThrown_SelectAnim",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_1476C",
-      "Chick_ThrownAnim0",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim0",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_1477A",
-      "Chick_ThrownAnim1",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim1",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147F8",
-      "Chick_ThrownAnim10",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim10",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14806",
-      "Chick_ThrownAnim11",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim11",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14814",
-      "Chick_ThrownAnim12",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim12",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14822",
-      "Chick_ThrownAnim13",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim13",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14830",
-      "Chick_ThrownAnim14",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim14",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14788",
-      "Chick_ThrownAnim2",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim2",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14796",
-      "Chick_ThrownAnim3",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim3",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147A4",
-      "Chick_ThrownAnim4",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim4",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147B2",
-      "Chick_ThrownAnim5",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim5",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147C0",
-      "Chick_ThrownAnim6",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim6",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147CE",
-      "Chick_ThrownAnim7",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim7",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147DC",
-      "Chick_ThrownAnim8",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim8",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_147EA",
-      "Chick_ThrownAnim9",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnim9",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "off_14730",
-      "Chick_ThrownAnimPointers",
-      "src/game/actors/chick.s"
+      "Throwable_ThrownAnimPointers",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_14688",
-      "Chick_UpdatePhysics",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_146FA",
-      "Chick_UpdatePhysics_Airborne",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_Airborne",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_146A0",
-      "Chick_UpdatePhysics_Animate",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_Animate",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_146BE",
-      "Chick_UpdatePhysics_ApplyGravity",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_ApplyGravity",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14700",
-      "Chick_UpdatePhysics_CheckWalls",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_CheckWalls",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_146B6",
-      "Chick_UpdatePhysics_DecelerateRight",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_DecelerateRight",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_146BC",
-      "Chick_UpdatePhysics_Decelerated",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_Decelerated",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "locret_1471E",
-      "Chick_UpdatePhysics_LeftReturn",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_LeftReturn",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_146C4",
-      "Chick_UpdatePhysics_Move",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_Move",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "locret_1472E",
-      "Chick_UpdatePhysics_RightReturn",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_RightReturn",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14720",
-      "Chick_UpdatePhysics_TestRight",
-      "src/game/actors/chick.s"
+      "Throwable_UpdatePhysics_TestRight",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "byte_14528",
-      "ExitDoor_AnimOpen",
-      "src/game/actors/chick.s"
+      "WindowGirl_AnimIdle",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "off_14524",
-      "ExitDoor_AnimPointers",
-      "src/game/actors/chick.s"
+      "WindowGirl_AnimPointers",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14516",
-      "ExitDoor_StateTable",
-      "src/game/actors/chick.s"
+      "WindowGirl_StateTable",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_1452E",
-      "Obj_Chick",
-      "src/game/actors/chick.s"
+      "Obj_Throwable",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_1455E",
-      "Obj_Chick_Dispatch",
-      "src/game/actors/chick.s"
+      "Obj_Throwable_Dispatch",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "locret_1457A",
-      "Obj_Chick_Return",
-      "src/game/actors/chick.s"
+      "Obj_Throwable_Return",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_144DC",
-      "Obj_ExitDoor",
-      "src/game/actors/chick.s"
+      "Obj_WindowGirl",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "sub_1451E",
-      "Obj_ExitDoorAnim",
-      "src/game/actors/chick.s"
+      "WindowGirl_StateAnimate",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "nullsub_3",
-      "Obj_ExitDoorIdle",
-      "src/game/actors/chick.s"
+      "WindowGirl_StateIdle",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "loc_14504",
-      "Obj_ExitDoor_Dispatch",
-      "src/game/actors/chick.s"
+      "Obj_WindowGirl_Dispatch",
+      "src/game/actors/window_girl_and_throwable.s"
     ],
     [
       "word_1187E",
@@ -4396,408 +4396,408 @@
     ],
     [
       "byte_154FE",
-      "Lizard_AnimDeath",
-      "src/game/enemies/lizard.s"
+      "Tiger_AnimDeath",
+      "src/game/enemies/tiger.s"
     ],
     [
       "byte_154E2",
-      "Lizard_AnimJump",
-      "src/game/enemies/lizard.s"
+      "Tiger_AnimJump",
+      "src/game/enemies/tiger.s"
     ],
     [
       "off_154AE",
-      "Lizard_AnimPointers",
-      "src/game/enemies/lizard.s"
+      "Tiger_AnimPointers",
+      "src/game/enemies/tiger.s"
     ],
     [
       "byte_154D0",
-      "Lizard_AnimRun",
-      "src/game/enemies/lizard.s"
+      "Tiger_AnimRun",
+      "src/game/enemies/tiger.s"
     ],
     [
       "byte_154F4",
-      "Lizard_AnimStunned",
-      "src/game/enemies/lizard.s"
+      "Tiger_AnimStunned",
+      "src/game/enemies/tiger.s"
     ],
     [
       "byte_154C2",
-      "Lizard_AnimWait",
-      "src/game/enemies/lizard.s"
+      "Tiger_AnimWait",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_1540A",
-      "Lizard_CheckPlayerHit",
-      "src/game/enemies/lizard.s"
+      "Tiger_CheckPlayerHit",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15410",
-      "Lizard_CheckPlayerHit_Loop",
-      "src/game/enemies/lizard.s"
+      "Tiger_CheckPlayerHit_Loop",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1548E",
-      "Lizard_CheckPlayerHit_Next",
-      "src/game/enemies/lizard.s"
+      "Tiger_CheckPlayerHit_Next",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15460",
-      "Lizard_CheckPlayerHit_PopupLoop",
-      "src/game/enemies/lizard.s"
+      "Tiger_CheckPlayerHit_PopupLoop",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15484",
-      "Lizard_CheckPlayerHit_PopupNext",
-      "src/game/enemies/lizard.s"
+      "Tiger_CheckPlayerHit_PopupNext",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1549A",
-      "Lizard_CheckPlayerHit_Return",
-      "src/game/enemies/lizard.s"
+      "Tiger_CheckPlayerHit_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_1539A",
-      "Lizard_DecrementTimer",
-      "src/game/enemies/lizard.s"
+      "Tiger_DecrementTimer",
+      "src/game/enemies/tiger.s"
     ],
     [
       "dword_1549E",
-      "Lizard_HitScoreTable",
-      "src/game/enemies/lizard.s"
+      "Tiger_HitScoreTable",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_15068",
-      "Lizard_StateChase",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15114",
-      "Lizard_StateChase_Animate",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_Animate",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1508A",
-      "Lizard_StateChase_ApplyFacing",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_ApplyFacing",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1514C",
-      "Lizard_StateChase_CheckAhead",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_CheckAhead",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150BA",
-      "Lizard_StateChase_CheckGround",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_CheckGround",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150FE",
-      "Lizard_StateChase_ComparePlayerRow",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_ComparePlayerRow",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15126",
-      "Lizard_StateChase_Draw",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_Draw",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150DC",
-      "Lizard_StateChase_EdgeRight",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_EdgeRight",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150DA",
-      "Lizard_StateChase_LeftDone",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_LeftDone",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15132",
-      "Lizard_StateChase_MaybeJump",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_MaybeJump",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15094",
-      "Lizard_StateChase_Move",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_Move",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150AC",
-      "Lizard_StateChase_ProbeRight",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_ProbeRight",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150AE",
-      "Lizard_StateChase_ProbeWall",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_ProbeWall",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150E8",
-      "Lizard_StateChase_RightDone",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_RightDone",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150F8",
-      "Lizard_StateChase_SpecialFacingLeft",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_SpecialFacingLeft",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_150EA",
-      "Lizard_StateChase_SpecialTile",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_SpecialTile",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15152",
-      "Lizard_StateChase_StartJump",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateChase_StartJump",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_153A4",
-      "Lizard_StateDeath",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateDeath",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15404",
-      "Lizard_StateDeath_ClearSprites",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateDeath_ClearSprites",
+      "src/game/enemies/tiger.s"
     ],
     [
       "locret_15408",
-      "Lizard_StateDeath_Return",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateDeath_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_153F0",
-      "Lizard_StateDeath_SpawnAt",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateDeath_SpawnAt",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_153C8",
-      "Lizard_StateDeath_Update",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateDeath_Update",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_152B4",
-      "Lizard_StateHit",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateHit",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_152E4",
-      "Lizard_StateHit_Move",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateHit_Move",
+      "src/game/enemies/tiger.s"
     ],
     [
       "locret_152F4",
-      "Lizard_StateHit_Return",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateHit_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_152D6",
-      "Lizard_StateHit_Setup",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateHit_Setup",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_1515A",
-      "Lizard_StateJump",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1520A",
-      "Lizard_StateJump_Airborne",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_Airborne",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_151AA",
-      "Lizard_StateJump_ApplyFacing",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_ApplyFacing",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_151EC",
-      "Lizard_StateJump_CheckCeiling",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_CheckCeiling",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1524C",
-      "Lizard_StateJump_Delay",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_Delay",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1520C",
-      "Lizard_StateJump_Land",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_Land",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_151B4",
-      "Lizard_StateJump_Move",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_Move",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_151DC",
-      "Lizard_StateJump_ProbeRight",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_ProbeRight",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_151DE",
-      "Lizard_StateJump_ProbeWall",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_ProbeWall",
+      "src/game/enemies/tiger.s"
     ],
     [
       "locret_1524A",
-      "Lizard_StateJump_Return",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15222",
-      "Lizard_StateJump_SelectFrame",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_SelectFrame",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15238",
-      "Lizard_StateJump_SetFacing",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_SetFacing",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1519A",
-      "Lizard_StateJump_UseFixedArc",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_UseFixedArc",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1518C",
-      "Lizard_StateJump_UseLevelArc",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateJump_UseLevelArc",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_14FD2",
-      "Lizard_StateLocate",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateLocate",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15004",
-      "Lizard_StateLocate_Compare",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateLocate_Compare",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1504E",
-      "Lizard_StateLocate_FacingLeft",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateLocate_FacingLeft",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1502E",
-      "Lizard_StateLocate_SameRow",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateLocate_SameRow",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1505A",
-      "Lizard_StateLocate_TurnLeft",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateLocate_TurnLeft",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15040",
-      "Lizard_StateLocate_TurnRight",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateLocate_TurnRight",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_15256",
-      "Lizard_StateStunned",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateStunned",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15290",
-      "Lizard_StateStunned_Animate",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateStunned_Animate",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_152AA",
-      "Lizard_StateStunned_Delay",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateStunned_Delay",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1527A",
-      "Lizard_StateStunned_Move",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateStunned_Move",
+      "src/game/enemies/tiger.s"
     ],
     [
       "locret_152A8",
-      "Lizard_StateStunned_Return",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateStunned_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_14F44",
-      "Lizard_StateTable",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTable",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_152F6",
-      "Lizard_StateTrack",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15328",
-      "Lizard_StateTrack_Compare",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack_Compare",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15380",
-      "Lizard_StateTrack_FacingLeft",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack_FacingLeft",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15352",
-      "Lizard_StateTrack_PlayerBelow",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack_PlayerBelow",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15360",
-      "Lizard_StateTrack_SameRow",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack_SameRow",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_1538C",
-      "Lizard_StateTrack_TurnLeft",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack_TurnLeft",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_15372",
-      "Lizard_StateTrack_TurnRight",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateTrack_TurnRight",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_14F64",
-      "Lizard_StateWait",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateWait",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_14FB0",
-      "Lizard_StateWait_CheckEarlyRound",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateWait_CheckEarlyRound",
+      "src/game/enemies/tiger.s"
     ],
     [
       "locret_14FD0",
-      "Lizard_StateWait_Return",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateWait_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_14F80",
-      "Lizard_StateWait_Update",
-      "src/game/enemies/lizard.s"
+      "Tiger_StateWait_Update",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_14EC6",
-      "Obj_Lizard",
-      "src/game/enemies/lizard.s"
+      "Obj_Tiger",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_14EFA",
-      "Obj_Lizard_Dispatch",
-      "src/game/enemies/lizard.s"
+      "Obj_Tiger_Dispatch",
+      "src/game/enemies/tiger.s"
     ],
     [
       "locret_14F42",
-      "Obj_Lizard_Return",
-      "src/game/enemies/lizard.s"
+      "Obj_Tiger_Return",
+      "src/game/enemies/tiger.s"
     ],
     [
       "loc_14F2E",
-      "Obj_Lizard_UpdateFacing",
-      "src/game/enemies/lizard.s"
+      "Obj_Tiger_UpdateFacing",
+      "src/game/enemies/tiger.s"
     ],
     [
       "sub_12D84",
@@ -5716,17 +5716,17 @@
     ],
     [
       "sub_14038",
-      "Player_ThrowChick",
+      "Player_ThrowItem",
       "src/game/actors/player.s"
     ],
     [
       "locret_1407C",
-      "Player_ThrowChick_Return",
+      "Player_ThrowItem_Return",
       "src/game/actors/player.s"
     ],
     [
       "loc_14066",
-      "Player_ThrowChick_SetVelocity",
+      "Player_ThrowItem_SetVelocity",
       "src/game/actors/player.s"
     ],
     [
@@ -5921,7 +5921,7 @@
     ],
     [
       "off_127E8",
-      "Level_ChickMappingPointers",
+      "Level_ThrowableMappingPointers",
       "src/game/round/select_and_setup.s"
     ],
     [
@@ -6141,258 +6141,258 @@
     ],
     [
       "sub_15D58",
-      "Obj_Snake",
-      "src/game/enemies/snake.s"
+      "Obj_Iggy",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15D8C",
-      "Obj_Snake_Dispatch",
-      "src/game/enemies/snake.s"
+      "Obj_Iggy_Dispatch",
+      "src/game/enemies/iggy.s"
     ],
     [
       "locret_15DC0",
-      "Obj_Snake_Return",
-      "src/game/enemies/snake.s"
+      "Obj_Iggy_Return",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_162F6",
-      "Snake_AnimDown",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimDown",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_162E6",
-      "Snake_AnimLeft",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimLeft",
+      "src/game/enemies/iggy.s"
     ],
     [
       "off_162BC",
-      "Snake_AnimPointers",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimPointers",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_162DC",
-      "Snake_AnimRight",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimRight",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_16308",
-      "Snake_AnimSpawn",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimSpawn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_162FC",
-      "Snake_AnimTurnA",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimTurnA",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_16302",
-      "Snake_AnimTurnB",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimTurnB",
+      "src/game/enemies/iggy.s"
     ],
     [
       "byte_162F0",
-      "Snake_AnimUp",
-      "src/game/enemies/snake.s"
+      "Iggy_AnimUp",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_16218",
-      "Snake_CheckPlayerHit",
-      "src/game/enemies/snake.s"
+      "Iggy_CheckPlayerHit",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_1621E",
-      "Snake_CheckPlayerHit_Loop",
-      "src/game/enemies/snake.s"
+      "Iggy_CheckPlayerHit_Loop",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_1629C",
-      "Snake_CheckPlayerHit_Next",
-      "src/game/enemies/snake.s"
+      "Iggy_CheckPlayerHit_Next",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_1626E",
-      "Snake_CheckPlayerHit_PopupLoop",
-      "src/game/enemies/snake.s"
+      "Iggy_CheckPlayerHit_PopupLoop",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_16292",
-      "Snake_CheckPlayerHit_PopupNext",
-      "src/game/enemies/snake.s"
+      "Iggy_CheckPlayerHit_PopupNext",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_162A8",
-      "Snake_CheckPlayerHit_Return",
-      "src/game/enemies/snake.s"
+      "Iggy_CheckPlayerHit_Return",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15E20",
-      "Snake_DirectionTable",
-      "src/game/enemies/snake.s"
+      "Iggy_DirectionTable",
+      "src/game/enemies/iggy.s"
     ],
     [
       "dword_162AC",
-      "Snake_HitScoreTable",
-      "src/game/enemies/snake.s"
+      "Iggy_HitScoreTable",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_16036",
-      "Snake_MoveDown",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveDown",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_1610C",
-      "Snake_MoveDown_StartTurn",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveDown_StartTurn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_160D6",
-      "Snake_MoveDown_TurnLeft",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveDown_TurnLeft",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_1609A",
-      "Snake_MoveDown_TurnRight",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveDown_TurnRight",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_15EE6",
-      "Snake_MoveLeft",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveLeft",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15F8E",
-      "Snake_MoveLeft_StartTurn",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveLeft_StartTurn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15F5A",
-      "Snake_MoveLeft_TurnDown",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveLeft_TurnDown",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15F32",
-      "Snake_MoveLeft_TurnUp",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveLeft_TurnUp",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_15E40",
-      "Snake_MoveRight",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveRight",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15ED6",
-      "Snake_MoveRight_StartTurn",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveRight_StartTurn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15E86",
-      "Snake_MoveRight_TurnDown",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveRight_TurnDown",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15EA8",
-      "Snake_MoveRight_TurnUp",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveRight_TurnUp",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_15F9E",
-      "Snake_MoveUp",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveUp",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_16072",
-      "Snake_MoveUp_StartTurn",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveUp_StartTurn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15FDE",
-      "Snake_MoveUp_TurnLeft",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveUp_TurnLeft",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_16004",
-      "Snake_MoveUp_TurnRight",
-      "src/game/enemies/snake.s"
+      "Iggy_MoveUp_TurnRight",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_161BC",
-      "Snake_StateDeath",
-      "src/game/enemies/snake.s"
+      "Iggy_StateDeath",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_16212",
-      "Snake_StateDeath_ClearSprites",
-      "src/game/enemies/snake.s"
+      "Iggy_StateDeath_ClearSprites",
+      "src/game/enemies/iggy.s"
     ],
     [
       "locret_16216",
-      "Snake_StateDeath_Return",
-      "src/game/enemies/snake.s"
+      "Iggy_StateDeath_Return",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_161E0",
-      "Snake_StateDeath_Update",
-      "src/game/enemies/snake.s"
+      "Iggy_StateDeath_Update",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_16188",
-      "Snake_StateHit",
-      "src/game/enemies/snake.s"
+      "Iggy_StateHit",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_161AA",
-      "Snake_StateHit_Move",
-      "src/game/enemies/snake.s"
+      "Iggy_StateHit_Move",
+      "src/game/enemies/iggy.s"
     ],
     [
       "locret_161BA",
-      "Snake_StateHit_Return",
-      "src/game/enemies/snake.s"
+      "Iggy_StateHit_Return",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_15E04",
-      "Snake_StateMove",
-      "src/game/enemies/snake.s"
+      "Iggy_StateMove",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15E12",
-      "Snake_StateMove_Dispatch",
-      "src/game/enemies/snake.s"
+      "Iggy_StateMove_Dispatch",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_15DD6",
-      "Snake_StateSpawn",
-      "src/game/enemies/snake.s"
+      "Iggy_StateSpawn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15DF2",
-      "Snake_StateSpawn_Countdown",
-      "src/game/enemies/snake.s"
+      "Iggy_StateSpawn_Countdown",
+      "src/game/enemies/iggy.s"
     ],
     [
       "locret_15E02",
-      "Snake_StateSpawn_Return",
-      "src/game/enemies/snake.s"
+      "Iggy_StateSpawn_Return",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_15DC2",
-      "Snake_StateTable",
-      "src/game/enemies/snake.s"
+      "Iggy_StateTable",
+      "src/game/enemies/iggy.s"
     ],
     [
       "sub_160C8",
-      "Snake_StateTurn",
-      "src/game/enemies/snake.s"
+      "Iggy_StateTurn",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_16136",
-      "Snake_StateTurn_Continue",
-      "src/game/enemies/snake.s"
+      "Iggy_StateTurn_Continue",
+      "src/game/enemies/iggy.s"
     ],
     [
       "loc_16160",
-      "Snake_StateTurn_Finish",
-      "src/game/enemies/snake.s"
+      "Iggy_StateTurn_Finish",
+      "src/game/enemies/iggy.s"
     ],
     [
       "off_164DA",
@@ -6946,12 +6946,12 @@
     ],
     [
       "unk_FFC5C0",
-      "Ram_BonusCatInnerSlots",
+      "Ram_BonusTigerSlots",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC640",
-      "Ram_BonusCatOuterSlots",
+      "Ram_BonusSeesawSlots",
       "src/memory/ram.inc"
     ],
     [
@@ -7116,7 +7116,7 @@
     ],
     [
       "dword_FFD828",
-      "Ram_ChickMappingPtr",
+      "Ram_ThrowableMappingPtr",
       "src/memory/ram.inc"
     ],
     [
@@ -7226,12 +7226,12 @@
     ],
     [
       "byte_FFD834",
-      "Ram_ExitDoorGridX",
+      "Ram_WindowGirlGridX",
       "src/memory/ram.inc"
     ],
     [
       "byte_FFD835",
-      "Ram_ExitDoorGridY",
+      "Ram_WindowGirlGridY",
       "src/memory/ram.inc"
     ],
     [
@@ -7311,7 +7311,7 @@
     ],
     [
       "dword_FFD250",
-      "Ram_HeldChickObject",
+      "Ram_HeldItemObject",
       "src/memory/ram.inc"
     ],
     [
@@ -7346,27 +7346,27 @@
     ],
     [
       "dword_FFD276",
-      "Ram_LizardJumpSpeed",
+      "Ram_TigerJumpSpeed",
       "src/memory/ram.inc"
     ],
     [
       "dword_FFD26E",
-      "Ram_LizardJumpVelX",
+      "Ram_TigerJumpVelX",
       "src/memory/ram.inc"
     ],
     [
       "dword_FFD272",
-      "Ram_LizardJumpVelY",
+      "Ram_TigerJumpVelY",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC740",
-      "Ram_LizardRespawnSlot",
+      "Ram_TigerRespawnSlot",
       "src/memory/ram.inc"
     ],
     [
       "dword_FFD296",
-      "Ram_LizardSpeed",
+      "Ram_TigerSpeed",
       "src/memory/ram.inc"
     ],
     [
@@ -7596,12 +7596,12 @@
     ],
     [
       "unk_FFC7C0",
-      "Ram_SnakeRespawnSlot",
+      "Ram_IggyRespawnSlot",
       "src/memory/ram.inc"
     ],
     [
       "dword_FFD27C",
-      "Ram_SnakeSpeed",
+      "Ram_IggySpeed",
       "src/memory/ram.inc"
     ],
     [

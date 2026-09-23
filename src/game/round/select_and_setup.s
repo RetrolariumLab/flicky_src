@@ -111,9 +111,9 @@ Level_LoadTileset:
                 bsr.w   Math_ModuloUpper
                 subq.b  #1,d0
                 lsl.w   #2,d0
-                lea     Level_ChickMappingPointers(pc),a0
+                lea     Level_ThrowableMappingPointers(pc),a0
                 move.l  (a0,d0.w),d1
-                move.l  d1,(Ram_ChickMappingPtr).w
+                move.l  d1,(Ram_ThrowableMappingPtr).w
                 move.l  #Level_BgObject0Data,(Ram_BgObject0Ptr).w
                 move.l  #Level_BgObject1Data,(Ram_BgObject1Ptr).w
                 move.l  #Level_BgObject2Data,(Ram_BgObject2Ptr).w
@@ -167,21 +167,21 @@ Level_BgObject5Pointers:    dc.l    Ending_GraphicsMap0
                 dc.l    Level_BgObject5Data2
                 dc.l    Level_BgObject5Data3
                 dc.l    Level_BgObject5Data4
-Level_ChickMappingPointers: dc.l    Chick_ThrownAnim0Data0
-                dc.l    Chick_ThrownAnim1Data0
-                dc.l    Chick_ThrownAnim2Data0
-                dc.l    Chick_ThrownAnim3Data0
-                dc.l    Chick_ThrownAnim4Data0
-                dc.l    Chick_ThrownAnim5Data0
-                dc.l    Chick_ThrownAnim6Data0
-                dc.l    Chick_ThrownAnim7Data0
-                dc.l    Chick_ThrownAnim8Data0
-                dc.l    Chick_ThrownAnim9Data0
-                dc.l    Chick_ThrownAnim10Data0
-                dc.l    Chick_ThrownAnim11Data0
-                dc.l    Chick_ThrownAnim12Data0
-                dc.l    Chick_ThrownAnim13Data0
-                dc.l    Chick_ThrownAnim14Data0
+Level_ThrowableMappingPointers: dc.l    Throwable_ThrownAnim0Data0
+                dc.l    Throwable_ThrownAnim1Data0
+                dc.l    Throwable_ThrownAnim2Data0
+                dc.l    Throwable_ThrownAnim3Data0
+                dc.l    Throwable_ThrownAnim4Data0
+                dc.l    Throwable_ThrownAnim5Data0
+                dc.l    Throwable_ThrownAnim6Data0
+                dc.l    Throwable_ThrownAnim7Data0
+                dc.l    Throwable_ThrownAnim8Data0
+                dc.l    Throwable_ThrownAnim9Data0
+                dc.l    Throwable_ThrownAnim10Data0
+                dc.l    Throwable_ThrownAnim11Data0
+                dc.l    Throwable_ThrownAnim12Data0
+                dc.l    Throwable_ThrownAnim13Data0
+                dc.l    Throwable_ThrownAnim14Data0
 ; Loads level palette based on round number
 Level_LoadPalette:
                 moveq   #$30,d7

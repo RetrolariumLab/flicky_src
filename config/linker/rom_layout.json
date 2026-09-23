@@ -293,19 +293,19 @@
       "end": "0x0144DB"
     },
     {
-      "file": "src/game/actors/chick.s",
+      "file": "src/game/actors/window_girl_and_throwable.s",
       "subsystem": "game",
       "start": "0x0144DC",
       "end": "0x01483D"
     },
     {
-      "file": "src/game/enemies/cat.s",
+      "file": "src/game/actors/chirp.s",
       "subsystem": "game",
       "start": "0x01483E",
       "end": "0x014EC5"
     },
     {
-      "file": "src/game/enemies/lizard.s",
+      "file": "src/game/enemies/tiger.s",
       "subsystem": "game",
       "start": "0x014EC6",
       "end": "0x015507"
@@ -317,7 +317,7 @@
       "end": "0x015D57"
     },
     {
-      "file": "src/game/enemies/snake.s",
+      "file": "src/game/enemies/iggy.s",
       "subsystem": "game",
       "start": "0x015D58",
       "end": "0x016311"

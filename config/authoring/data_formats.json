@@ -28,8 +28,8 @@
       "round_trip": "exact"
     },
     {
-      "segment": "LizardJumpArcTable",
-      "path": "other/data_LizardJumpArcTable.bin",
+      "segment": "TigerJumpArcTable",
+      "path": "other/data_TigerJumpArcTable.bin",
       "codec": "velocity_pairs",
       "round_trip": "exact",
       "note": "Per-round horizontal and vertical jump velocity, 16.16 fixed point."

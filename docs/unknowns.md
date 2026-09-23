@@ -86,11 +86,11 @@ reused, even after the entry is resolved.
 
 - **Status:** resolved
 - **Confidence:** high, verified by a relocation build
-- **Location:** `src/game/round/main_loop.s`, `src/game/enemies/lizard.s`
+- **Location:** `src/game/round/main_loop.s`, `src/game/enemies/tiger.s`
 - **Evidence:** IDA read the immediate `$14000` in `Game_CalcDifficulty` as an
   address and invented a label `loc_14000` for it, which happened to land inside
   `Player_ProcessInput`. The disassembly then wrote three instructions as
-  `move.l #loc_14000,...`, so the difficulty accumulator and the lizard's speed
+  `move.l #loc_14000,...`, so the difficulty accumulator and Tiger's speed
   read as pointers into an unrelated procedure. The value is not an address: it
   is compared against `$1C000` and incremented by 7.
 - **Resolution:** All three are written as the literal `$14000` they always

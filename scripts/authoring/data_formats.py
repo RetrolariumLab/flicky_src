@@ -61,7 +61,7 @@ def encode_demo_input(entries: list[dict]) -> bytes:
 
 
 def decode_velocity_pairs(data: bytes) -> list[dict]:
-    """Signed 16.16 velocity pairs, one per round, as Lizard_StateJump loads them."""
+    """Signed 16.16 velocity pairs, one per round, as Tiger_StateJump loads them."""
     def signed(value: int) -> int:
         return value - 0x100000000 if value & 0x80000000 else value
 

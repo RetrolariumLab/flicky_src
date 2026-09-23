@@ -223,7 +223,7 @@ Object_UpdateAll_BonusLoop:
                 bsr.w   Object_CallHandler
                 lea     $40(a0),a0
                 dbf     d0,Object_UpdateAll_BonusLoop
-                lea     (Ram_BonusCatInnerSlots).w,a0
+                lea     (Ram_BonusTigerSlots).w,a0
                 moveq   #3,d0
 
 Object_UpdateAll_BonusExtraLoop:
@@ -277,19 +277,19 @@ Object_CallHandler_Return:
 
 Object_HandlerTable:
                 bra.w   Object_NullHandler
-                bra.w   Obj_Chick
-                bra.w   Obj_Cat
+                bra.w   Obj_Throwable
+                bra.w   Obj_Chirp
                 bra.w   Obj_Player
-                bra.w   Obj_Lizard
-                bra.w   Obj_Snake
+                bra.w   Obj_Tiger
+                bra.w   Obj_Iggy
                 bra.w   Obj_Spawner
                 bra.w   Obj_ScorePopup
                 bra.w   Obj_ChickCountPopup
                 bra.w   Obj_BonusScorePopup
                 bra.w   Obj_StarBonus
                 bra.w   Obj_BonusHeldChick
-                bra.w   Obj_BonusCatOuter
-                bra.w   Obj_BonusCatInner
+                bra.w   Obj_BonusSeesaw
+                bra.w   Obj_BonusTiger
                 bra.w   Obj_BonusChick
                 bra.w   Obj_GameOverText
                 bra.w   Obj_TitleBird
@@ -297,7 +297,7 @@ Object_HandlerTable:
                 bra.w   Obj_TitleStatic
                 bra.w   Obj_GuideCharacter
                 bra.w   Obj_CreditsCharacter
-                bra.w   Obj_ExitDoor
+                bra.w   Obj_WindowGirl
                 bra.w   Obj_TimeOverText
 
 ; Adds scroll velocity to camera position
@@ -495,7 +495,7 @@ Level_SpawnObjects:
                 move.b  1(a6),(a0)+
                 moveq   #1,d4
                 bsr.w   Level_SpawnBackgroundLoop
-                lea     (Ram_ExitDoorGridX).w,a0
+                lea     (Ram_WindowGirlGridX).w,a0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)
                 moveq   #2,d4

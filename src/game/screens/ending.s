@@ -305,10 +305,10 @@ Ending_CreditsStateTable:
                 bra.w   Obj_CreditsFlyUp
 
 Ending_CreditsAnimPointers: dc.l    Player_AnimPointers
-                dc.l    Cat_AnimPointers
-                dc.l    Cat_AnimPointersAlt
-                dc.l    Lizard_AnimPointers
-                dc.l    Snake_AnimPointers
+                dc.l    Chirp_AnimPointers
+                dc.l    Chirp_AnimPointersAlt
+                dc.l    Tiger_AnimPointers
+                dc.l    Iggy_AnimPointers
 Ending_CreditsAnimIndexTable:   dc.w    4, 0, 0, 8, $10
 Ending_CreditsAppearLines:      dc.w    $D17, $212B, $3D00
 ; Credits character wait state: waits for scroll line

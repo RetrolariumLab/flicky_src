@@ -133,11 +133,11 @@ The Z80 implementation split is independently visible:
 | `src/game/screens/ending.s` | `$013110-$0139A1` | 382 | Ending sequence and credits |
 | `src/game/screens/attract_mode.s` | `$0139A2-$013E6F` | 101 | Attract-mode demo playback |
 | `src/game/actors/player.s` | `$013E70-$0144DB` | 679 | Player object |
-| `src/game/actors/chick.s` | `$0144DC-$01483D` | 377 | Exit door and chick objects |
-| `src/game/enemies/cat.s` | `$01483E-$014EC5` | 622 | Cat enemy |
-| `src/game/enemies/lizard.s` | `$014EC6-$015507` | 603 | Lizard enemy and its animation tables |
+| `src/game/actors/window_girl_and_throwable.s` | `$0144DC-$01483D` | 377 | Window girl and throwable item objects |
+| `src/game/actors/chirp.s` | `$01483E-$014EC5` | 622 | Chirp rescue actor |
+| `src/game/enemies/tiger.s` | `$014EC6-$015507` | 603 | Tiger cat and its animation tables |
 | `src/data/level_layout.s` | `$015508-$015D57` | 159 | Level layout and palette data used by round setup |
-| `src/game/enemies/snake.s` | `$015D58-$016311` | 492 | Snake enemy |
+| `src/game/enemies/iggy.s` | `$015D58-$016311` | 492 | Iggy lizard |
 | `src/game/enemies/spawner.s` | `$016312-$0164EB` | 212 | Enemy spawner and score popups |
 | `src/game/bonus/objects.s` | `$0164EC-$016DA9` | 558 | Bonus-round objects |
 | `src/game/screens/game_over.s` | `$016DAA-$016E57` | 32 | Game over and time over text |

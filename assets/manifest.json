@@ -93,8 +93,8 @@
       "sha1": "8c3d3e99ec4dac8893d4e5fbeb1bf47a4b835fcf"
     },
     {
-      "name": "LizardJumpArcTable",
-      "path": "other/data_LizardJumpArcTable.bin",
+      "name": "TigerJumpArcTable",
+      "path": "other/data_TigerJumpArcTable.bin",
       "region": "other",
       "address": "0x15B94",
       "size": 384,

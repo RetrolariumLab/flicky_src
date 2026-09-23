@@ -67,54 +67,54 @@ StarBonus_AnimSpin: dc.b    4, 5
                 dc.w    StarBonus_SpinFrame1-Sys_GameEntryPoint
                 dc.w    StarBonus_SpinFrame2-Sys_GameEntryPoint
                 dc.w    StarBonus_SpinFrame3-Sys_GameEntryPoint
-; Bonus round cat object (outer position)
-Obj_BonusCatOuter:
+; Bonus round seesaw (outer position)
+Obj_BonusSeesaw:
                 bset    #7,(a0)
-                bne.s   Obj_BonusCatOuter_Update
+                bne.s   Obj_BonusSeesaw_Update
                 move.w  #$140,$30(a0)
                 bclr    #7,2(a0)
                 tst.b   $16(a0)
-                beq.s   Obj_BonusCatOuter_SetPosition
+                beq.s   Obj_BonusSeesaw_SetPosition
                 move.w  #$C0,$30(a0)
                 bset    #7,2(a0)
 
-Obj_BonusCatOuter_SetPosition:
+Obj_BonusSeesaw_SetPosition:
                 move.w  #$150,$24(a0)
-                move.l  #BonusCat_AnimPointers,8(a0)
+                move.l  #Bonus_SeesawTigerAnimPointers,8(a0)
                 clr.w   6(a0)
 
-Obj_BonusCatOuter_Update:
+Obj_BonusSeesaw_Update:
                 tst.b   (Ram_CutsceneFlag).w
-                bne.s   Obj_BonusCatOuter_Return
+                bne.s   Obj_BonusSeesaw_Return
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
 
-Obj_BonusCatOuter_Return:
+Obj_BonusSeesaw_Return:
                 rts
 
-; Bonus round cat object (inner position)
-Obj_BonusCatInner:
+; Bonus round Tiger (inner position)
+Obj_BonusTiger:
                 bset    #7,(a0)
-                bne.s   Obj_BonusCatInner_Update
+                bne.s   Obj_BonusTiger_Update
                 move.w  #$130,$30(a0)
                 bclr    #7,2(a0)
                 tst.b   $16(a0)
-                beq.s   Obj_BonusCatInner_SetPosition
+                beq.s   Obj_BonusTiger_SetPosition
                 move.w  #$D0,$30(a0)
                 bset    #7,2(a0)
 
-Obj_BonusCatInner_SetPosition:
+Obj_BonusTiger_SetPosition:
                 move.w  #$150,$24(a0)
-                move.l  #BonusCat_AnimPointers,8(a0)
+                move.l  #Bonus_SeesawTigerAnimPointers,8(a0)
                 move.w  #4,6(a0)
 
-Obj_BonusCatInner_Update:
+Obj_BonusTiger_Update:
                 tst.b   (Ram_CutsceneFlag).w
-                bne.s   Obj_BonusCatInner_Return
+                bne.s   Obj_BonusTiger_Return
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
 
-Obj_BonusCatInner_Return:
+Obj_BonusTiger_Return:
                 rts
 
 ; Bonus round held chick follows player
@@ -145,32 +145,32 @@ Obj_BonusHeldChick_Update:
 Obj_BonusHeldChick_Return:
                 rts
 
-BonusCat_AnimPointers:  dc.l    BonusCat_AnimOuter
-                dc.l    BonusCat_AnimInner
-BonusCat_AnimOuter: dc.b    8, 7
-                dc.w    BonusCat_OuterFrame0-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame1-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame2-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame3-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame4-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame3-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame2-Sys_GameEntryPoint
-                dc.w    BonusCat_OuterFrame1-Sys_GameEntryPoint
-BonusCat_AnimInner: dc.b    8, 7
-                dc.w    BonusCat_InnerFrame0-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame1-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame2-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame3-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame4-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame3-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame2-Sys_GameEntryPoint
-                dc.w    BonusCat_InnerFrame1-Sys_GameEntryPoint
+Bonus_SeesawTigerAnimPointers:  dc.l    BonusSeesaw_Anim
+                dc.l    BonusTiger_Anim
+BonusSeesaw_Anim:   dc.b    8, 7
+                dc.w    BonusSeesaw_Frame0-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame1-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame2-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame3-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame4-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame3-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame2-Sys_GameEntryPoint
+                dc.w    BonusSeesaw_Frame1-Sys_GameEntryPoint
+BonusTiger_Anim:    dc.b    8, 7
+                dc.w    BonusTiger_Frame0-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame1-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame2-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame3-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame4-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame3-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame2-Sys_GameEntryPoint
+                dc.w    BonusTiger_Frame1-Sys_GameEntryPoint
 ; Bonus round thrown chick object
 Obj_BonusChick:
                 bset    #7,(a0)
                 bne.s   Obj_BonusChick_Dispatch
                 bset    #1,2(a0)
-                move.l  #Cat_AnimPointers,8(a0)
+                move.l  #Chirp_AnimPointers,8(a0)
                 movea.l (Ram_BonusChickDelayPtr).w,a1
                 moveq   #0,d0
                 move.b  $38(a0),d0
@@ -209,12 +209,12 @@ BonusChick_StateWait:
 
 BonusChick_StateWait_Move:
                 bsr.w   Object_UpdatePosition
-                lea     (Ram_BonusCatOuterSlots).w,a1
+                lea     (Ram_BonusSeesawSlots).w,a1
                 tst.b   $39(a0)
-                bne.s   BonusChick_StateWait_CheckCat
+                bne.s   BonusChick_StateWait_CheckSeesaw
                 lea     $40(a1),a1
 
-BonusChick_StateWait_CheckCat:
+BonusChick_StateWait_CheckSeesaw:
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
                 beq.s   BonusChick_StateWait_Return

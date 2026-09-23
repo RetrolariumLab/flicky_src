@@ -28,8 +28,8 @@ CATEGORIES = frozenset("""
     Sys Int Boot Gfx DMA Nem Eni Input Sound Text Math
     Game Level Object Sprite Anim Camera Collision Score Timer UI
     Title Guide RoundSelect Demo Bonus Ending SegaScreen
-    Player Chick Cat Lizard Snake Spawner Enemy Obj
-    BonusCat BonusChick StarBonus ExitDoor
+    Player Chirp Tiger Iggy Throwable Spawner Enemy Obj
+    BonusSeesaw BonusTiger BonusChick WindowGirl StarBonus
     ScorePopup ChickCountPopup BonusScorePopup
     Data Ram Unused Z80
 """.split())

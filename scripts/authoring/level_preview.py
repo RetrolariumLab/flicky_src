@@ -363,14 +363,14 @@ class LevelPreview:
             layout["player"][0] * 8 + 12 + SPRITE_SCROLL_X,
             layout["player"][1] * 8 + 24,
         )
-        chick_mapping = f"Chick_ThrownAnim{theme['chick']}Data0"
+        chick_mapping = f"Throwable_ThrownAnim{theme['chick']}Data0"
         for x, y in layout["spawners"]:
             self.draw_mapping(
                 frame, palette, chick_mapping,
                 x * 8 + 8 + SPRITE_SCROLL_X, y * 8 + 8,
             )
 
-        for field, mapping in (("chicks_a", "Cat_WalkFrame0"), ("chicks_b", "Cat_WalkAltFrame0")):
+        for field, mapping in (("chicks_a", "Chirp_WalkFrame0"), ("chicks_b", "Chirp_WalkAltFrame0")):
             for x, y in layout[field]:
                 self.draw_mapping(
                     frame, palette, mapping,

@@ -47,9 +47,9 @@ Demo_Update:
 
 Demo_Update_Run:
                 bsr.w   Demo_ReadInput
-                cmpi.l  #$1C000,(Ram_LizardSpeed).w
+                cmpi.l  #$1C000,(Ram_TigerSpeed).w
                 bgt.s   Demo_Update_Objects
-                addq.l  #7,(Ram_LizardSpeed).w
+                addq.l  #7,(Ram_TigerSpeed).w
 
 Demo_Update_Objects:
                 bsr.w   Enemy_SpawnCats

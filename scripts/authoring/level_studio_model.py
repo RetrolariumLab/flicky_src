@@ -323,7 +323,7 @@ def export_document(root: Path) -> dict[str, Any]:
     tables_text = (root / "src/data/tables.s").read_text(encoding="utf-8")
     special_text = (root / "src/data/level_layout.s").read_text(encoding="utf-8")
     level_blocks = named_blocks(tables_text, "Level_Data", "Unused_Block2:", 1)
-    special_words = named_blocks(special_text, "Level_SpecialTiles", "Lizard_JumpArcTable:", 2)
+    special_words = named_blocks(special_text, "Level_SpecialTiles", "Tiger_JumpArcTable:", 2)
     special_blocks = [
         [byte for word in words for byte in (word >> 8, word & 0xFF)]
         for words in special_words
@@ -485,7 +485,7 @@ def apply_document(
     replace_source_range(
         staged_source / "data/level_layout.s",
         "Level_SpecialTilePointers:",
-        "Lizard_JumpArcTable:",
+        "Tiger_JumpArcTable:",
         render_special_section(
             document,
             specials,
