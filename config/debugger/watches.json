@@ -17,8 +17,8 @@
     { "group": "gameplay", "symbol": "Ram_PlayerHitFlag", "description": "Player was hit this frame" },
     { "group": "camera", "symbol": "Ram_CameraX", "description": "Camera X" },
     { "group": "camera", "symbol": "Ram_CameraY", "description": "Camera Y" },
-    { "group": "difficulty", "symbol": "Ram_LizardSpeed", "description": "Lizard chase speed" },
-    { "group": "difficulty", "symbol": "Ram_SnakeSpeed", "description": "Snake crawl speed" },
+    { "group": "difficulty", "symbol": "Ram_TigerSpeed", "description": "Tiger chase speed" },
+    { "group": "difficulty", "symbol": "Ram_IggySpeed", "description": "Iggy crawl speed" },
     { "group": "sound", "symbol": "Z80_MusicCommand", "description": "Music command byte" },
     { "group": "sound", "symbol": "Z80_SFXSlot0", "description": "First effect slot" }
   ]

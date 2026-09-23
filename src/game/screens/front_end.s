@@ -149,9 +149,9 @@ Obj_TitleBird_Animate:
                 rts
 
 Title_BirdAnimPointers: dc.l    Player_AnimPointers
-                dc.l    Cat_AnimPointers
-                dc.l    Lizard_AnimPointers
-                dc.l    Snake_AnimPointers
+                dc.l    Chirp_AnimPointers
+                dc.l    Tiger_AnimPointers
+                dc.l    Iggy_AnimPointers
 Title_BirdAnimIndexTable:   dc.w    0, 4, 4, 0
 Title_BirdXTable:           dc.w    $B0
 Title_BirdYTable:           dc.w    $F0, $110, $EC, $B0, $108, $110, $100
@@ -386,26 +386,26 @@ Obj_GuideCharacter_Return:
 
 Guide_CharacterFlagTable:   dc.b    0, 0, 1, 0, 1, 1, 1, 0, 0, 0
                 dc.b    0, 0, 0, 1, 1, 1, 1, 1, 1, 1
-Guide_CharacterMappingPointers: dc.l    Cat_CarriedAltFrame0
-                dc.l    Cat_CarriedFrame1
-                dc.l    Cat_StunnedFrame0
-                dc.l    Cat_IdleFrame0
-                dc.l    Cat_WalkFrame2
-                dc.l    Cat_IdleFrame0
-                dc.l    Cat_CarriedFrame1
-                dc.l    Cat_WalkAltFrame3
+Guide_CharacterMappingPointers: dc.l    Chirp_CarriedAltFrame0
+                dc.l    Chirp_CarriedFrame1
+                dc.l    Chirp_StunnedFrame0
+                dc.l    Chirp_IdleFrame0
+                dc.l    Chirp_WalkFrame2
+                dc.l    Chirp_IdleFrame0
+                dc.l    Chirp_CarriedFrame1
+                dc.l    Chirp_WalkAltFrame3
                 dc.l    Guide_CharacterMap6
-                dc.l    Cat_WalkFrame0
+                dc.l    Chirp_WalkFrame0
                 dc.l    Guide_CharacterMap8
-                dc.l    Chick_ThrownAnim1Data1
+                dc.l    Throwable_ThrownAnim1Data1
                 dc.l    Guide_CharacterMap10
                 dc.l    Guide_CharacterMap11
-                dc.l    Cat_CarriedFrame0
-                dc.l    Cat_CarriedAltFrame0
-                dc.l    Cat_CarriedAltFrame1
-                dc.l    Cat_CarriedFrame2
-                dc.l    Cat_CarriedFrame1
-                dc.l    Cat_CarriedAltFrame2
+                dc.l    Chirp_CarriedFrame0
+                dc.l    Chirp_CarriedAltFrame0
+                dc.l    Chirp_CarriedAltFrame1
+                dc.l    Chirp_CarriedFrame2
+                dc.l    Chirp_CarriedFrame1
+                dc.l    Chirp_CarriedAltFrame2
 Guide_CharacterPositionsJP: dc.w    $B4, $A0, $C0, $A0, $CC, $A0, $D8, $A0, $120, $A0
                 dc.w    $12C, $A0, $138, $A0, $144, $A0, $98, $C8, $D8, $C8
                 dc.w    $D0, $100, $118, $100, $118, $110, $C0, $150, $C8, $150

@@ -134,7 +134,7 @@ class LevelExport(unittest.TestCase):
                 (staged / "data" / "tables.s").read_text(encoding="utf-8"),
             )
             self.assertIn(
-                "Lizard_JumpArcTable:",
+                "Tiger_JumpArcTable:",
                 (staged / "data" / "level_layout.s").read_text(encoding="utf-8"),
             )
 

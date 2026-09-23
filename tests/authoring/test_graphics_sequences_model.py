@@ -28,7 +28,7 @@ class GraphicsSequencesDocument(unittest.TestCase):
     def test_genesis_sprite_size_bits_are_not_transposed(self):
         chick = next(
             item for item in self.document["mappings"]
-            if item["id"] == "Chick_ThrownAnim0Data0"
+            if item["id"] == "Throwable_ThrownAnim0Data0"
         )
         self.assertEqual(
             (chick["pieces"][0]["width"], chick["pieces"][0]["height"]),
@@ -63,6 +63,47 @@ class GraphicsSequencesDocument(unittest.TestCase):
             path = Path(directory) / "sequences.json"
             path.write_text(json.dumps(document), encoding="utf-8")
             loaded = model.load_document(path)
+        model.validate_document(loaded, ROOT)
+
+    def test_old_object_names_are_migrated_without_losing_sprite_edits(self):
+        document = copy.deepcopy(self.document)
+        old_prefixes = (
+            ("Throwable_Thrown", "Chick_Thrown"),
+            ("Chirp_", "Cat_"),
+            ("Tiger_", "Lizard_"),
+            ("Iggy_", "Snake_"),
+            ("BonusSeesaw_Frame", "BonusCat_OuterFrame"),
+            ("BonusTiger_Frame", "BonusCat_InnerFrame"),
+            ("BonusSeesaw_Anim", "BonusCat_AnimOuter"),
+            ("BonusTiger_Anim", "BonusCat_AnimInner"),
+            ("WindowGirl_Frame", "ExitDoor_OpenFrame"),
+            ("WindowGirl_AnimIdle", "ExitDoor_AnimOpen"),
+        )
+
+        def old_name(name):
+            for current, previous in old_prefixes:
+                if name.startswith(current):
+                    return previous + name[len(current):]
+            return name
+
+        mapping = next(item for item in document["mappings"] if item["id"] == "Chirp_WalkFrame0")
+        mapping["pieces"][0]["x"] += 1
+        for item in document["mappings"]:
+            item["id"] = old_name(item["id"])
+        for item in document["animations"]:
+            item["id"] = old_name(item["id"])
+            item["frames"] = [old_name(frame) for frame in item["frames"]]
+            for previous, current in model.LEGACY_SOURCE_PATHS.items():
+                if previous.startswith(("game/actors/", "game/enemies/")) and item["source"] == current:
+                    item["source"] = previous
+                    break
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sequences.json"
+            path.write_text(json.dumps(document), encoding="utf-8")
+            loaded = model.load_document(path)
+        self.assertEqual(loaded["mappings"], [
+            {**item, "id": model.current_object_name(item["id"])} for item in document["mappings"]
+        ])
         model.validate_document(loaded, ROOT)
 
     def test_piece_count_cannot_change(self):

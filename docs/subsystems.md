@@ -73,8 +73,8 @@ route in the bonus round (`Ram_BonusRoundFlag`). Positions are integrated by
 and derives the screen position by subtracting `Ram_CameraX`.
 
 Each actor keeps its state index in offset `$3C` and dispatches through its own
-small table -- `Player_StateTable`, `Cat_StateTable`, `Lizard_StateTable`,
-`Snake_StateTable` and so on -- so the actors are all built the same way.
+small table -- `Player_StateTable`, `Chirp_StateTable`, `Tiger_StateTable`,
+`Iggy_StateTable` and so on -- so the actors are all built the same way.
 
 ## Collision
 
@@ -100,16 +100,16 @@ bonus check, skip-bonus check, next round. The player reaching the exit door
 sets `Ram_RoundEndingFlag`, which most actors test and use to freeze
 themselves.
 
-Chicks form a chain. Picking one up increments `Ram_ChickChainCount` and stores
+Chirps form a chain. Touching one increments `Ram_ChickChainCount` and stores
 the position of the chick in the player's trail buffer
 (`Player_RecordHistory` keeps 64 past positions); delivering the chain to the
-cat door awards points from `Chick_DeliveryScoreTable`, which scale with chain
+exit door awards points from `Chirp_DeliveryScoreTable`, which scale with chain
 length.
 
-Difficulty is a per-round computation. `Game_CalcDifficulty` derives the lizard
-chase speed and the snake speed from the round number, and selects a jump arc
-from `Lizard_JumpSpeedTable` through the per-round index in
-`Lizard_JumpSpeedIndex`.
+Difficulty is a per-round computation. `Game_CalcDifficulty` derives Tiger's
+chase speed and Iggy's crawl speed from the round number, and selects Tiger's
+jump arc from `Tiger_JumpSpeedTable` through the per-round index in
+`Tiger_JumpSpeedIndex`.
 
 ## Sound
 

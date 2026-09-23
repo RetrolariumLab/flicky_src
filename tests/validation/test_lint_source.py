@@ -16,7 +16,7 @@ class AddressDerivedNames(unittest.TestCase):
 
     def test_semantic_names_are_not_flagged(self):
         for name in ("Player_CheckGround", "Ram_ChicksRemaining", "Level_Palette0",
-                     "Cat_WalkFrame3", "j_Sound_QueueSFX", "VDP_CTRL",
+                     "Chirp_WalkFrame3", "j_Sound_QueueSFX", "VDP_CTRL",
                      "Sound_QueueSFX_TrySlot2"):
             self.assertIsNone(lint_source.ADDRESS_DERIVED_RE.match(name), name)
 

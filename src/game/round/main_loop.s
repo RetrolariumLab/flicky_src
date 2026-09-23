@@ -37,9 +37,9 @@ Game_SetupLevel:
                 bsr.w   Collision_SetSpecialTiles
                 move.w  (sp)+,d0
                 lsl.w   #2,d0
-                lea     Lizard_JumpArcTable(pc),a0
-                move.l  (a0,d0.w),(Ram_LizardJumpVelX).w
-                move.l  4(a0,d0.w),(Ram_LizardJumpVelY).w
+                lea     Tiger_JumpArcTable(pc),a0
+                move.l  (a0,d0.w),(Ram_TigerJumpVelX).w
+                move.l  4(a0,d0.w),(Ram_TigerJumpVelY).w
                 tst.b   (Ram_RestoreEnemiesFlag).w
                 beq.s   Game_SetupLevel_CountAndDraw
                 clr.b   (Ram_RestoreEnemiesFlag).w
@@ -83,9 +83,9 @@ Game_StateTable:
 
 ; Gameplay state: normal play with object updates
 Game_StatePlay:
-                cmpi.l  #$1C000,(Ram_LizardSpeed).w
+                cmpi.l  #$1C000,(Ram_TigerSpeed).w
                 bgt.s   Game_StatePlay_Update
-                addq.l  #7,(Ram_LizardSpeed).w
+                addq.l  #7,(Ram_TigerSpeed).w
 
 Game_StatePlay_Update:
                 bsr.w   Enemy_SpawnCats
@@ -363,22 +363,22 @@ Game_CalcDifficulty_ScaleLoop:
                 addi.l  #$200,d2
                 dbf     d0,Game_CalcDifficulty_ScaleLoop
                 move.w  d1,(Ram_SpawnerDelay).w
-                move.l  d2,(Ram_SnakeSpeed).w
-                move.l  #$14000,(Ram_LizardSpeed).w
+                move.l  d2,(Ram_IggySpeed).w
+                move.l  #$14000,(Ram_TigerSpeed).w
                 cmpi.b  #$30,(Ram_RoundNumber+1).w
                 bls.s   Game_CalcDifficulty_SelectPattern
-                move.l  #$18000,(Ram_LizardSpeed).w
+                move.l  #$18000,(Ram_TigerSpeed).w
 
 Game_CalcDifficulty_SelectPattern:
                 moveq   #0,d1
                 moveq   #$30,d7
                 bsr.w   Math_ModuloUpper
                 subq.b  #1,d0
-                lea     Lizard_JumpSpeedIndex(pc),a0
+                lea     Tiger_JumpSpeedIndex(pc),a0
                 move.b  (a0,d0.w),d1
                 lsl.w   #2,d1
-                lea     Lizard_JumpSpeedTable(pc),a0
-                move.l  (a0,d1.w),(Ram_LizardJumpSpeed).w
+                lea     Tiger_JumpSpeedTable(pc),a0
+                move.l  (a0,d1.w),(Ram_TigerJumpSpeed).w
                 rts
 
 ; Checks score thresholds for extra lives

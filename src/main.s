@@ -47,11 +47,11 @@
                 include "game/screens/ending.s"         ; $013110-$0139A1
                 include "game/screens/attract_mode.s"   ; $0139A2-$013E6F
                 include "game/actors/player.s"          ; $013E70-$0144DB
-                include "game/actors/chick.s"           ; $0144DC-$01483D
-                include "game/enemies/cat.s"            ; $01483E-$014EC5
-                include "game/enemies/lizard.s"         ; $014EC6-$015507
+                include "game/actors/window_girl_and_throwable.s"  ; $0144DC-$01483D
+                include "game/actors/chirp.s"           ; $01483E-$014EC5
+                include "game/enemies/tiger.s"          ; $014EC6-$015507
                 include "data/level_layout.s"           ; $015508-$015D57
-                include "game/enemies/snake.s"          ; $015D58-$016311
+                include "game/enemies/iggy.s"           ; $015D58-$016311
                 include "game/enemies/spawner.s"        ; $016312-$0164EB
                 include "game/bonus/objects.s"          ; $0164EC-$016DA9
                 include "game/screens/game_over.s"      ; $016DAA-$016E57

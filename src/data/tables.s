@@ -63,120 +63,120 @@ UI_CatCountReverseData3:        dc.w    $6341, $6205, $6342, $6343, $6205, $6344
 Level_DrawCatDoorData:          dc.w    $347, $348, $349, $34A, $34B, $34C, $34D, $34E, $34F, $351, $4350
 UI_Draw1UPAndHILabelsData0:     dc.w    $8352, $8353, $8354, $8353
 UI_Draw1UPAndHILabelsData1:     dc.w    $8355, $8356, $8353, 0, 0, $2A, $F8, 0, 0, $300, $F8
-Chick_ThrownAnim0Data0:         dc.w    4, $F804, $6456, $F8F8
-Chick_ThrownAnim0Data3:         dc.w    4, $F804, $7456, $F8F8
-Chick_ThrownAnim0Data1:         dc.w    4, $F401, $6458, $FCFC
-Chick_ThrownAnim0Data5:         dc.w    4, $F401, $6C58, $FCFC
-Chick_ThrownAnim0Data2:         dc.w    4, $F401, $7458, $FCFC
-Chick_ThrownAnim0Data4:         dc.w    4, $F401, $7C58, $FCFC
-Chick_ThrownAnim1Data0:         dc.w    4, $F804, $645A, $F8F8
-Chick_ThrownAnim1Data3:         dc.w    4, $F804, $745A, $F8F8
-Chick_ThrownAnim1Data1:         dc.w    4, $F401, $645C, $FCFC
-Chick_ThrownAnim1Data5:         dc.w    4, $F401, $6C5C, $FCFC
-Chick_ThrownAnim1Data2:         dc.w    4, $F401, $745C, $FCFC
-Chick_ThrownAnim1Data4:         dc.w    4, $F401, $7C5C, $FCFC
-Chick_ThrownAnim2Data0:         dc.w    4, $F804, $645E, $F8F8
-Chick_ThrownAnim2Data3:         dc.w    4, $F804, $745E, $F8F8
-Chick_ThrownAnim2Data1:         dc.w    4, $F401, $6460, $FCFC
-Chick_ThrownAnim2Data5:         dc.w    4, $F401, $6C60, $FCFC
-Chick_ThrownAnim2Data2:         dc.w    4, $F401, $7460, $FCFC
-Chick_ThrownAnim2Data4:         dc.w    4, $F401, $7C60, $FCFC
-Chick_ThrownAnim3Data0:         dc.w    4, $F804, $6462, $F8F8
-Chick_ThrownAnim3Data3:         dc.w    4, $F804, $7462, $F8F8
-Chick_ThrownAnim3Data1:         dc.w    4, $F401, $6464, $FCFC
-Chick_ThrownAnim3Data5:         dc.w    4, $F401, $6C64, $FCFC
-Chick_ThrownAnim3Data2:         dc.w    4, $F401, $7464, $FCFC
-Chick_ThrownAnim3Data4:         dc.w    4, $F401, $7C64, $FCFC
-Chick_ThrownAnim4Data0:         dc.w    4, $F804, $6466, $F8F8
-Chick_ThrownAnim4Data3:         dc.w    4, $F804, $7466, $F8F8
-Chick_ThrownAnim4Data1:         dc.w    4, $F401, $6468, $FCFC
-Chick_ThrownAnim4Data5:         dc.w    4, $F401, $6C68, $FCFC
-Chick_ThrownAnim4Data2:         dc.w    4, $F401, $7468, $FCFC
-Chick_ThrownAnim4Data4:         dc.w    4, $F401, $7C68, $FCFC
-Chick_ThrownAnim5Data0:         dc.w    4, $F804, $646A, $F8F8
-Chick_ThrownAnim5Data3:         dc.w    4, $F804, $746A, $F8F8
-Chick_ThrownAnim5Data1:         dc.w    4, $F401, $646C, $FCFC
-Chick_ThrownAnim5Data5:         dc.w    4, $F401, $6C6C, $FCFC
-Chick_ThrownAnim5Data2:         dc.w    4, $F401, $746C, $FCFC
-Chick_ThrownAnim5Data4:         dc.w    4, $F401, $7C6C, $FCFC
-Chick_ThrownAnim6Data0:         dc.w    4, $F804, $646E, $F8F8
-Chick_ThrownAnim6Data3:         dc.w    4, $F804, $746E, $F8F8
-Chick_ThrownAnim6Data1:         dc.w    4, $F401, $6470, $FCFC
-Chick_ThrownAnim6Data5:         dc.w    4, $F401, $6C70, $FCFC
-Chick_ThrownAnim6Data2:         dc.w    4, $F401, $7470, $FCFC
-Chick_ThrownAnim6Data4:         dc.w    4, $F401, $7C70, $FCFC
-Chick_ThrownAnim7Data0:         dc.w    4, $F804, $6472, $F8F8
-Chick_ThrownAnim7Data3:         dc.w    4, $F804, $7472, $F8F8
-Chick_ThrownAnim7Data1:         dc.w    4, $F401, $6474, $FCFC
-Chick_ThrownAnim7Data5:         dc.w    4, $F401, $6C74, $FCFC
-Chick_ThrownAnim7Data2:         dc.w    4, $F401, $7474, $FCFC
-Chick_ThrownAnim7Data4:         dc.w    4, $F401, $7C74, $FCFC
-Chick_ThrownAnim8Data0:         dc.w    4, $F804, $6476, $F8F8
-Chick_ThrownAnim8Data3:         dc.w    4, $F804, $7476, $F8F8
-Chick_ThrownAnim8Data1:         dc.w    4, $F401, $6478, $FCFC
-Chick_ThrownAnim8Data5:         dc.w    4, $F401, $6C78, $FCFC
-Chick_ThrownAnim8Data2:         dc.w    4, $F401, $7478, $FCFC
-Chick_ThrownAnim8Data4:         dc.w    4, $F401, $7C78, $FCFC
-Chick_ThrownAnim9Data0:         dc.w    4, $F804, $647A, $F8F8
-Chick_ThrownAnim9Data3:         dc.w    4, $F804, $747A, $F8F8
-Chick_ThrownAnim9Data1:         dc.w    4, $F401, $647C, $FCFC
-Chick_ThrownAnim9Data5:         dc.w    4, $F401, $6C7C, $FCFC
-Chick_ThrownAnim9Data2:         dc.w    4, $F401, $747C, $FCFC
-Chick_ThrownAnim9Data4:         dc.w    4, $F401, $7C7C, $FCFC
-Chick_ThrownAnim10Data0:        dc.w    4, $F804, $647E, $F8F8
-Chick_ThrownAnim10Data3:        dc.w    4, $F804, $747E, $F8F8
-Chick_ThrownAnim10Data1:        dc.w    4, $F401, $6480, $FCFC
-Chick_ThrownAnim10Data5:        dc.w    4, $F401, $6C80, $FCFC
-Chick_ThrownAnim10Data2:        dc.w    4, $F401, $7480, $FCFC
-Chick_ThrownAnim10Data4:        dc.w    4, $F401, $7C80, $FCFC
-Chick_ThrownAnim11Data0:        dc.w    4, $F804, $6482, $F8F8
-Chick_ThrownAnim11Data3:        dc.w    4, $F804, $7482, $F8F8
-Chick_ThrownAnim11Data1:        dc.w    4, $F401, $6484, $FCFC
-Chick_ThrownAnim11Data5:        dc.w    4, $F401, $6C84, $FCFC
-Chick_ThrownAnim11Data2:        dc.w    4, $F401, $7484, $FCFC
-Chick_ThrownAnim11Data4:        dc.w    4, $F401, $7C84, $FCFC
-Chick_ThrownAnim12Data0:        dc.w    4, $F804, $6486, $F8F8
-Chick_ThrownAnim12Data3:        dc.w    4, $F804, $7486, $F8F8
-Chick_ThrownAnim12Data1:        dc.w    4, $F401, $6488, $FCFC
-Chick_ThrownAnim12Data5:        dc.w    4, $F401, $6C88, $FCFC
-Chick_ThrownAnim12Data2:        dc.w    4, $F401, $7488, $FCFC
-Chick_ThrownAnim12Data4:        dc.w    4, $F401, $7C88, $FCFC
-Chick_ThrownAnim13Data0:        dc.w    4, $F804, $648A, $F8F8
-Chick_ThrownAnim13Data3:        dc.w    4, $F804, $748A, $F8F8
-Chick_ThrownAnim13Data1:        dc.w    4, $F401, $648C, $FCFC
-Chick_ThrownAnim13Data5:        dc.w    4, $F401, $6C8C, $FCFC
-Chick_ThrownAnim13Data2:        dc.w    4, $F401, $748C, $FCFC
-Chick_ThrownAnim13Data4:        dc.w    4, $F401, $7C8C, $FCFC
-Chick_ThrownAnim14Data0:        dc.w    4, $F804, $648E, $F8F8
-Chick_ThrownAnim14Data3:        dc.w    4, $F804, $748E, $F8F8
-Chick_ThrownAnim14Data1:        dc.w    4, $F401, $6490, $FCFC
-Chick_ThrownAnim14Data5:        dc.w    4, $F401, $6C90, $FCFC
-Chick_ThrownAnim14Data2:        dc.w    4, $F401, $7490, $FCFC
-Chick_ThrownAnim14Data4:        dc.w    4, $F401, $7C90, $FCFC
-Cat_WalkFrame0:                 dc.w    3, $F005, $4436, $F8F8
-Cat_WalkFrame1:                 dc.w    3, $F005, $443A, $F8F8
-Cat_WalkFrame2:                 dc.w    3, $F005, $4C36, $F8F8
-Cat_WalkFrame3:                 dc.w    3, $F005, $4C3A, $F8F8
-Cat_IdleFrame0:                 dc.w    6, $F005, $443E, $F8F8
-Cat_IdleFrame1:                 dc.w    6, $F005, $4442, $F8F8
-Cat_CarriedFrame0:              dc.w    6, $F005, $4446, $F8F8
-Cat_CarriedFrame1:              dc.w    6, $F005, $444A, $F8F8
-Cat_CarriedFrame2:              dc.w    6, $F005, $444E, $F8F8
-Cat_StunnedFrame0:              dc.w    6, $F001, $4452, $FCFC
-Cat_StunnedFrame1:              dc.w    6, $F001, $4454, $FCFC
-Cat_StunnedFrame2:              dc.w    6, $F001, $4C52, $FCFC
-Cat_WalkAltFrame0:              dc.w    3, $F005, $4492, $F8F8
-Cat_WalkAltFrame1:              dc.w    3, $F005, $4496, $F8F8
-Cat_WalkAltFrame2:              dc.w    3, $F005, $4C92, $F8F8
-Cat_WalkAltFrame3:              dc.w    3, $F005, $4C96, $F8F8
-Cat_IdleAltFrame0:              dc.w    6, $F005, $449A, $F8F8
-Cat_IdleAltFrame1:              dc.w    6, $F005, $449E, $F8F8
-Cat_CarriedAltFrame0:           dc.w    6, $F005, $44A2, $F8F8
-Cat_CarriedAltFrame1:           dc.w    6, $F005, $44A6, $F8F8
-Cat_CarriedAltFrame2:           dc.w    6, $F005, $44AA, $F8F8
-Cat_StunnedAltFrame0:           dc.w    6, $F001, $44AE, $FCFC
-Cat_StunnedAltFrame1:           dc.w    6, $F001, $44B0, $FCFC
-Cat_StunnedAltFrame2:           dc.w    6, $F001, $4CAE, $FCFC
+Throwable_ThrownAnim0Data0:     dc.w    4, $F804, $6456, $F8F8
+Throwable_ThrownAnim0Data3:     dc.w    4, $F804, $7456, $F8F8
+Throwable_ThrownAnim0Data1:     dc.w    4, $F401, $6458, $FCFC
+Throwable_ThrownAnim0Data5:     dc.w    4, $F401, $6C58, $FCFC
+Throwable_ThrownAnim0Data2:     dc.w    4, $F401, $7458, $FCFC
+Throwable_ThrownAnim0Data4:     dc.w    4, $F401, $7C58, $FCFC
+Throwable_ThrownAnim1Data0:     dc.w    4, $F804, $645A, $F8F8
+Throwable_ThrownAnim1Data3:     dc.w    4, $F804, $745A, $F8F8
+Throwable_ThrownAnim1Data1:     dc.w    4, $F401, $645C, $FCFC
+Throwable_ThrownAnim1Data5:     dc.w    4, $F401, $6C5C, $FCFC
+Throwable_ThrownAnim1Data2:     dc.w    4, $F401, $745C, $FCFC
+Throwable_ThrownAnim1Data4:     dc.w    4, $F401, $7C5C, $FCFC
+Throwable_ThrownAnim2Data0:     dc.w    4, $F804, $645E, $F8F8
+Throwable_ThrownAnim2Data3:     dc.w    4, $F804, $745E, $F8F8
+Throwable_ThrownAnim2Data1:     dc.w    4, $F401, $6460, $FCFC
+Throwable_ThrownAnim2Data5:     dc.w    4, $F401, $6C60, $FCFC
+Throwable_ThrownAnim2Data2:     dc.w    4, $F401, $7460, $FCFC
+Throwable_ThrownAnim2Data4:     dc.w    4, $F401, $7C60, $FCFC
+Throwable_ThrownAnim3Data0:     dc.w    4, $F804, $6462, $F8F8
+Throwable_ThrownAnim3Data3:     dc.w    4, $F804, $7462, $F8F8
+Throwable_ThrownAnim3Data1:     dc.w    4, $F401, $6464, $FCFC
+Throwable_ThrownAnim3Data5:     dc.w    4, $F401, $6C64, $FCFC
+Throwable_ThrownAnim3Data2:     dc.w    4, $F401, $7464, $FCFC
+Throwable_ThrownAnim3Data4:     dc.w    4, $F401, $7C64, $FCFC
+Throwable_ThrownAnim4Data0:     dc.w    4, $F804, $6466, $F8F8
+Throwable_ThrownAnim4Data3:     dc.w    4, $F804, $7466, $F8F8
+Throwable_ThrownAnim4Data1:     dc.w    4, $F401, $6468, $FCFC
+Throwable_ThrownAnim4Data5:     dc.w    4, $F401, $6C68, $FCFC
+Throwable_ThrownAnim4Data2:     dc.w    4, $F401, $7468, $FCFC
+Throwable_ThrownAnim4Data4:     dc.w    4, $F401, $7C68, $FCFC
+Throwable_ThrownAnim5Data0:     dc.w    4, $F804, $646A, $F8F8
+Throwable_ThrownAnim5Data3:     dc.w    4, $F804, $746A, $F8F8
+Throwable_ThrownAnim5Data1:     dc.w    4, $F401, $646C, $FCFC
+Throwable_ThrownAnim5Data5:     dc.w    4, $F401, $6C6C, $FCFC
+Throwable_ThrownAnim5Data2:     dc.w    4, $F401, $746C, $FCFC
+Throwable_ThrownAnim5Data4:     dc.w    4, $F401, $7C6C, $FCFC
+Throwable_ThrownAnim6Data0:     dc.w    4, $F804, $646E, $F8F8
+Throwable_ThrownAnim6Data3:     dc.w    4, $F804, $746E, $F8F8
+Throwable_ThrownAnim6Data1:     dc.w    4, $F401, $6470, $FCFC
+Throwable_ThrownAnim6Data5:     dc.w    4, $F401, $6C70, $FCFC
+Throwable_ThrownAnim6Data2:     dc.w    4, $F401, $7470, $FCFC
+Throwable_ThrownAnim6Data4:     dc.w    4, $F401, $7C70, $FCFC
+Throwable_ThrownAnim7Data0:     dc.w    4, $F804, $6472, $F8F8
+Throwable_ThrownAnim7Data3:     dc.w    4, $F804, $7472, $F8F8
+Throwable_ThrownAnim7Data1:     dc.w    4, $F401, $6474, $FCFC
+Throwable_ThrownAnim7Data5:     dc.w    4, $F401, $6C74, $FCFC
+Throwable_ThrownAnim7Data2:     dc.w    4, $F401, $7474, $FCFC
+Throwable_ThrownAnim7Data4:     dc.w    4, $F401, $7C74, $FCFC
+Throwable_ThrownAnim8Data0:     dc.w    4, $F804, $6476, $F8F8
+Throwable_ThrownAnim8Data3:     dc.w    4, $F804, $7476, $F8F8
+Throwable_ThrownAnim8Data1:     dc.w    4, $F401, $6478, $FCFC
+Throwable_ThrownAnim8Data5:     dc.w    4, $F401, $6C78, $FCFC
+Throwable_ThrownAnim8Data2:     dc.w    4, $F401, $7478, $FCFC
+Throwable_ThrownAnim8Data4:     dc.w    4, $F401, $7C78, $FCFC
+Throwable_ThrownAnim9Data0:     dc.w    4, $F804, $647A, $F8F8
+Throwable_ThrownAnim9Data3:     dc.w    4, $F804, $747A, $F8F8
+Throwable_ThrownAnim9Data1:     dc.w    4, $F401, $647C, $FCFC
+Throwable_ThrownAnim9Data5:     dc.w    4, $F401, $6C7C, $FCFC
+Throwable_ThrownAnim9Data2:     dc.w    4, $F401, $747C, $FCFC
+Throwable_ThrownAnim9Data4:     dc.w    4, $F401, $7C7C, $FCFC
+Throwable_ThrownAnim10Data0:    dc.w    4, $F804, $647E, $F8F8
+Throwable_ThrownAnim10Data3:    dc.w    4, $F804, $747E, $F8F8
+Throwable_ThrownAnim10Data1:    dc.w    4, $F401, $6480, $FCFC
+Throwable_ThrownAnim10Data5:    dc.w    4, $F401, $6C80, $FCFC
+Throwable_ThrownAnim10Data2:    dc.w    4, $F401, $7480, $FCFC
+Throwable_ThrownAnim10Data4:    dc.w    4, $F401, $7C80, $FCFC
+Throwable_ThrownAnim11Data0:    dc.w    4, $F804, $6482, $F8F8
+Throwable_ThrownAnim11Data3:    dc.w    4, $F804, $7482, $F8F8
+Throwable_ThrownAnim11Data1:    dc.w    4, $F401, $6484, $FCFC
+Throwable_ThrownAnim11Data5:    dc.w    4, $F401, $6C84, $FCFC
+Throwable_ThrownAnim11Data2:    dc.w    4, $F401, $7484, $FCFC
+Throwable_ThrownAnim11Data4:    dc.w    4, $F401, $7C84, $FCFC
+Throwable_ThrownAnim12Data0:    dc.w    4, $F804, $6486, $F8F8
+Throwable_ThrownAnim12Data3:    dc.w    4, $F804, $7486, $F8F8
+Throwable_ThrownAnim12Data1:    dc.w    4, $F401, $6488, $FCFC
+Throwable_ThrownAnim12Data5:    dc.w    4, $F401, $6C88, $FCFC
+Throwable_ThrownAnim12Data2:    dc.w    4, $F401, $7488, $FCFC
+Throwable_ThrownAnim12Data4:    dc.w    4, $F401, $7C88, $FCFC
+Throwable_ThrownAnim13Data0:    dc.w    4, $F804, $648A, $F8F8
+Throwable_ThrownAnim13Data3:    dc.w    4, $F804, $748A, $F8F8
+Throwable_ThrownAnim13Data1:    dc.w    4, $F401, $648C, $FCFC
+Throwable_ThrownAnim13Data5:    dc.w    4, $F401, $6C8C, $FCFC
+Throwable_ThrownAnim13Data2:    dc.w    4, $F401, $748C, $FCFC
+Throwable_ThrownAnim13Data4:    dc.w    4, $F401, $7C8C, $FCFC
+Throwable_ThrownAnim14Data0:    dc.w    4, $F804, $648E, $F8F8
+Throwable_ThrownAnim14Data3:    dc.w    4, $F804, $748E, $F8F8
+Throwable_ThrownAnim14Data1:    dc.w    4, $F401, $6490, $FCFC
+Throwable_ThrownAnim14Data5:    dc.w    4, $F401, $6C90, $FCFC
+Throwable_ThrownAnim14Data2:    dc.w    4, $F401, $7490, $FCFC
+Throwable_ThrownAnim14Data4:    dc.w    4, $F401, $7C90, $FCFC
+Chirp_WalkFrame0:               dc.w    3, $F005, $4436, $F8F8
+Chirp_WalkFrame1:               dc.w    3, $F005, $443A, $F8F8
+Chirp_WalkFrame2:               dc.w    3, $F005, $4C36, $F8F8
+Chirp_WalkFrame3:               dc.w    3, $F005, $4C3A, $F8F8
+Chirp_IdleFrame0:               dc.w    6, $F005, $443E, $F8F8
+Chirp_IdleFrame1:               dc.w    6, $F005, $4442, $F8F8
+Chirp_CarriedFrame0:            dc.w    6, $F005, $4446, $F8F8
+Chirp_CarriedFrame1:            dc.w    6, $F005, $444A, $F8F8
+Chirp_CarriedFrame2:            dc.w    6, $F005, $444E, $F8F8
+Chirp_StunnedFrame0:            dc.w    6, $F001, $4452, $FCFC
+Chirp_StunnedFrame1:            dc.w    6, $F001, $4454, $FCFC
+Chirp_StunnedFrame2:            dc.w    6, $F001, $4C52, $FCFC
+Chirp_WalkAltFrame0:            dc.w    3, $F005, $4492, $F8F8
+Chirp_WalkAltFrame1:            dc.w    3, $F005, $4496, $F8F8
+Chirp_WalkAltFrame2:            dc.w    3, $F005, $4C92, $F8F8
+Chirp_WalkAltFrame3:            dc.w    3, $F005, $4C96, $F8F8
+Chirp_IdleAltFrame0:            dc.w    6, $F005, $449A, $F8F8
+Chirp_IdleAltFrame1:            dc.w    6, $F005, $449E, $F8F8
+Chirp_CarriedAltFrame0:         dc.w    6, $F005, $44A2, $F8F8
+Chirp_CarriedAltFrame1:         dc.w    6, $F005, $44A6, $F8F8
+Chirp_CarriedAltFrame2:         dc.w    6, $F005, $44AA, $F8F8
+Chirp_StunnedAltFrame0:         dc.w    6, $F001, $44AE, $FCFC
+Chirp_StunnedAltFrame1:         dc.w    6, $F001, $44B0, $FCFC
+Chirp_StunnedAltFrame2:         dc.w    6, $F001, $4CAE, $FCFC
 Player_DeathFrame0:             dc.w    $FF, $F005, $4400, $F8F8
 Player_DeathFrame1:             dc.w    $FF, $F005, $4404, $F8F8
 Player_DeathFrame2:             dc.b    0, $FF, $F0, 5, $44, 8, $F8, $F8
@@ -198,41 +198,41 @@ StarBonus_SpinFrame0:               dc.w    7, $F800, $4B2, $FCFC
 StarBonus_SpinFrame1:               dc.w    7, $F800, $4B3, $FCFC
 StarBonus_SpinFrame2:               dc.w    7, $F800, $4B4, $FCFC
 StarBonus_SpinFrame3:               dc.w    7, $F800, $686, $FCFC
-Lizard_WaitFrame0:                  dc.w    8, $F005, $44B5, $F8F8
-Lizard_WaitFrame1:                  dc.w    8, $F005, $44B9, $F8F8
-Lizard_WaitFrame2:                  dc.w    8, $F005, $44BD, $F8F8
-Lizard_WaitFrame3:                  dc.w    8, $F005, $44C1, $F8F8
-Lizard_StateLocateData:             dc.w    $105, $E802, $44C5, $FCFC, $F001, $44C8, $F404
-Lizard_RunFrame1:                   dc.w    $205, $E802, $44CA, $FCFC, $F001, $44CD, $F404, $F000, $44CF, $4F4
-Lizard_RunFrame2:                   dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404
-Lizard_RunFrame3:                   dc.w    $105, $E806, $44D5, $FCF4, $F800, $44DB, $F404
-Lizard_RunFrame4:                   dc.w    $205, $E802, $44DC, $FCFC, $F001, $44DF, $4F4, $F800, $44E1, $F404
-Lizard_StateJump_SelectFrameData0:  dc.w    $112, $EB06, $44E2, $FCF4, $FB00, $44E8, $F404
-Lizard_StateJump_SelectFrameData1:  dc.w    $212, $EB05, $44E9, $FCF4, $F301, $44ED, $F404, $FB00, $44EF, $FCFC
-Lizard_JumpFrame0:                  dc.w    $FF, $E806, $44F0, $F8F8
+Tiger_WaitFrame0:                   dc.w    8, $F005, $44B5, $F8F8
+Tiger_WaitFrame1:                   dc.w    8, $F005, $44B9, $F8F8
+Tiger_WaitFrame2:                   dc.w    8, $F005, $44BD, $F8F8
+Tiger_WaitFrame3:                   dc.w    8, $F005, $44C1, $F8F8
+Tiger_StateLocateData:              dc.w    $105, $E802, $44C5, $FCFC, $F001, $44C8, $F404
+Tiger_RunFrame1:                    dc.w    $205, $E802, $44CA, $FCFC, $F001, $44CD, $F404, $F000, $44CF, $4F4
+Tiger_RunFrame2:                    dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404
+Tiger_RunFrame3:                    dc.w    $105, $E806, $44D5, $FCF4, $F800, $44DB, $F404
+Tiger_RunFrame4:                    dc.w    $205, $E802, $44DC, $FCFC, $F001, $44DF, $4F4, $F800, $44E1, $F404
+Tiger_StateJump_SelectFrameData0:   dc.w    $112, $EB06, $44E2, $FCF4, $FB00, $44E8, $F404
+Tiger_StateJump_SelectFrameData1:   dc.w    $212, $EB05, $44E9, $FCF4, $F301, $44ED, $F404, $FB00, $44EF, $FCFC
+Tiger_JumpFrame0:                   dc.w    $FF, $E806, $44F0, $F8F8
 Guide_CharacterMap10:               dc.w    $2FF, $EE05, $44F6, $FAF6, $F600, $44FA, $F206, $FE00, $44FB, $FAFE
-Lizard_JumpFrame2:                  dc.w    $FF, $F409, $44FC, $F4F4
-Lizard_JumpFrame3:                  dc.w    $2FF, $E802, $4502, $FAFE, $F000, $54FA, $F206, $F001, $54F8, $2F6
-Lizard_JumpFrame4:                  dc.w    $FF, $EB06, $54F0, $F8F8
-Lizard_JumpFrame5:                  dc.w    $2FF, $E802, $4D02, $FEFA, $F001, $5CF8, $F602, $F000, $5CFA, $6F2
-Lizard_JumpFrame6:                  dc.w    $FF, $F409, $4CFC, $F4F4
-Lizard_JumpFrame7:                  dc.w    $2FF, $EE05, $4CF6, $F6FA, $F600, $4CFA, $6F2, $FE00, $4CFB, $FEFA
-Lizard_StunnedFrame0:               dc.w    5, $E806, $4505, $F8F8
-Lizard_StunnedFrame1:               dc.w    5, $E806, $44F0, $F8F8
-Lizard_StunnedFrame2:               dc.w    5, $E806, $4D05, $F8F8
-BonusCat_InnerFrame0:               dc.w    $205, $DC02, $44CA, $FCFC, $E401, $44CD, $F404, $E400, $44CF, $4F4
-BonusCat_InnerFrame1:               dc.w    $205, $DE02, $44CA, $FCFC, $E601, $44CD, $F404, $E600, $44CF, $4F4
-BonusCat_InnerFrame2:               dc.w    $205, $E402, $44CA, $FCFC, $EC01, $44CD, $F404, $EC00, $44CF, $4F4
-BonusCat_InnerFrame3:               dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404
-BonusCat_InnerFrame4:               dc.w    $205, $EA02, $44D0, $FCFC, $F200, $44D3, $4F4, $FA00, $44D4, $F404
-Lizard_DeathFrame0:                 dc.w    $FF, $F800, $450B, $FCFC
-Lizard_DeathFrame1:                 dc.w    $FF, $F800, $450C, $FCFC
-Lizard_DeathFrame2:                 dc.w    $FF, $F800, $450D, $FCFC
-BonusCat_OuterFrame0:               dc.w    $110, $F008, $650E, $F0F8, $F808, $6511, $F8F0
-BonusCat_OuterFrame1:               dc.w    $110, $F008, $6514, $F0F8, $F808, $6517, $F8F0
-BonusCat_OuterFrame2:               dc.w    $10, $F00D, $651A, $F0F0
-BonusCat_OuterFrame3:               dc.w    $110, $F008, $6D14, $F8F0, $F808, $6D17, $F0F8
-BonusCat_OuterFrame4:               dc.w    $110, $F008, $6D0E, $F8F0, $F808, $6D11, $F0F8
+Tiger_JumpFrame2:                   dc.w    $FF, $F409, $44FC, $F4F4
+Tiger_JumpFrame3:                   dc.w    $2FF, $E802, $4502, $FAFE, $F000, $54FA, $F206, $F001, $54F8, $2F6
+Tiger_JumpFrame4:                   dc.w    $FF, $EB06, $54F0, $F8F8
+Tiger_JumpFrame5:                   dc.w    $2FF, $E802, $4D02, $FEFA, $F001, $5CF8, $F602, $F000, $5CFA, $6F2
+Tiger_JumpFrame6:                   dc.w    $FF, $F409, $4CFC, $F4F4
+Tiger_JumpFrame7:                   dc.w    $2FF, $EE05, $4CF6, $F6FA, $F600, $4CFA, $6F2, $FE00, $4CFB, $FEFA
+Tiger_StunnedFrame0:                dc.w    5, $E806, $4505, $F8F8
+Tiger_StunnedFrame1:                dc.w    5, $E806, $44F0, $F8F8
+Tiger_StunnedFrame2:                dc.w    5, $E806, $4D05, $F8F8
+BonusTiger_Frame0:                  dc.w    $205, $DC02, $44CA, $FCFC, $E401, $44CD, $F404, $E400, $44CF, $4F4
+BonusTiger_Frame1:                  dc.w    $205, $DE02, $44CA, $FCFC, $E601, $44CD, $F404, $E600, $44CF, $4F4
+BonusTiger_Frame2:                  dc.w    $205, $E402, $44CA, $FCFC, $EC01, $44CD, $F404, $EC00, $44CF, $4F4
+BonusTiger_Frame3:                  dc.w    $205, $E802, $44D0, $FCFC, $F000, $44D3, $4F4, $F800, $44D4, $F404
+BonusTiger_Frame4:                  dc.w    $205, $EA02, $44D0, $FCFC, $F200, $44D3, $4F4, $FA00, $44D4, $F404
+Tiger_DeathFrame0:                  dc.w    $FF, $F800, $450B, $FCFC
+Tiger_DeathFrame1:                  dc.w    $FF, $F800, $450C, $FCFC
+Tiger_DeathFrame2:                  dc.w    $FF, $F800, $450D, $FCFC
+BonusSeesaw_Frame0:                 dc.w    $110, $F008, $650E, $F0F8, $F808, $6511, $F8F0
+BonusSeesaw_Frame1:                 dc.w    $110, $F008, $6514, $F0F8, $F808, $6517, $F8F0
+BonusSeesaw_Frame2:                 dc.w    $10, $F00D, $651A, $F0F0
+BonusSeesaw_Frame3:                 dc.w    $110, $F008, $6D14, $F8F0, $F808, $6D17, $F0F8
+BonusSeesaw_Frame4:                 dc.w    $110, $F008, $6D0E, $F8F0, $F808, $6D11, $F0F8
 Obj_BonusHeldChick_UpdateData0:     dc.w    $111, $F004, $522, $F8F8, $F800, $524, $F800
 Obj_BonusHeldChick_UpdateData1:     dc.w    $11, $F005, $525, $F8F8
 Spawner_AppearFrame0:               dc.w    0, $F300, $529, $FDFB
@@ -252,36 +252,36 @@ ChickCountPopup_Map5:               dc.w    $FF, $F808, $652, $F2F6
 ChickCountPopup_Map6:               dc.w    $FF, $F808, $655, $F2F6
 BonusScorePopup_Map8:               dc.w    $FF, $F808, $658, $F2F6
 ChickCountPopup_Map7:               dc.w    $FF, $F808, $65B, $F2F6
-Snake_StateSpawnData:               dc.w    9, $F001, $465E, $FCFC
-Snake_RightFrame0:                  dc.w    $A, $F804, $4660, $F8F8
-Snake_RightFrame1:                  dc.w    $A, $F804, $4662, $F8F8
-Snake_RightFrame2:                  dc.w    $A, $F804, $4664, $F8F8
-Snake_LeftFrame0:                   dc.w    $B, 4, $4666, $F8F8
-Snake_LeftFrame1:                   dc.w    $B, 4, $4668, $F8F8
-Snake_LeftFrame2:                   dc.w    $B, 4, $466A, $F8F8
-Snake_UpFrame0:                     dc.w    $C, $F801, $466C, $F800
-Snake_UpFrame1:                     dc.w    $C, $F801, $466E, $F800
-Snake_DownFrame0:                   dc.w    $D, $F801, $566C, $F800
-Snake_DownFrame1:                   dc.w    $D, $F801, $566E, $F800
-Snake_MoveRight_TurnUpData:         dc.w    $1FF, $F001, $4670, $F800, $F800, $4672, $F008
-Snake_MoveUp_TurnRightData:         dc.w    $1FF, 4, $4673, $F000, $800, $4675, $F800
-Snake_MoveLeft_TurnDownData:        dc.w    $1FF, 4, $4676, $F0, $800, $5E70, $F8
-Snake_MoveDown_TurnRightData:       dc.w    $1FF, $F001, $4678, $F8, $F800, $5E73, $8F0
-Snake_MoveRight_TurnDownData:       dc.w    $1FF, $F804, $467A, $F8F8, 0, $467C, $F8
-Snake_MoveUp_StartTurnData:         dc.w    $1FF, $F801, $467D, $F8, 0, $467F, $F800
-Snake_MoveLeft_TurnUpData:          dc.w    $1FF, $F801, $5E7B, $F800, 0, $5E7A, $F8
-Snake_MoveUp_TurnLeftData:          dc.w    $1FF, $F804, $4680, $F8F8
+Iggy_StateSpawnData:                dc.w    9, $F001, $465E, $FCFC
+Iggy_RightFrame0:                   dc.w    $A, $F804, $4660, $F8F8
+Iggy_RightFrame1:                   dc.w    $A, $F804, $4662, $F8F8
+Iggy_RightFrame2:                   dc.w    $A, $F804, $4664, $F8F8
+Iggy_LeftFrame0:                    dc.w    $B, 4, $4666, $F8F8
+Iggy_LeftFrame1:                    dc.w    $B, 4, $4668, $F8F8
+Iggy_LeftFrame2:                    dc.w    $B, 4, $466A, $F8F8
+Iggy_UpFrame0:                      dc.w    $C, $F801, $466C, $F800
+Iggy_UpFrame1:                      dc.w    $C, $F801, $466E, $F800
+Iggy_DownFrame0:                    dc.w    $D, $F801, $566C, $F800
+Iggy_DownFrame1:                    dc.w    $D, $F801, $566E, $F800
+Iggy_MoveRight_TurnUpData:          dc.w    $1FF, $F001, $4670, $F800, $F800, $4672, $F008
+Iggy_MoveUp_TurnRightData:          dc.w    $1FF, 4, $4673, $F000, $800, $4675, $F800
+Iggy_MoveLeft_TurnDownData:         dc.w    $1FF, 4, $4676, $F0, $800, $5E70, $F8
+Iggy_MoveDown_TurnRightData:        dc.w    $1FF, $F001, $4678, $F8, $F800, $5E73, $8F0
+Iggy_MoveRight_TurnDownData:        dc.w    $1FF, $F804, $467A, $F8F8, 0, $467C, $F8
+Iggy_MoveUp_StartTurnData:          dc.w    $1FF, $F801, $467D, $F8, 0, $467F, $F800
+Iggy_MoveLeft_TurnUpData:           dc.w    $1FF, $F801, $5E7B, $F800, 0, $5E7A, $F8
+Iggy_MoveUp_TurnLeftData:           dc.w    $1FF, $F804, $4680, $F8F8
                 dc.w    0, $5E7D, $F800
-Snake_TurnAFrame0:              dc.w    $E, $F801, $4682, $FCFC
-Snake_TurnAFrame1:              dc.w    $E, $F801, $4E82, $FCFC
-Snake_MoveRight_StartTurnData:  dc.w    9, $F001, $4684, $FCFC
-Snake_TurnBFrame0:              dc.w    $E, $F801, $5682, $FCFC
-Snake_TurnBFrame1:              dc.w    $E, $F801, $5E82, $FCFC
-Snake_MoveLeft_StartTurnData:   dc.w    $F, 1, $5684, $FCFC
-Snake_SpawnFrame0:              dc.w    $1FF, $F604, $467A, $F6FA, $FE00, $467C, $FEFA
-Snake_SpawnFrame1:              dc.w    $1FF, $F001, $467D, $FCFC, $F800, $467F, $F404
-Snake_SpawnFrame2:              dc.w    $1FF, $F001, $5E7B, $FCFC, $F800, $5E7A, $4F4
-Snake_SpawnFrame3:              dc.w    $1FF, $F304, $4680, $FBF5, $FB00, $5E7D, $FBFD
+Iggy_TurnAFrame0:               dc.w    $E, $F801, $4682, $FCFC
+Iggy_TurnAFrame1:               dc.w    $E, $F801, $4E82, $FCFC
+Iggy_MoveRight_StartTurnData:   dc.w    9, $F001, $4684, $FCFC
+Iggy_TurnBFrame0:               dc.w    $E, $F801, $5682, $FCFC
+Iggy_TurnBFrame1:               dc.w    $E, $F801, $5E82, $FCFC
+Iggy_MoveLeft_StartTurnData:    dc.w    $F, 1, $5684, $FCFC
+Iggy_SpawnFrame0:               dc.w    $1FF, $F604, $467A, $F6FA, $FE00, $467C, $FEFA
+Iggy_SpawnFrame1:               dc.w    $1FF, $F001, $467D, $FCFC, $F800, $467F, $F404
+Iggy_SpawnFrame2:               dc.w    $1FF, $F001, $5E7B, $FCFC, $F800, $5E7A, $4F4
+Iggy_SpawnFrame3:               dc.w    $1FF, $F304, $4680, $FBF5, $FB00, $5E7D, $FBFD
 Obj_GameOverTextData:           dc.w    $8FF
                 dc.w    0, $8047, $F8
                 dc.w    0, $8041, $8F0
@@ -313,15 +313,15 @@ Obj_TimeOverTextData:   dc.w    $4FF
                 dc.w    0, $8055, $10E8
                 dc.w    0, $8053, $18E0
                 dc.w    0, $8045, $20D8
-Title_StaticMap0:       dc.w    $FF, $E00B, $6740, $F4F4
-Title_StaticMap1:       dc.w    $FF, $E80A, $674C, $F4F4
-Title_StaticMap2:       dc.w    $FF, $E806, $6755, $F8F8
-Title_StaticMap3:       dc.w    $FF, $E80A, $675B, $F4F4
-Title_StaticMap4:       dc.w    $FF, $E80A, $6764, $F4F4
-Title_StaticMap5:       dc.w    $FF, $E00B, $676D, $F4F4
-ExitDoor_OpenFrame0:    dc.w    $FF, $E806, $4687, $F8F8
-ExitDoor_OpenFrame1:    dc.w    $FF, $E806, $468D, $F8F8
-Level_DataPointers:     dc.w    Level_Data0-Sys_GameEntryPoint
+Title_StaticMap0:   dc.w    $FF, $E00B, $6740, $F4F4
+Title_StaticMap1:   dc.w    $FF, $E80A, $674C, $F4F4
+Title_StaticMap2:   dc.w    $FF, $E806, $6755, $F8F8
+Title_StaticMap3:   dc.w    $FF, $E80A, $675B, $F4F4
+Title_StaticMap4:   dc.w    $FF, $E80A, $6764, $F4F4
+Title_StaticMap5:   dc.w    $FF, $E00B, $676D, $F4F4
+WindowGirl_Frame0:  dc.w    $FF, $E806, $4687, $F8F8
+WindowGirl_Frame1:  dc.w    $FF, $E806, $468D, $F8F8
+Level_DataPointers: dc.w    Level_Data0-Sys_GameEntryPoint
                 dc.w    Level_Data1-Sys_GameEntryPoint
                 dc.w    Level_Data1-Sys_GameEntryPoint
                 dc.w    Level_Data2-Sys_GameEntryPoint

@@ -20,7 +20,7 @@ currently do with it.
 | `DemoInputStream0` | `other` | `$13A82`-`$13B82` | 256 | Recorded controller input |
 | `DemoInputStream2` | `other` | `$13C52`-`$13D70` | 286 | Recorded controller input |
 | `DemoInputStream3` | `other` | `$13D70`-`$13E70` | 256 | Recorded controller input |
-| `LizardJumpArcTable` | `other` | `$15B94`-`$15D14` | 384 | Per-round jump velocity pairs |
+| `TigerJumpArcTable` | `other` | `$15B94`-`$15D14` | 384 | Per-round jump velocity pairs |
 | `LevelTiles` | `artnem` | `$16E58`-`$185FC` | 6,052 | Nemesis tile art |
 | `Latin1BPPTiles` | `artunc` | `$185FC`-`$18754` | 344 | Uncompressed 1bpp font |
 | `ExitTiles` | `artnem` | `$18754`-`$187D4` | 128 | Nemesis tile art |
@@ -117,7 +117,7 @@ SegaPalette          20 bytes,    10 entries
 DemoInputStream0    256 bytes,   128 entries
 DemoInputStream2    286 bytes,   143 entries
 DemoInputStream3    256 bytes,   128 entries
-LizardJumpArcTable  384 bytes,    48 entries
+TigerJumpArcTable  384 bytes,    48 entries
 EndingCongratsArt   954 bytes,   477 entries
 Jap1BPPTiles      1,432 bytes, 1,432 rows
 Latin1BPPTiles      344 bytes,   344 rows

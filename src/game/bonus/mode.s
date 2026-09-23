@@ -91,18 +91,18 @@ Bonus_StateComplete_Update:
                 bsr.w   Bonus_ScoreUpdate
                 rts
 
-; Sets up bonus round objects: player, cats, chicks
+; Sets up bonus round objects: player, seesaws, Tigers and Chirps
 Bonus_SetupObjects:
                 lea     (Ram_BonusPlayerObject).w,a0
                 move.w  #$C,(a0)
                 move.w  #$D11,$3E(a0)
                 move.w  #$2C,(Ram_Object01).w
-                lea     (Ram_BonusCatOuterSlots).w,a0
+                lea     (Ram_BonusSeesawSlots).w,a0
                 move.w  #$30,(a0)
                 lea     $40(a0),a0
                 move.w  #$30,(a0)
                 move.b  #1,$16(a0)
-                lea     (Ram_BonusCatInnerSlots).w,a0
+                lea     (Ram_BonusTigerSlots).w,a0
                 move.w  #$34,(a0)
                 lea     $40(a0),a0
                 move.w  #$34,(a0)
