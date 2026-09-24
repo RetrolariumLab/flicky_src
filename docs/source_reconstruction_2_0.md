@@ -7,11 +7,11 @@ contract do not change. The tagged 1.0 commit remains an ancestor of this
 release, and the canonical build still reproduces SHA-1
 `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96` byte for byte.
 
-The current branch is a tag-ready candidate, not yet a tagged release. Its
+The annotated `source-reconstruction-2.0` tag marks the release commit. The
+current `main` branch includes subsequent source and tooling corrections. The
 public manifest records the project-owned schema, release line, scope,
-evidence, and gates. The candidate has passed the aggregate, history, and
-clean-tree checks; publication still requires owner review and an annotated
-tag on this exact commit.
+evidence, and gates; the tagged commit passed the aggregate, history, and
+clean-tree checks.
 
 The release adds three capability groups:
 
@@ -161,17 +161,17 @@ generated paths and is regression-tested against an ignored workspace `tmp`
 directory. Studio build and playtest actions pass their exact selected inputs
 into the content builder, including alternate workspace files.
 
-The annotated `source-reconstruction-2.0` tag is created only after that gate
-passes on the release commit with a clean worktree. ROMs, extracted assets,
+The annotated `source-reconstruction-2.0` tag was created after that gate
+passed on the release commit with a clean worktree. ROMs, extracted assets,
 workspace JSON/ASM, generated content builds, and emulator captures remain
 ignored local data.
 
-The release sequence is explicit:
+The release sequence was:
 
 ```bash
 make source-2-audit          # validate the project-owned release manifest
 make source-2-check          # full 1.0 gate followed by all 2.0 checks
 make source-2-pre-tag-check  # requires tag-ready status and a clean tree
-# create the annotated tag only after human review
+# create the annotated tag after human review
 make source-2-tag-check      # verifies the tag type and exact target
 ```

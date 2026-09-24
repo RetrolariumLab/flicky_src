@@ -48,7 +48,7 @@ Where a module boundary looks arbitrary it usually is not: the ROM interleaves
 subsystems, and the layout follows the ROM rather than an idealized call graph.
 `src/compression/nemesis_enigma.s` holds both decompressors because their
 routines alternate in the original image, and `src/data/level_layout.s` sits
-between the lizard and snake code because that is where the data physically is.
+between the Tiger and Iggy code because that is where the data physically is.
 
 ## Shared definitions
 
@@ -85,7 +85,7 @@ inside the 68000 ROM include order.
 ## Directory vocabulary
 
 Repeated filename qualifiers are represented by directories. Enemy actors are
-`game/enemies/{cat,lizard,snake,spawner}.s`, screen modes are under
+`game/enemies/{tiger,iggy,spawner}.s`, screen modes are under
 `game/screens/`, and bonus, round, actor, and Z80 concerns follow the same
 pattern. A file inside one directory therefore does not repeat an `enemy_`,
 `screen_`, `round_`, or `z80_` prefix. `make check-source-structure` rejects a
@@ -116,7 +116,7 @@ The Z80 implementation split is independently visible:
 | `src/rendering/tilemap.s` | `$001196-$001315` | 175 | Palette and tilemap loading, VRAM and CRAM transfers |
 | `src/data/bank0.s` | `$001316-$00FFFF` | 70 | Source-built Z80 driver image, function table, Japanese 1bpp font |
 | `src/system/game_entry.s` | `$010000-$0101D3` | 140 | Game entry point and title-screen VRAM setup |
-| `src/sound/z80/load_data.s` | `$0101D4-$010CD3` | 21 | Z80 music/SFX data banks and load descriptors |
+| `src/sound/z80/load_data.s` | `$0101D4-$010CD3` | 22 | Z80 music/SFX data banks and load descriptors |
 | `src/sound/engine.s` | `$010CD4-$010D6D` | 69 | Sound driver init and note playback |
 | `src/rendering/rle.s` | `$010D6E-$010DE7` | 81 | VRAM address helpers and RLE tilemap decompression |
 | `src/game/text_encoding.s` | `$010DE8-$010E87` | 89 | Character-to-tile mapping and random numbers |
@@ -146,10 +146,12 @@ The Z80 implementation split is independently visible:
 
 ## Extracted data
 
-Seventeen binary segments are not in the source at all. They are sliced out of
-the reference ROM by `make split`, validated against `assets/manifest.json`, and
-pulled back in with `binclude` from the modules under `src/data/` and from
-`src/system/startup.s`. They are never tracked by this repository.
+`make split` extracts seventeen reference segments from the ROM and validates
+them against `assets/manifest.json`. Fifteen are included directly from the
+owning 68000 modules. The two Z80 segments instead provide byte-exact
+references for source-built driver and sound banks; their generated binaries
+are included by `src/data/bank0.s` and `src/sound/z80/load_data.s`. Extracted
+segments are never tracked by this repository.
 
 AS resolves `include` and `binclude` relative to the including file, so modules
 under `src/` could not reach `data/` on their own. The build passes the project
