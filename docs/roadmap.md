@@ -139,9 +139,9 @@ byte, because the original compressor used a run-splitting heuristic that has
 not been identified and was not minimising size. Enigma is decode-only and the
 two Z80 images are opaque.
 
-Source 2.0 subsequently added an exact Enigma encoder, raising the live format
-manifest to nine exact round trips while leaving this 1.0 milestone record
-unchanged.
+Source 2.0 subsequently added an exact Enigma encoder. A later audit
+reclassified the ending music overlay as opaque sound data, so the live format
+manifest again has eight exact round trips.
 
 The manifest records which claim applies to each segment rather than rounding
 them all up, and DATA-002 says what would settle the Nemesis case.
@@ -235,10 +235,9 @@ trace, and the machine-readable 2.0 contract.
 supported, the zero-edit ROM is exact, residual uncertainty is explicit, and
 `make source-2-check` passes.
 
-The implementation goals and release preparation are complete. The rewritten
-draft history, public language, manifest, aggregate gate, and clean-tree checks
-are aligned on the tag-ready candidate. Publication remains a separate owner
-action: create the annotated tag only after final review of this exact commit.
+The implementation goals and release preparation are complete. The annotated
+`source-reconstruction-2.0` tag marks the reviewed release commit; the current
+`main` branch includes subsequent corrections.
 
 ## Permanent invariants
 

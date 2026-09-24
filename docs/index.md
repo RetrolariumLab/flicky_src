@@ -37,7 +37,7 @@ For a first pass at the program itself, follow the ROM:
 3. `src/system/vblank.s` -- the other half of the frame.
 4. `src/game/world.s` -- the slot array and the object handler table.
 5. `src/game/actors/player.s` -- the actor pattern, worked through in full.
-6. Any one enemy (`cat.s`, `lizard.s`, `snake.s`) -- the same pattern again.
+6. Any one enemy (`tiger.s`, `iggy.s`) -- the same pattern again.
 7. `src/rendering/` -- how any of it reaches the screen.
 
 ## The verification rule
@@ -60,10 +60,9 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 ## Current status
 
-Source Reconstruction 1.0 is preserved and complete; Source Reconstruction
-2.0 is a tag-ready candidate on its release branch. Its aggregate
-`make source-2-check`
-starts with the permanent 1.0 gate, then verifies relocatability, zero-edit
+Source Reconstruction 1.0 and 2.0 are tagged. The current `main` branch also
+contains subsequent corrections. The aggregate `make source-2-check` starts
+with the permanent 1.0 gate, then verifies relocatability, zero-edit
 content identity, all three Studio models, direct level playtesting, sound-
 sequencer fidelity, and the machine-readable 2.0 contract.
 

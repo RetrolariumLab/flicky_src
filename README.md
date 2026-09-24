@@ -11,18 +11,18 @@ Approaches are shared with the sibling
 ## Status
 
 The build reproduces the reference ROM exactly, verified against the dump
-itself. `src/main.s` is no longer a source file: it is an index of 36
-address-ordered modules, and every symbol in them says what it is for -- there
-are no disassembler-generated names left anywhere in the source.
+itself. `src/main.s` is an index of 36 address-ordered modules. The source uses
+semantic names, with uncertain interpretations recorded in
+[`docs/unknowns.md`](docs/unknowns.md).
 
-Source Reconstruction 1.0 remains complete and immutable. Source 2.0 is a
-tag-ready release candidate on top of it, with isolated Level, Graphics, and
-Sound studios. The
-data formats have codecs, the symbol map is exported for debuggers, twelve scenarios
-replay under the emulator and are checked against 68 declared facts about work
-RAM, and `make release-check` audits the whole release contract. See
-[`docs/source_reconstruction_1_0.md`](docs/source_reconstruction_1_0.md) for
-what the release claims and what it does not.
+Source Reconstruction 1.0 and 2.0 are tagged. Source 2.0 adds isolated Level,
+Graphics, and Sound studios. The project includes data-format codecs, exports a
+symbol map for debuggers, and replays twelve scenarios under the emulator
+against 68 declared facts about work RAM. `make release-check` audits the 1.0
+contract; `make source-2-check` also runs the 2.0 acceptance checks. See
+[`docs/source_reconstruction_1_0.md`](docs/source_reconstruction_1_0.md) and
+[`docs/source_reconstruction_2_0.md`](docs/source_reconstruction_2_0.md) for
+the release scopes and limitations.
 
 The gate for every change is `make verify`. Annotating, renaming and
 reformatting must never alter the assembled bytes, so any difference means the
@@ -31,7 +31,7 @@ edit was wrong.
 ## Quick start
 
 ```bash
-git clone <repo>
+git clone https://github.com/oranguthang/flicky_src.git
 cd flicky_src
 
 # Place a legally obtained original ROM in the project root:
@@ -69,7 +69,7 @@ flicky_src/
 |   |-- toolchain.json      # Toolchain hashes, pins, and supported hosts
 |   |-- source_reconstruction_1_0.json
 |   `-- source_reconstruction_2_0.json
-|-- data/                   # Extracted binary segments (ignored, from make split)
+|-- data/                   # Extracted reference segments (ignored, from make split)
 |-- docs/                   # Task-oriented guides; see docs/index.md
 |-- movies/                 # Gens input recordings and their scene indexes
 |-- scenarios/              # Runtime scenarios and their state expectations
@@ -116,8 +116,11 @@ make symbols        # Export build/main.sym for debuggers
 make verify-toolchain  # Hash-check the selected build tools before they run
 make verify-emulator   # Check the selected Gens executable and source revision
 make verify-layout     # Check the ROM layout against config/linker/rom_layout.json
+make verify-relocation # Check sound loads in a packed ROM layout
+make z80-check         # Assemble and byte-check the resident Z80 driver
+make z80-data-check    # Assemble and byte-check the Z80 sound banks
 make check-source-structure # Enforce 300-700 lines, justified exceptions, paths
-make release-check  # The complete acceptance gate
+make release-check  # The 1.0 acceptance gate
 
 make init-content              # Initialize the ignored editor workspace
 make build-content             # Build an isolated editable ROM
@@ -140,7 +143,8 @@ The toolchain folder is chosen from the host platform; override it with
 
 `make split` is deliberately explicit and destructive, and `make build` never
 touches `data/`. That asymmetry means locally modified assets survive a
-rebuild.
+rebuild. The extracted Z80 segments remain byte-exact references; the driver
+and SFX/music banks are assembled from source into separate build files.
 
 ## Working flow
 
@@ -198,9 +202,9 @@ for the Japanese variants carry a `JP` suffix.
 
 ## Known gaps
 
-- **Nemesis does not re-encode byte for byte.** Nine of the seventeen segments
-  round-trip exactly, including Enigma; the six Nemesis streams round-trip
-  semantically with smaller valid encodings. Tracked as DATA-002; see
+- **Nemesis does not re-encode byte for byte.** Eight of the seventeen extracted
+  segments round-trip exactly, including Enigma; the six Nemesis streams
+  round-trip semantically with smaller valid encodings. Tracked as DATA-002; see
   [`docs/data_formats.md`](docs/data_formats.md).
 - **The runtime layer checks state, not pixels.** The twelve replays assert
   declared values of work RAM, which catches a game that diverges; comparing
@@ -209,7 +213,7 @@ for the Japanese variants carry a `JP` suffix.
 - Four further open questions are listed in
   [`docs/unknowns.md`](docs/unknowns.md).
 
-The former fixed-address sound limitation is resolved on `source-2.0`:
+The former fixed-address sound limitation is resolved in Source 2.0:
 `make verify-relocation` packs the ROM without its layout gaps and checks the
 recomputed Z80 data sources. See DATA-001 in
 [`docs/unknowns.md`](docs/unknowns.md).
