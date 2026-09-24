@@ -13,7 +13,7 @@ Ending_Init:
                 moveq   #2,d2
                 move.w  #$3BA,d0
                 move.w  #$125B,d1
-                lea     (Ending_CongratsArt).l,a0
+                lea     (Ending_Music81Overlay).l,a0
                 jsr     j_Sound_CopyToZ80RAM
                 move    #$2500,sr
                 move.b  #$81,d0
@@ -377,6 +377,6 @@ Ending_GraphicsSizeTable:   dc.b    0, 3, 0, 3, 0, 4, 0, 2, 0, 4
                 dc.b    0, 4, 0, 2, 0, 4, 0, 2, 0, 4
                 dc.b    0, 2, 0, 3, 0, 3, 0, 4, 0, 2
 Ending_GraphicsPositions:   dc.w    $E132, $E4B2, $E642, $E64C, $E656, $E660, $E66A, $E674, $E446, $E146
-Ending_CongratsArt:         binclude "data/other/data_EndingCongratsArt.bin"
-Ending_CongratsArt_End:
+Ending_Music81Overlay:      binclude "data/other/data_EndingMusic81Overlay.bin"
+Ending_Music81Overlay_End:
 ; Demo/attract mode initialization

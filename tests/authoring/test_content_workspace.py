@@ -90,7 +90,8 @@ class WorkspaceLifecycle(unittest.TestCase):
                 'binclude "build/z80_driver.bin"\n', encoding="utf-8"
             )
             (source / "sound" / "z80" / "load_data.s").write_text(
-                'binclude "build/z80_sound_data.bin"\n', encoding="utf-8"
+                'binclude "build/z80_sound_data_sfx.bin"\n'
+                'binclude "build/z80_sound_data_music.bin"\n', encoding="utf-8"
             )
             main = content_workspace.stage_sources(
                 root,
@@ -103,10 +104,11 @@ class WorkspaceLifecycle(unittest.TestCase):
                 'binclude "build/content/z80_driver.bin"',
                 (main.parent / "data" / "bank0.s").read_text(encoding="utf-8"),
             )
-            self.assertIn(
-                'binclude "build/content/z80_sound_data.bin"',
-                (main.parent / "sound" / "z80" / "load_data.s").read_text(encoding="utf-8"),
+            staged_sound = (main.parent / "sound" / "z80" / "load_data.s").read_text(
+                encoding="utf-8"
             )
+            self.assertIn('binclude "build/content/z80_sound_data_sfx.bin"', staged_sound)
+            self.assertIn('binclude "build/content/z80_sound_data_music.bin"', staged_sound)
 
 
 if __name__ == "__main__":

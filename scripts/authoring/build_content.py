@@ -126,6 +126,7 @@ def main() -> int:
         "--reference-offset", "12",
         "--description", "editable Z80 sound-data banks",
         "--expected-size", str(artifact["capacity"]),
+        "--split-label", "zMusicBank",
         *common,
     ]
     if not args.zero_edit:

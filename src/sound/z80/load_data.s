@@ -15,7 +15,8 @@ Data_Z80Driver2:
                 dc.w    Data_Z80MusicBank-Sys_GameEntryPoint
 
 Data_Z80SFXBank:
-                binclude "build/z80_sound_data.bin"
-Data_Z80MusicBank:  equ     Data_Z80SFXBank+$1C8
+                binclude "build/z80_sound_data_sfx.bin"
+Data_Z80MusicBank:
+                binclude "build/z80_sound_data_music.bin"
 Data_Z80Driver2_End:
 ; Clears CRAM to black and initializes VDP state

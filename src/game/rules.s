@@ -57,16 +57,16 @@ Timer_IncrementTime:
 Timer_IncrementTime_Return:
                 rts
 
-; Copies cat spawn positions to object slots
-Level_SetCatPositions:
+; Copies enemy spawn positions to object slots
+Level_SetEnemyPositions:
                 lea     (Ram_PlayerStartX).w,a0
                 move.w  (a0)+,(Ram_PlayerGridPos).w
-                move.w  (a0),(Ram_CatSlot0_GridPos).w
-                move.w  (a0)+,(Ram_CatSlot3_GridPos).w
-                move.w  (a0),(Ram_CatSlot1_GridPos).w
-                move.w  (a0),(Ram_CatSlot4_GridPos).w
-                move.w  (a0),(Ram_CatSlot2_GridPos).w
-                move.w  (a0),(Ram_CatSlot5_GridPos).w
+                move.w  (a0),(Ram_EnemySlot0_GridPos).w
+                move.w  (a0)+,(Ram_EnemySlot3_GridPos).w
+                move.w  (a0),(Ram_EnemySlot1_GridPos).w
+                move.w  (a0),(Ram_EnemySlot4_GridPos).w
+                move.w  (a0),(Ram_EnemySlot2_GridPos).w
+                move.w  (a0),(Ram_EnemySlot5_GridPos).w
                 rts
 
 ; Copies enemy data FFC480 to backup area FFDE00

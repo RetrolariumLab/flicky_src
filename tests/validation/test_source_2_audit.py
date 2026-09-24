@@ -56,7 +56,7 @@ class Source2Audit(unittest.TestCase):
 
     def test_format_count_disagreement_is_detected(self):
         document = json.loads(json.dumps(self.manifest))
-        document["semantic_source"]["exact_round_trips"] = 8
+        document["semantic_source"]["exact_round_trips"] = 9
         errors = self.validate_copy(document)
         self.assertTrue(any("format strength counts differ" in error for error in errors), errors)
 

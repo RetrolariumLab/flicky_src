@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from validation.debug_symbols import collect_from_listing
+
 
 def fail(message: str) -> None:
     print(f"[ERROR] {message}", file=sys.stderr)
@@ -48,6 +50,7 @@ def main() -> int:
         type=lambda value: int(value, 0),
         help="require the assembled component to occupy this many bytes",
     )
+    parser.add_argument("--split-label", help="emit separate binaries at this source label")
     args = parser.parse_args()
 
     source = Path(args.source).resolve()
@@ -71,6 +74,7 @@ def main() -> int:
     # resolve from the project root through -i, just like the 68000 build.
     command = [
         str(as_bin), "-i", str(Path.cwd().resolve()), "-o", str(obj),
+        *(["-L", "-olist", str(obj.with_suffix(".lst"))] if args.split_label else []),
         *args.as_args.split(), os.path.relpath(source, as_bin.parent),
     ]
     run(command, cwd=as_bin.parent)
@@ -100,6 +104,14 @@ def main() -> int:
             f"built {len(built)} bytes ({sha1(built)}), "
             f"expected {len(expected)} bytes ({sha1(expected)})"
         )
+
+    if args.split_label:
+        symbols = collect_from_listing(obj.with_suffix(".lst"))
+        boundary = symbols.get(args.split_label)
+        if boundary is None or not 0 < boundary < len(built):
+            fail(f"split label {args.split_label} has no valid position in {source}")
+        output.with_name(f"{output.stem}_sfx.bin").write_bytes(built[:boundary])
+        output.with_name(f"{output.stem}_music.bin").write_bytes(built[boundary:])
 
     if built == expected:
         print(

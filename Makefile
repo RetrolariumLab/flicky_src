@@ -69,6 +69,8 @@ Z80_REFERENCE ?= data/sound/data_z80_part1.bin
 Z80_DATA_SOURCE ?= src/sound/z80/data.asm
 Z80_DATA_OBJ ?= build/z80_sound_data.p
 Z80_DATA_BIN ?= build/z80_sound_data.bin
+Z80_DATA_SFX_BIN ?= $(basename $(Z80_DATA_BIN))_sfx.bin
+Z80_DATA_MUSIC_BIN ?= $(basename $(Z80_DATA_BIN))_music.bin
 Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
 CONTENT_MANIFEST ?= config/authoring/content_studios.json
 CONTENT_WORKSPACE ?= content/workspace
@@ -134,14 +136,14 @@ all: build
 # ---------------------------------------------------------------------------
 
 # Assemble and report byte identity as a warning.
-build: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_BIN)
+build: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
 	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # The permanent gate: any difference from the reference ROM fails the build.
-verify: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_BIN)
+verify: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
 	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
 		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
@@ -156,14 +158,14 @@ $(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/bui
 
 z80-check: $(Z80_BIN)
 
-$(Z80_DATA_BIN): $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_DATA_REFERENCE) | _require-toolchain
+$(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) &: $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_DATA_REFERENCE) | _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_DATA_SOURCE) --obj $(Z80_DATA_OBJ) --output $(Z80_DATA_BIN) \
 		--reference $(Z80_DATA_REFERENCE) --reference-offset 12 \
-		--description "Z80 sound-data banks" --as-bin $(AS_BIN) --p2bin $(P2BIN) \
+		--description "Z80 sound-data banks" --split-label zMusicBank --as-bin $(AS_BIN) --p2bin $(P2BIN) \
 		--as-args "$(AS_ARGS)"
 
-z80-data-check: $(Z80_DATA_BIN)
+z80-data-check: $(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
 
 # Validate the reference ROM, extract data, then build and verify.
 init: _require-toolchain

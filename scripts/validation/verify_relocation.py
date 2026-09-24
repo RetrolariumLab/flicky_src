@@ -102,6 +102,7 @@ def main() -> int:
     symbols = collect_from_listing(listing)
     required = (
         "Sys_GameEntryPoint", "Data_Z80Driver2", "Data_Z80SFXBank",
+        "Data_Z80MusicBank",
         "Data_Z80Driver2_End", "Sound_LoadZ80Table",
     )
     missing = [name for name in required if name not in symbols]
@@ -111,7 +112,7 @@ def main() -> int:
     game = symbols["Sys_GameEntryPoint"]
     descriptor = symbols["Data_Z80Driver2"]
     sfx = symbols["Data_Z80SFXBank"]
-    music = sfx + 0x1C8
+    music = symbols["Data_Z80MusicBank"]
     end = symbols["Data_Z80Driver2_End"]
     if game == 0x10000:
         fail("packing did not move Sys_GameEntryPoint")

@@ -106,6 +106,32 @@ class GraphicsSequencesDocument(unittest.TestCase):
         ])
         model.validate_document(loaded, ROOT)
 
+    def test_old_countdown_names_are_migrated_without_losing_edits(self):
+        document = copy.deepcopy(self.document)
+        names = {
+            "UI_RoundStartCountdownAnim": "UI_CatCountdownAnim",
+            "UI_RoundEndCountdownAnim": "UI_CatCountReverseAnim",
+            "UI_CountdownFrame3": "UI_CatCountReverseData3",
+        }
+        for animation in document["animations"]:
+            animation["id"] = names.get(animation["id"], animation["id"])
+            animation["frames"] = [names.get(frame, frame) for frame in animation["frames"]]
+        round_start = next(
+            item for item in document["animations"]
+            if item["id"] == "UI_CatCountdownAnim"
+        )
+        round_start["delay"] += 1
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sequences.json"
+            path.write_text(json.dumps(document), encoding="utf-8")
+            loaded = model.load_document(path)
+        model.validate_document(loaded, ROOT)
+        migrated = next(
+            item for item in loaded["animations"]
+            if item["id"] == "UI_RoundStartCountdownAnim"
+        )
+        self.assertEqual(migrated["delay"], round_start["delay"])
+
     def test_piece_count_cannot_change(self):
         document = copy.deepcopy(self.document)
         document["mappings"][0]["pieces"].append(copy.deepcopy(document["mappings"][0]["pieces"][0]))

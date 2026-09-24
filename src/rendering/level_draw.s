@@ -262,8 +262,8 @@ Level_DrawBackgroundObject:
 Level_BackgroundWidthTable:         dc.w    2
 Level_BackgroundHeightTable:        dc.w    2, 1, 1, 1, 2, 1, 2, 4, 2, 3, 3
 Level_BackgroundMappingPointers:    dc.w    $D81C, $D820, $D824, $D810, $D814, $D818
-; Draws cat exit door at level start position
-Level_DrawCatDoor:
+; Draws the player entry door at the level start position
+Level_DrawPlayerStartDoor:
                 moveq   #0,d7
                 moveq   #0,d6
                 moveq   #0,d5
@@ -273,7 +273,7 @@ Level_DrawCatDoor:
                 bsr.w   Gfx_TilemapCoordToAddr
                 moveq   #2,d7
                 moveq   #2,d6
-                lea     (Level_DrawCatDoorData).l,a6
+                lea     (Level_DrawPlayerStartDoorData).l,a6
                 bsr.w   Gfx_DrawTilemapRect
                 rts
 

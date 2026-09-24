@@ -59,8 +59,8 @@ Level_BgObject4Data3:   dc.w    $32A, $32A, $32A, 0, 0, 0, $32A, $32A
 UI_TimerData1:                  dc.w    $632B, $632C, $632D, $632E, $632F, $6330, $6331, $6332, $6333
 UI_TimerData2:                  dc.w    $6334, $6335, $6336, $6337, $6335, $6338, $6339, $6335, $633A
 UI_TimerData0:                  dc.w    $633B, $6205, $633C, $633D, $6205, $633E, $633F, $6205, $6340
-UI_CatCountReverseData3:        dc.w    $6341, $6205, $6342, $6343, $6205, $6344, $6345, $6205, $6346
-Level_DrawCatDoorData:          dc.w    $347, $348, $349, $34A, $34B, $34C, $34D, $34E, $34F, $351, $4350
+UI_CountdownFrame3:             dc.w    $6341, $6205, $6342, $6343, $6205, $6344, $6345, $6205, $6346
+Level_DrawPlayerStartDoorData:  dc.w    $347, $348, $349, $34A, $34B, $34C, $34D, $34E, $34F, $351, $4350
 UI_Draw1UPAndHILabelsData0:     dc.w    $8352, $8353, $8354, $8353
 UI_Draw1UPAndHILabelsData1:     dc.w    $8355, $8356, $8353, 0, 0, $2A, $F8, 0, 0, $300, $F8
 Throwable_ThrownAnim0Data0:     dc.w    4, $F804, $6456, $F8F8

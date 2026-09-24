@@ -16,7 +16,7 @@ currently do with it.
 | `z80_part1` | `sound` | `$1316`-`$22FC` | 4,070 | Z80 machine code |
 | `Jap1BPPTiles` | `artunc` | `$2372`-`$290A` | 1,432 | Uncompressed 1bpp font |
 | `z80_part2` | `sound` | `$101D4`-`$10CD4` | 2,816 | 68000 load descriptors and Z80 sound data |
-| `EndingCongratsArt` | `other` | `$135E8`-`$139A2` | 954 | Tilemap for the ending screen |
+| `EndingMusic81Overlay` | `other` | `$135E8`-`$139A2` | 954 | Alternate Z80 music data for song `$81` |
 | `DemoInputStream0` | `other` | `$13A82`-`$13B82` | 256 | Recorded controller input |
 | `DemoInputStream2` | `other` | `$13C52`-`$13D70` | 286 | Recorded controller input |
 | `DemoInputStream3` | `other` | `$13D70`-`$13E70` | 256 | Recorded controller input |
@@ -91,7 +91,8 @@ and data indices, command priorities, music headers, FM voices, envelopes and
 sequences in the second. The descriptors are expressions in
 `src/sound/z80/load_data.s`; the 2,804-byte payload is authored in
 `src/sound/z80/data.asm`, where Z80 little-endian pointers are computed
-from labels. `make z80-data-check` proves byte identity and
+from labels. The build splits it at `zMusicBank` into separately included SFX
+and music banks. `make z80-data-check` proves byte identity and
 `make verify-relocation` proves the 68000 source offsets follow a moved game
 image. This resolves [DATA-001](unknowns.md).
 
@@ -108,7 +109,7 @@ built into the ROM for attract mode.
 recorded in `config/authoring/data_formats.json`. Three claims are possible and they are
 not interchangeable.
 
-**`exact`** -- decoding and re-encoding returns the original bytes. Nine
+**`exact`** -- decoding and re-encoding returns the original bytes. Eight
 segments qualify, and for these the field layout is proven rather than
 plausible:
 
@@ -118,7 +119,6 @@ DemoInputStream0    256 bytes,   128 entries
 DemoInputStream2    286 bytes,   143 entries
 DemoInputStream3    256 bytes,   128 entries
 TigerJumpArcTable  384 bytes,    48 entries
-EndingCongratsArt   954 bytes,   477 entries
 Jap1BPPTiles      1,432 bytes, 1,432 rows
 Latin1BPPTiles      344 bytes,   344 rows
 SegaEnigma           10 bytes,    48 words
@@ -141,10 +141,15 @@ that fixed region.
 The historical 1.0 format manifest still marks both extracted Z80 segments as
 `none`. On `source-2.0`, the first claim is superseded by the independent
 source-assembly equality gate; the second remains an authored-data task.
+`EndingMusic81Overlay` is also `none`: it replaces the resident `$81` music
+header and sequences at Z80 `$125B`. Its previous `tilemap_words` round trip
+only proved that arbitrary even-length bytes survive conversion to words and
+back; it did not decode the sound format. The 68000 `DBF` copy reads one byte
+beyond this 954-byte block, matching the original ROM.
 
 This distinction is the point of the milestone. A decoder can be plausibly
 wrong -- it can produce sensible-looking tiles from a misunderstood header and
 nobody would notice. Requiring the encoder to reproduce the original bytes is
-what turns "this decodes" into "this is understood", so the nine `exact`
+what turns "this decodes" into "this is understood", so the eight `exact`
 segments carry a stronger guarantee than the six `semantic` ones, and the
 manifest says which is which rather than rounding them all up.
