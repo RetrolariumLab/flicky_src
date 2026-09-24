@@ -486,7 +486,7 @@ Player_CheckExit:
                 clr.l   (Ram_CameraVelocityX).w
                 addq.b  #1,(Ram_ExitReachedFlag).w
                 move.l  a0,-(sp)
-                bsr.w   UI_AnimateCatCountReverse
+                bsr.w   UI_AnimateRoundEndCountdown
                 movea.l (sp)+,a0
 
 Player_CheckExit_Return:

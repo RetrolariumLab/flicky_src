@@ -1616,7 +1616,7 @@
     ],
     [
       "word_1A4B4",
-      "Level_DrawCatDoorData",
+      "Level_DrawPlayerStartDoorData",
       "src/data/tables.s"
     ],
     [
@@ -2151,7 +2151,7 @@
     ],
     [
       "word_1A4A2",
-      "UI_CatCountReverseData3",
+      "UI_CountdownFrame3",
       "src/data/tables.s"
     ],
     [
@@ -3771,12 +3771,12 @@
     ],
     [
       "word_135E8",
-      "Ending_CongratsArt",
+      "Ending_Music81Overlay",
       "src/game/screens/ending.s"
     ],
     [
       "word_135E8_End",
-      "Ending_CongratsArt_End",
+      "Ending_Music81Overlay_End",
       "src/game/screens/ending.s"
     ],
     [
@@ -4801,22 +4801,22 @@
     ],
     [
       "sub_12D84",
-      "Enemy_SpawnCats",
+      "Enemy_SpawnSpawners",
       "src/game/round/main_loop.s"
     ],
     [
       "loc_12D98",
-      "Enemy_SpawnCats_CheckSecondPair",
+      "Enemy_SpawnSpawners_CheckSecondPair",
       "src/game/round/main_loop.s"
     ],
     [
       "loc_12DBE",
-      "Enemy_SpawnCats_CheckThirdPair",
+      "Enemy_SpawnSpawners_CheckThirdPair",
       "src/game/round/main_loop.s"
     ],
     [
       "locret_12DE2",
-      "Enemy_SpawnCats_Return",
+      "Enemy_SpawnSpawners_Return",
       "src/game/round/main_loop.s"
     ],
     [
@@ -6066,7 +6066,7 @@
     ],
     [
       "sub_11700",
-      "Level_SetCatPositions",
+      "Level_SetEnemyPositions",
       "src/game/rules.s"
     ],
     [
@@ -7051,62 +7051,62 @@
     ],
     [
       "unk_FFD832",
-      "Ram_CatDoorPos",
+      "Ram_BackgroundObject1Pos",
       "src/memory/ram.inc"
     ],
     [
       "word_FFC3BE",
-      "Ram_CatSlot0_GridPos",
+      "Ram_EnemySlot0_GridPos",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC3C0",
-      "Ram_CatSlot1",
+      "Ram_EnemySlot1",
       "src/memory/ram.inc"
     ],
     [
       "word_FFC3FE",
-      "Ram_CatSlot1_GridPos",
+      "Ram_EnemySlot1_GridPos",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC400",
-      "Ram_CatSlot2",
+      "Ram_EnemySlot2",
       "src/memory/ram.inc"
     ],
     [
       "word_FFC43E",
-      "Ram_CatSlot2_GridPos",
+      "Ram_EnemySlot2_GridPos",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC680",
-      "Ram_CatSlot3",
+      "Ram_EnemySlot3",
       "src/memory/ram.inc"
     ],
     [
       "word_FFC6BE",
-      "Ram_CatSlot3_GridPos",
+      "Ram_EnemySlot3_GridPos",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC6C0",
-      "Ram_CatSlot4",
+      "Ram_EnemySlot4",
       "src/memory/ram.inc"
     ],
     [
       "word_FFC6FE",
-      "Ram_CatSlot4_GridPos",
+      "Ram_EnemySlot4_GridPos",
       "src/memory/ram.inc"
     ],
     [
       "unk_FFC700",
-      "Ram_CatSlot5",
+      "Ram_EnemySlot5",
       "src/memory/ram.inc"
     ],
     [
       "word_FFC73E",
-      "Ram_CatSlot5_GridPos",
+      "Ram_EnemySlot5_GridPos",
       "src/memory/ram.inc"
     ],
     [
@@ -7811,12 +7811,12 @@
     ],
     [
       "sub_11CE6",
-      "UI_AnimateCatCountReverse",
+      "UI_AnimateRoundEndCountdown",
       "src/rendering/hud.s"
     ],
     [
       "sub_11CCA",
-      "UI_AnimateCatCountdown",
+      "UI_AnimateRoundStartCountdown",
       "src/rendering/hud.s"
     ],
     [
@@ -7846,12 +7846,12 @@
     ],
     [
       "byte_11CF0",
-      "UI_CatCountReverseAnim",
+      "UI_RoundEndCountdownAnim",
       "src/rendering/hud.s"
     ],
     [
       "byte_11CD4",
-      "UI_CatCountdownAnim",
+      "UI_RoundStartCountdownAnim",
       "src/rendering/hud.s"
     ],
     [
@@ -8226,7 +8226,7 @@
     ],
     [
       "sub_11B60",
-      "Level_DrawCatDoor",
+      "Level_DrawPlayerStartDoor",
       "src/rendering/level_draw.s"
     ],
     [

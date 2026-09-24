@@ -5,7 +5,7 @@ verify-layout: $(LISTING)
 	@$(PYTHON) $(RUN_SCRIPT) validation.verify_layout \
 		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
 
-verify-relocation: $(Z80_BIN) $(Z80_DATA_BIN) _require-assets _require-toolchain
+verify-relocation: $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) _require-assets _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) validation.verify_relocation \
 		--source $(SRC) --sound-data $(Z80_DATA_BIN) \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
@@ -17,7 +17,7 @@ compare:
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
 # -i lets modules under src/ resolve their binclude paths from the project root.
-$(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_BIN) | _require-toolchain
+$(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) | _require-toolchain
 	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
 	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
 

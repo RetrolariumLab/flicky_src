@@ -489,7 +489,7 @@ Level_SpawnObjects:
                 move.b  1(a6),(a0)+
                 moveq   #1,d4
                 bsr.w   Level_SpawnBackgroundLoop
-                lea     (Ram_CatDoorPos).w,a0
+                lea     (Ram_BackgroundObject1Pos).w,a0
                 moveq   #0,d0
                 move.b  (a6),(a0)+
                 move.b  1(a6),(a0)+

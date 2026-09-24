@@ -215,20 +215,28 @@ def stage_sources(
         shutil.rmtree(destination)
     shutil.copytree(source_root, destination)
     replacements = {
-        destination / "data" / "bank0.s": (
+        destination / "data" / "bank0.s": [(
             'binclude "build/z80_driver.bin"',
             f'binclude "{driver_binary.as_posix()}"',
-        ),
-        destination / "sound" / "z80" / "load_data.s": (
-            'binclude "build/z80_sound_data.bin"',
-            f'binclude "{sound_binary.as_posix()}"',
-        ),
+        )],
+        destination / "sound" / "z80" / "load_data.s": [
+            (
+                'binclude "build/z80_sound_data_sfx.bin"',
+                f'binclude "{sound_binary.with_name(sound_binary.stem + "_sfx.bin").as_posix()}"',
+            ),
+            (
+                'binclude "build/z80_sound_data_music.bin"',
+                f'binclude "{sound_binary.with_name(sound_binary.stem + "_music.bin").as_posix()}"',
+            ),
+        ],
     }
-    for path, (old, new) in replacements.items():
+    for path, pairs in replacements.items():
         text = path.read_text(encoding="utf-8")
-        if text.count(old) != 1:
-            fail(f"content staging expected one include in {path}: {old}")
-        path.write_text(text.replace(old, new), encoding="utf-8", newline="\n")
+        for old, new in pairs:
+            if text.count(old) != 1:
+                fail(f"content staging expected one include in {path}: {old}")
+            text = text.replace(old, new)
+        path.write_text(text, encoding="utf-8", newline="\n")
     return destination / "main.s"
 
 

@@ -97,7 +97,8 @@ def main() -> int:
             args.z80_data_obj,
             args.z80_data_output,
             args.z80_data_reference,
-            ["--reference-offset", "12", "--description", "Z80 sound-data banks"],
+            ["--reference-offset", "12", "--description", "Z80 sound-data banks",
+             "--split-label", "zMusicBank"],
         ),
     ):
         result = subprocess.run(

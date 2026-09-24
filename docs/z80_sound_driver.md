@@ -43,8 +43,10 @@ nominal binary segment. This follows directly from the `dbf` count and is why
 the loaded size is 2,349 although only 2,348 bytes remain in
 `data_z80_part2.bin` after its second descriptor.
 
-The payload itself is `src/sound/z80/data.asm`. It declares nine ordinary
-SFX slots (`$90-$98`), the special `$D0` alias, seven music slots (`$81-$87`,
+The payload itself is `src/sound/z80/data.asm`. Its `zMusicBank` label defines
+the boundary between the generated SFX and music includes in
+`src/sound/z80/load_data.s`; no fixed source offset is needed there. The source
+declares nine ordinary SFX slots (`$90-$98`), the special `$D0` alias, seven music slots (`$81-$87`,
 with `$86` empty), and symbolic voice/sequence pointers for every header.
 `$88` has no table entry: reading it would consume the first word of the `$81`
 header. FM voices and event bodies remain explicit bytes until the editor's

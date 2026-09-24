@@ -52,7 +52,7 @@ Demo_Update_Run:
                 addq.l  #7,(Ram_TigerSpeed).w
 
 Demo_Update_Objects:
-                bsr.w   Enemy_SpawnCats
+                bsr.w   Enemy_SpawnSpawners
                 bsr.w   Object_UpdateAll
                 bsr.w   Timer_IncrementTime
                 bclr    #0,(Ram_RestoreEnemiesFlag).w

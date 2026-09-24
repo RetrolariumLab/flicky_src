@@ -47,9 +47,9 @@ Game_SetupLevel:
 
 Game_SetupLevel_CountAndDraw:
                 bsr.w   Level_CountChicks
-                bsr.w   Level_DrawCatDoor
+                bsr.w   Level_DrawPlayerStartDoor
                 bsr.w   Level_CalcExitPos
-                bsr.w   Level_SetCatPositions
+                bsr.w   Level_SetEnemyPositions
                 bsr.w   UI_DrawScoreLabels
                 bsr.w   UI_DrawScore
                 bsr.w   UI_DrawHighScore
@@ -88,7 +88,7 @@ Game_StatePlay:
                 addq.l  #7,(Ram_TigerSpeed).w
 
 Game_StatePlay_Update:
-                bsr.w   Enemy_SpawnCats
+                bsr.w   Enemy_SpawnSpawners
                 bsr.w   Object_UpdateAll
                 bsr.w   Timer_IncrementTime
                 rts
@@ -272,44 +272,44 @@ Score_UpdateDisplay_IncrementBCD:
 Score_UpdateDisplay_Return:
                 rts
 
-; Spawns enemy cats during gameplay
-Enemy_SpawnCats:
+; Starts enemy spawners during gameplay
+Enemy_SpawnSpawners:
                 lea     (Ram_ProjectileSlots).w,a0
-                lea     (Ram_CatSlot3).w,a1
+                lea     (Ram_EnemySlot3).w,a1
                 tst.w   (a0)
-                bne.s   Enemy_SpawnCats_CheckSecondPair
+                bne.s   Enemy_SpawnSpawners_CheckSecondPair
                 tst.w   (a1)
-                bne.s   Enemy_SpawnCats_CheckSecondPair
+                bne.s   Enemy_SpawnSpawners_CheckSecondPair
                 move.w  #$18,(a1)
 
-Enemy_SpawnCats_CheckSecondPair:
-                lea     (Ram_CatSlot1).w,a0
-                lea     (Ram_CatSlot2).w,a1
-                lea     (Ram_CatSlot4).w,a2
-                lea     (Ram_CatSlot5).w,a3
+Enemy_SpawnSpawners_CheckSecondPair:
+                lea     (Ram_EnemySlot1).w,a0
+                lea     (Ram_EnemySlot2).w,a1
+                lea     (Ram_EnemySlot4).w,a2
+                lea     (Ram_EnemySlot5).w,a3
                 tst.w   (a0)
-                bne.s   Enemy_SpawnCats_CheckThirdPair
+                bne.s   Enemy_SpawnSpawners_CheckThirdPair
                 tst.w   (a2)
-                bne.s   Enemy_SpawnCats_CheckThirdPair
+                bne.s   Enemy_SpawnSpawners_CheckThirdPair
                 tst.w   (a3)
-                bne.s   Enemy_SpawnCats_CheckThirdPair
+                bne.s   Enemy_SpawnSpawners_CheckThirdPair
                 move.w  #$18,(a2)
                 move.b  #1,$16(a2)
 
-Enemy_SpawnCats_CheckThirdPair:
+Enemy_SpawnSpawners_CheckThirdPair:
                 cmpi.b  #$A,(Ram_RoundNumber+1).w
-                bcs.s   Enemy_SpawnCats_Return
+                bcs.s   Enemy_SpawnSpawners_Return
                 tst.w   (a1)
-                bne.s   Enemy_SpawnCats_Return
+                bne.s   Enemy_SpawnSpawners_Return
                 tst.w   (a3)
-                bne.s   Enemy_SpawnCats_Return
+                bne.s   Enemy_SpawnSpawners_Return
                 tst.w   (a2)
-                bne.s   Enemy_SpawnCats_Return
+                bne.s   Enemy_SpawnSpawners_Return
                 move.w  #$18,(a3)
                 move.w  #4,$3C(a3)
                 move.b  #2,$16(a3)
 
-Enemy_SpawnCats_Return:
+Enemy_SpawnSpawners_Return:
                 rts
 
 ; Counts active chicks in enemy slots
@@ -343,7 +343,7 @@ Game_RoundStartSequence_DelayLoop:
                 move.w  #$C,(Ram_PlayerObject).w
                 bsr.w   Object_UpdateAll
                 jsr     j_Sound_QueueSFX
-                bsr.w   UI_AnimateCatCountdown
+                bsr.w   UI_AnimateRoundStartCountdown
                 rts
 
 ; Calculates round difficulty: speed and patterns

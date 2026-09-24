@@ -37,8 +37,11 @@ LEGACY_SOURCE_PATHS = {
 
 
 def current_object_name(identifier: str) -> str:
-    """Upgrade sprite mapping names from before the object identity correction."""
+    """Upgrade graphics names from earlier source inventories in memory."""
     for old, new in (
+        ("UI_CatCountdownAnim", "UI_RoundStartCountdownAnim"),
+        ("UI_CatCountReverseAnim", "UI_RoundEndCountdownAnim"),
+        ("UI_CatCountReverseData3", "UI_CountdownFrame3"),
         ("Chick_Thrown", "Throwable_Thrown"),
         ("Cat_", "Chirp_"),
         ("Lizard_", "Tiger_"),

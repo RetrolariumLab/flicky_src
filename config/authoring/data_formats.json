@@ -35,10 +35,11 @@
       "note": "Per-round horizontal and vertical jump velocity, 16.16 fixed point."
     },
     {
-      "segment": "EndingCongratsArt",
-      "path": "other/data_EndingCongratsArt.bin",
-      "codec": "tilemap_words",
-      "round_trip": "exact"
+      "segment": "EndingMusic81Overlay",
+      "path": "other/data_EndingMusic81Overlay.bin",
+      "codec": "opaque",
+      "round_trip": "none",
+      "note": "Alternate music data copied over the resident $81 song at Z80 $125B; no semantic codec yet."
     },
     {
       "segment": "Jap1BPPTiles",

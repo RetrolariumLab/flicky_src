@@ -872,9 +872,9 @@
     "source_structure_manifest": "config/reconstruction/source_structure.json",
     "source_structure_gate": "check-source-structure",
     "format_manifest": "config/authoring/data_formats.json",
-    "exact_round_trips": 9,
+    "exact_round_trips": 8,
     "semantic_round_trips": 6,
-    "opaque_extracted_segments": 2,
+    "opaque_extracted_segments": 3,
     "residual_uncertainty": [
       "DATA-002",
       "RAM-001",

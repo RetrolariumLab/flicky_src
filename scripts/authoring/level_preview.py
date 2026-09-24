@@ -146,7 +146,7 @@ class LevelPreview:
 
         tables_path = project / "src/data/tables.s"
         table_labels = {
-            "Level_DrawCatDoorData",
+            "Level_DrawPlayerStartDoorData",
             *{f"Level_BackgroundTileData{index}" for index in range(6)},
             *{f"Level_UpperGroundData{index}" for index in range(6)},
             *{f"Level_LowerGroundData{index}" for index in range(6)},
@@ -347,7 +347,7 @@ class LevelPreview:
         # the backdrop, not the tile that occupied the cell beforehand.
         self.write_tilemap(
             plane_b, layout["player"][0], layout["player"][1],
-            self.tables["Level_DrawCatDoorData"], 3, 3,
+            self.tables["Level_DrawPlayerStartDoorData"], 3, 3,
         )
         self.write_tilemap(
             plane_b, layout["player"][0], layout["player"][1] - 1,

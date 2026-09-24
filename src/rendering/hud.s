@@ -91,29 +91,29 @@ UI_TimerAnim:   dc.b    4
                 dc.l    UI_TimerData1
                 dc.l    UI_TimerData2
                 dc.l    UI_TimerData0
-; Plays cat rescue countdown animation
-UI_AnimateCatCountdown:
-                lea     UI_CatCountdownAnim(pc),a1
+; Plays the round-start countdown animation
+UI_AnimateRoundStartCountdown:
+                lea     UI_RoundStartCountdownAnim(pc),a1
                 jmp     UI_PlayAnimation
 
-UI_CatCountdownAnim:    dc.b    4
+UI_RoundStartCountdownAnim: dc.b    4
                 dc.b    2
                 dc.l    Level_BgObject0Data
                 dc.l    UI_TimerData0
                 dc.l    UI_TimerData2
                 dc.l    UI_TimerData1
-; Plays reverse cat countdown animation
-UI_AnimateCatCountReverse:
-                lea     UI_CatCountReverseAnim(pc),a1
+; Plays the countdown animation after reaching the exit
+UI_AnimateRoundEndCountdown:
+                lea     UI_RoundEndCountdownAnim(pc),a1
                 jmp     UI_PlayAnimation
 
-UI_CatCountReverseAnim: dc.b    5
+UI_RoundEndCountdownAnim:   dc.b    5
                 dc.b    2
                 dc.l    UI_BlankFrameMappings
                 dc.l    UI_TimerData1
                 dc.l    UI_TimerData2
                 dc.l    UI_TimerData0
-                dc.l    UI_CatCountReverseData3
+                dc.l    UI_CountdownFrame3
 UI_BlankFrameMappings:  dc.w    0, 0, 0, 0, 0, 0, 0, 0, 0
 ; Plays bonus animation on score screen
 UI_AnimateBonus:
@@ -123,7 +123,7 @@ UI_AnimateBonus:
 UI_BonusAnim:   dc.b    5
                 dc.b    1
                 dc.l    Level_BgObject0Data
-                dc.l    UI_CatCountReverseData3
+                dc.l    UI_CountdownFrame3
                 dc.l    UI_TimerData0
                 dc.l    UI_TimerData2
                 dc.l    UI_TimerData1
