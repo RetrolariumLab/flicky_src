@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-from authoring import data_formats  # noqa: E402
+from formats import data_formats  # noqa: E402
 from formats import nemesis_dec, nemesis_enc  # noqa: E402
 
 

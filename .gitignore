@@ -70,5 +70,9 @@ content/workspace/
 bin/.p
 bin/.lst
 
+# Retrolarium Studio: generated projects and your edits (game data)
+/.retrolarium/
+/hack/
+
 # Payloads generated locally from the reference ROM
 /assets/generated/

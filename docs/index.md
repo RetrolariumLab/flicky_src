@@ -8,7 +8,7 @@
 | [`source_layout.md`](source_layout.md) | Where the code lives and why it is split that way |
 | [`subsystems.md`](subsystems.md) | What the program does and who calls whom |
 | [`build.md`](build.md) | How the build works, what to supply, and what each failure means |
-| [`content_authoring.md`](content_authoring.md) | How isolated editable builds and the 2.0 studios work |
+| [`retrolarium.md`](retrolarium.md) | How the game is edited in Retrolarium Studio |
 | [`validation.md`](validation.md) | Which check proves what |
 | [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
 | [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) | What the 2.0 authoring release adds and how it is accepted |
@@ -62,9 +62,10 @@ Any difference means the edit was wrong, not that the gate is too strict.
 
 Source Reconstruction 1.0 and 2.0 are tagged. The current `main` branch also
 contains subsequent corrections. The aggregate `make source-2-check` starts
-with the permanent 1.0 gate, then verifies relocatability, zero-edit
-content identity, all three Studio models, direct level playtesting, sound-
-sequencer fidelity, and the machine-readable 2.0 contract.
+with the permanent 1.0 gate, then verifies relocatability and the
+machine-readable 2.0 contract at its tag. Source Reconstruction 3.0 moved the
+Studios, their zero-edit content build, playtest and sequencer checks to
+Retrolarium; `make studio-check` proves the repository with the kit.
 
 See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe,
 [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for the preserved

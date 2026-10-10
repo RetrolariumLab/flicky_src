@@ -1,10 +1,5 @@
 # Z80 sound driver
 
-Run `make split` with the reference ROM before opening Sound Studio. The editor
-renders the bank layout into `build/content/baseline/z80_sound_data.asm`
-using the extracted bytes. It initializes its editable copy from that source,
-while the normal build includes the extracted banks directly.
-
 Flicky runs its complete music and sound-effect sequencer on the Z80. This is
 the important difference from Sonic 1: Sonic's extensively documented driver
 runs the SMPS sequencer on the 68000 and leaves PCM playback to the Z80, while
@@ -153,14 +148,15 @@ authority rather than importing a Sonic SMPS parser.
 
 ## Editor and standalone playback
 
-Sound Studio uses this reconstructed command table as its format authority.
+Retrolarium's music editor uses this reconstructed command table as its format
+authority.
 It presents linear note data as a piano roll and decodes every 25-byte voice
 into algorithm, feedback, and the four YM2612 operators. Its headless Python
 sequencer follows the same track states, duration inheritance, calls, loops,
 timers, voice loads, key events, and register writes as the resident driver.
 
-The register log is exported as VGM 1.50. A compact project frontend around
-the pinned upstream ymfm core renders YM2612 output to WAV; its small internal
+The register log is exported as VGM 1.50. Retrolarium's frontend around the
+upstream ymfm core renders YM2612 output to WAV; its small internal
 SN76489 implementation covers PSG writes without introducing a second runtime
 dependency. This makes ordinary preview independent of Gens. Emulator tracing
 remains the fidelity oracle used to test the Python sequencer against the
@@ -173,7 +169,8 @@ tone sequence whose pitch or envelope playback could be compared. The VGM
 path retains SN76489 writes, while the executable fidelity claim below is
 deliberately limited to the YM2612 traffic that the original content emits.
 
-The oracle is `make verify-sound-sequencer`. The sibling Gens hook sits in
+The oracle is the kit's sound-trace test over `make trace-sound`. The sibling
+Gens hook sits in
 `Z80_WriteB_YM2612` and records a logical CSV row only when the emulated Z80
 performs the corresponding data-port write. The validation window is frames
 320-457 of the pinned longplay: music `$85` starts there, and the later global
