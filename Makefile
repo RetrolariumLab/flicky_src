@@ -72,17 +72,6 @@ Z80_DATA_BIN ?= build/z80_sound_data.bin
 Z80_DATA_SFX_BIN ?= $(basename $(Z80_DATA_BIN))_sfx.bin
 Z80_DATA_MUSIC_BIN ?= $(basename $(Z80_DATA_BIN))_music.bin
 Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
-CONTENT_MANIFEST ?= config/authoring/content_studios.json
-CONTENT_WORKSPACE ?= content/workspace
-CONTENT_LEVEL_WORKSPACE ?= $(CONTENT_WORKSPACE)/level/levels.json
-CONTENT_GRAPHICS_WORKSPACE ?= $(CONTENT_WORKSPACE)/graphics/graphics.json
-CONTENT_SEMANTICS_WORKSPACE ?= $(CONTENT_WORKSPACE)/graphics/semantics.json
-CONTENT_SEQUENCES_WORKSPACE ?= $(CONTENT_WORKSPACE)/graphics/sequences.json
-CONTENT_SOUND_WORKSPACE ?= $(CONTENT_WORKSPACE)/sound/z80_sound_data.asm
-CONTENT_ROM ?= build/content/flicky.bin
-YMFM_RENDERER ?= bin/windows_i386/ymfm_renderer.exe
-SOUND ?= zMusic81Header
-SOUND_SECONDS ?= 30
 SOUND_TRACE_CONFIG ?= config/runtime/gens_sound_trace.cfg
 SOUND_TRACE_FILE ?= build/sound_trace/gens.csv
 SOUND_TRACE_FRAMES ?= build/sound_trace/frames
@@ -114,7 +103,7 @@ BATCH_COUNT ?= 40
 # refuses any that come back.
 STRICT_NAMING ?= --strict-naming
 
-MAKE_FRAGMENTS := mk/authoring.mk mk/runtime.mk mk/validation.mk mk/workflow.mk
+MAKE_FRAGMENTS := mk/runtime.mk mk/validation.mk mk/workflow.mk
 
 include $(MAKE_FRAGMENTS)
 
@@ -123,10 +112,10 @@ include $(MAKE_FRAGMENTS)
 .PHONY: all build verify z80-check z80-data-check verify-toolchain verify-emulator verify-layout verify-relocation check-source-structure init split check-assets \
         compare lint format format-check scaffold-check unpack-data \
         roundtrip-formats symbols trace trace-runtime validate-runtime \
-        init-content inspect-content validate-content build-content check-content-zero-edit level-studio playtest-level smoke-level-playtest graphics-studio sound-studio preview-sound trace-sound verify-sound-sequencer check-studios smoke-studios-workstation \
+        trace-sound studio-check source-3-audit source-3-check \
         test release-audit release-check source-2-audit source-2-release-audit source-2-check source-2-pre-tag-check source-2-tag-check clean \
         reference analyze find-unanalyzed report set-movie show-movie \
-        prepare-batch rename build-gens build-ymfm-renderer stop help \
+        prepare-batch rename build-gens stop help \
         _require-assets _require-movie _require-toolchain _require-emulator
 
 all: build
@@ -209,7 +198,8 @@ unpack-data:
 
 # Decode every authored segment and check it round-trips as declared.
 roundtrip-formats: _require-assets
-	@$(PYTHON) $(RUN_SCRIPT) authoring.data_formats 		--manifest $(DATA_FORMAT_MANIFEST) --data-dir $(DATA_DIR) 		--summary $(DATA_FORMAT_SUMMARY)
+	@$(PYTHON) $(RUN_SCRIPT) formats.data_formats --manifest $(DATA_FORMAT_MANIFEST) \
+		--data-dir $(DATA_DIR) --summary $(DATA_FORMAT_SUMMARY)
 
 clean:
 	@$(PYTHON) $(RUN_SCRIPT) build.clean_project
@@ -233,22 +223,11 @@ help:
 	@echo "  make compare                   Compare an existing build without reassembling"
 	@echo "  make clean                     Remove build artifacts"
 	@echo ""
-	@echo "Content authoring:"
-	@echo "  make init-content              Initialize missing files in $(CONTENT_WORKSPACE)"
-	@echo "  make inspect-content           Show which workspace artifacts are edited"
-	@echo "  make validate-content          Validate the editable workspace"
-	@echo "  make build-content             Build the isolated editable ROM"
-	@echo "  make check-content-zero-edit   Prove tracked content still reproduces the ROM"
-	@echo "  make level-studio              Open the visual level editor"
-	@echo "  make playtest-level ROUND=1    Build and play one round directly in Gens"
-	@echo "  make smoke-level-playtest      Prove direct round entry in Gens"
-	@echo "  make graphics-studio           Open the visual graphics editor"
-	@echo "  make sound-studio              Open the music and SFX editor"
-	@echo "  make preview-sound SOUND=zMusic81Header  Render a song/SFX to VGM and WAV"
+	@echo "Retrolarium:"
+	@echo "  make studio-check              Open and rebuild flicky.rlj with the kit"
+	@echo "  make source-3-audit            studio-check plus the Source 3.0 manifest"
+	@echo "  make source-3-check            The Source 2.0 gate, then source-3-audit"
 	@echo "  make trace-sound               Capture the real Z80 chip-register stream"
-	@echo "  make verify-sound-sequencer    Compare Python playback with Gens"
-	@echo "  make check-studios             Load Studio models without opening a GUI"
-	@echo "  make smoke-studios-workstation Exercise real Tk windows and public actions"
 	@echo ""
 	@echo "Validation:"
 	@echo "  make verify-toolchain          Hash-check the selected build tools"
@@ -287,7 +266,6 @@ help:
 	@echo ""
 	@echo "Emulator:"
 	@echo "  make build-gens                Build the manifest-pinned Gens revision in Docker"
-	@echo "  make build-ymfm-renderer       Rebuild the standalone VGM-to-WAV helper"
 	@echo "  make stop                      Kill running emulator processes"
 	@echo ""
 	@echo "Toolchain: $(TOOLS_DIR)  (override with PLATFORM=<subfolder>)"

@@ -71,38 +71,58 @@ release-check:
 	$(MAKE) trace
 	$(MAKE) release-audit
 
+# The 2.0 manifest describes the tree tagged source-reconstruction-2.0 (with
+# the editors 3.0 retired), so its audits run there, by the tag's own targets
+# and tools, in a disposable clone.
+SOURCE_2_TAG ?= source-reconstruction-2.0
+SOURCE_2_AT_TAG = $(PYTHON) $(RUN_SCRIPT) validation.tag_audit --tag "$(SOURCE_2_TAG)" --
+
 source-2-audit:
-	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit --manifest $(SOURCE_2_MANIFEST)
+	@$(SOURCE_2_AT_TAG) "$(MAKE)" source-2-audit
 
 source-2-release-audit:
-	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit --manifest $(SOURCE_2_MANIFEST) --require-ready
+	@$(SOURCE_2_AT_TAG) "$(MAKE)" source-2-release-audit
 
 source-2-check:
 	$(MAKE) release-check
 	$(MAKE) verify-relocation
-	$(MAKE) check-content-zero-edit
-	$(MAKE) validate-content
-	$(MAKE) check-studios
-	$(MAKE) smoke-studios-workstation
-	$(MAKE) smoke-level-playtest
-	$(MAKE) verify-sound-sequencer
 	$(MAKE) source-2-audit
 
 source-2-pre-tag-check:
 	$(MAKE) source-2-check
-	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit \
+	@$(SOURCE_2_AT_TAG) scripts/run.py validation.source_2_audit \
 		--manifest $(SOURCE_2_MANIFEST) --pre-tag
 
 source-2-tag-check:
 	$(MAKE) source-2-check
-	@$(PYTHON) $(RUN_SCRIPT) validation.source_2_audit \
+	@$(SOURCE_2_AT_TAG) scripts/run.py validation.source_2_audit \
 		--manifest $(SOURCE_2_MANIFEST) --require-tag
+
+# Retrolarium: flicky.rlj opens in the kit and builds back to the ROM, in a
+# throwaway copy of the repository. The kit needs the studio's Flicky level
+# writer (RETROLARIUM_FLICKY_LEVEL_WRITER or on PATH).
+RLTOOL ?= rltool
+
+studio-check:
+	$(RLTOOL) studio check flicky.rlj
+
+# Source Reconstruction 3.0, in development until Retrolarium is tagged: the
+# source-2-check gate, then studio-check with the manifest's Retrolarium
+# section checked against the descriptor and the running kit.
+SOURCE_3_MANIFEST ?= config/source_reconstruction_3_0.json
+
+source-3-audit:
+	$(RLTOOL) studio check flicky.rlj --release $(SOURCE_3_MANIFEST)
+
+source-3-check:
+	$(MAKE) source-2-check
+	$(MAKE) source-3-audit
 
 # Clone-level structural confidence without a private ROM or extracted data.
 # Codec cases use synthetic inputs; both audits validate real public commands.
 scaffold-check: lint release-audit source-2-audit
 	@$(PYTHON) -m unittest \
-		tests.authoring.test_enigma_encoder \
+		tests.formats.test_enigma_encoder \
 		tests.validation.test_make_interface \
 		tests.validation.test_release_audit \
 		tests.validation.test_repository_layout \

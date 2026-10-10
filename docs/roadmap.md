@@ -260,3 +260,15 @@ The implementation goals and release preparation are complete. The annotated
 5. Read [`index.md`](index.md) for the documentation order.
 
 Never commit the ROM, `data/**/*.bin`, `fbuilt.bin`, `build/main.p` or the listing.
+
+### 13. Source Reconstruction 3.0 - Editing in Retrolarium
+
+Retrolarium Studio edits Flicky from `flicky.rlj`: rounds and bonus rounds,
+graphics, palettes, animations, screens, text, music, sound effects and the
+attract demos. The Level, Graphics, and Sound studios, their workspace and
+content build, the level playtest, the YM2612 preview and the workstation
+smokes are retired; the kit's sequencer is tested against `make trace-sound`.
+The data-format round trip moves to `scripts/formats/`, the 2.0 manifest audits
+run at the `source-reconstruction-2.0` tag, and `make studio-check` proves the
+repository with the kit. The 3.0 manifest pins the kit once Retrolarium
+publishes its tags; see [`retrolarium.md`](retrolarium.md).

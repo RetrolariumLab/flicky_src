@@ -15,8 +15,10 @@ itself. `src/main.s` is an index of 36 address-ordered modules. The source uses
 semantic names, with uncertain interpretations recorded in
 [`docs/unknowns.md`](docs/unknowns.md).
 
-Source Reconstruction 1.0 and 2.0 are tagged. Source 2.0 adds isolated Level,
-Graphics, and Sound studios. The project includes data-format codecs, exports a
+Source Reconstruction 1.0 and 2.0 are tagged. Source 2.0 added isolated Level,
+Graphics, and Sound studios; Source Reconstruction 3.0 moves editing to
+Retrolarium Studio (see [`docs/retrolarium.md`](docs/retrolarium.md)). The
+project includes data-format codecs, exports a
 symbol map for debuggers, and replays twelve scenarios under the emulator
 against 68 declared facts about work RAM. `make release-check` audits the 1.0
 contract; `make source-2-check` also runs the 2.0 acceptance checks. See
@@ -60,8 +62,8 @@ flicky_src/
 |   |-- windows_i386/       # asw.exe, p2bin.exe, message catalogs
 |   |-- linux_x86_64/       # asl, p2bin, message catalogs
 |   `-- README.md           # Provenance, hashes, why -p=FF matters
-|-- config/                 # Build, authoring, runtime, and release contracts
-|   |-- authoring/          # Studio inventory and editable data formats
+|-- config/                 # Build, format, runtime, and release contracts
+|   |-- authoring/          # Data-format round-trip claims
 |   |-- debugger/           # Symbol-resolved breakpoints and watches
 |   |-- linker/             # ROM map, landmarks, padding gap, module ranges
 |   |-- reconstruction/     # 300-700-line source policy and exceptions
@@ -74,13 +76,12 @@ flicky_src/
 |-- movies/                 # Gens input recordings and their scene indexes
 |-- scenarios/              # Runtime scenarios and their state expectations
 |-- scripts/                # Categorized tooling, dispatched by run.py
-|   |-- authoring/          # Content models, studios, and native preview support
 |   |-- build/              # Assembly, extraction and housekeeping
-|   |-- formats/            # Shared Nemesis and Enigma Python codecs
+|   |-- formats/            # Nemesis and Enigma codecs and their round trips
 |   |-- runtime/            # Emulator capture and state validation
 |   |-- validation/         # Static, binary and release gates
 |   `-- workflow/           # Reverse-engineering maintenance tools
-|-- tests/                  # Tests mirroring authoring/runtime/validation
+|-- tests/                  # Tests mirroring the script categories
 |-- src/
 |   |-- compression/        # Nemesis and Enigma decompressors
 |   |-- data/               # Binary includes and the large data tables
@@ -91,7 +92,8 @@ flicky_src/
 |   |-- sound/              # 68000 host plus modular Z80 driver and sound data
 |   |-- system/             # Boot, entry point, interrupts, DMA, input
 |   `-- main.s              # Address-ordered include index, the entrypoint
-|-- mk/                     # Authoring, runtime, validation, workflow recipes
+|-- mk/                     # Runtime, validation, workflow recipes
+|-- flicky.rlj              # Opens the game in Retrolarium Studio
 `-- Makefile                # Public interface and build primitives
 ```
 
@@ -122,17 +124,9 @@ make z80-data-check    # Assemble and byte-check the Z80 sound banks
 make check-source-structure # Enforce 300-700 lines, justified exceptions, paths
 make release-check  # The 1.0 acceptance gate
 
-make init-content              # Initialize the ignored editor workspace
-make build-content             # Build an isolated editable ROM
-make check-content-zero-edit   # Prove editable baseline byte identity
-make level-studio              # Open the visual level editor
-make graphics-studio           # Open the visual graphics editor
-make sound-studio              # Open the music and SFX editor
-make preview-sound SOUND=zMusic81Header  # Render standalone VGM and WAV audio
-make verify-sound-sequencer    # Compare Python YM2612 writes with the real Z80 driver
-make check-studios             # Validate Studio models without opening GUI
-make smoke-studios-workstation # Exercise real Tk windows and public Studio actions
-make source-2-audit            # Check the Source 2.0 manifest
+make studio-check              # Open and rebuild flicky.rlj with the Retrolarium kit
+make trace-sound               # Record the Z80 driver's chip writes in Gens
+make source-2-audit            # Check the Source 2.0 manifest at its tag
 make source-2-check            # Complete 1.0 + 2.0 acceptance gate
 make source-2-pre-tag-check    # Clean-tree check before creating the tag
 make source-2-tag-check        # Verify the annotated tag at HEAD

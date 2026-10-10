@@ -124,28 +124,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "audio_renderer",
-      "name": "Flicky ymfm VGM renderer",
-      "version": "ymfm 81aec25ccbb9",
-      "role": "Renders Sound Studio's YM2612/SN76489 VGM stream to a standalone WAV preview",
-      "source": "https://github.com/aaronsgiles/ymfm",
-      "source_commit": "81aec25ccbb98f4873a255f7551ac4dadac59b4a",
-      "provenance": "source-built",
-      "verification": "make verify-toolchain",
-      "identity": "source_commit_and_binary_hash",
-      "identity_note": "The minimal required ymfm sources and BSD-3-Clause license are vendored unchanged under third_party/ymfm; scripts/authoring/ymfm_renderer is the project-specific native VGM/WAV frontend, built through the Python command surface.",
-      "files": {
-        "windows_i386": [
-          {
-            "path": "bin/windows_i386/ymfm_renderer.exe",
-            "executable": true,
-            "size": 2640167,
-            "sha256": "6815d01e7e0e5af7ead14947758001a433b73e871e486a421e230a91e48d7191"
-          }
-        ]
-      }
     }
   ],
   "hosts": [

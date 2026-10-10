@@ -1,6 +1,5 @@
 import json
 import subprocess
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,15 +19,6 @@ class Source2Audit(unittest.TestCase):
             path = Path(directory) / "source_2.json"
             path.write_text(json.dumps(document), encoding="utf-8")
             return source_2_audit.validate_source_2(ROOT, path, require_ready)
-
-    def test_project_contract_is_valid_tag_ready_state(self):
-        self.assertEqual(source_2_audit.validate_source_2(ROOT, self.path), [])
-        self.assertEqual(
-            source_2_audit.validate_source_2(
-                ROOT, self.path, require_ready=True
-            ),
-            [],
-        )
 
     def test_development_manifest_fails_ready_audit(self):
         document = json.loads(json.dumps(self.manifest))
@@ -111,12 +101,6 @@ class Source2Audit(unittest.TestCase):
             errors = self.validate_copy(document)
         self.assertTrue(any("no exact binary origin" in error for error in errors))
 
-    def test_workstation_gate_matches_the_studio_manifest(self):
-        document = json.loads(json.dumps(self.manifest))
-        document["authoring"]["workstation_gate"] = "check-studios"
-        errors = self.validate_copy(document)
-        self.assertIn("workstation Studio gate differs from its manifest", errors)
-
     def test_manifest_names_the_canonical_label_registry_once(self):
         document = json.loads(json.dumps(self.manifest))
         document["provenance"]["references"].remove(
@@ -170,12 +154,10 @@ class Source2Audit(unittest.TestCase):
         self.assertFalse((ROOT / "docs/provenance").exists())
 
     def test_public_release_audit_runs_end_to_end(self):
+        # The 2.0 manifest describes its tagged tree; the public target audits
+        # it there, in a clone at the source-reconstruction-2.0 tag.
         result = subprocess.run(
-            [
-                sys.executable,
-                str(ROOT / "scripts" / "run.py"),
-                "validation.source_2_audit",
-            ],
+            ["make", "source-2-audit"],
             cwd=ROOT,
             capture_output=True,
             text=True,

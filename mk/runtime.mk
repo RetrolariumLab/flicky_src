@@ -70,9 +70,12 @@ build-gens:
 		--config $(TOOLCHAIN_MANIFEST) --only emulator --require-emulator \
 		--require-executable "emulator=$(GENS_DIR)/Output/Gens.exe"
 
-build-ymfm-renderer:
-	@$(PYTHON) $(RUN_SCRIPT) authoring.build_ymfm_renderer \
-		--output-dir bin/windows_i386
+# The real Z80 driver's chip writes, which the kit's Flicky sequencer is
+# tested against (its test reads build/sound_trace/gens.csv).
+trace-sound: verify | _require-emulator
+	@$(PYTHON) $(RUN_SCRIPT) runtime.capture_sound_trace --gens "$(GENS_EXE)" \
+		--rom "$(ROM)" --config "$(SOUND_TRACE_CONFIG)" \
+		--trace "$(SOUND_TRACE_FILE)" --frames "$(SOUND_TRACE_FRAMES)"
 
 stop:
 	-@taskkill //F //IM Gens.exe 2>/dev/null || true

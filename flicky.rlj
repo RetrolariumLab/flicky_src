@@ -1,0 +1,16 @@
+schema = "retrolarium.game"
+schema_version = 1
+
+# Opened by Retrolarium Studio: it checks the ROM, copies this repository
+# into .retrolarium/ue/flicky-source and keeps your edits there (not tracked).
+
+[game]
+id = "flicky"
+name = "Flicky"
+platform = "megadrive"
+profile = "flicky-ue.v1"
+
+[[revisions]]
+id = "ue"
+label = "USA / Europe"
+rom = "Flicky (UE) [!].bin"

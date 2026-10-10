@@ -14,7 +14,7 @@ class CleanProjectTests(unittest.TestCase):
             readonly = root / "build" / "source-checkout" / "readonly.pack"
             workspace = root / "content" / "workspace" / "tmp" / "draft.json"
             unrelated = root / "notes" / "tmp" / "research.txt"
-            cache = root / "scripts" / "authoring" / "__pycache__" / "model.pyc"
+            cache = root / "scripts" / "build" / "__pycache__" / "model.pyc"
             for path in (generated, readonly, workspace, unrelated, cache):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text("keep-or-remove", encoding="utf-8")

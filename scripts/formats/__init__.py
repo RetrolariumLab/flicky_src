@@ -1,1 +1,1 @@
-"""Pure codecs shared by build extraction and content authoring."""
+"""Pure codecs for build extraction and the format round trips."""

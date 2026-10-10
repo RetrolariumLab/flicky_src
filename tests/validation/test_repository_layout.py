@@ -8,7 +8,6 @@ ROOT = Path(__file__).resolve().parents[2]
 class RepositoryLayoutTests(unittest.TestCase):
     def test_config_contracts_have_one_semantic_owner(self):
         expected = {
-            "authoring/content_studios.json",
             "authoring/data_formats.json",
             "debugger/breakpoints.json",
             "debugger/watches.json",

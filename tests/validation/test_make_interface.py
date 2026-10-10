@@ -17,10 +17,9 @@ class MakeInterfaceTests(unittest.TestCase):
         paths = makefile_paths(root)
 
         self.assertEqual(paths[0], root / "Makefile")
-        self.assertIn(root / "mk" / "authoring.mk", paths)
+        self.assertIn(root / "mk" / "runtime.mk", paths)
         self.assertIn("source-2-check", makefile_targets(root))
-        self.assertIn("level-studio", makefile_targets(root))
-        self.assertIn("smoke-studios-workstation", makefile_targets(root))
+        self.assertIn("studio-check", makefile_targets(root))
         self.assertIn("scaffold-check", makefile_targets(root))
         self.assertIn("format-check", makefile_targets(root))
 
@@ -51,7 +50,9 @@ class MakeInterfaceTests(unittest.TestCase):
             "source-2-check",
             "source-2-pre-tag-check",
             "source-2-tag-check",
-            "smoke-studios-workstation",
+            "studio-check",
+            "source-3-audit",
+            "source-3-check",
         ):
             self.assertIn(f"make {target}", result.stdout)
 
@@ -59,20 +60,8 @@ class MakeInterfaceTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         recipe = makefile_recipe("source-2-check", root)
         self.assertEqual(recipe[0], "$(MAKE) release-check")
-        self.assertIn("$(MAKE) smoke-studios-workstation", recipe)
+        self.assertIn("$(MAKE) verify-relocation", recipe)
         self.assertEqual(recipe[-1], "$(MAKE) source-2-audit")
-
-    def test_content_build_passes_every_workspace_selector(self):
-        root = Path(__file__).resolve().parents[2]
-        recipe = " ".join(makefile_recipe("build-content", root))
-        for option in (
-            "--level-workspace",
-            "--graphics-workspace",
-            "--semantics-workspace",
-            "--sequences-workspace",
-            "--sound-workspace",
-        ):
-            self.assertIn(option, recipe)
 
     def test_standalone_z80_build_verifies_selected_tools_first(self):
         root = Path(__file__).resolve().parents[2]
@@ -126,8 +115,6 @@ class MakeInterfaceTests(unittest.TestCase):
             "reference",
             "analyze",
             "trace-runtime",
-            "playtest-level",
-            "smoke-level-playtest",
             "trace-sound",
         ):
             with self.subTest(target=target):
@@ -147,14 +134,6 @@ class MakeInterfaceTests(unittest.TestCase):
         self.assertLess(compile_step, stamp)
         self.assertLess(stamp, verify)
         self.assertNotIn("git clone", recipe)
-
-    def test_ymfm_build_uses_the_python_command_surface(self):
-        root = Path(__file__).resolve().parents[2]
-        recipe = " ".join(makefile_recipe("build-ymfm-renderer", root))
-
-        self.assertIn("authoring.build_ymfm_renderer", recipe)
-        self.assertNotIn("docker build", recipe)
-
 
 if __name__ == "__main__":
     unittest.main()

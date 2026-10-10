@@ -69,3 +69,7 @@ content/workspace/
 # Stray AS outputs if the assembler is invoked by hand from bin/
 bin/.p
 bin/.lst
+
+# Retrolarium Studio: generated projects and your edits (game data)
+/.retrolarium/
+/hack/

@@ -13,10 +13,9 @@ make verify-layout        # the ROM layout is the one config/linker/rom_layout.j
 make test                 # focused unit tests for the Python tooling
 make roundtrip-formats    # decode and re-encode the authored data formats
 make trace                # emulator evidence for gameplay transactions
-make verify-sound-sequencer # Python audio writes against the real Z80 driver
-make smoke-studios-workstation # Real Tk windows and public editor actions
 make release-check        # everything above, in order
-make source-2-audit       # validate the current 2.0 contract state
+make source-2-audit       # validate the 2.0 contract at its tag
+make studio-check         # open and rebuild flicky.rlj with the kit
 make source-2-check       # complete 1.0 gate, then every 2.0 gate
 make format-check         # formatting check without writes
 make scaffold-check       # static clone checks without a private ROM
@@ -71,18 +70,15 @@ rejects a mismatched existing checkout. Runtime targets run `make
 verify-emulator` before launch, hashing the resolved `GENS_EXE` rather than a
 fixed default path.
 
-**`make verify-sound-sequencer`** uses that instrumented emulator as an audio
-oracle. It captures actual Z80 writes to the YM2612, aligns title song `$85`,
-and requires 2,624 ordered non-timer writes to equal the standalone Python
-sequencer exactly. Their sample positions must also agree with the
-frame-resolution Gens trace within 2.1 frames. A missing, truncated, value-,
-order-, or timing-divergent trace fails the Source 2.0 gate.
+**`make trace-sound`** uses that instrumented emulator to record the YM2612
+writes the real Z80 driver makes. The Retrolarium kit's Flicky sequencer is
+tested against that trace: 2,624 ordered non-timer writes of title song `$85`
+must match exactly, within 2.1 frames.
 
-**`make smoke-studios-workstation`** starts genuine Tk roots, constructs every
-Studio view, invokes the Save, Build ROM, preview/play, Stop, and dirty-close
-paths declared for that Studio, and fails if an action does not reach its
-validated adapter boundary. Temporary workspace copies keep the smoke isolated
-from local authored content.
+**`make studio-check`** runs the kit's check of `flicky.rlj`: in a throwaway
+copy it prepares the revision, validates every document and rebuilds the ROM
+unedited, byte for byte. The 2.0 manifest describes its tagged tree, so
+`make source-2-audit` runs at the `source-reconstruction-2.0` tag.
 
 ## The rule
 
