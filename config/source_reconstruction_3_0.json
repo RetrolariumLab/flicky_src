@@ -120,6 +120,11 @@
       "id": "ymfm-to-studio",
       "kind": "tooling",
       "summary": "The YM2612 preview renderer and the vendored ymfm leave for Retrolarium Studio; the sequencer fidelity oracle becomes a kit test over make trace-sound."
+    },
+    {
+      "id": "object-names",
+      "kind": "source",
+      "summary": "Six objects are named for what their sprites show: the PAUSE text (was time over), the bonus net (was held chick), the diamond bonus (was star), the chick score popup, PUSH START BUTTON and the logo letters."
     }
   ],
   "retrolarium": {

@@ -801,32 +801,32 @@
     ],
     [
       "word_1AB24",
-      "ChickCountPopup_Map0",
+      "ChirpScorePopup_Map0",
       "src/data/tables.s"
     ],
     [
       "word_1AB34",
-      "ChickCountPopup_Map2",
+      "ChirpScorePopup_Map2",
       "src/data/tables.s"
     ],
     [
       "word_1AB44",
-      "ChickCountPopup_Map4",
+      "ChirpScorePopup_Map4",
       "src/data/tables.s"
     ],
     [
       "word_1AB54",
-      "ChickCountPopup_Map5",
+      "ChirpScorePopup_Map5",
       "src/data/tables.s"
     ],
     [
       "word_1AB5C",
-      "ChickCountPopup_Map6",
+      "ChirpScorePopup_Map6",
       "src/data/tables.s"
     ],
     [
       "word_1AB6C",
-      "ChickCountPopup_Map7",
+      "ChirpScorePopup_Map7",
       "src/data/tables.s"
     ],
     [
@@ -1831,12 +1831,12 @@
     ],
     [
       "word_1AAD6",
-      "Obj_BonusHeldChick_UpdateData0",
+      "Obj_BonusNet_UpdateData0",
       "src/data/tables.s"
     ],
     [
       "word_1AAE4",
-      "Obj_BonusHeldChick_UpdateData1",
+      "Obj_BonusNet_UpdateData1",
       "src/data/tables.s"
     ],
     [
@@ -1846,12 +1846,12 @@
     ],
     [
       "word_1AD32",
-      "Obj_TimeOverTextData",
+      "Obj_PauseTextData",
       "src/data/tables.s"
     ],
     [
       "word_1ACDC",
-      "Obj_TitleCursorData",
+      "Obj_TitlePushStartData",
       "src/data/tables.s"
     ],
     [
@@ -2096,22 +2096,22 @@
     ],
     [
       "word_1A8D8",
-      "StarBonus_SpinFrame0",
+      "DiamondBonus_SpinFrame0",
       "src/data/tables.s"
     ],
     [
       "word_1A8E0",
-      "StarBonus_SpinFrame1",
+      "DiamondBonus_SpinFrame1",
       "src/data/tables.s"
     ],
     [
       "word_1A8E8",
-      "StarBonus_SpinFrame2",
+      "DiamondBonus_SpinFrame2",
       "src/data/tables.s"
     ],
     [
       "word_1A8F0",
-      "StarBonus_SpinFrame3",
+      "DiamondBonus_SpinFrame3",
       "src/data/tables.s"
     ],
     [
@@ -2121,32 +2121,32 @@
     ],
     [
       "word_1AD52",
-      "Title_StaticMap0",
+      "Title_LogoLetterMap0",
       "src/data/tables.s"
     ],
     [
       "word_1AD5A",
-      "Title_StaticMap1",
+      "Title_LogoLetterMap1",
       "src/data/tables.s"
     ],
     [
       "word_1AD62",
-      "Title_StaticMap2",
+      "Title_LogoLetterMap2",
       "src/data/tables.s"
     ],
     [
       "word_1AD6A",
-      "Title_StaticMap3",
+      "Title_LogoLetterMap3",
       "src/data/tables.s"
     ],
     [
       "word_1AD72",
-      "Title_StaticMap4",
+      "Title_LogoLetterMap4",
       "src/data/tables.s"
     ],
     [
       "word_1AD7A",
-      "Title_StaticMap5",
+      "Title_LogoLetterMap5",
       "src/data/tables.s"
     ],
     [
@@ -2771,67 +2771,67 @@
     ],
     [
       "sub_16648",
-      "Obj_BonusHeldChick",
+      "Obj_BonusNet",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_16674",
-      "Obj_BonusHeldChick_FacingLeft",
+      "Obj_BonusNet_FacingLeft",
       "src/game/bonus/objects.s"
     ],
     [
       "locret_16698",
-      "Obj_BonusHeldChick_Return",
+      "Obj_BonusNet_Return",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_1667E",
-      "Obj_BonusHeldChick_Update",
+      "Obj_BonusNet_Update",
       "src/game/bonus/objects.s"
     ],
     [
       "sub_164EC",
-      "Obj_StarBonus",
+      "Obj_DiamondBonus",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_1657C",
-      "Obj_StarBonus_Countdown",
+      "Obj_DiamondBonus_Countdown",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_16582",
-      "Obj_StarBonus_Despawn",
+      "Obj_DiamondBonus_Despawn",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_16540",
-      "Obj_StarBonus_PopupLoop",
+      "Obj_DiamondBonus_PopupLoop",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_16574",
-      "Obj_StarBonus_PopupNext",
+      "Obj_DiamondBonus_PopupNext",
       "src/game/bonus/objects.s"
     ],
     [
       "locret_16586",
-      "Obj_StarBonus_Return",
+      "Obj_DiamondBonus_Return",
       "src/game/bonus/objects.s"
     ],
     [
       "loc_1651A",
-      "Obj_StarBonus_Update",
+      "Obj_DiamondBonus_Update",
       "src/game/bonus/objects.s"
     ],
     [
       "byte_165AC",
-      "StarBonus_AnimPointers",
+      "DiamondBonus_AnimPointers",
       "src/game/bonus/objects.s"
     ],
     [
       "byte_165B0",
-      "StarBonus_AnimSpin",
+      "DiamondBonus_AnimSpin",
       "src/game/bonus/objects.s"
     ],
     [
@@ -4041,12 +4041,12 @@
     ],
     [
       "sub_16DCC",
-      "Obj_TimeOverText",
+      "Obj_PauseText",
       "src/game/screens/game_over.s"
     ],
     [
       "locret_16DE6",
-      "Obj_TimeOverText_Return",
+      "Obj_PauseText_Return",
       "src/game/screens/game_over.s"
     ],
     [
@@ -6401,7 +6401,7 @@
     ],
     [
       "off_1649E",
-      "ChickCountPopup_MappingPointers",
+      "ChirpScorePopup_MappingPointers",
       "src/game/enemies/spawner.s"
     ],
     [
@@ -6421,27 +6421,27 @@
     ],
     [
       "sub_16456",
-      "Obj_ChickCountPopup",
+      "Obj_ChirpScorePopup",
       "src/game/enemies/spawner.s"
     ],
     [
       "loc_16482",
-      "Obj_ChickCountPopup_BelowDoor",
+      "Obj_ChirpScorePopup_BelowDoor",
       "src/game/enemies/spawner.s"
     ],
     [
       "loc_16490",
-      "Obj_ChickCountPopup_Countdown",
+      "Obj_ChirpScorePopup_Countdown",
       "src/game/enemies/spawner.s"
     ],
     [
       "locret_1649C",
-      "Obj_ChickCountPopup_Return",
+      "Obj_ChirpScorePopup_Return",
       "src/game/enemies/spawner.s"
     ],
     [
       "loc_16486",
-      "Obj_ChickCountPopup_SetPosition",
+      "Obj_ChirpScorePopup_SetPosition",
       "src/game/enemies/spawner.s"
     ],
     [
@@ -6636,22 +6636,22 @@
     ],
     [
       "sub_121CC",
-      "Obj_TitleCursor",
+      "Obj_TitlePushStart",
       "src/game/screens/front_end.s"
     ],
     [
       "loc_121E6",
-      "Obj_TitleCursor_Dispatch",
+      "Obj_TitlePushStart_Dispatch",
       "src/game/screens/front_end.s"
     ],
     [
       "sub_1223E",
-      "Obj_TitleStatic",
+      "Obj_TitleLogoLetter",
       "src/game/screens/front_end.s"
     ],
     [
       "locret_1225C",
-      "Obj_TitleStatic_Return",
+      "Obj_TitleLogoLetter_Return",
       "src/game/screens/front_end.s"
     ],
     [
@@ -6796,17 +6796,17 @@
     ],
     [
       "off_1225E",
-      "Title_StaticMappingPointers",
+      "Title_LogoLetterMappingPointers",
       "src/game/screens/front_end.s"
     ],
     [
       "word_12276",
-      "Title_StaticXTable",
+      "Title_LogoLetterXTable",
       "src/game/screens/front_end.s"
     ],
     [
       "word_12278",
-      "Title_StaticYTable",
+      "Title_LogoLetterYTable",
       "src/game/screens/front_end.s"
     ],
     [

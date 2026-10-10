@@ -29,8 +29,8 @@ CATEGORIES = frozenset("""
     Game Level Object Sprite Anim Camera Collision Score Timer UI
     Title Guide RoundSelect Demo Bonus Ending SegaScreen
     Player Chirp Tiger Iggy Throwable Spawner Enemy Obj
-    BonusSeesaw BonusTiger BonusChick WindowGirl StarBonus
-    ScorePopup ChickCountPopup BonusScorePopup
+    BonusSeesaw BonusTiger BonusChick WindowGirl DiamondBonus
+    ScorePopup ChirpScorePopup BonusScorePopup
     Data Ram Unused Z80
 """.split())
 

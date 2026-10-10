@@ -137,48 +137,48 @@ ScorePopup_MappingPointers: dc.w    ScorePopup_Map0-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map1-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map2-Sys_GameEntryPoint
 ; Chick delivery count popup object
-Obj_ChickCountPopup:
+Obj_ChirpScorePopup:
                 bset    #7,(a0)
-                bne.s   Obj_ChickCountPopup_Countdown
+                bne.s   Obj_ChirpScorePopup_Countdown
                 move.b  $3A(a0),d0
                 subq.b  #1,d0
                 lsl.w   #1,d0
                 moveq   #$FFFFFFFF,d1
-                move.w  ChickCountPopup_MappingPointers(pc,d0.w),d1
+                move.w  ChirpScorePopup_MappingPointers(pc,d0.w),d1
                 move.l  d1,$C(a0)
                 lsl.w   #2,d0
                 move.w  (Ram_ExitDoorY).w,d6
                 cmpi.w  #$F0,d6
-                bcs.s   Obj_ChickCountPopup_BelowDoor
+                bcs.s   Obj_ChirpScorePopup_BelowDoor
                 sub.w   d0,d6
                 subi.w  #$18,d6
-                bra.s   Obj_ChickCountPopup_SetPosition
+                bra.s   Obj_ChirpScorePopup_SetPosition
 
-Obj_ChickCountPopup_BelowDoor:
+Obj_ChirpScorePopup_BelowDoor:
                 add.w   d0,d6
                 addq.w  #8,d6
 
-Obj_ChickCountPopup_SetPosition:
+Obj_ChirpScorePopup_SetPosition:
                 move.w  d6,$24(a0)
                 move.w  #$1E,$38(a0)
 
-Obj_ChickCountPopup_Countdown:
+Obj_ChirpScorePopup_Countdown:
                 bsr.w   Object_UpdatePosition
                 subq.w  #1,$38(a0)
-                bne.s   Obj_ChickCountPopup_Return
+                bne.s   Obj_ChirpScorePopup_Return
                 clr.w   (a0)
 
-Obj_ChickCountPopup_Return:
+Obj_ChirpScorePopup_Return:
                 rts
 
-ChickCountPopup_MappingPointers:    dc.w    ChickCountPopup_Map0-Sys_GameEntryPoint
+ChirpScorePopup_MappingPointers:    dc.w    ChirpScorePopup_Map0-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map0-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map2-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map2-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map1-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map4-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map5-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map6-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map7-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map4-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map5-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map6-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map7-Sys_GameEntryPoint
 ; Bonus round score popup object
 Obj_BonusScorePopup:
                 bset    #7,(a0)
@@ -200,13 +200,13 @@ Obj_BonusScorePopup_Countdown:
 Obj_BonusScorePopup_Return:
                 rts
 
-BonusScorePopup_MappingPointers:    dc.w    ChickCountPopup_Map0-Sys_GameEntryPoint
+BonusScorePopup_MappingPointers:    dc.w    ChirpScorePopup_Map0-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map0-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map2-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map2-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map1-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map4-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map4-Sys_GameEntryPoint
                 dc.w    ScorePopup_Map2-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map5-Sys_GameEntryPoint
-                dc.w    ChickCountPopup_Map6-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map5-Sys_GameEntryPoint
+                dc.w    ChirpScorePopup_Map6-Sys_GameEntryPoint
                 dc.w    BonusScorePopup_Map8-Sys_GameEntryPoint
 ; Collectible star bonus object

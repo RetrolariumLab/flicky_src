@@ -194,10 +194,10 @@ Player_FlyFrame1:   dc.b    0, 1
 Player_BrakeFrame0: dc.b    0, 2
                 dc.w    $F005, $442E, $F8F8
 Guide_CharacterMap8:                dc.w    2, $F005, $4432, $F8F8
-StarBonus_SpinFrame0:               dc.w    7, $F800, $4B2, $FCFC
-StarBonus_SpinFrame1:               dc.w    7, $F800, $4B3, $FCFC
-StarBonus_SpinFrame2:               dc.w    7, $F800, $4B4, $FCFC
-StarBonus_SpinFrame3:               dc.w    7, $F800, $686, $FCFC
+DiamondBonus_SpinFrame0:            dc.w    7, $F800, $4B2, $FCFC
+DiamondBonus_SpinFrame1:            dc.w    7, $F800, $4B3, $FCFC
+DiamondBonus_SpinFrame2:            dc.w    7, $F800, $4B4, $FCFC
+DiamondBonus_SpinFrame3:            dc.w    7, $F800, $686, $FCFC
 Tiger_WaitFrame0:                   dc.w    8, $F005, $44B5, $F8F8
 Tiger_WaitFrame1:                   dc.w    8, $F005, $44B9, $F8F8
 Tiger_WaitFrame2:                   dc.w    8, $F005, $44BD, $F8F8
@@ -233,8 +233,8 @@ BonusSeesaw_Frame1:                 dc.w    $110, $F008, $6514, $F0F8, $F808, $6
 BonusSeesaw_Frame2:                 dc.w    $10, $F00D, $651A, $F0F0
 BonusSeesaw_Frame3:                 dc.w    $110, $F008, $6D14, $F8F0, $F808, $6D17, $F0F8
 BonusSeesaw_Frame4:                 dc.w    $110, $F008, $6D0E, $F8F0, $F808, $6D11, $F0F8
-Obj_BonusHeldChick_UpdateData0:     dc.w    $111, $F004, $522, $F8F8, $F800, $524, $F800
-Obj_BonusHeldChick_UpdateData1:     dc.w    $11, $F005, $525, $F8F8
+Obj_BonusNet_UpdateData0:           dc.w    $111, $F004, $522, $F8F8, $F800, $524, $F800
+Obj_BonusNet_UpdateData1:           dc.w    $11, $F005, $525, $F8F8
 Spawner_AppearFrame0:               dc.w    0, $F300, $529, $FDFB
 Spawner_AppearFrame1:               dc.w    0, $F300, $52A, $FDFB
 Spawner_AppearFrame2:               dc.w    0, $F300, $52B, $FDFB
@@ -242,16 +242,16 @@ Spawner_AppearFrame3:               dc.w    0, $F300, $52B, $FDFB
 Spawner_AppearFrame4:               dc.w    0, $F300, $52C, $FDFB
 Spawner_AppearFrame5:               dc.w    0, $F300, $52D, $FDFB
 Spawner_AppearFrame6:               dc.w    0, $F300, $52E, $FDFB
-ChickCountPopup_Map0:               dc.w    $FF, $F808, $640, $F4F4
+ChirpScorePopup_Map0:               dc.w    $FF, $F808, $640, $F4F4
 ScorePopup_Map0:                    dc.b    0, $FF, $F8, 8, 6, $43, $F4, $F4
-ChickCountPopup_Map2:               dc.w    $FF, $F808, $646, $F4F4
+ChirpScorePopup_Map2:               dc.w    $FF, $F808, $646, $F4F4
 ScorePopup_Map1:                    dc.w    $FF, $F808, $649, $F4F4
-ChickCountPopup_Map4:               dc.w    $FF, $F808, $64C, $F4F4
+ChirpScorePopup_Map4:               dc.w    $FF, $F808, $64C, $F4F4
 ScorePopup_Map2:                    dc.w    $FF, $F808, $64F, $F4F4
-ChickCountPopup_Map5:               dc.w    $FF, $F808, $652, $F2F6
-ChickCountPopup_Map6:               dc.w    $FF, $F808, $655, $F2F6
+ChirpScorePopup_Map5:               dc.w    $FF, $F808, $652, $F2F6
+ChirpScorePopup_Map6:               dc.w    $FF, $F808, $655, $F2F6
 BonusScorePopup_Map8:               dc.w    $FF, $F808, $658, $F2F6
-ChickCountPopup_Map7:               dc.w    $FF, $F808, $65B, $F2F6
+ChirpScorePopup_Map7:               dc.w    $FF, $F808, $65B, $F2F6
 Iggy_StateSpawnData:                dc.w    9, $F001, $465E, $FCFC
 Iggy_RightFrame0:                   dc.w    $A, $F804, $4660, $F8F8
 Iggy_RightFrame1:                   dc.w    $A, $F804, $4662, $F8F8
@@ -292,7 +292,7 @@ Obj_GameOverTextData:           dc.w    $8FF
                 dc.w    0, $8056, $30C8
                 dc.w    0, $8045, $38C0
                 dc.w    0, $8052, $40B8
-Obj_TitleCursorData:    dc.w    $DFF
+Obj_TitlePushStartData: dc.w    $DFF
                 dc.w    0, $8050, $C830
                 dc.w    0, $8055, $D028
                 dc.w    0, $8053, $D820
@@ -307,21 +307,21 @@ Obj_TitleCursorData:    dc.w    $DFF
                 dc.w    0, $8054, $38C0
                 dc.w    0, $804F, $40B8
                 dc.w    0, $804E, $48B0
-Obj_TimeOverTextData:   dc.w    $4FF
+Obj_PauseTextData:  dc.w    $4FF
                 dc.w    0, $8050, $F8
                 dc.w    0, $8041, $8F0
                 dc.w    0, $8055, $10E8
                 dc.w    0, $8053, $18E0
                 dc.w    0, $8045, $20D8
-Title_StaticMap0:   dc.w    $FF, $E00B, $6740, $F4F4
-Title_StaticMap1:   dc.w    $FF, $E80A, $674C, $F4F4
-Title_StaticMap2:   dc.w    $FF, $E806, $6755, $F8F8
-Title_StaticMap3:   dc.w    $FF, $E80A, $675B, $F4F4
-Title_StaticMap4:   dc.w    $FF, $E80A, $6764, $F4F4
-Title_StaticMap5:   dc.w    $FF, $E00B, $676D, $F4F4
-WindowGirl_Frame0:  dc.w    $FF, $E806, $4687, $F8F8
-WindowGirl_Frame1:  dc.w    $FF, $E806, $468D, $F8F8
-Level_DataPointers: dc.w    Level_Data0-Sys_GameEntryPoint
+Title_LogoLetterMap0:   dc.w    $FF, $E00B, $6740, $F4F4
+Title_LogoLetterMap1:   dc.w    $FF, $E80A, $674C, $F4F4
+Title_LogoLetterMap2:   dc.w    $FF, $E806, $6755, $F8F8
+Title_LogoLetterMap3:   dc.w    $FF, $E80A, $675B, $F4F4
+Title_LogoLetterMap4:   dc.w    $FF, $E80A, $6764, $F4F4
+Title_LogoLetterMap5:   dc.w    $FF, $E00B, $676D, $F4F4
+WindowGirl_Frame0:      dc.w    $FF, $E806, $4687, $F8F8
+WindowGirl_Frame1:      dc.w    $FF, $E806, $468D, $F8F8
+Level_DataPointers:     dc.w    Level_Data0-Sys_GameEntryPoint
                 dc.w    Level_Data1-Sys_GameEntryPoint
                 dc.w    Level_Data1-Sys_GameEntryPoint
                 dc.w    Level_Data2-Sys_GameEntryPoint
