@@ -156,14 +156,14 @@ Title_BirdAnimIndexTable:   dc.w    0, 4, 4, 0
 Title_BirdXTable:           dc.w    $B0
 Title_BirdYTable:           dc.w    $F0, $110, $EC, $B0, $108, $110, $100
 ; Title screen cursor with blink state machine
-Obj_TitleCursor:
+Obj_TitlePushStart:
                 bset    #7,(a0)
-                bne.s   Obj_TitleCursor_Dispatch
-                move.l  #Obj_TitleCursorData,$C(a0)
+                bne.s   Obj_TitlePushStart_Dispatch
+                move.l  #Obj_TitlePushStartData,$C(a0)
                 move.w  #$F0,$20(a0)
                 move.w  #$120,$24(a0)
 
-Obj_TitleCursor_Dispatch:
+Obj_TitlePushStart_Dispatch:
                 move.w  $3C(a0),d0
                 andi.w  #$7C,d0
                 jsr     Title_CursorStateTable(pc,d0.w)
@@ -204,26 +204,26 @@ Obj_CursorBlink_Return:
                 rts
 
 ; Title screen static sprite objects
-Obj_TitleStatic:
+Obj_TitleLogoLetter:
                 bset    #7,(a0)
-                bne.s   Obj_TitleStatic_Return
+                bne.s   Obj_TitleLogoLetter_Return
                 move.w  $38(a0),d0
                 lsl.w   #2,d0
-                move.l  Title_StaticMappingPointers(pc,d0.w),$C(a0)
-                move.w  Title_StaticXTable(pc,d0.w),$20(a0)
-                move.w  Title_StaticYTable(pc,d0.w),$24(a0)
+                move.l  Title_LogoLetterMappingPointers(pc,d0.w),$C(a0)
+                move.w  Title_LogoLetterXTable(pc,d0.w),$20(a0)
+                move.w  Title_LogoLetterYTable(pc,d0.w),$24(a0)
 
-Obj_TitleStatic_Return:
+Obj_TitleLogoLetter_Return:
                 rts
 
-Title_StaticMappingPointers:    dc.l    Title_StaticMap0
-                dc.l    Title_StaticMap1
-                dc.l    Title_StaticMap2
-                dc.l    Title_StaticMap3
-                dc.l    Title_StaticMap4
-                dc.l    Title_StaticMap5
-Title_StaticXTable: dc.w    $D0
-Title_StaticYTable: dc.w    $C0, $E5, $C0, $F7, $C0, $107, $C0, $11C, $C0, $133, $C0
+Title_LogoLetterMappingPointers:    dc.l    Title_LogoLetterMap0
+                dc.l    Title_LogoLetterMap1
+                dc.l    Title_LogoLetterMap2
+                dc.l    Title_LogoLetterMap3
+                dc.l    Title_LogoLetterMap4
+                dc.l    Title_LogoLetterMap5
+Title_LogoLetterXTable: dc.w    $D0
+Title_LogoLetterYTable: dc.w    $C0, $E5, $C0, $F7, $C0, $107, $C0, $11C, $C0, $133, $C0
 ; Guide/How-to-play screen initialization
 Guide_Init:
                 moveq   #7,d1

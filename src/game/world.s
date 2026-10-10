@@ -284,21 +284,21 @@ Object_HandlerTable:
                 bra.w   Obj_Iggy
                 bra.w   Obj_Spawner
                 bra.w   Obj_ScorePopup
-                bra.w   Obj_ChickCountPopup
+                bra.w   Obj_ChirpScorePopup
                 bra.w   Obj_BonusScorePopup
-                bra.w   Obj_StarBonus
-                bra.w   Obj_BonusHeldChick
+                bra.w   Obj_DiamondBonus
+                bra.w   Obj_BonusNet
                 bra.w   Obj_BonusSeesaw
                 bra.w   Obj_BonusTiger
                 bra.w   Obj_BonusChick
                 bra.w   Obj_GameOverText
                 bra.w   Obj_TitleBird
-                bra.w   Obj_TitleCursor
-                bra.w   Obj_TitleStatic
+                bra.w   Obj_TitlePushStart
+                bra.w   Obj_TitleLogoLetter
                 bra.w   Obj_GuideCharacter
                 bra.w   Obj_CreditsCharacter
                 bra.w   Obj_WindowGirl
-                bra.w   Obj_TimeOverText
+                bra.w   Obj_PauseText
 
 ; Adds scroll velocity to camera position
 Camera_UpdateScroll:

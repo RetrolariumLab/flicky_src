@@ -1,25 +1,25 @@
 ; Bonus-round objects
 ; ROM $0164EC-$016DA9
 
-Obj_StarBonus:
+Obj_DiamondBonus:
                 bset    #7,(a0)
-                bne.s   Obj_StarBonus_Update
+                bne.s   Obj_DiamondBonus_Update
                 clr.b   5(a0)
                 clr.l   $34(a0)
                 clr.l   $2C(a0)
                 addq.w  #7,$24(a0)
-                move.l  #StarBonus_AnimPointers,8(a0)
+                move.l  #DiamondBonus_AnimPointers,8(a0)
                 clr.w   6(a0)
                 move.w  #$12C,$38(a0)
                 bclr    #7,2(a0)
 
-Obj_StarBonus_Update:
+Obj_DiamondBonus_Update:
                 bsr.w   Object_UpdatePosition
                 bsr.w   Anim_UpdateFrame
                 lea     (Ram_PlayerObject).w,a1
                 bsr.w   Collision_CheckObjectPair
                 tst.b   d0
-                beq.s   Obj_StarBonus_Countdown
+                beq.s   Obj_DiamondBonus_Countdown
                 move.l  a0,-(sp)
                 move.b  #$98,d0
                 bsr.w   Sound_PlayNoteIfActive
@@ -27,9 +27,9 @@ Obj_StarBonus_Update:
                 lea     (Ram_PopupSlots).w,a2
                 moveq   #3,d0
 
-Obj_StarBonus_PopupLoop:
+Obj_DiamondBonus_PopupLoop:
                 tst.w   (a2)
-                bne.s   Obj_StarBonus_PopupNext
+                bne.s   Obj_DiamondBonus_PopupNext
                 move.w  $30(a0),d7
                 move.w  $24(a0),d6
                 move.w  d7,$30(a2)
@@ -43,30 +43,30 @@ Obj_StarBonus_PopupLoop:
                 move.l  Bonus_StarScoreTable(pc,d7.w),d7
                 move.l  d7,(Ram_ScoreDelta).w
                 bsr.w   Score_AddAndCheck
-                bra.s   Obj_StarBonus_Despawn
+                bra.s   Obj_DiamondBonus_Despawn
 
-Obj_StarBonus_PopupNext:
+Obj_DiamondBonus_PopupNext:
                 lea     -$40(a2),a2
-                dbf     d0,Obj_StarBonus_PopupLoop
+                dbf     d0,Obj_DiamondBonus_PopupLoop
 
-Obj_StarBonus_Countdown:
+Obj_DiamondBonus_Countdown:
                 subq.w  #1,$38(a0)
-                bne.s   Obj_StarBonus_Return
+                bne.s   Obj_DiamondBonus_Return
 
-Obj_StarBonus_Despawn:
+Obj_DiamondBonus_Despawn:
                 bsr.w   Sprite_ClearLinkTable
 
-Obj_StarBonus_Return:
+Obj_DiamondBonus_Return:
                 rts
 
-Bonus_StarScoreTable:   dc.l    $100, $200, $300, $400, $500, $800, $1000, $2000, $3000
-StarBonus_AnimPointers: dc.b    0, 1
-                dc.w    StarBonus_AnimSpin-Sys_GameEntryPoint
-StarBonus_AnimSpin: dc.b    4, 5
-                dc.w    StarBonus_SpinFrame0-Sys_GameEntryPoint
-                dc.w    StarBonus_SpinFrame1-Sys_GameEntryPoint
-                dc.w    StarBonus_SpinFrame2-Sys_GameEntryPoint
-                dc.w    StarBonus_SpinFrame3-Sys_GameEntryPoint
+Bonus_StarScoreTable:       dc.l    $100, $200, $300, $400, $500, $800, $1000, $2000, $3000
+DiamondBonus_AnimPointers:  dc.b    0, 1
+                dc.w    DiamondBonus_AnimSpin-Sys_GameEntryPoint
+DiamondBonus_AnimSpin:  dc.b    4, 5
+                dc.w    DiamondBonus_SpinFrame0-Sys_GameEntryPoint
+                dc.w    DiamondBonus_SpinFrame1-Sys_GameEntryPoint
+                dc.w    DiamondBonus_SpinFrame2-Sys_GameEntryPoint
+                dc.w    DiamondBonus_SpinFrame3-Sys_GameEntryPoint
 ; Bonus round seesaw (outer position)
 Obj_BonusSeesaw:
                 bset    #7,(a0)
@@ -118,7 +118,7 @@ Obj_BonusTiger_Return:
                 rts
 
 ; Bonus round held chick follows player
-Obj_BonusHeldChick:
+Obj_BonusNet:
                 lea     (Ram_BonusPlayerObject).w,a1
                 move.l  Ram_BonusPlayerWorldX-Ram_BonusPlayerObject(a1),d7
                 move.l  $24(a1),d6
@@ -126,23 +126,23 @@ Obj_BonusHeldChick:
                 move.l  d6,$24(a0)
                 addi.w  #$A,$24(a0)
                 tst.b   $39(a1)
-                beq.s   Obj_BonusHeldChick_FacingLeft
+                beq.s   Obj_BonusNet_FacingLeft
                 bclr    #7,2(a0)
                 subq.w  #8,$30(a0)
-                bra.s   Obj_BonusHeldChick_Update
+                bra.s   Obj_BonusNet_Update
 
-Obj_BonusHeldChick_FacingLeft:
+Obj_BonusNet_FacingLeft:
                 bset    #7,2(a0)
                 addq.w  #8,$30(a0)
 
-Obj_BonusHeldChick_Update:
+Obj_BonusNet_Update:
                 bsr.w   Object_UpdatePosition
-                move.l  #Obj_BonusHeldChick_UpdateData0,$C(a0)
+                move.l  #Obj_BonusNet_UpdateData0,$C(a0)
                 tst.l   $34(a1)
-                beq.s   Obj_BonusHeldChick_Return
-                move.l  #Obj_BonusHeldChick_UpdateData1,$C(a0)
+                beq.s   Obj_BonusNet_Return
+                move.l  #Obj_BonusNet_UpdateData1,$C(a0)
 
-Obj_BonusHeldChick_Return:
+Obj_BonusNet_Return:
                 rts
 
 Bonus_SeesawTigerAnimPointers:  dc.l    BonusSeesaw_Anim

@@ -1,4 +1,4 @@
-; Game over and time over text
+; Game over and pause text
 ; ROM $016DAA-$016E57
 
 Obj_GameOverText:
@@ -12,15 +12,15 @@ Obj_GameOverText:
 Obj_GameOverText_Return:
                 rts
 
-; Time over text display object
-Obj_TimeOverText:
+; Pause text display object (the mapping spells PAUSE)
+Obj_PauseText:
                 bset    #7,(a0)
-                bne.s   Obj_TimeOverText_Return
-                move.l  #Obj_TimeOverTextData,$C(a0)
+                bne.s   Obj_PauseText_Return
+                move.l  #Obj_PauseTextData,$C(a0)
                 move.w  #$F0,$20(a0)
                 move.w  #$108,$24(a0)
 
-Obj_TimeOverText_Return:
+Obj_PauseText_Return:
                 rts
 
 Gfx_SharedPalette:  binclude "data/palettes/shared-compact.bin"
