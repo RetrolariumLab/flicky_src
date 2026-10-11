@@ -1,0 +1,118 @@
+{
+  "schema": "retrolarium.names",
+  "schema_version": 1,
+  "description": "The names inside Flicky, in English, and the lists that carry them, for Retrolarium Studio and Kit; Retrolarium keeps none of them. guard lists the names Retrolarium's own repositories must never contain.",
+  "names": {},
+  "catalogs": {
+    "title_cast": [
+      {
+        "name": "Flicky",
+        "animation": "Player_AnimWalk",
+        "label": "Title_FlickyLabel",
+        "text": "Title_FlickyText"
+      },
+      {
+        "name": "Chirp",
+        "animation": "Chirp_AnimIdle",
+        "label": "Title_ChirpLabel",
+        "text": "Title_ChirpText"
+      },
+      {
+        "name": "Tiger",
+        "animation": "Tiger_AnimRun",
+        "label": "Title_TigerLabel",
+        "text": "Title_TigerText"
+      },
+      {
+        "name": "Iggy",
+        "animation": "Iggy_AnimRight",
+        "label": "Title_IggyLabel",
+        "text": "Title_IggyText"
+      }
+    ],
+    "animation_sources": [
+      "game/bonus/objects.s",
+      "game/actors/chirp.s",
+      "game/actors/window_girl_and_throwable.s",
+      "game/enemies/tiger.s",
+      "game/actors/player.s",
+      "game/enemies/iggy.s",
+      "game/enemies/spawner.s",
+      "rendering/hud.s"
+    ],
+    "legacy_animation_sources": {
+      "game/bonus_objects.s": "game/bonus/objects.s",
+      "game/cat.s": "game/actors/chirp.s",
+      "game/chick.s": "game/actors/window_girl_and_throwable.s",
+      "game/lizard.s": "game/enemies/tiger.s",
+      "game/player.s": "game/actors/player.s",
+      "game/snake.s": "game/enemies/iggy.s",
+      "game/spawner.s": "game/enemies/spawner.s",
+      "game/actors/chick.s": "game/actors/window_girl_and_throwable.s",
+      "game/actors/exit_and_throwable.s": "game/actors/window_girl_and_throwable.s",
+      "game/enemies/cat.s": "game/actors/chirp.s",
+      "game/enemies/lizard.s": "game/enemies/tiger.s",
+      "game/enemies/snake.s": "game/enemies/iggy.s"
+    },
+    "legacy_label_prefixes": [
+      [
+        "UI_CatCountdownAnim",
+        "UI_RoundStartCountdownAnim"
+      ],
+      [
+        "UI_CatCountReverseAnim",
+        "UI_RoundEndCountdownAnim"
+      ],
+      [
+        "UI_CatCountReverseData3",
+        "UI_CountdownFrame3"
+      ],
+      [
+        "Chick_Thrown",
+        "Throwable_Thrown"
+      ],
+      [
+        "Cat_",
+        "Chirp_"
+      ],
+      [
+        "Lizard_",
+        "Tiger_"
+      ],
+      [
+        "Snake_",
+        "Iggy_"
+      ],
+      [
+        "BonusCat_OuterFrame",
+        "BonusSeesaw_Frame"
+      ],
+      [
+        "BonusCat_InnerFrame",
+        "BonusTiger_Frame"
+      ],
+      [
+        "BonusCat_AnimOuter",
+        "BonusSeesaw_Anim"
+      ],
+      [
+        "BonusCat_AnimInner",
+        "BonusTiger_Anim"
+      ],
+      [
+        "ExitDoor_OpenFrame",
+        "WindowGirl_Frame"
+      ],
+      [
+        "ExitDoor_AnimOpen",
+        "WindowGirl_AnimIdle"
+      ]
+    ]
+  },
+  "guard": [
+    "Choro",
+    "Iggy",
+    "Nyannyan",
+    "Piopio"
+  ]
+}

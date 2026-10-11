@@ -26,6 +26,16 @@ compares it with the real driver: `make trace-sound` records the chip writes
 Gens sees during title song `$85` into `build/sound_trace/gens.csv`, and the kit
 requires the same ordered writes within 2.1 frames.
 
+## The game's names and tables
+
+Retrolarium keeps nothing taken from the game; this repository gives it what it
+needs. `config/names.json` holds the game's own names (its title cast) in
+English, and the lists that carry them (the cast's animations and title labels,
+and the source files and old names the kit reads its animations from). The
+studio and the kit read it when a project opens and show the names as they are,
+untranslated; without it they show numbers instead. Its `guard` list names what
+Retrolarium's own repositories must never contain.
+
 ## Checking the repository
 
 `make studio-check` runs `rltool studio check flicky.rlj`. In a throwaway copy
