@@ -23,9 +23,9 @@ def without_line(text: str, line: str, source: Path) -> str:
     return text.replace(line, "", 1)
 
 
-def run(command: list[str], cwd: Path | None = None) -> None:
+def run(command: list[str], env: dict[str, str] | None = None) -> None:
     print(f"[RUN] {' '.join(command)}")
-    result = subprocess.run(command, cwd=str(cwd) if cwd else None)
+    result = subprocess.run(command, env=env)
     if result.returncode:
         fail(f"command failed with exit code {result.returncode}")
 
@@ -41,8 +41,8 @@ def main() -> int:
     parser.add_argument("--tables", default="src/data/tables.s")
     parser.add_argument("--sound-data", default="build/z80_sound_data.bin")
     parser.add_argument("--output-dir", default="build/relocation")
-    parser.add_argument("--as-bin", default="bin/windows_i386/asw.exe")
-    parser.add_argument("--p2bin", default="bin/windows_i386/p2bin.exe")
+    parser.add_argument("--as-bin", required=True)
+    parser.add_argument("--p2bin", required=True)
     parser.add_argument("--as-args", default="-maxerrors 2")
     args = parser.parse_args()
 
@@ -94,9 +94,12 @@ def main() -> int:
     command = [
         str(as_bin), "-i", str(root), "-L", "-olist", str(listing.resolve()),
         "-o", str(obj.resolve()), *args.as_args.split(),
-        os.path.relpath(packed_main.resolve(), as_bin.parent),
+        str(packed_main.resolve()),
     ]
-    run(command, cwd=as_bin.parent)
+    # AS finds its message catalogs through AS_MSGPATH (the assembler's folder).
+    environment = dict(os.environ)
+    environment.setdefault("AS_MSGPATH", str(as_bin.parent))
+    run(command, env=environment)
     run([str(p2bin), str(obj.resolve()), str(rom_path.resolve()), "-p=FF"])
 
     symbols = collect_from_listing(listing)

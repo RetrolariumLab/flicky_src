@@ -153,7 +153,9 @@ belongs in `docs/unknowns.md` with an evidence tag, not in a guessed contract.
 
 ## Tooling
 
-Check without modifying anything:
+The checker and formatter are Retrolarium Kit's shared linter (`rltool lint`);
+`config/lint.json` selects its AS dialect with the columns above. Check without
+modifying anything:
 
 ```bash
 make lint

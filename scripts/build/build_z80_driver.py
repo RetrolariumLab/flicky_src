@@ -18,9 +18,9 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-def run(command: list[str], cwd: Path | None = None) -> None:
+def run(command: list[str], env: dict[str, str] | None = None) -> None:
     print(f"[RUN] {' '.join(command)}")
-    result = subprocess.run(command, cwd=str(cwd) if cwd else None)
+    result = subprocess.run(command, env=env)
     if result.returncode:
         fail(f"command failed with exit code {result.returncode}")
 
@@ -37,8 +37,8 @@ def main() -> int:
     parser.add_argument("--reference", default="data/sound/data_z80_part1.bin")
     parser.add_argument("--reference-offset", type=lambda value: int(value, 0), default=0)
     parser.add_argument("--description", default="Z80 driver")
-    parser.add_argument("--as-bin", default="bin/windows_i386/asw.exe")
-    parser.add_argument("--p2bin", default="bin/windows_i386/p2bin.exe")
+    parser.add_argument("--as-bin", required=True)
+    parser.add_argument("--p2bin", required=True)
     parser.add_argument("--as-args", default="-maxerrors 2")
     parser.add_argument(
         "--allow-different",
@@ -70,14 +70,17 @@ def main() -> int:
     obj.unlink(missing_ok=True)
     output.unlink(missing_ok=True)
 
-    # AS finds its message catalog beside the executable. Source includes still
-    # resolve from the project root through -i, just like the 68000 build.
+    # AS finds its message catalogs through AS_MSGPATH (the assembler's
+    # folder). Source includes resolve from the project root through -i, just
+    # like the 68000 build.
     command = [
         str(as_bin), "-i", str(Path.cwd().resolve()), "-o", str(obj),
         *(["-L", "-olist", str(obj.with_suffix(".lst"))] if args.split_label else []),
-        *args.as_args.split(), os.path.relpath(source, as_bin.parent),
+        *args.as_args.split(), str(source),
     ]
-    run(command, cwd=as_bin.parent)
+    environment = dict(os.environ)
+    environment.setdefault("AS_MSGPATH", str(as_bin.parent))
+    run(command, env=environment)
     run([str(p2bin), str(obj), str(output)])
 
     built = output.read_bytes()

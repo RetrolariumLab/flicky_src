@@ -4,7 +4,8 @@ An annotated reconstruction of Flicky for the Sega Mega Drive, plus the tooling
 that rebuilds the ROM and compares it byte for byte against the original
 cartridge dump.
 
-The source assembles with the AS Macro Assembler, which is vendored in `bin/`.
+The source assembles with the AS Macro Assembler and `p2bin` that Retrolarium
+Kit ships.
 Approaches are shared with the sibling
 [alien_soldier_src](https://github.com/oranguthang/alien_soldier_src) project.
 
@@ -58,10 +59,6 @@ Neither is anything extracted from it.
 flicky_src/
 |-- assets/
 |   `-- manifest.json       # Reference ROM identity and per-segment SHA-1
-|-- bin/                    # Vendored AS toolchain, one folder per platform
-|   |-- windows_i386/       # asw.exe, p2bin.exe, message catalogs
-|   |-- linux_x86_64/       # asl, p2bin, message catalogs
-|   `-- README.md           # Provenance, hashes, why -p=FF matters
 |-- config/                 # Build, format, runtime, and release contracts
 |   |-- authoring/          # Data-format round-trip claims
 |   |-- debugger/           # Symbol-resolved breakpoints and watches
@@ -132,8 +129,8 @@ make source-2-pre-tag-check    # Clean-tree check before creating the tag
 make source-2-tag-check        # Verify the annotated tag at HEAD
 ```
 
-The toolchain folder is chosen from the host platform; override it with
-`make PLATFORM=linux_x86_64`.
+The kit's AS and `p2bin` are used unless `AS_BIN` and `P2BIN` name others; see
+[`docs/build.md`](docs/build.md#the-toolchain).
 
 `make split` is deliberately explicit and destructive, and `make build` never
 touches `data/`. That asymmetry means locally modified assets survive a

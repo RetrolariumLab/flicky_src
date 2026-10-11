@@ -564,7 +564,7 @@
         ],
         "files": [
           "config/toolchain.json",
-          "bin/README.md",
+          "docs/build.md",
           "scripts/build/prepare_gens_checkout.py"
         ],
         "scenarios": [],
@@ -785,7 +785,7 @@
       "config/reconstruction/label_renames.json",
       "docs/provenance.md",
       "docs/unknowns.md",
-      "bin/README.md",
+      "docs/build.md",
       "movies/README.md",
       "assets/manifest.json"
     ],

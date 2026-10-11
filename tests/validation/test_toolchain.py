@@ -35,7 +35,7 @@ class Manifest(unittest.TestCase):
         self.assertRegex(converter["source_commit"], r"^[0-9a-f]{40}$")
         self.assertEqual(
             set(converter["binary_provenance"]),
-            {"windows_i386", "linux_x86_64"},
+            {"windows-x86_64", "linux-x86_64"},
         )
         for provenance in converter["binary_provenance"].values():
             self.assertRegex(provenance["origin_commit"], r"^[0-9a-f]{40}$")
@@ -48,10 +48,25 @@ class Manifest(unittest.TestCase):
                     self.assertRegex(entry["sha256"], r"^[0-9a-f]{64}$")
                     self.assertGreater(entry["size"], 0)
 
-    def test_the_recorded_hashes_match_the_vendored_files(self):
+    def test_the_build_tools_come_from_the_kit(self):
+        # The assembler and converter are the kit's: no path in the
+        # repository, a kit tool and release, and a file name per host.
+        for component in CONFIG["components"]:
+            if component["id"] in {"assembler", "binary_converter"}:
+                self.assertEqual(component["provenance"], "retrolarium-kit")
+                self.assertRegex(component["kit_tool"], r"^megadrive/")
+                self.assertTrue(component["kit_release"])
+                for entries in component["files"].values():
+                    for entry in entries:
+                        self.assertNotIn("path", entry)
+                        self.assertTrue(entry["file"])
+
+    def test_the_recorded_hashes_match_the_files_in_the_repository(self):
         for component in CONFIG["components"]:
             for entries in component["files"].values():
                 for entry in entries:
+                    if "path" not in entry:
+                        continue
                     path = ROOT / entry["path"]
                     if not path.is_file():
                         continue

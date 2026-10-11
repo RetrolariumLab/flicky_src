@@ -37,7 +37,8 @@ class InitProjectTests(unittest.TestCase):
             with patch.object(
                 sys,
                 "argv",
-                ["init_project", "--orig-rom", str(rom), "--manifest", str(manifest)],
+                ["init_project", "--orig-rom", str(rom), "--manifest", str(manifest),
+                 "--as-bin", "asl", "--p2bin", "p2bin"],
             ), patch.object(init_project.subprocess, "run", side_effect=record):
                 self.assertEqual(init_project.main(), 0)
 
