@@ -135,6 +135,11 @@
       "id": "shared-linter",
       "kind": "tooling",
       "summary": "make lint and make format run Retrolarium Kit's shared linter (rltool lint) over config/lint.json: the AS style for src and the text contract; asm_style.py and its tests move to the kit. The game's source and repository checks stay here."
+    },
+    {
+      "id": "game-names",
+      "kind": "tooling",
+      "summary": "config/names.json keeps the game's own names, in English, and the lists that carry them; Retrolarium Studio and Kit read them when a project opens and keep none themselves. Its guard list names what Retrolarium's repositories must never contain."
     }
   ],
   "retrolarium": {
