@@ -58,25 +58,29 @@ the converter fails or is interrupted.
 by byte and reports the first difference. A matching hash is not accepted as a
 substitute.
 
-## Choosing a toolchain
+## The toolchain
 
-The assembler is vendored under `bin/<platform>/` so a fresh clone can build
-without hunting for a matching release. The Makefile picks the directory from
-the host:
+The build runs AS and `p2bin` as Retrolarium Kit builds and ships them, from the
+kit's `megadrive` suite: `AS_BIN` and `P2BIN` default to
+`$(RLTOOL) build-tools path megadrive asl` (and `p2bin`), with `RLTOOL` naming
+the kit command (default `rltool`). AS reads its message catalogs from beside
+the assembler (`AS_MSGPATH`). The kit has builds for Windows and Linux x86-64;
+this repository holds no executables.
 
-| Host | Directory | Assembler |
-| --- | --- | --- |
-| Windows | `bin/windows_i386` | `asw.exe`, `p2bin.exe` |
-| Linux x86-64 | `bin/linux_x86_64` | `asl`, `p2bin` |
+`make verify-toolchain` hashes the kit's files against `config/toolchain.json`,
+and `build` and `verify` both depend on it. This runs *before* the assembler, so
+a swapped binary is named as the problem instead of surfacing as an unexplained
+diff.
 
-Override with `make PLATFORM=<subdirectory>`. macOS has no vendored directory,
-so the autodetect will look for one that does not exist.
+`p2bin` must be invoked with `-p=FF`. The original cartridge pads unused ROM
+space with `$FF`; p2bin's default of `$00` produces a ROM that differs from the
+reference in every gap, 73,045 bytes of the 128 KiB image. The padding byte is
+recorded in `assets/manifest.json` and applied by `scripts/build/build_rom.py`.
 
-`make verify-toolchain` hashes those files against `config/toolchain.json`, and
-`build` and `verify` both depend on it. This runs *before* the assembler, so a
-swapped binary is named as the problem instead of surfacing as an unexplained
-diff. See [`bin/README.md`](../bin/README.md) for the provenance and
-the rationale below for why AS remains part of the build contract.
+Source Reconstruction 1.0 and 2.0 vendored AS 1.42 Beta [Bld 212] and `p2bin`
+under `bin/<platform>/`, with their provenance in `bin/README.md`. Those files
+remain at the tags `source-reconstruction-1.0` and `source-reconstruction-2.0`,
+where the 2.0 audits still run them.
 
 `AS_BIN` and `P2BIN` can point at another filesystem location, but they do not
 waive identity checks. The verifier resolves and hashes the exact executable
@@ -91,8 +95,8 @@ alignment, and padding behave. ca65 cannot assemble 68000 code. vasm is actively
 maintained, but the established Mega Drive disassembly syntax targets AS and its
 optimization defaults differ from the source this project inherited.
 
-The project therefore vendors AS 1.42 Beta [Bld 212] and the Sonic-disassembly
-variant of Clownacy's `p2bin` at commit
+The project therefore builds with AS 1.42 Beta [Bld 212] and the
+Sonic-disassembly variant of Clownacy's `p2bin` at commit
 `e26d8aa8c43e285bac5e3b7df3be1adae515994f`. The whole 68000 program is one
 translation unit, while the Z80 program and data are separate checked
 translation units. Exact executable origins, sizes, and SHA-256 values live in
@@ -128,10 +132,11 @@ regression without putting user work at risk.
 
 The failure tells you which layer to look at.
 
-**`make verify-toolchain` fails.** The vendored assembler is not the one this
-release was built with. Restore it rather than re-recording the hash, unless you
-are deliberately changing toolchain, in which case `config/toolchain.json` and
-the release manifest change with it.
+**`make verify-toolchain` fails.** The assembler the kit (or `AS_BIN`) names is
+not the one this release was built with. Use the kit release the manifest
+records rather than re-recording the hash, unless you are deliberately changing
+toolchain, in which case `config/toolchain.json` and the release manifest change
+with it.
 
 **`make check-assets` fails.** A segment under `data/` does not match the
 manifest. Re-run `make split` against the correct dump.

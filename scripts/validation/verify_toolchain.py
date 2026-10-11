@@ -20,6 +20,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from build.kit_tools import kit_tool_path
+
 
 def sha256_of(path: Path) -> str:
     digest = hashlib.sha256()
@@ -32,7 +34,25 @@ def sha256_of(path: Path) -> str:
 def platform_key(explicit: str | None) -> str:
     if explicit:
         return explicit
-    return "windows_i386" if sys.platform == "win32" else "linux_x86_64"
+    return "windows-x86_64" if sys.platform == "win32" else "linux-x86_64"
+
+
+def component_entries(
+    component: dict[str, Any], key: str, errors: list[str]
+) -> list[dict[str, Any]]:
+    """The recorded files for a host, located: a Retrolarium Kit tool's files
+    sit in the folder the kit names for it."""
+    files = component.get("files", {})
+    entries = files.get(key, files.get("any", []))
+    spec = component.get("kit_tool")
+    if not spec or not entries:
+        return entries
+    try:
+        folder = kit_tool_path(spec).parent
+    except (OSError, ValueError) as exc:
+        errors.append(f"{component['id']}: {exc}")
+        return []
+    return [dict(entry, path=str(folder / entry["file"])) for entry in entries]
 
 
 def check_files(entries: list[dict], errors: list[str], notes: list[str]) -> int:
@@ -155,7 +175,7 @@ def check_commit(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="config/toolchain.json")
-    parser.add_argument("--platform", help="Toolchain subdirectory, else autodetected")
+    parser.add_argument("--platform", help="Kit host (windows-x86_64), else autodetected")
     parser.add_argument("--only", help="Check one component id")
     parser.add_argument(
         "--require-executable",
@@ -182,10 +202,10 @@ def main() -> int:
         if args.only and component["id"] != args.only:
             continue
         files = component.get("files", {})
-        entries = files.get(key, files.get("any", []))
-        if not entries:
-            notes.append(f"{component['id']}: nothing vendored for {key}")
+        if not files.get(key, files.get("any", [])):
+            notes.append(f"{component['id']}: nothing recorded for {key}")
             continue
+        entries = component_entries(component, key, errors)
 
         if component["id"] == "emulator":
             selected = selections.get("emulator")

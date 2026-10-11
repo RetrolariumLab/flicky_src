@@ -125,6 +125,16 @@
       "id": "object-names",
       "kind": "source",
       "summary": "Six objects are named for what their sprites show: the PAUSE text (was time over), the bonus net (was held chick), the diamond bonus (was star), the chick score popup, PUSH START BUTTON and the logo letters."
+    },
+    {
+      "id": "kit-toolchain",
+      "kind": "tooling",
+      "summary": "AS and p2bin come from Retrolarium Kit's megadrive suite (RLTOOL build-tools path); bin/ is gone, config/toolchain.json pins the kit's files and make verify-toolchain hashes them. AS runs from the project root with AS_MSGPATH beside the assembler."
+    },
+    {
+      "id": "shared-linter",
+      "kind": "tooling",
+      "summary": "make lint and make format run Retrolarium Kit's shared linter (rltool lint) over config/lint.json: the AS style for src and the text contract; asm_style.py and its tests move to the kit. The game's source and repository checks stay here."
     }
   ],
   "retrolarium": {
@@ -354,11 +364,11 @@
     },
     {
       "component": "as_macro_assembler",
-      "category": "bundled_external_tools",
-      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus Clownacy p2bin at commit e26d8aa8c43e285bac5e3b7df3be1adae515994f",
+      "category": "external_tools",
+      "origin": "AS Macro Assembler 1.42 Beta [Bld 212] by Alfred Arnold, plus Clownacy p2bin at commit e26d8aa8c43e285bac5e3b7df3be1adae515994f, built and shipped by Retrolarium Kit",
       "license_id_or_status": "licensed",
-      "redistribution": "allowed",
-      "notes": "Vendored under bin/ with SHA-256 for every file; see bin/README.md."
+      "redistribution": "not stored here; the kit ships the notices",
+      "notes": "config/toolchain.json pins the kit's files; see docs/build.md."
     },
     {
       "component": "gens_automation",
@@ -390,7 +400,7 @@
       "config/reconstruction/label_renames.json",
       "docs/provenance.md",
       "docs/unknowns.md",
-      "bin/README.md",
+      "docs/build.md",
       "movies/README.md",
       "assets/manifest.json"
     ],

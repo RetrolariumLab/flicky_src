@@ -7,31 +7,14 @@
 PYTHON ?= python
 PROJECT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-# Toolchain selection: detect the host OS/arch and pick the matching folder
-# under bin/. Override with: make PLATFORM=<subfolder>
-ifeq ($(OS),Windows_NT)
-    PLATFORM ?= windows_i386
-    AS_EXE = asw.exe
-    P2BIN_EXE = p2bin.exe
-else
-    UNAME_S := $(shell uname -s)
-    UNAME_M := $(shell uname -m)
-    ifeq ($(UNAME_S),Darwin)
-        PLATFORM ?= macos_$(UNAME_M)
-    else
-        PLATFORM ?= linux_$(UNAME_M)
-    endif
-    AS_EXE = asl
-    P2BIN_EXE = p2bin
-endif
-
-TOOLS_DIR ?= bin/$(PLATFORM)
-AS_BIN ?= $(TOOLS_DIR)/$(AS_EXE)
-P2BIN ?= $(TOOLS_DIR)/$(P2BIN_EXE)
+# AS and p2bin from Retrolarium Kit (RLTOOL, default rltool), asked once per
+# run; the recipes' shell needs forward slashes. AS reads its message
+# catalogs from beside the assembler (AS_MSGPATH).
+RLTOOL ?= rltool
+export RLTOOL
+AS_BIN ?= $(eval AS_BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive asl)))$(AS_BIN)
+P2BIN ?= $(eval P2BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive p2bin)))$(P2BIN)
 AS_ARGS ?= -maxerrors 2
-
-# AS looks for as.msg, cmdarg.msg and ioerrs.msg here.
-export AS_MSGPATH = $(TOOLS_DIR)
 
 # Sources and outputs
 SRC ?= src/main.s
@@ -268,4 +251,4 @@ help:
 	@echo "  make build-gens                Build the manifest-pinned Gens revision in Docker"
 	@echo "  make stop                      Kill running emulator processes"
 	@echo ""
-	@echo "Toolchain: $(TOOLS_DIR)  (override with PLATFORM=<subfolder>)"
+	@echo "Toolchain: Retrolarium Kit, megadrive suite ($(RLTOOL) build-tools)"

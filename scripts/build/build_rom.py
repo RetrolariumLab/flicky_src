@@ -43,9 +43,17 @@ def load_manifest(path: Path) -> dict:
     return manifest
 
 
-def run(command: list[str], cwd: Path | None = None) -> int:
+def as_environment(as_bin: Path) -> dict[str, str]:
+    """AS reads its message catalogs from AS_MSGPATH, which is the
+    assembler's own folder unless the caller names another."""
+    environment = dict(os.environ)
+    environment.setdefault("AS_MSGPATH", str(as_bin.resolve().parent))
+    return environment
+
+
+def run(command: list[str], env: dict[str, str] | None = None) -> int:
     print(f"[RUN] {' '.join(command)}")
-    return subprocess.call(command, cwd=str(cwd) if cwd else None)
+    return subprocess.call(command, env=env)
 
 
 def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path,
@@ -61,7 +69,6 @@ def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path,
     The object file is named explicitly with -o. Left to itself AS writes it
     beside the source, which would drop a build artifact into src/.
     """
-    bin_dir = as_bin.parent
     obj.parent.mkdir(parents=True, exist_ok=True)
     if obj.exists():
         obj.unlink()
@@ -70,9 +77,9 @@ def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path,
         "-i", str(include_root.resolve()),
         "-o", str(obj.resolve()),
         *as_args,
-        os.path.relpath(source, bin_dir),
+        str(source.resolve()),
     ]
-    if run(command, cwd=bin_dir) != 0:
+    if run(command, env=as_environment(as_bin)) != 0:
         fail("Assembly failed")
     if not obj.is_file():
         fail(f"Object file not produced: {obj}")
@@ -165,8 +172,8 @@ def main() -> int:
     parser.add_argument("--output", default="fbuilt.bin", help="Output ROM image")
     parser.add_argument("--manifest", default="assets/manifest.json", help="Asset manifest")
     parser.add_argument("--original-rom", default="Flicky (UE) [!].bin", help="Reference ROM")
-    parser.add_argument("--as-bin", default="bin/asw.exe", help="AS assembler executable")
-    parser.add_argument("--p2bin", default="bin/p2bin.exe", help="p2bin executable")
+    parser.add_argument("--as-bin", required=True, help="AS assembler executable")
+    parser.add_argument("--p2bin", required=True, help="p2bin executable")
     parser.add_argument("--as-args", default="-maxerrors 2", help="Extra AS arguments")
     parser.add_argument(
         "--verify",

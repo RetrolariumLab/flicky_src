@@ -17,6 +17,9 @@ compare:
 
 # Listing file, used by extract_data_addrs.py and the debugger workflow.
 # -i lets modules under src/ resolve their binclude paths from the project root.
+# AS reads its message catalogs from AS_MSGPATH; make exports it, so the recipe
+# runs the same under sh and cmd.
+$(LISTING): export AS_MSGPATH = $(dir $(AS_BIN))
 $(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) | _require-toolchain
 	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
 	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
@@ -34,8 +37,10 @@ _require-emulator: verify-emulator
 
 # Style, semantic source invariants, and repository-wide checks. None of these
 # substitute for "make verify": a green lint says nothing about byte identity.
+# House style (config/lint.json) from Retrolarium Kit, then this game's own
+# source and repository checks.
 lint:
-	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src
+	@$(RLTOOL) lint
 	@$(PYTHON) $(RUN_SCRIPT) validation.lint_source $(STRICT_NAMING)
 	@$(PYTHON) $(RUN_SCRIPT) validation.check_source_structure --config $(SOURCE_STRUCTURE)
 	@$(PYTHON) $(RUN_SCRIPT) validation.lint_project
@@ -46,7 +51,7 @@ check-source-structure:
 # Read-only formatting check. The formatter uses the same normalization and
 # reports any file that a second pass would change.
 format-check:
-	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src
+	@$(RLTOOL) lint --only assembly
 
 # Focused unit tests for the Python tooling, so a bug in a check cannot
 # quietly pass everything it is supposed to catch.
@@ -101,7 +106,6 @@ source-2-tag-check:
 # Retrolarium: flicky.rlj opens in the kit and builds back to the ROM, in a
 # throwaway copy of the repository. The kit needs the studio's Flicky level
 # writer (RETROLARIUM_FLICKY_LEVEL_WRITER or on PATH).
-RLTOOL ?= rltool
 
 studio-check:
 	$(RLTOOL) studio check flicky.rlj
@@ -131,7 +135,7 @@ scaffold-check: lint release-audit source-2-audit
 # Deterministic whitespace, label-layout and case normalization, then re-check.
 # Formatting must never move a byte, so verify afterwards.
 format:
-	@$(PYTHON) $(RUN_SCRIPT) validation.asm_style src --fix
+	@$(RLTOOL) lint --fix
 	@$(MAKE) lint
 
 
