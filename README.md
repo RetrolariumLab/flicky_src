@@ -215,6 +215,13 @@ recomputed Z80 data sources. See DATA-001 in
 - AS Macro Assembler by Alfred Arnold
 - Original game by Sega
 
+## Trademarks
+
+This is an unofficial reconstruction, made for study and preservation. The game,
+its title and its characters are trademarks of their owners, who have not made,
+licensed or endorsed this project. It contains no part of the game: you need
+your own copy of Flicky to build anything.
+
 ## License
 
 Reverse engineering for educational and preservation purposes. No original ROM
