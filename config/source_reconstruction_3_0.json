@@ -7,7 +7,7 @@
   },
   "release_kind": "retrolarium",
   "tag": "source-reconstruction-3.0",
-  "status": "development",
+  "status": "tag-ready",
   "predecessor": {
     "manifest": "config/source_reconstruction_2_0.json",
     "tag": "source-reconstruction-2.0",
@@ -34,16 +34,24 @@
         "subject": "Refresh README and release documentation"
       },
       {
-        "commit": "f9391130e1bbea1764a33947a5021b38191589ea",
-        "subject": "Retrolarium Studio descriptor"
-      },
-      {
-        "commit": "f5473a337b067a344684ceef40282bc43f5b093c",
-        "subject": "Retrolarium descriptor: views come from the kit"
-      },
-      {
-        "commit": "5d79550b884152997102c9e2c5fe432b0575d440",
+        "commit": "4bc56646670faeadd6abc5baabbfc1a0fc3df1a0",
         "subject": "Source Reconstruction 3.0: editing moves to Retrolarium"
+      },
+      {
+        "commit": "4cc4c3de26d3b8c77247ca3cab21aa0d685a5233",
+        "subject": "Object names: six objects named for their sprites"
+      },
+      {
+        "commit": "2e4841c188a425cb8f5267732b0bf11cc69b2122",
+        "subject": "Build and lint with Retrolarium Kit"
+      },
+      {
+        "commit": "d7bfe7ba41e91c39e0e1ec9fe97c4620ecf33ef5",
+        "subject": "The game's names and tables for Retrolarium"
+      },
+      {
+        "commit": "d46b0eba29cee0694d4e65eb0647922b163a72f9",
+        "subject": "README: a trademark notice"
       }
     ]
   },
@@ -146,10 +154,10 @@
     "descriptor": "flicky.rlj",
     "profile": "flicky-ue.v1",
     "kit": {
-      "version": null,
-      "commit": null
+      "version": "0.5.0",
+      "commit": "53622768fae796d01e38622199c2d35563333a70"
     },
-    "studio_min_version": null,
+    "studio_min_version": "0.1.0",
     "revisions": [
       "ue"
     ],
