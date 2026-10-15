@@ -1,7 +1,8 @@
 # Input movies
 
-Two Gens `.gmv` recordings, used as the deterministic inputs for the analysis
-and runtime-evidence workflows.
+Two Gens `.gmv` recordings, the deterministic inputs that `make test-full`
+plays in MAME (their checks: `flicky_longplay.check.json`,
+`flicky_demos.check.json`).
 
 ## Content boundary
 
@@ -23,8 +24,7 @@ other revision desynchronises immediately and proves nothing.
 ### `flicky_longplay.gmv`
 
 A complete play-through. This is the input that exercises the most code: every
-round type, the bonus round, the score screens and the ending. The analysis
-workflow caps it at 67,000 frames.
+round type, the bonus round, the score screens and the ending.
 
 ### `flicky_demos.gmv`
 
@@ -35,12 +35,11 @@ longplay never touches because it presses start first.
 ## Scene indexes
 
 `longplay_description.txt` and `demos_description.txt` map frame ranges to
-scenes. They are how a screenshot diff at frame *n* gets turned into "the guide
-screen broke" rather than "frame 512 differs".
+scenes. They tell which scene a checkpoint frame falls in.
 
 ## Regenerating
 
 These are fixtures, not build outputs. Re-recording them invalidates every
-frame number in the description files and in any runtime scenario that pins the
-movie SHA-1, so replace them only deliberately and update the hashes here in
+frame number in the description files and the checks' expected values, so
+replace them only deliberately, update the hashes here and run `make golden` in
 the same change.

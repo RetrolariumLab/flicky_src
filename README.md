@@ -1,180 +1,70 @@
 # Flicky (Sega Mega Drive) Disassembly
 
-An annotated reconstruction of Flicky for the Sega Mega Drive, plus the tooling
-that rebuilds the ROM and compares it byte for byte against the original
-cartridge dump.
-
-The source assembles with the AS Macro Assembler and `p2bin` that Retrolarium
-Kit ships.
-Approaches are shared with the sibling
-[alien_soldier_src](https://github.com/oranguthang/alien_soldier_src) project.
+An annotated reconstruction of Flicky for the Sega Mega Drive, built back byte
+for byte into the original cartridge dump. The source assembles with the AS
+Macro Assembler and `p2bin` that Retrolarium Kit ships.
 
 ## Status
 
-The build reproduces the reference ROM exactly, verified against the dump
-itself. `src/main.s` is an index of 36 address-ordered modules. The source uses
-semantic names, with uncertain interpretations recorded in
-[`docs/unknowns.md`](docs/unknowns.md).
+Source Reconstruction 3.1. Editing happens in Retrolarium Studio: open
+`flicky.rlj` to edit the rounds, graphics, palettes, text, music, sound effects
+and the attract demos ([`docs/retrolarium.md`](docs/retrolarium.md)).
 
-Source Reconstruction 1.0 and 2.0 are tagged. Source 2.0 added isolated Level,
-Graphics, and Sound studios; Source Reconstruction 3.0 moves editing to
-Retrolarium Studio (see [`docs/retrolarium.md`](docs/retrolarium.md)). The
-project includes data-format codecs, exports a
-symbol map for debuggers, and replays twelve scenarios under the emulator
-against 68 declared facts about work RAM. `make release-check` audits the 1.0
-contract; `make source-2-check` also runs the 2.0 acceptance checks. See
-[`docs/source_reconstruction_1_0.md`](docs/source_reconstruction_1_0.md) and
-[`docs/source_reconstruction_2_0.md`](docs/source_reconstruction_2_0.md) for
-the release scopes and limitations.
-
-The gate for every change is `make verify`. Annotating, renaming and
-reformatting must never alter the assembled bytes, so any difference means the
-edit was wrong.
+3.1 keeps only what builds and checks the source. The earlier releases' audits,
+runtime scenarios, analysis and renaming workflow, data round trips and the Gens
+tooling remain in the history (tags `source-reconstruction-1.0` to `3.0`).
 
 ## Quick start
 
+You need Python 3, GNU Make and Retrolarium Kit (`rltool` on `PATH`, or
+`RLTOOL=...`). Copy your `Flicky (UE) [!].bin` (SHA-1
+`83d8bbf0a9b38c42a0bf492d105cc3abe9644a96`) into the repository root, then:
+
 ```bash
-git clone https://github.com/oranguthang/flicky_src.git
-cd flicky_src
-
-# Place a legally obtained original ROM in the project root:
-#   Flicky (UE) [!].bin   SHA-1 83d8bbf0a9b38c42a0bf492d105cc3abe9644a96
-
-make init           # Validate the ROM, extract data, build and verify
-make verify         # The permanent gate
+make init      # check the ROM, extract data/, build and verify (once)
+make verify    # build and compare byte for byte
 ```
 
-A successful verify prints:
+The ROM, `data/`, `fbuilt.bin` and `build/` are ignored. See
+[`docs/build.md`](docs/build.md) for the build in detail.
 
+## Targets
+
+```bash
+make build / verify          # the ROM, and byte for byte
+make verify-layout           # the module layout against the listing
+make verify-relocation       # the ROM packed without its layout gaps
+make studio-check            # open and rebuild flicky.rlj
+make test / test-full        # the checks
+make golden                  # the movies' reference values
+make lint / format / format-check / hooks / clean / help
 ```
-[OK] Byte-identical ROM reproduced (SHA1 83d8bbf0a9b38c42a0bf492d105cc3abe9644a96)
-```
 
-The ROM is never tracked by this repository and is not distributed with it.
-Neither is anything extracted from it.
+## Tests
 
-## Project structure
+`make test` (about a minute) runs the unit tests, `verify`, `verify-layout`,
+`verify-relocation` and the studio check. The studio check needs the studio's
+Flicky level writer (`RETROLARIUM_FLICKY_LEVEL_WRITER`, or on `PATH`).
+
+`make test-full` adds the two Gens recordings of `movies/`, played in MAME on the
+packed ROM, whose game code starts at `$00290A` instead of `$010000`: the
+longplay through the ending, and the attract demos. At their checkpoints the
+game's state must equal what the original ROM gives, as `movies/*.check.json`
+record. Name MAME with `MAME=<path>` or `RETROLARIUM_MAME`; `make golden` records
+the reference values again.
+
+## Layout
 
 ```text
-flicky_src/
-|-- assets/
-|   `-- manifest.json       # Reference ROM identity and per-segment SHA-1
-|-- config/                 # Build, format, runtime, and release contracts
-|   |-- authoring/          # Data-format round-trip claims
-|   |-- debugger/           # Symbol-resolved breakpoints and watches
-|   |-- linker/             # ROM map, landmarks, padding gap, module ranges
-|   |-- reconstruction/     # 300-700-line source policy and exceptions
-|   |-- runtime/            # Emulator capture configuration
-|   |-- toolchain.json      # Toolchain hashes, pins, and supported hosts
-|   |-- source_reconstruction_1_0.json
-|   `-- source_reconstruction_2_0.json
-|-- data/                   # Extracted reference segments (ignored, from make split)
-|-- docs/                   # Task-oriented guides; see docs/index.md
-|-- movies/                 # Gens input recordings and their scene indexes
-|-- scenarios/              # Runtime scenarios and their state expectations
-|-- scripts/                # Categorized tooling, dispatched by run.py
-|   |-- build/              # Assembly, extraction and housekeeping
-|   |-- formats/            # Nemesis and Enigma codecs and their round trips
-|   |-- runtime/            # Emulator capture and state validation
-|   |-- validation/         # Static, binary and release gates
-|   `-- workflow/           # Reverse-engineering maintenance tools
-|-- tests/                  # Tests mirroring the script categories
-|-- src/
-|   |-- compression/        # Nemesis and Enigma decompressors
-|   |-- data/               # Binary includes and the large data tables
-|   |-- game/               # World/rules plus actors, enemies, rounds, screens
-|   |-- macros/             # Alignment pseudo-instructions
-|   |-- memory/             # Hardware ports, constants, work RAM map
-|   |-- rendering/          # VDP, tilemaps, text, HUD, level drawing
-|   |-- sound/              # 68000 host plus modular Z80 driver and sound data
-|   |-- system/             # Boot, entry point, interrupts, DMA, input
-|   `-- main.s              # Address-ordered include index, the entrypoint
-|-- mk/                     # Runtime, validation, workflow recipes
-|-- flicky.rlj              # Opens the game in Retrolarium Studio
-`-- Makefile                # Public interface and build primitives
+src/           the 68000 source (main.s is the ROM layout) and the Z80 driver
+config/        linker layout, toolchain, lint and names
+assets/        manifest.json (the extracted data/ is ignored)
+scripts/       build, split, layout and relocation scripts (scripts/run.py runs them)
+tests/         their unit tests
+movies/        the two recordings and their checks
+docs/          how the game works and how the source is written
+flicky.rlj     the Retrolarium project
 ```
-
-## Make targets
-
-```bash
-make init           # Validate the ROM, extract data, build and verify
-make build          # Assemble; a mismatch is reported as a warning
-make verify         # Assemble; a mismatch fails the build (the gate)
-make compare        # Compare an existing build without reassembling
-make check-assets   # Validate data/ against assets/manifest.json
-make split          # Re-extract data segments (the only writer of data/)
-make lint           # Style, naming, documentation and evidence checks
-make format         # Apply the deterministic fixes, then lint
-make unpack-data    # Decompress the Nemesis and Enigma segments
-make clean          # Remove build artifacts; extracted data is kept
-make help           # Everything, including the analysis workflow
-
-make test           # Unit tests for the Python tooling
-make roundtrip-formats   # Decode and re-encode the authored data
-make symbols        # Export build/main.sym for debuggers
-make verify-toolchain  # Hash-check the selected build tools before they run
-make verify-emulator   # Check the selected Gens executable and source revision
-make verify-layout     # Check the ROM layout against config/linker/rom_layout.json
-make verify-relocation # Check sound loads in a packed ROM layout
-make z80-check         # Assemble and byte-check the resident Z80 driver
-make z80-data-check    # Assemble and byte-check the Z80 sound banks
-make check-source-structure # Enforce 300-700 lines, justified exceptions, paths
-make release-check  # The 1.0 acceptance gate
-
-make studio-check              # Open and rebuild flicky.rlj with the Retrolarium kit
-make trace-sound               # Record the Z80 driver's chip writes in Gens
-make source-2-audit            # Check the Source 2.0 manifest at its tag
-make source-2-check            # Complete 1.0 + 2.0 acceptance gate
-make source-2-pre-tag-check    # Clean-tree check before creating the tag
-make source-2-tag-check        # Verify the annotated tag at HEAD
-```
-
-The kit's AS and `p2bin` are used unless `AS_BIN` and `P2BIN` name others; see
-[`docs/build.md`](docs/build.md#the-toolchain).
-
-`make split` is deliberately explicit and destructive, and `make build` never
-touches `data/`. That asymmetry means locally modified assets survive a
-rebuild. The extracted Z80 segments remain byte-exact references; the driver
-and SFX/music banks are assembled from source into separate build files.
-
-## Working flow
-
-1. Find the owning module with [`docs/source_layout.md`](docs/source_layout.md)
-   and its callers with [`docs/subsystems.md`](docs/subsystems.md).
-2. Make the change, then run `make format`, `make lint` and `make verify`.
-3. If something cannot be named with confidence, give it a neutral name and
-   open an entry in [`docs/unknowns.md`](docs/unknowns.md).
-
-Full workflow in [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-## Analysis workflow
-
-Automated procedure analysis stubs a routine with an early return, rebuilds and
-diffs emulator screenshots against a reference capture. It needs the
-instrumented Gens build from
-[gens_automation](https://github.com/oranguthang/gens_automation) as a sibling
-checkout; `make build-gens` cross-compiles it in Docker, so Visual Studio is
-optional. The command reads the exact source revision from
-`config/toolchain.json`: it checks out that revision for a new clone and rejects
-an existing checkout at any other revision before compiling. Every public
-capture and playtest also verifies the resolved `GENS_EXE` against the approved
-binary hash before launch.
-The cross-build sets the PE timestamp and checksum recorded in the manifest so
-rebuilding the same source reproduces that approved binary hash.
-
-The same sibling build contains a Z80 sound-port tracer. `make trace-sound`
-captures the title music into `build/sound_trace/`, using an isolated sound-on
-configuration rather than modifying the user's `Gens.cfg`.
-
-```bash
-make build-gens                 # Check out the pinned revision and cross-build in Docker
-make reference MOVIE=longplay   # Capture the reference frames
-make find-unanalyzed            # List procedures still to analyze
-make analyze MOVIE=longplay     # Stub and diff
-make report MOVIE=longplay      # Build the report
-```
-
-`MOVIE` is `longplay` or `demos`; see [`movies/README.md`](movies/README.md).
 
 ## Game information
 
@@ -193,21 +83,10 @@ for the Japanese variants carry a `JP` suffix.
 
 ## Known gaps
 
-- **Nemesis does not re-encode byte for byte.** Eight of the seventeen extracted
-  segments round-trip exactly, including Enigma; the six Nemesis streams
+- **Nemesis does not re-encode byte for byte.** The six Nemesis streams
   round-trip semantically with smaller valid encodings. Tracked as DATA-002; see
   [`docs/data_formats.md`](docs/data_formats.md).
-- **The runtime layer checks state, not pixels.** The twelve replays assert
-  declared values of work RAM, which catches a game that diverges; comparing
-  screenshots needs a reference capture, and none is tracked. See
-  [`docs/runtime_evidence.md`](docs/runtime_evidence.md).
-- Four further open questions are listed in
-  [`docs/unknowns.md`](docs/unknowns.md).
-
-The former fixed-address sound limitation is resolved in Source 2.0:
-`make verify-relocation` packs the ROM without its layout gaps and checks the
-recomputed Z80 data sources. See DATA-001 in
-[`docs/unknowns.md`](docs/unknowns.md).
+- Further open questions are listed in [`docs/unknowns.md`](docs/unknowns.md).
 
 ## Credits
 

@@ -2,7 +2,7 @@
 ; ROM $012A94-$012F2F
 
 Game_StartRound:
-                jsr     Sys_InitTitleScreen
+                jsr     (Sys_InitTitleScreen).l
                 lea     (Gfx_SharedPalette).l,a5
                 jsr     j_Gfx_LoadPaletteCompact
                 bsr.s   Game_SetupLevel

@@ -4,16 +4,10 @@
 
 | Document | What it answers |
 | --- | --- |
-| [`roadmap.md`](roadmap.md) | What this project is for, what is done, what is next |
 | [`source_layout.md`](source_layout.md) | Where the code lives and why it is split that way |
 | [`subsystems.md`](subsystems.md) | What the program does and who calls whom |
 | [`build.md`](build.md) | How the build works, what to supply, and what each failure means |
 | [`retrolarium.md`](retrolarium.md) | How the game is edited in Retrolarium Studio |
-| [`validation.md`](validation.md) | Which check proves what |
-| [`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) | What the 1.0 release claims, and what it does not |
-| [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) | What the 2.0 authoring release adds and how it is accepted |
-| [`provenance.md`](provenance.md) | Where every name and every extracted byte came from |
-| [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md#draft-history-reconstruction) | How the unpublished Source 2.0 draft maps to the reviewed history |
 
 ## Working on the source
 
@@ -24,8 +18,7 @@
 | [`ram_fields.md`](ram_fields.md) | What every work RAM address is for |
 | [`unknowns.md`](unknowns.md) | What is still unresolved, and the experiment that would settle it |
 | [`data_formats.md`](data_formats.md) | What each extracted segment is and how well it is understood |
-| [`debugger_workflow.md`](debugger_workflow.md) | Exporting symbols and using them on a trace |
-| [`runtime_evidence.md`](runtime_evidence.md) | The twelve replays, what they observe, and how the dumps are read |
+| [`z80_sound_driver.md`](z80_sound_driver.md) | The Z80 sound driver and its data banks |
 | [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | The workflow, from a fresh clone to a reviewed change |
 
 ## Reading order
@@ -42,14 +35,8 @@ For a first pass at the program itself, follow the ROM:
 
 ## The verification rule
 
-After every edit batch:
-
-```bash
-make lint
-make verify
-```
-
-`make verify` must print:
+After every edit batch run `make test`; among other things `make verify` must
+print:
 
 ```
 [OK] Byte-identical ROM reproduced (SHA1 83d8bbf0a9b38c42a0bf492d105cc3abe9644a96)
@@ -57,22 +44,4 @@ make verify
 
 Annotation, renaming and reformatting must never change the assembled bytes.
 Any difference means the edit was wrong, not that the gate is too strict.
-
-## Current status
-
-Source Reconstruction 1.0 and 2.0 are tagged. The current `main` branch also
-contains subsequent corrections. The aggregate `make source-2-check` starts
-with the permanent 1.0 gate, then verifies relocatability and the
-machine-readable 2.0 contract at its tag. Source Reconstruction 3.0 moved the
-Studios, their zero-edit content build, playtest and sequencer checks to
-Retrolarium; `make studio-check` proves the repository with the kit.
-
-See [`runtime_evidence.md`](runtime_evidence.md) for what the replays observe,
-[`source_reconstruction_1_0.md`](source_reconstruction_1_0.md) for the preserved
-base, and [`source_reconstruction_2_0.md`](source_reconstruction_2_0.md) for the
-authoring release.
-
-Five entries remain open in [`unknowns.md`](unknowns.md), and three are
-resolved. The open entries record four questions about the original program
-and the non-byte-exact Nemesis encoder; none is hidden by the 2.0 release
-claim.
+`make test-full` also plays both movies in MAME on the packed ROM.

@@ -133,45 +133,6 @@ def parse_selections(values: list[str], errors: list[str]) -> dict[str, Path]:
     return selections
 
 
-def check_commit(
-    component: dict,
-    errors: list[str],
-    notes: list[str],
-    executable: Path | None = None,
-    required: bool = False,
-) -> None:
-    """For a source-built component, the pinned commit is the identity."""
-    wanted = component.get("source_commit")
-    if not wanted:
-        return
-    checkout = executable.resolve().parent.parent if executable is not None else None
-    if checkout is None:
-        for entries in component.get("files", {}).values():
-            for entry in entries:
-                checkout = Path(entry["path"]).parent.parent
-                break
-            break
-    if checkout is None or not (checkout / ".git").exists():
-        message = f"{component['id']}: no checkout at {checkout}, commit not verified"
-        (errors if required else notes).append(message)
-        return
-
-    result = subprocess.run(
-        ["git", "-C", str(checkout), "rev-parse", "HEAD"],
-        capture_output=True, text=True,
-    )
-    if result.returncode != 0:
-        message = f"{component['id']}: could not read the checkout's commit"
-        (errors if required else notes).append(message)
-        return
-    actual = result.stdout.strip()
-    if actual != wanted:
-        errors.append(
-            f"{component['id']}: {checkout} is at {actual[:12]}, "
-            f"but the manifest pins {wanted[:12]}"
-        )
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="config/toolchain.json")
@@ -183,10 +144,6 @@ def main() -> int:
         default=[],
         metavar="COMPONENT=PATH",
         help="Hash the resolved executable path that the caller will invoke",
-    )
-    parser.add_argument(
-        "--require-emulator", action="store_true",
-        help="Fail when the emulator is absent instead of only noting it",
     )
     args = parser.parse_args()
 
@@ -206,35 +163,6 @@ def main() -> int:
             notes.append(f"{component['id']}: nothing recorded for {key}")
             continue
         entries = component_entries(component, key, errors)
-
-        if component["id"] == "emulator":
-            selected = selections.get("emulator")
-            present = (
-                selected.is_file()
-                if selected is not None
-                else any(Path(entry["path"]).is_file() for entry in entries)
-            )
-            if not present and not args.require_emulator:
-                notes.append(
-                    "emulator: not built; run 'make build-gens' before 'make trace'"
-                )
-                continue
-            if not present:
-                errors.append("emulator: not built; run 'make build-gens'")
-                continue
-            check_commit(
-                component,
-                errors,
-                notes,
-                selected,
-                required=args.require_emulator,
-            )
-
-            # A selected emulator is hashed below using the executable path the
-            # caller will actually launch. Do not also require the manifest's
-            # default checkout when an approved binary is selected elsewhere.
-            if selected is not None:
-                continue
 
         checked += check_files(entries, errors, notes)
 

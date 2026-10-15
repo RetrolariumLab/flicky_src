@@ -94,7 +94,7 @@ UI_TimerAnim:   dc.b    4
 ; Plays the round-start countdown animation
 UI_AnimateRoundStartCountdown:
                 lea     UI_RoundStartCountdownAnim(pc),a1
-                jmp     UI_PlayAnimation
+                jmp     (UI_PlayAnimation).l
 
 UI_RoundStartCountdownAnim: dc.b    4
                 dc.b    2
@@ -105,7 +105,7 @@ UI_RoundStartCountdownAnim: dc.b    4
 ; Plays the countdown animation after reaching the exit
 UI_AnimateRoundEndCountdown:
                 lea     UI_RoundEndCountdownAnim(pc),a1
-                jmp     UI_PlayAnimation
+                jmp     (UI_PlayAnimation).l
 
 UI_RoundEndCountdownAnim:   dc.b    5
                 dc.b    2
@@ -118,7 +118,7 @@ UI_BlankFrameMappings:  dc.w    0, 0, 0, 0, 0, 0, 0, 0, 0
 ; Plays bonus animation on score screen
 UI_AnimateBonus:
                 lea     UI_BonusAnim(pc),a1
-                jmp     UI_PlayAnimation
+                jmp     (UI_PlayAnimation).l
 
 UI_BonusAnim:   dc.b    5
                 dc.b    1

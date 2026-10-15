@@ -70,9 +70,7 @@ Add a category only when an existing one genuinely does not fit.
    may both check a wall; only one of them is `Tiger_CheckWallCollision`.
 3. Keep a number when it is part of a decoded format, such as a state index or
    an opcode. Do not keep it when it is a ROM offset.
-4. Update `config/reconstruction/label_renames.json` when changing a symbol.
-   It records the imported name, current name and current source path. Inline
-   `; was:` comments are rejected by the provenance test.
+4. Do not keep old names in inline `; was:` comments; Git history keeps them.
 
 5. A plausible reading is not evidence. If the purpose is unclear, keep a
    neutral name (`Ram_UnknownState03`, `Level_UnidentifiedTable`) and open an
@@ -80,33 +78,8 @@ Add a category only when an existing one genuinely does not fit.
    neutral name is better than a confident wrong one, because the wrong one
    stops anyone from looking again.
 6. Every rename must leave the ROM byte-identical. Run `make format` and then
-   `make verify` after each batch; `make lint --strict-naming` refuses any
-   surviving address-derived identifier.
+   `make verify` after each batch.
 
 `make format` belongs in that order because a name is also a width. Label lines
 share a column across a run, so renaming one symbol in a table can move the
 column for the whole table -- see [`assembly_style.md`](assembly_style.md).
-
-## Tooling
-
-`scripts/workflow/rename_symbols.py` takes a CSV of `old,new` pairs, rewrites every
-reference across `src/`. It
-refuses to run if a target name already exists, if two renames collide, or if a
-source name is not defined anywhere -- so a typo cannot silently do nothing.
-
-```bash
-python scripts/run.py workflow.rename_symbols workflow/rename_batch.csv --no-provenance
-make format
-make lint
-make test
-make verify
-```
-
-A rename also changes what `config/reconstruction/label_renames.json` should say, and
-`make test` fails until it does: the table has to cover the source exactly.
-
-`make lint` checks the vocabulary itself. Every symbol must begin with one of
-the categories above, derive from a symbol that exists (`Owner_Detail`,
-`Block_End`), or be one of the two named exceptions -- the hardware and
-memory-map names in `src/memory/`, and the cartridge header fields, which keep
-the names the Mega Drive format gives them.

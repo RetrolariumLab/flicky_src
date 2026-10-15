@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Pack the ROM without its two layout gaps and validate relocatable sound loads."""
+"""Pack the ROM without its two layout gaps and validate relocatable sound loads.
+
+The packed image is completed into a runnable cartridge: padded with $FF to
+the original 128 KiB, with the header's ROM end and checksum updated, so the
+full test can play the longplay on it."""
 
 from __future__ import annotations
 
@@ -15,6 +19,22 @@ from validation.debug_symbols import collect_from_listing
 def fail(message: str) -> None:
     print(f"[ERROR] {message}", file=sys.stderr)
     raise SystemExit(1)
+
+
+ROM_SIZE = 0x20000
+
+
+def runnable(rom: bytes) -> bytes:
+    """The packed image as a cartridge the game boots from: padded with $FF to
+    the original size, ROM end and checksum ($18E, the word sum of everything
+    after the header) updated in the header."""
+    if len(rom) > ROM_SIZE:
+        fail(f"packed ROM is {len(rom)} bytes, more than {ROM_SIZE}")
+    image = bytearray(rom + b"\xff" * (ROM_SIZE - len(rom)))
+    image[0x1A4:0x1A8] = (ROM_SIZE - 1).to_bytes(4, "big")
+    checksum = sum(int.from_bytes(image[i:i + 2], "big") for i in range(0x200, ROM_SIZE, 2)) & 0xFFFF
+    image[0x18E:0x190] = checksum.to_bytes(2, "big")
+    return bytes(image)
 
 
 def without_line(text: str, line: str, source: Path) -> str:
@@ -151,6 +171,7 @@ def main() -> int:
     authored = sound_data.read_bytes()
     if rom[sfx:sfx + len(authored)] != authored:
         fail("packed ROM does not contain the authored Z80 sound banks")
+    rom_path.write_bytes(runnable(rom))
 
     print(
         f"[OK] packed relocation moves game entry ${0x10000:06X} -> ${game:06X}; "

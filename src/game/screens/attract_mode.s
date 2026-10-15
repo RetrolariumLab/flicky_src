@@ -8,7 +8,7 @@
 ; display one the BCD byte the HUD prints
 
 Demo_Init:
-                jsr     Sys_InitTitleScreen
+                jsr     (Sys_InitTitleScreen).l
                 lea     (Gfx_SharedPalette).l,a5
                 jsr     j_Gfx_LoadPaletteCompact
                 move.w  (Ram_DemoIndex).w,d0

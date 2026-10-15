@@ -118,28 +118,6 @@ class Verification(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("missing", errors[0])
 
-    def test_a_substituted_emulator_binary_is_rejected(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / "Gens.exe"
-            path.write_bytes(b"a build")
-            entry = self.entry(path)
-            entry["sha256"] = "0" * 64
-            errors, notes = [], []
-            verify_toolchain.check_files([entry], errors, notes)
-            self.assertEqual(notes, [])
-            self.assertEqual(len(errors), 1)
-            self.assertIn("does not match the recorded build", errors[0])
-
-    def test_emulator_manifest_enforces_commit_and_binary_hash(self):
-        emulator = next(
-            component for component in CONFIG["components"]
-            if component["id"] == "emulator"
-        )
-        self.assertEqual(emulator["identity"], "source_commit_and_binary_hash")
-        for entries in emulator["files"].values():
-            for entry in entries:
-                self.assertNotIn("observed_only", entry)
-
     def test_selected_executable_path_is_hashed(self):
         with tempfile.TemporaryDirectory() as tmp:
             approved = Path(tmp) / "approved.exe"
@@ -188,26 +166,6 @@ class Verification(unittest.TestCase):
                     self.assertNotEqual(result.returncode, 0)
                     self.assertIn("does not match the recorded build", result.stderr)
                     self.assertNotIn("[RUN]", result.stdout)
-
-    def test_make_rejects_a_mismatched_emulator_override_before_launch(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            substitute = Path(tmp) / "Gens.exe"
-            substitute.write_bytes(b"not the approved emulator")
-            result = subprocess.run(
-                [
-                    "make",
-                    "-B",
-                    "reference",
-                    "MOVIE=longplay",
-                    f"GENS_EXE={substitute}",
-                ],
-                cwd=ROOT,
-                capture_output=True,
-                text=True,
-            )
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn("does not match the recorded build", result.stderr)
-            self.assertNotIn("-screenshot-interval", result.stdout)
 
 
 if __name__ == "__main__":

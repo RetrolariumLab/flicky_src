@@ -60,9 +60,8 @@ Obj_DiamondBonus_Return:
                 rts
 
 Bonus_StarScoreTable:       dc.l    $100, $200, $300, $400, $500, $800, $1000, $2000, $3000
-DiamondBonus_AnimPointers:  dc.b    0, 1
-                dc.w    DiamondBonus_AnimSpin-Sys_GameEntryPoint
-DiamondBonus_AnimSpin:  dc.b    4, 5
+DiamondBonus_AnimPointers:  dc.l    DiamondBonus_AnimSpin
+DiamondBonus_AnimSpin:      dc.b    4, 5
                 dc.w    DiamondBonus_SpinFrame0-Sys_GameEntryPoint
                 dc.w    DiamondBonus_SpinFrame1-Sys_GameEntryPoint
                 dc.w    DiamondBonus_SpinFrame2-Sys_GameEntryPoint

@@ -1,0 +1,95 @@
+{
+  "schema": "retrolarium.movie-check",
+  "schema_version": 1,
+  "movie": "flicky_demos.gmv",
+  "machine": "genesis",
+  "cells": {
+    "game_state": {
+      "address": "0xFFD2A0",
+      "length": 2
+    },
+    "demo_mode": {
+      "address": "0xFFD2A5"
+    },
+    "round": {
+      "address": "0xFFD82C",
+      "length": 2
+    },
+    "score": {
+      "address": "0xFFD87E",
+      "length": 4
+    },
+    "lives": {
+      "address": "0xFFD882",
+      "length": 2
+    }
+  },
+  "frames": [
+    3000,
+    6000,
+    9000,
+    12000,
+    15000,
+    18000,
+    21000,
+    "end"
+  ],
+  "expected": {
+    "3000": {
+      "game_state": "0000",
+      "demo_mode": "01",
+      "round": "0101",
+      "score": "00000000",
+      "lives": "0301"
+    },
+    "6000": {
+      "game_state": "0000",
+      "demo_mode": "01",
+      "round": "100a",
+      "score": "00000000",
+      "lives": "0301"
+    },
+    "9000": {
+      "game_state": "0000",
+      "demo_mode": "01",
+      "round": "2014",
+      "score": "00000000",
+      "lives": "0308"
+    },
+    "12000": {
+      "game_state": "0000",
+      "demo_mode": "01",
+      "round": "2418",
+      "score": "00000000",
+      "lives": "0308"
+    },
+    "15000": {
+      "game_state": "0000",
+      "demo_mode": "01",
+      "round": "0101",
+      "score": "00000000",
+      "lives": "0306"
+    },
+    "18000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "round": "0202",
+      "score": "00022600",
+      "lives": "0206"
+    },
+    "21000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "round": "0404",
+      "score": "00033540",
+      "lives": "0306"
+    },
+    "end": {
+      "game_state": "8010",
+      "demo_mode": "00",
+      "round": "0404",
+      "score": "00033540",
+      "lives": "0006"
+    }
+  }
+}

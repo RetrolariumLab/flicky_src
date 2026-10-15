@@ -2,7 +2,7 @@
 ; ROM $013110-$0139A1
 
 Ending_Init:
-                jsr     Sys_InitTitleScreen
+                jsr     (Sys_InitTitleScreen).l
                 clr.b   (Ram_FontBankFlag).w
                 bsr.w   Gfx_LoadTilesToVRAM_LoadFont
                 lea     (Gfx_SharedPalette).l,a5

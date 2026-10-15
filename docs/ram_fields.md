@@ -278,11 +278,9 @@ the first 64 KiB after the code has been copied to RAM.
 
 ## Fields with an observed encoding
 
-Six of these are asserted by name in `scenarios/runtime_scenarios.json` and
-checked against replays of the two recorded movies, so their contents are
-observed rather than inferred. Three carry an encoding worth stating here;
-[`runtime_evidence.md`](runtime_evidence.md) has the full tables and the values
-each scenario saw.
+Six of these were checked against replays of the two recorded movies (the
+runtime scenarios of releases 1.0 to 3.0), so their contents are observed rather
+than inferred. Three carry an encoding worth stating here.
 
 | Symbol | Encoding |
 | --- | --- |

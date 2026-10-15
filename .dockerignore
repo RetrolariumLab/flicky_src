@@ -1,7 +1,0 @@
-*
-!tools/
-!tools/ymfm_renderer/
-!tools/ymfm_renderer/**
-!third_party/
-!third_party/ymfm/
-!third_party/ymfm/**

@@ -158,8 +158,8 @@ timers, voice loads, key events, and register writes as the resident driver.
 The register log is exported as VGM 1.50. Retrolarium's frontend around the
 upstream ymfm core renders YM2612 output to WAV; its small internal
 SN76489 implementation covers PSG writes without introducing a second runtime
-dependency. This makes ordinary preview independent of Gens. Emulator tracing
-remains the fidelity oracle used to test the Python sequencer against the
+dependency. This makes ordinary preview independent of any emulator. An
+emulator trace was the fidelity oracle for the Python sequencer against the
 original Z80 implementation.
 
 The resident bank declares PSG tracks in music `$84` and `$87`, but both point
@@ -169,8 +169,8 @@ tone sequence whose pitch or envelope playback could be compared. The VGM
 path retains SN76489 writes, while the executable fidelity claim below is
 deliberately limited to the YM2612 traffic that the original content emits.
 
-The oracle is the kit's sound-trace test over `make trace-sound`. The sibling
-Gens hook sits in
+The oracle is the kit's sound-trace test over a Gens trace (3.0's
+`make trace-sound`; the test skips without one). The Gens hook sits in
 `Z80_WriteB_YM2612` and records a logical CSV row only when the emulated Z80
 performs the corresponding data-port write. The validation window is frames
 320-457 of the pinned longplay: music `$85` starts there, and the later global
@@ -178,6 +178,4 @@ fade-out is outside the window. After aligning on the song's first 32 writes,
 all 2,624 audible YM2612 writes match the Python sequencer exactly, and their
 timing agrees with the frame-resolution trace within 2.1 frames. Registers
 `$24-$27` are deliberately omitted from the value comparison because they are
-the driver's timer scheduling traffic. The capture uses
-`config/runtime/gens_sound_trace.cfg`, so a persisted sound-off development setting
-cannot silently produce an empty trace.
+the driver's timer scheduling traffic.

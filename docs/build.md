@@ -156,14 +156,11 @@ legitimately changes size; update `config/linker/rom_layout.json` deliberately, 
 is the intended cost of moving code. See the rationale in
 [`source_layout.md`](source_layout.md#why-the-layout-is-machine-readable).
 
-## The full gate
+## The checks
 
-```bash
-make release-check
-```
-
-runs `verify-toolchain`, `check-assets`, `lint`, `test`, `roundtrip-formats`,
-`verify`, `verify-layout`, `symbols`, `trace` and `release-audit`, in that
-order, cheapest first. It takes a few minutes, most of it in `trace`, which
-replays 67,000 frames under the emulator. See
-[`validation.md`](validation.md) for what each layer can and cannot tell you.
+`make test` runs the unit tests, `verify`, `verify-layout`,
+`verify-relocation` and the studio check, in about a minute. `make test-full`
+then plays the longplay in MAME on the packed ROM, whose game code starts at
+`$00290A` instead of `$010000`, and compares the game's state at seven
+checkpoints with what the original ROM gives
+(`movies/flicky_longplay.check.json`, recorded by `make golden`).

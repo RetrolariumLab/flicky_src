@@ -40,9 +40,8 @@ length) pairs; the body emits nibbles until the tile count is exhausted. A flag
 in the header selects XOR mode, where each row is XOR-ed against the previous
 one.
 
-The canonical decoder is `scripts/formats/nemesis_dec.py`. It is shared by
-build extraction and content authoring, requires no compiled helper, and
-decodes all six segments:
+The canonical decoder is Retrolarium Core's `retrolarium_core.oracles.nemesis`.
+It decodes all six segments:
 
 ```
 ExitTiles         128 ->    288 bytes
@@ -64,7 +63,8 @@ incrementing run, repeat one tile, write a static value, write incrementing or
 decrementing values, or take tiles inline -- and each tile word can carry
 per-tile priority, palette and flip bits read from a bitstream.
 
-The canonical decoder is `scripts/formats/enigma_dec.py`; the in-ROM version is
+The canonical decoder is Retrolarium Core's `retrolarium_core.oracles.enigma`;
+the in-ROM version is
 `Eni_Decompress`, dispatching through `Eni_OpcodeJumpTable`. The one Enigma
 segment decodes from 10 bytes to 96.
 
@@ -105,9 +105,9 @@ built into the ROM for attract mode.
 
 ## Round trips
 
-`make roundtrip-formats` decodes every segment and checks it against the claim
-recorded in `config/authoring/data_formats.json`. Three claims are possible and they are
-not interchangeable.
+The 3.0 tooling (`make roundtrip-formats`, kept at that tag) decoded every
+segment and checked it against a recorded claim. Three claims are possible and
+they are not interchangeable.
 
 **`exact`** -- decoding and re-encoding returns the original bytes. Eight
 segments qualify, and for these the field layout is proven rather than
@@ -126,7 +126,7 @@ SegaEnigma           10 bytes,    48 words
 
 **`semantic`** -- re-encoding produces a valid stream that decodes to identical
 pixels, but not the original bytes. All six Nemesis segments are in this class.
-`scripts/formats/nemesis_enc.py` reuses the code table carried by the original
+The encoder (`retrolarium_core.oracles.nemesis_encode`) reuses the code table carried by the original
 stream, so the only remaining freedom is how the nybble sequence is split into
 runs, and no splitting rule tried so far reproduces the original. A bit-optimal
 split is consistently *smaller* than the original -- 117 bytes against 128 for
