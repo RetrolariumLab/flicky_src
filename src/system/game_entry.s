@@ -77,7 +77,7 @@ Sys_InitTitleScreen_ClearLoop:
                 bsr.w   Camera_ClearScroll
                 bsr.w   Object_ClearAllSlots
                 move.w  #$8000,(Ram_TextTileBase).w
-                jmp     Gfx_LoadLogoAndExitToVRAM
+                jmp     (Gfx_LoadLogoAndExitToVRAM).l
 
 Gfx_LoadTilesToVRAM:
                 move.w  #$200,d0

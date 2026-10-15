@@ -160,8 +160,8 @@ reused, even after the entry is resolved.
 - **Status:** open
 - **Confidence:** high
 - **Location:** `src/compression/nemesis_enigma.s`,
-  `scripts/formats/nemesis_enc.py`, `scripts/formats/enigma_enc.py`
-- **Evidence:** `scripts/formats/nemesis_enc.py` re-encodes using the code table
+  Retrolarium Core's `retrolarium_core.oracles.nemesis_encode` and `enigma_encode`
+- **Evidence:** The Nemesis encoder re-encodes using the code table
   carried by the original stream, so the only remaining freedom is how the
   nybble sequence is split into runs. A greedy split and a bit-optimal split both
   produce valid streams that decode to identical pixels, and neither reproduces
@@ -169,15 +169,15 @@ reused, even after the entry is resolved.
   original -- 117 against 128 bytes for `ExitTiles`, 6,037 against 6,052 for
   `LevelTiles` -- which shows the original compressor was not minimising size
   and used a heuristic that has not been identified. Enigma is no longer part
-  of the unknown: `scripts/formats/enigma_enc.py` exactly reproduces the
+  of the unknown: the Enigma encoder exactly reproduces the
   ten-byte Sega tilemap and round-trips arbitrary word streams through the
   decoder.
 - **Experiment:** Compare against Nemesis streams from other Sega titles of the
   same period, whose compressor is likely the same tool. If a splitting rule
   reproduces those byte for byte, it should reproduce these. Until then the
   formats are proven semantically -- decode, re-encode, decode again yields the
-  same pixels -- and `config/authoring/data_formats.json` records `semantic` rather than
-  `exact` for them so the weaker claim is visible.
+  same pixels -- and they are recorded as `semantic` rather than `exact` so the
+  weaker claim is visible.
 
 ### SND-001 The Z80 driver itself is not disassembled
 

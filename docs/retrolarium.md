@@ -21,10 +21,9 @@ revision. The studio offers:
   piano roll and a YM2612 preview;
 - the attract demos.
 
-The kit's sequencer plays the Z80 driver's streams for the preview. Its test
-compares it with the real driver: `make trace-sound` records the chip writes
-Gens sees during title song `$85` into `build/sound_trace/gens.csv`, and the kit
-requires the same ordered writes within 2.1 frames.
+The kit's sequencer plays the Z80 driver's streams for the preview; it was
+checked against the real driver's chip writes during title song `$85`
+([`z80_sound_driver.md`](z80_sound_driver.md)).
 
 ## The game's names and tables
 
@@ -44,13 +43,3 @@ the ROM with no edits, requiring it byte for byte. It needs the ROM, the
 Retrolarium kit (`rltool` on `PATH`, or `RLTOOL=...`) and the studio's Flicky
 level writer (`RETROLARIUM_FLICKY_LEVEL_WRITER`, or on `PATH`), and never reads
 or writes `.retrolarium/`.
-
-## Source Reconstruction 3.0
-
-`config/source_reconstruction_3_0.json` is the 3.0 release manifest. It names
-the descriptor, the profile and the revisions, the kit and studio versions the
-release is checked with, and every removed editor with the view that replaced
-it. `make source-3-audit` runs studio-check with `--release`, which also checks
-that section against the descriptor and the running kit; `make source-3-check`
-runs the Source 2.0 gate first. The manifest stays in `development` with the kit unpinned
-until Retrolarium publishes its first tags.

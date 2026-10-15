@@ -1,0 +1,98 @@
+{
+  "schema": "retrolarium.movie-check",
+  "schema_version": 1,
+  "movie": "flicky_longplay.gmv",
+  "machine": "genesis",
+  "cells": {
+    "game_state": {
+      "address": "0xFFD2A0",
+      "length": 2
+    },
+    "demo_mode": {
+      "address": "0xFFD2A5"
+    },
+    "ending_state": {
+      "address": "0xFFD29E",
+      "length": 2
+    },
+    "round": {
+      "address": "0xFFD82C",
+      "length": 2
+    },
+    "score": {
+      "address": "0xFFD87E",
+      "length": 4
+    },
+    "lives": {
+      "address": "0xFFD882",
+      "length": 2
+    }
+  },
+  "frames": [
+    10000,
+    20000,
+    30000,
+    40000,
+    50000,
+    60000,
+    "end"
+  ],
+  "expected": {
+    "10000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "0808",
+      "score": "00164940",
+      "lives": "0608"
+    },
+    "20000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "1610",
+      "score": "00384020",
+      "lives": "0808"
+    },
+    "30000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "2418",
+      "score": "00642460",
+      "lives": "0808"
+    },
+    "40000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "311f",
+      "score": "00932500",
+      "lives": "0800"
+    },
+    "50000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "3927",
+      "score": "01627580",
+      "lives": "0800"
+    },
+    "60000": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "462e",
+      "score": "02798150",
+      "lives": "0808"
+    },
+    "end": {
+      "game_state": "0000",
+      "demo_mode": "00",
+      "ending_state": "0000",
+      "round": "4931",
+      "score": "02862440",
+      "lives": "0800"
+    }
+  }
+}

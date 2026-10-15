@@ -1,8 +1,5 @@
-# Flicky (Sega Mega Drive) build system.
-#
-# The Makefile holds only thin entrypoints; all platform-specific logic lives
-# in the Python scripts under scripts/. The permanent gate is "make verify",
-# which requires the build to reproduce the reference ROM byte for byte.
+# Flicky (Sega Mega Drive): build the source back into the original ROM and
+# check it. `make help` lists the targets; the logic lives in scripts/.
 
 PYTHON ?= python
 PROJECT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -15,8 +12,9 @@ export RLTOOL
 AS_BIN ?= $(eval AS_BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive asl)))$(AS_BIN)
 P2BIN ?= $(eval P2BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive p2bin)))$(P2BIN)
 AS_ARGS ?= -maxerrors 2
+# MAME for `make test-full` and `make golden`.
+MAME ?= $(RETROLARIUM_MAME)
 
-# Sources and outputs
 SRC ?= src/main.s
 OBJ ?= build/main.p
 ROM ?= fbuilt.bin
@@ -24,25 +22,13 @@ ORIGINAL_ROM ?= Flicky (UE) [!].bin
 ASSET_MANIFEST ?= assets/manifest.json
 DATA_DIR ?= data
 DATA_ADDRS ?= $(DATA_DIR)/data_addrs.txt
-SCRIPTS_DIR ?= scripts
-RUN_SCRIPT ?= $(SCRIPTS_DIR)/run.py
-DATA_FORMAT_MANIFEST ?= config/authoring/data_formats.json
-DATA_FORMAT_SUMMARY ?= build/data_formats.json
-DEBUG_BREAKPOINTS ?= config/debugger/breakpoints.json
-DEBUG_WATCHES ?= config/debugger/watches.json
-SYMBOL_FILE ?= build/main.sym
-DEBUG_SUMMARY ?= build/debug_symbols.json
-RUNTIME_SCENARIOS ?= scenarios/runtime_scenarios.json
-RUNTIME_DIR ?= build/runtime
-RUNTIME_SUMMARY ?= build/runtime_scenarios.json
-RELEASE_CONTRACT ?= config/source_reconstruction_1_0.json
-SOURCE_2_MANIFEST ?= config/source_reconstruction_2_0.json
+RUN_SCRIPT ?= scripts/run.py
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-executable "binary_converter=$(P2BIN)"
-EMULATOR_EXECUTABLE = --require-executable "emulator=$(GENS_EXE)"
 ROM_LAYOUT ?= config/linker/rom_layout.json
-SOURCE_STRUCTURE ?= config/reconstruction/source_structure.json
 LISTING ?= build/main.lst
+RELOCATED_ROM ?= build/relocation/flicky_packed.bin
+MOVIE_CHECKS ?= movies/flicky_longplay.check.json movies/flicky_demos.check.json
 M68K_SOURCE_FILES := $(shell $(PYTHON) -c "from pathlib import Path; print(' '.join(p.as_posix() for p in Path('src').rglob('*') if p.suffix in {'.s', '.inc'}))")
 Z80_SOURCE ?= src/sound/z80/driver.asm
 Z80_DRIVER_MODULES := $(wildcard src/sound/z80/driver/*.asm)
@@ -55,57 +41,14 @@ Z80_DATA_BIN ?= build/z80_sound_data.bin
 Z80_DATA_SFX_BIN ?= $(basename $(Z80_DATA_BIN))_sfx.bin
 Z80_DATA_MUSIC_BIN ?= $(basename $(Z80_DATA_BIN))_music.bin
 Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
-SOUND_TRACE_CONFIG ?= config/runtime/gens_sound_trace.cfg
-SOUND_TRACE_FILE ?= build/sound_trace/gens.csv
-SOUND_TRACE_FRAMES ?= build/sound_trace/frames
-
-# Emulator: a sibling checkout, like fceux_automation in the NES projects.
-GENS_DIR ?= ../gens_automation
-GENS_EXE ?= $(GENS_DIR)/Output/Gens.exe
-# Its Docker cross-build, which needs no Visual Studio. Override both to build
-# with MSBuild instead: GENS_MAKEFILE=Makefile GENS_TARGET=release
-GENS_MAKEFILE ?= Makefile.docker
-GENS_TARGET ?= win-i386
-
-# Analysis configuration
-WORKFLOW_DIR ?= workflow
-MOVIE_FILE_longplay = movies/flicky_longplay.gmv
-MOVIE_FILE_demos = movies/flicky_demos.gmv
-MAX_FRAMES_longplay = 67000
-MAX_FRAMES_demos = 0
-ANALYSIS_WORKERS ?= 24
-ANALYSIS_GRID_COLS ?= 6
-ANALYSIS_FRAMESKIP ?= 8
-ANALYSIS_INTERVAL ?= 20
-ANALYSIS_MAX_DIFFS ?= 10
-ANALYSIS_DIFF_COLOR ?= pink
-PROCEDURES_FILE = $(WORKFLOW_DIR)/unanalyzed_procedures.txt
-BATCH_COUNT ?= 40
-
-# Milestone 3 removed every address-derived identifier, so the linter now
-# refuses any that come back.
-STRICT_NAMING ?= --strict-naming
-
-MAKE_FRAGMENTS := mk/runtime.mk mk/validation.mk mk/workflow.mk
-
-include $(MAKE_FRAGMENTS)
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify z80-check z80-data-check verify-toolchain verify-emulator verify-layout verify-relocation check-source-structure init split check-assets \
-        compare lint format format-check scaffold-check unpack-data \
-        roundtrip-formats symbols trace trace-runtime validate-runtime \
-        trace-sound studio-check source-3-audit source-3-check \
-        test release-audit release-check source-2-audit source-2-release-audit source-2-check source-2-pre-tag-check source-2-tag-check clean \
-        reference analyze find-unanalyzed report set-movie show-movie \
-        prepare-batch rename build-gens stop help \
-        _require-assets _require-movie _require-toolchain _require-emulator
+.PHONY: all build verify z80-check z80-data-check init split check-assets verify-toolchain \
+	verify-layout verify-relocation studio-check lint format format-check test test-full \
+	golden hooks clean help _require-assets _require-toolchain
 
 all: build
-
-# ---------------------------------------------------------------------------
-# Build and verification
-# ---------------------------------------------------------------------------
 
 # Assemble and report byte identity as a warning.
 build: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
@@ -122,7 +65,7 @@ verify: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
 		--verify
 
-$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_REFERENCE) | _require-toolchain
+$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) scripts/build/build_z80_driver.py $(Z80_REFERENCE) | _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_SOURCE) --obj $(Z80_OBJ) --output $(Z80_BIN) \
 		--reference $(Z80_REFERENCE) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
@@ -130,7 +73,7 @@ $(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) $(SCRIPTS_DIR)/bui
 
 z80-check: $(Z80_BIN)
 
-$(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) &: $(Z80_DATA_SOURCE) $(RUN_SCRIPT) $(SCRIPTS_DIR)/build/build_z80_driver.py $(Z80_DATA_REFERENCE) | _require-toolchain
+$(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) &: $(Z80_DATA_SOURCE) $(RUN_SCRIPT) scripts/build/build_z80_driver.py $(Z80_DATA_REFERENCE) | _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
 		--source $(Z80_DATA_SOURCE) --obj $(Z80_DATA_OBJ) --output $(Z80_DATA_BIN) \
 		--reference $(Z80_DATA_REFERENCE) --reference-offset 12 \
@@ -157,106 +100,83 @@ split:
 	@$(PYTHON) $(RUN_SCRIPT) build.split_data_from_rom \
 		--rom-file "$(ORIGINAL_ROM)" --output $(DATA_DIR) --addrs $(DATA_ADDRS)
 
-check-assets:
-	@$(PYTHON) $(RUN_SCRIPT) build.check_assets \
-		--manifest $(ASSET_MANIFEST) --asset-dir $(DATA_DIR)
-
-_require-assets:
+check-assets _require-assets:
 	@$(PYTHON) $(RUN_SCRIPT) build.check_assets \
 		--manifest $(ASSET_MANIFEST) --asset-dir $(DATA_DIR)
 
 # The assembler is checked before it is used, not after the ROM disagrees.
-verify-toolchain:
+verify-toolchain _require-toolchain:
 	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST) $(TOOLCHAIN_EXECUTABLES)
 
-_require-toolchain:
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST) $(TOOLCHAIN_EXECUTABLES)
+# AS has no linker, so the include order in src/main.s is the ROM layout itself.
+# This makes that layout a declaration the build has to agree with.
+verify-layout: $(LISTING)
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_layout \
+		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
 
-# ---------------------------------------------------------------------------
-# Data tools
-# ---------------------------------------------------------------------------
+# -i lets modules under src/ resolve their binclude paths from the project root.
+$(LISTING): export AS_MSGPATH = $(dir $(AS_BIN))
+$(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) | _require-toolchain
+	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
+	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
 
-unpack-data:
-	@$(PYTHON) $(RUN_SCRIPT) build.unpack_data --data-dir $(DATA_DIR) -v
+# The ROM packed without its two layout gaps, so the code after them moves
+# (build/relocation/flicky_packed.bin), and the sound loads checked.
+verify-relocation: $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) _require-assets _require-toolchain
+	@$(PYTHON) $(RUN_SCRIPT) validation.verify_relocation \
+		--source $(SRC) --sound-data $(Z80_DATA_BIN) \
+		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
-# Decode every authored segment and check it round-trips as declared.
-roundtrip-formats: _require-assets
-	@$(PYTHON) $(RUN_SCRIPT) formats.data_formats --manifest $(DATA_FORMAT_MANIFEST) \
-		--data-dir $(DATA_DIR) --summary $(DATA_FORMAT_SUMMARY)
+# Open flicky.rlj in a throwaway copy of the repository the way Retrolarium
+# Studio does, and rebuild it without edits.
+studio-check:
+	$(RLTOOL) studio check flicky.rlj
 
-clean:
-	@$(PYTHON) $(RUN_SCRIPT) build.clean_project
+lint:
+	@$(RLTOOL) lint
 
+format:
+	@$(RLTOOL) lint --fix
 
-# ---------------------------------------------------------------------------
+format-check:
+	@$(RLTOOL) lint --only assembly
 
-help:
-	@echo "Flicky (Sega Mega Drive) build system"
-	@echo ""
-	@echo "Setup:"
-	@echo "  make init                      Validate the reference ROM, extract data, verify"
-	@echo "  make split                     Re-extract data segments (overwrites data/)"
-	@echo "  make check-assets              Validate data/ against assets/manifest.json"
-	@echo ""
-	@echo "Build:"
-	@echo "  make build                     Assemble; report byte identity as a warning"
-	@echo "  make verify                    Assemble; require byte identity (the gate)"
-	@echo "  make z80-check                 Assemble and byte-check the Z80 sound driver"
-	@echo "  make z80-data-check            Assemble and byte-check the Z80 sound banks"
-	@echo "  make compare                   Compare an existing build without reassembling"
-	@echo "  make clean                     Remove build artifacts"
-	@echo ""
-	@echo "Retrolarium:"
-	@echo "  make studio-check              Open and rebuild flicky.rlj with the kit"
-	@echo "  make source-3-audit            studio-check plus the Source 3.0 manifest"
-	@echo "  make source-3-check            The Source 2.0 gate, then source-3-audit"
-	@echo "  make trace-sound               Capture the real Z80 chip-register stream"
-	@echo ""
-	@echo "Validation:"
-	@echo "  make verify-toolchain          Hash-check the selected build tools"
-	@echo "  make verify-emulator           Check the selected Gens binary and checkout"
-	@echo "  make verify-layout             Check the ROM layout contract"
-	@echo "  make verify-relocation         Pack the ROM and check relocatable sound loads"
-	@echo "  make lint                      Style, naming and repository checks"
-	@echo "  make format                    Apply the deterministic fixes, then lint"
-	@echo "  make format-check              Check formatting without changing files"
-	@echo "  make hooks                     Install the Git hooks (stop words, lint before commits)"
-	@echo "  make scaffold-check            Static checks that need no private ROM"
-	@echo "  make test                      Unit tests for the Python tooling"
-	@echo "  make release-audit             Check the 1.0 release contract"
-	@echo "  make release-check             The complete acceptance gate"
-	@echo "  make source-2-audit            Check the Source 2.0 manifest"
-	@echo "  make source-2-check            Run 1.0 plus every Source 2.0 gate"
-	@echo "  make source-2-pre-tag-check    Validate a clean tag-ready release commit"
-	@echo "  make source-2-tag-check        Validate the annotated release tag at HEAD"
-	@echo ""
-	@echo "Data tools:"
-	@echo "  make unpack-data               Decompress Nemesis/Enigma segments"
-	@echo "  make roundtrip-formats         Decode and re-encode the authored data"
-	@echo "  make symbols                   Export $(SYMBOL_FILE) for debuggers"
-	@echo "  make trace                     Capture and validate runtime scenarios"
-	@echo "  make validate-runtime          Re-check an existing capture"
-	@echo ""
-	@echo "Analysis (MOVIE=longplay|demos):"
-	@echo "  make reference MOVIE=longplay  Capture reference screenshots and dumps"
-	@echo "  make find-unanalyzed           List procedures still to analyze"
-	@echo "  make analyze MOVIE=longplay    Stub procedures and diff against reference"
-	@echo "  make report MOVIE=longplay     Build the analysis report"
-	@echo ""
-	@echo "Documentation workflow:"
-	@echo "  make set-movie MOVIE=longplay  Select the movie for this session"
-	@echo "  make prepare-batch COUNT=40    Prepare a batch of procedures to name"
-	@echo "  make rename                    Apply workflow/rename_batch.csv"
-	@echo ""
-	@echo "Emulator:"
-	@echo "  make build-gens                Build the manifest-pinned Gens revision in Docker"
-	@echo "  make stop                      Kill running emulator processes"
-	@echo ""
-	@echo "Toolchain: Retrolarium Kit, megadrive suite ($(RLTOOL) build-tools)"
+# The quick suite: the unit tests, the byte-identical ROM, its layout, the
+# relocated ROM and the studio check.
+test:
+	@$(PYTHON) -m unittest discover -s tests -t . -p "test_*.py"
+	@$(MAKE) --no-print-directory verify verify-layout verify-relocation studio-check
+
+# The full suite: the quick one, then both movies in MAME on the packed ROM,
+# compared with what the original ROM gives (movies/*.check.json, written by
+# `make golden`).
+test-full: test
+	$(foreach check,$(MOVIE_CHECKS),$(RLTOOL) movie check $(check) --rom $(RELOCATED_ROM) --mame "$(MAME)" &&) true
+
+golden:
+	$(foreach check,$(MOVIE_CHECKS),$(RLTOOL) movie golden $(check) --rom "$(ORIGINAL_ROM)" --mame "$(MAME)" &&) true
 
 # `make hooks`, once per clone, makes Git check every commit and push for stop
 # words and run `make lint` and `make format-check` first (Retrolarium Kit's
 # rltool hooks; the stop-word list lives outside the repositories).
-.PHONY: hooks
 hooks:
 	$(RLTOOL) hooks install --project .
+
+clean:
+	@$(PYTHON) $(RUN_SCRIPT) build.clean_project
+
+help:
+	@echo "Flicky source reconstruction"
+	@echo "  make init                     check the ROM, extract data/, build and verify (once)"
+	@echo "  make split                    extract data/ again from the ROM"
+	@echo "  make build / verify           the ROM / and byte for byte"
+	@echo "  make verify-layout            the module layout against the listing"
+	@echo "  make verify-relocation        the ROM packed without its layout gaps"
+	@echo "  make studio-check             open and rebuild flicky.rlj"
+	@echo "  make test                     the quick suite"
+	@echo "  make test-full                test, then both movies in MAME (MAME=<path>)"
+	@echo "  make golden                   record the movies' checkpoints from the original"
+	@echo "  make lint / format / format-check   the house style (Retrolarium Kit)"
+	@echo "  make hooks                    install the Git hooks (stop words, lint before commits)"
+	@echo "  make verify-toolchain         check the kit's assembler and converter"
+	@echo "  make clean                    remove the build output"

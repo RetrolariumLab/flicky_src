@@ -105,29 +105,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "emulator",
-      "name": "Gens (gens_automation fork)",
-      "version": "docker-mingw-build",
-      "role": "Replays movies for runtime evidence and traces real Z80 chip-register writes",
-      "source": "https://github.com/oranguthang/gens_automation.git",
-      "source_commit": "e14b92535acf85755321788634bf9179b621d8c0",
-      "pe_timestamp": 1788831343,
-      "provenance": "source-built",
-      "verification": "make verify-emulator",
-      "identity": "source_commit_and_binary_hash",
-      "identity_note": "Runtime commands require the selected executable's checkout to match the pinned source commit and its bytes to match the approved SHA-256 before any capture or playtest. make build-gens prepares only that pinned revision and rejects mismatched existing checkouts. The Docker build stamps the PE timestamp and checksum to reproduce the approved executable bytes; any other binary difference requires an explicit manifest hash update after review.",
-      "files": {
-        "any": [
-          {
-            "path": "../gens_automation/Output/Gens.exe",
-            "executable": true,
-            "size": 9658397,
-            "sha256": "d536817f33cc9871e2749bc0d5ced8956502d3182541a07e1d44279fdf45d141"
-          }
-        ]
-      }
     }
   ],
   "hosts": [
@@ -137,8 +114,7 @@
       "shell": "PowerShell 5.1 and Git Bash",
       "language_versions": {
         "python": "3.14.6",
-        "make": "GNU Make 4.4.1",
-        "docker": "required only for make build-gens"
+        "make": "GNU Make 4.4.1"
       },
       "supported_status": "supported",
       "evidence": "The 1.0 release gate was run end to end on this host"

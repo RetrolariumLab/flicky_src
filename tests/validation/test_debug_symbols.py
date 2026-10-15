@@ -51,31 +51,5 @@ class Equates(unittest.TestCase):
         self.assertEqual(hardware["VDP_CTRL"], 0xC00004)
 
 
-class Configs(unittest.TestCase):
-    def test_every_configured_breakpoint_names_a_defined_label(self):
-        entries = debug_symbols.load_config(
-            ROOT / "config" / "debugger" / "breakpoints.json", "breakpoints")
-        self.assertTrue(entries)
-        defined = set()
-        for module in sorted((ROOT / "src").rglob("*.s")):
-            for line in module.read_text(encoding="utf-8").split("\n"):
-                match = debug_symbols.DEFINITION_RE.match(debug_symbols.code_of(line))
-                if match:
-                    defined.add(match.group(1))
-        for entry in entries:
-            self.assertIn(entry["symbol"], defined, entry["symbol"])
-
-    def test_every_configured_watch_names_a_defined_address(self):
-        entries = debug_symbols.load_config(
-            ROOT / "config" / "debugger" / "watches.json", "watches")
-        self.assertTrue(entries)
-        known = debug_symbols.equates([
-            ROOT / "src" / "memory" / "ram.inc",
-            ROOT / "src" / "memory" / "hardware.inc",
-        ])
-        for entry in entries:
-            self.assertIn(entry["symbol"], known, entry["symbol"])
-
-
 if __name__ == "__main__":
     unittest.main()

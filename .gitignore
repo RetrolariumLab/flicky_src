@@ -61,6 +61,7 @@ Thumbs.db
 # Scratch
 tmp/
 tmpclaude*
+/.claude/
 *.lnk
 
 # Isolated editor workspace (initialized from tracked semantic sources)

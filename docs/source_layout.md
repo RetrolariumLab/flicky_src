@@ -33,9 +33,7 @@ placement.
 ## Granularity policy
 
 A module owns one coherent subsystem, the helpers only it uses, and the data
-those helpers consume. The preferred range is **300-700 lines**. Both bounds,
-and the reason for every source outside them, are enforced by
-`make check-source-structure` from `config/reconstruction/source_structure.json`. A procedure
+those helpers consume. The preferred range is **300-700 lines**. A procedure
 is never cut in half, and a small table stays beside the code that reads it.
 
 The policy covers the 68000 tree, Z80 tree, entrypoint indexes and shared
@@ -88,8 +86,7 @@ Repeated filename qualifiers are represented by directories. Enemy actors are
 `game/enemies/{tiger,iggy,spawner}.s`, screen modes are under
 `game/screens/`, and bonus, round, actor, and Z80 concerns follow the same
 pattern. A file inside one directory therefore does not repeat an `enemy_`,
-`screen_`, `round_`, or `z80_` prefix. `make check-source-structure` rejects a
-new repeated prefix and asks for a subdirectory or a more specific name.
+`screen_`, `round_`, or `z80_` prefix. A new repeated prefix calls for a subdirectory or a more specific name.
 
 The Z80 implementation split is independently visible:
 
