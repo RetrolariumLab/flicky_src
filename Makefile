@@ -220,6 +220,7 @@ help:
 	@echo "  make lint                      Style, naming and repository checks"
 	@echo "  make format                    Apply the deterministic fixes, then lint"
 	@echo "  make format-check              Check formatting without changing files"
+	@echo "  make hooks                     Install the Git hooks (stop words, lint before commits)"
 	@echo "  make scaffold-check            Static checks that need no private ROM"
 	@echo "  make test                      Unit tests for the Python tooling"
 	@echo "  make release-audit             Check the 1.0 release contract"
@@ -252,3 +253,10 @@ help:
 	@echo "  make stop                      Kill running emulator processes"
 	@echo ""
 	@echo "Toolchain: Retrolarium Kit, megadrive suite ($(RLTOOL) build-tools)"
+
+# `make hooks`, once per clone, makes Git check every commit and push for stop
+# words and run `make lint` and `make format-check` first (Retrolarium Kit's
+# rltool hooks; the stop-word list lives outside the repositories).
+.PHONY: hooks
+hooks:
+	$(RLTOOL) hooks install --project .
