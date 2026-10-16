@@ -1,150 +1,132 @@
 {
+  "schema": "retrolarium.assets",
   "schema_version": 1,
-  "reference_rom": {
-    "name": "Flicky (UE) [!]",
-    "filename": "Flicky (UE) [!].bin",
-    "platform": "Sega Mega Drive / Genesis",
-    "size": 131072,
-    "sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96",
-    "sha256": "4DF1A91E08376AE773A6EB8E5ABE310F94CA39D8F81583B91A9477FEDCB68C11",
-    "md5": "805CC0B3724F041126A57A4D956FD251",
-    "crc32": "4291C8AB",
-    "padding_byte": "0xFF"
-  },
+  "output": "data",
+  "images": [
+    {
+      "id": "ue",
+      "file": "Flicky (UE) [!].bin",
+      "size": 131072,
+      "sha1": "83d8bbf0a9b38c42a0bf492d105cc3abe9644a96"
+    }
+  ],
   "assets": [
     {
-      "name": "SegaPalette",
       "path": "other/data_SegaPalette.bin",
-      "region": "other",
-      "address": "0x4F6",
+      "image": "ue",
+      "offset": "0x4F6",
       "size": 20,
       "sha1": "81de098fa7d1d41a7569ec4bc5430a8dde9a7678"
     },
     {
-      "name": "SegaEnigma",
       "path": "arteni/data_SegaEnigma.bin",
-      "region": "arteni",
-      "address": "0x510",
+      "image": "ue",
+      "offset": "0x510",
       "size": 10,
       "sha1": "c293e2260e158f285da440b44099fee222566d67"
     },
     {
-      "name": "SegaTiles",
       "path": "artnem/data_SegaTiles.bin",
-      "region": "artnem",
-      "address": "0x51A",
+      "image": "ue",
+      "offset": "0x51A",
       "size": 828,
       "sha1": "70f08ec50c181638b0f8390f0cf4af9a46e45dd3"
     },
     {
-      "name": "z80_part1",
       "path": "sound/data_z80_part1.bin",
-      "region": "sound",
-      "address": "0x1316",
+      "image": "ue",
+      "offset": "0x1316",
       "size": 4070,
       "sha1": "325b37d1788486bd569ff21c8d97e323e27c0f0c"
     },
     {
-      "name": "Jap1BPPTiles",
       "path": "artunc/data_Jap1BPPTiles.bin",
-      "region": "artunc",
-      "address": "0x2372",
+      "image": "ue",
+      "offset": "0x2372",
       "size": 1432,
       "sha1": "ae07a423e23baabf30a24660f9ef09ac5639955a"
     },
     {
-      "name": "z80_part2",
       "path": "sound/data_z80_part2.bin",
-      "region": "sound",
-      "address": "0x101D4",
+      "image": "ue",
+      "offset": "0x101D4",
       "size": 2816,
       "sha1": "60682dbf065ad0b45dd82bd1bdd6aebdf8189b86"
     },
     {
-      "name": "EndingMusic81Overlay",
       "path": "other/data_EndingMusic81Overlay.bin",
-      "region": "other",
-      "address": "0x135E8",
+      "image": "ue",
+      "offset": "0x135E8",
       "size": 954,
       "sha1": "c6afcbf06c856122f88a5ab2be26aa2c30f35103"
     },
     {
-      "name": "DemoInputStream0",
       "path": "other/data_DemoInputStream0.bin",
-      "region": "other",
-      "address": "0x13A82",
+      "image": "ue",
+      "offset": "0x13A82",
       "size": 256,
       "sha1": "5c2ef0cc5b55999cdc2e0d3e4c95aa2ed87b2701"
     },
     {
-      "name": "DemoInputStream2",
       "path": "other/data_DemoInputStream2.bin",
-      "region": "other",
-      "address": "0x13C52",
+      "image": "ue",
+      "offset": "0x13C52",
       "size": 286,
       "sha1": "db6e2ad923515d86c191e4126bacb1247144a44c"
     },
     {
-      "name": "DemoInputStream3",
       "path": "other/data_DemoInputStream3.bin",
-      "region": "other",
-      "address": "0x13D70",
+      "image": "ue",
+      "offset": "0x13D70",
       "size": 256,
       "sha1": "8c3d3e99ec4dac8893d4e5fbeb1bf47a4b835fcf"
     },
     {
-      "name": "TigerJumpArcTable",
       "path": "other/data_TigerJumpArcTable.bin",
-      "region": "other",
-      "address": "0x15B94",
+      "image": "ue",
+      "offset": "0x15B94",
       "size": 384,
       "sha1": "1750cb7190ea31e03f35e3f85fd1c6e76b8abbd4"
     },
     {
-      "name": "LevelTiles",
       "path": "artnem/data_LevelTiles.bin",
-      "region": "artnem",
-      "address": "0x16E58",
+      "image": "ue",
+      "offset": "0x16E58",
       "size": 6052,
       "sha1": "81ead5b2cc3592fb35f21910b0c84d5c298b3401"
     },
     {
-      "name": "Latin1BPPTiles",
       "path": "artunc/data_Latin1BPPTiles.bin",
-      "region": "artunc",
-      "address": "0x185FC",
+      "image": "ue",
+      "offset": "0x185FC",
       "size": 344,
       "sha1": "c1751d20153e8b1e90448fe1a19d0b5af32d71d8"
     },
     {
-      "name": "ExitTiles",
       "path": "artnem/data_ExitTiles.bin",
-      "region": "artnem",
-      "address": "0x18754",
+      "image": "ue",
+      "offset": "0x18754",
       "size": 128,
       "sha1": "a05bf55f69f76cece05860a5944f78ceaca87c28"
     },
     {
-      "name": "SpritesTiles",
       "path": "artnem/data_SpritesTiles.bin",
-      "region": "artnem",
-      "address": "0x187D4",
+      "image": "ue",
+      "offset": "0x187D4",
       "size": 4458,
       "sha1": "b9681cf68007381dd7cf8314aed52c4a70fea203"
     },
     {
-      "name": "ScoresTiles",
       "path": "artnem/data_ScoresTiles.bin",
-      "region": "artnem",
-      "address": "0x1993E",
+      "image": "ue",
+      "offset": "0x1993E",
       "size": 1456,
       "sha1": "8fc5563d960acd9e3f7c13ec476f51a586bdf050"
     },
     {
-      "name": "FlickyLogoTiles",
       "path": "artnem/data_FlickyLogoTiles.bin",
-      "region": "artnem",
-      "address": "0x19EEE",
+      "image": "ue",
+      "offset": "0x19EEE",
       "size": 680,
       "sha1": "1d6251005044a9f5e36d57ce5b6fef1daac0db89"
     }

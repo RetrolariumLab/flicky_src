@@ -14,7 +14,7 @@ offset printed.
 Two things are never in this repository, because both are the game.
 
 **The cartridge dump**, `Flicky (UE) [!].bin`, in the project root. Its identity
-is recorded in `assets/manifest.json`:
+is recorded in `assets/manifest.json` (`retrolarium.assets`):
 
 | | |
 | --- | --- |
@@ -26,19 +26,19 @@ is recorded in `assets/manifest.json`:
 **The extracted data segments** under `data/`. They come out of that dump:
 
 ```bash
-make init      # validate the dump, extract the segments, build and verify
+make split     # check the dump and cut the segments out of it
 ```
 
-`make init` is the one-command setup. `make split` re-extracts on its own, and
-it is the only command that ever writes to `data/`; ordinary builds only read.
-`make check-assets` re-checks every segment against the manifest without
-touching anything, and both `build` and `verify` depend on it, so a corrupted
-segment fails by name rather than as a mysterious byte difference.
+`make split` (`rltool assets split`, Retrolarium Kit) checks the dump and every
+segment against the manifest, and it is the only command that ever writes to
+`data/`, replacing a file only when its bytes changed; ordinary builds only
+read. `build` and `verify` first check that every segment is there, so a
+missing one fails by name rather than as a mysterious byte difference.
 
 ## The pipeline
 
 ```text
-src/main.s ──[asw]──> build/main.p ──[p2bin -p=FF]──> fbuilt.bin ──[compare]──> the dump
+src/main.s ──[asw]──> build/main.p ──[p2bin -p=FF]──> fbuilt.bin ──[rltool assets verify]──> the dump
 ```
 
 **Assembling.** `src/main.s` includes 36 modules in ROM address order and AS
@@ -54,7 +54,7 @@ The converter writes a temporary sibling first and replaces the destination
 atomically only after successful conversion, preserving a prior valid ROM when
 the converter fails or is interrupted.
 
-**Comparing.** `scripts/validation/compare_roms.py` compares the result with the dump byte
+**Comparing.** `rltool assets verify` compares the result with the dump byte
 by byte and reports the first difference. A matching hash is not accepted as a
 substitute.
 
@@ -75,7 +75,7 @@ diff.
 `p2bin` must be invoked with `-p=FF`. The original cartridge pads unused ROM
 space with `$FF`; p2bin's default of `$00` produces a ROM that differs from the
 reference in every gap, 73,045 bytes of the 128 KiB image. The padding byte is
-recorded in `assets/manifest.json` and applied by `scripts/build/build_rom.py`.
+applied by `scripts/build/build_rom.py`.
 
 Source Reconstruction 1.0 and 2.0 vendored AS 1.42 Beta [Bld 212] and `p2bin`
 under `bin/<platform>/`, with their provenance in `bin/README.md`. Those files
@@ -138,8 +138,9 @@ records rather than re-recording the hash, unless you are deliberately changing
 toolchain, in which case `config/toolchain.json` and the release manifest change
 with it.
 
-**`make check-assets` fails.** A segment under `data/` does not match the
-manifest. Re-run `make split` against the correct dump.
+**A segment is missing.** Run `make split` against the correct dump;
+`rltool assets check --exact` compares every segment under `data/` with the
+manifest.
 
 **The assembler reports an error.** Ordinary source problem; the listing gives
 the file and line. `AS_ARGS` defaults to `-maxerrors 2` to keep the output
