@@ -44,4 +44,4 @@ print:
 
 Annotation, renaming and reformatting must never change the assembled bytes.
 Any difference means the edit was wrong, not that the gate is too strict.
-`make test-full` also plays both movies in MAME on the packed ROM.
+`make test-full` also plays both movies in MAME on the relocated build.

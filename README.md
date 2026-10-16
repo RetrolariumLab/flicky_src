@@ -33,7 +33,7 @@ The ROM, `data/`, `fbuilt.bin` and `build/` are ignored. See
 ```bash
 make build / verify          # the ROM, and byte for byte
 make verify-layout           # the module layout against the listing
-make verify-relocation       # the ROM packed without its layout gaps
+make build-relocated         # the ROM with its code and data moved
 make studio-check            # open and rebuild flicky.rlj
 make test / test-full        # the checks
 make golden                  # the movies' reference values
@@ -43,12 +43,14 @@ make lint / format / format-check / hooks / clean / help
 ## Tests
 
 `make test` (about a minute) runs the unit tests, `verify`, `verify-layout`,
-`verify-relocation` and the studio check. The studio check needs the studio's
+`build-relocated` and the studio check. The studio check needs the studio's
 Flicky level writer (`RETROLARIUM_FLICKY_LEVEL_WRITER`, or on `PATH`).
 
-`make test-full` adds the two Gens recordings of `movies/`, played in MAME on the
-packed ROM, whose game code starts at `$00290A` instead of `$010000`: the
-longplay through the ending, and the attract demos. At their checkpoints the
+`make test-full` adds the two Gens recordings of `movies/`, played in MAME on
+the relocated
+build, in which a NOP follows every module from the startup code on and both
+layout gaps are closed, so the game code moves from `$010000` to near `$2900`: the longplay through the ending first, then the attract
+demos. At their checkpoints the
 game's state must equal what the original ROM gives, as `movies/*.check.json`
 record. Name MAME with `MAME=<path>` or `RETROLARIUM_MAME`; `make golden` records
 the reference values again.
