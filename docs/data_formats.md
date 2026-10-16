@@ -92,9 +92,9 @@ sequences in the second. The descriptors are expressions in
 `src/sound/z80/load_data.s`; the 2,804-byte payload is authored in
 `src/sound/z80/data.asm`, where Z80 little-endian pointers are computed
 from labels. The build splits it at `zMusicBank` into separately included SFX
-and music banks. `make z80-data-check` proves byte identity and
-`make verify-relocation` proves the 68000 source offsets follow a moved game
-image. This resolves [DATA-001](unknowns.md).
+and music banks. `make z80-data-check` proves byte identity, and
+the movies played on the relocated build show that the sound loads follow a
+moved game image. This resolves [DATA-001](unknowns.md).
 
 ## Demo input streams
 

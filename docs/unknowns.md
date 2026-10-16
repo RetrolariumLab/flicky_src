@@ -149,11 +149,12 @@ reused, even after the entry is resolved.
   2,804-byte payload and requires byte identity with the original payload.
 - **Relocation check:** The loader conversion must subtract the fixed 64-KiB
   RAM-image size, not the movable `Sys_GameEntryPoint` label. With that
-  correction, `make verify-relocation` removes both padding gaps and moves the
-  entry point from `$010000` to `$00290A`. The assembler recomputes the two
+  correction, a build without both padding gaps moved the entry point from
+  `$010000` to `$00290A` (releases 1.0 to 3.0 checked it statically; 3.1 plays
+  the movies on the relocated build). The assembler recomputes the two
   source offsets as `$01DE` and `$03A6`; the loader maps them to `$FF01DE` and
-  `$FF03A6`, and the gate verifies that the packed ROM contains the authored
-  sound payload at those exact sources. The normal ROM remains byte-identical.
+  `$FF03A6`, and that build contained the authored sound payload at those
+  exact sources. The normal ROM remains byte-identical.
 
 ### DATA-002 Nemesis cannot be re-encoded byte for byte
 

@@ -27,7 +27,7 @@ TOOLCHAIN_MANIFEST ?= config/toolchain.json
 TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-executable "binary_converter=$(P2BIN)"
 ROM_LAYOUT ?= config/linker/rom_layout.json
 LISTING ?= build/main.lst
-RELOCATED_ROM ?= build/relocation/flicky_packed.bin
+RELOCATED_ROM ?= build/relocated/flicky.bin
 MOVIE_CHECKS ?= movies/flicky_longplay.check.json movies/flicky_demos.check.json
 M68K_SOURCE_FILES := $(shell $(PYTHON) -c "from pathlib import Path; print(' '.join(p.as_posix() for p in Path('src').rglob('*') if p.suffix in {'.s', '.inc'}))")
 Z80_SOURCE ?= src/sound/z80/driver.asm
@@ -45,7 +45,7 @@ Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
 .DEFAULT_GOAL := build
 
 .PHONY: all build verify z80-check z80-data-check init split check-assets verify-toolchain \
-	verify-layout verify-relocation studio-check lint format format-check test test-full \
+	verify-layout build-relocated studio-check lint format format-check test test-full \
 	golden hooks clean help _require-assets _require-toolchain
 
 all: build
@@ -120,11 +120,9 @@ $(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC
 	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
 	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
 
-# The ROM packed without its two layout gaps, so the code after them moves
-# (build/relocation/flicky_packed.bin), and the sound loads checked.
-verify-relocation: $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) _require-assets _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_relocation \
-		--source $(SRC) --sound-data $(Z80_DATA_BIN) \
+# The ROM with its code and data moved (scripts/build/relocate.py).
+build-relocated: $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) _require-assets _require-toolchain
+	@$(PYTHON) scripts/build/relocate.py --source $(SRC) --output-dir build/relocated \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
 # Open flicky.rlj in a throwaway copy of the repository the way Retrolarium
@@ -145,16 +143,17 @@ format-check:
 # relocated ROM and the studio check.
 test:
 	@$(PYTHON) -m unittest discover -s tests -t . -p "test_*.py"
-	@$(MAKE) --no-print-directory verify verify-layout verify-relocation studio-check
+	@$(MAKE) --no-print-directory verify verify-layout build-relocated studio-check
 
-# The full suite: the quick one, then both movies in MAME on the packed ROM,
-# compared with what the original ROM gives (movies/*.check.json, written by
-# `make golden`).
+# The full suite: the quick one, then the movies in MAME on the relocated
+# build in turn (the longplay, then the demos; the first that differs stops
+# it), compared with what the original ROM gives (movies/*.check.json, written
+# by `make golden`).
 test-full: test
-	$(foreach check,$(MOVIE_CHECKS),$(RLTOOL) movie check $(check) --rom $(RELOCATED_ROM) --mame "$(MAME)" &&) true
+	$(RLTOOL) movie check $(MOVIE_CHECKS) --rom $(RELOCATED_ROM) --mame "$(MAME)"
 
 golden:
-	$(foreach check,$(MOVIE_CHECKS),$(RLTOOL) movie golden $(check) --rom "$(ORIGINAL_ROM)" --mame "$(MAME)" &&) true
+	$(RLTOOL) movie golden $(MOVIE_CHECKS) --rom "$(ORIGINAL_ROM)" --mame "$(MAME)"
 
 # `make hooks`, once per clone, makes Git check every commit and push for stop
 # words and run `make lint` and `make format-check` first (Retrolarium Kit's
@@ -171,7 +170,7 @@ help:
 	@echo "  make split                    extract data/ again from the ROM"
 	@echo "  make build / verify           the ROM / and byte for byte"
 	@echo "  make verify-layout            the module layout against the listing"
-	@echo "  make verify-relocation        the ROM packed without its layout gaps"
+	@echo "  make build-relocated          the ROM with its code and data moved"
 	@echo "  make studio-check             open and rebuild flicky.rlj"
 	@echo "  make test                     the quick suite"
 	@echo "  make test-full                test, then both movies in MAME (MAME=<path>)"

@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.validation.verify_relocation import ROM_SIZE, runnable
+from scripts.build.relocate import ROM_SIZE, runnable
 
 
 class RunnableImageTests(unittest.TestCase):

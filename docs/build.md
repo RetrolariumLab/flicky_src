@@ -159,8 +159,9 @@ is the intended cost of moving code. See the rationale in
 ## The checks
 
 `make test` runs the unit tests, `verify`, `verify-layout`,
-`verify-relocation` and the studio check, in about a minute. `make test-full`
-then plays the longplay in MAME on the packed ROM, whose game code starts at
-`$00290A` instead of `$010000`, and compares the game's state at seven
-checkpoints with what the original ROM gives
-(`movies/flicky_longplay.check.json`, recorded by `make golden`).
+`build-relocated` and the studio check, in about a minute. `make test-full`
+then plays the longplay and the demos in MAME on the relocated
+build, in which a NOP follows every module from the startup code on and both
+layout gaps are closed, so the game code moves from `$010000` to near `$2900`, and compares the game's state at their
+checkpoints with what the original ROM gives (`movies/*.check.json`, recorded
+by `make golden`).
