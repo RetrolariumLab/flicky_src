@@ -12,7 +12,8 @@ export RLTOOL
 AS_BIN ?= $(eval AS_BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive asl)))$(AS_BIN)
 P2BIN ?= $(eval P2BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive p2bin)))$(P2BIN)
 AS_ARGS ?= -maxerrors 2
-# MAME for `make test-full` and `make golden`.
+# MAME for `make test-full`, `make golden` and `make play`; with none named,
+# the one `rltool movie mame <path>` remembered.
 MAME ?= $(RETROLARIUM_MAME)
 
 SRC ?= src/main.s
@@ -30,7 +31,12 @@ TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-exe
 ROM_LAYOUT ?= config/linker/rom_layout.json
 LISTING ?= build/main.lst
 RELOCATED_ROM ?= build/relocated/flicky.bin
-MOVIE_CHECKS ?= movies/flicky_longplay.check.json movies/flicky_demos.check.json
+# The movies by name (make play MOVIE=<name>); test-full plays them in this
+# order: the TAS first, then the longplay, then the attract mode.
+MOVIE_longplay := movies/flicky_longplay.check.json
+MOVIE_attract := movies/flicky_demos.check.json
+MOVIES := longplay attract
+MOVIE_CHECKS := $(foreach movie,$(MOVIES),$(MOVIE_$(movie)))
 M68K_SOURCE_FILES := $(shell $(PYTHON) -c "from pathlib import Path; print(' '.join(p.as_posix() for p in Path('src').rglob('*') if p.suffix in {'.s', '.inc'}))")
 Z80_SOURCE ?= src/sound/z80/driver.asm
 Z80_DRIVER_MODULES := $(wildcard src/sound/z80/driver/*.asm)
@@ -46,7 +52,7 @@ Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify z80-check z80-data-check split verify-toolchain \
+.PHONY: play all build verify z80-check z80-data-check split verify-toolchain \
 	verify-layout build-relocated studio-check lint format format-check test test-full \
 	golden hooks clean help _require-assets _require-toolchain
 
@@ -137,6 +143,24 @@ test-full: test
 golden:
 	$(RLTOOL) movie golden $(MOVIE_CHECKS) --rom "$(ORIGINAL_ROM)" --mame "$(MAME)"
 
+# Watch a movie in a MAME window at the game's speed, on the relocated build
+# or on ROM=<image>; once the window is closed, its cells are compared with
+# the original's. In MAME, F10 lifts the speed limit and Insert fast-forwards.
+#   make play MOVIE=<name> [ROM=<image>] [FRAMES=<frame>] [CLOSE=1]
+# FRAMES closes MAME at that frame (only the start of the movie), CLOSE=1 when
+# the movie ends (else it stays open to play on, the credits say).
+MOVIE ?= $(firstword $(MOVIES))
+PLAY_ROM = $(if $(filter command line,$(origin ROM)),$(ROM),$(RELOCATED_ROM))
+ifneq ($(filter play,$(MAKECMDGOALS)),)
+ifeq ($(MOVIE_$(MOVIE)),)
+$(error unknown MOVIE "$(MOVIE)": this game has $(MOVIES))
+endif
+endif
+
+play: $(if $(filter command line,$(origin ROM)),,build-relocated)
+	$(RLTOOL) movie play $(MOVIE_$(MOVIE)) --rom "$(PLAY_ROM)" --mame "$(MAME)" \
+		$(if $(FRAMES),--stop-at $(FRAMES)) $(if $(CLOSE),--close)
+
 # `make hooks`, once per clone, makes Git check every commit and push for stop
 # words and run `make lint` and `make format-check` first (Retrolarium Kit's
 # rltool hooks; the stop-word list lives outside the repositories).
@@ -156,6 +180,7 @@ help:
 	@echo "  make test                     the quick suite"
 	@echo "  make test-full                test, then both movies in MAME (MAME=<path>)"
 	@echo "  make golden                   record the movies' checkpoints from the original"
+	@echo "  make play MOVIE=longplay|attract watch a movie in MAME (ROM=<image> for another build)"
 	@echo "  make lint / format / format-check   the house style (Retrolarium Kit)"
 	@echo "  make hooks                    install the Git hooks (stop words, lint before commits)"
 	@echo "  make verify-toolchain         check the kit's assembler and converter"

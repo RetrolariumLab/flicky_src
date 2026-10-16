@@ -39,6 +39,7 @@ make build-relocated         # the ROM with its code and data moved
 make studio-check            # open and rebuild flicky.rlj
 make test / test-full        # the checks
 make golden                  # the movies' reference values
+make play MOVIE=longplay|attract # watch a movie in MAME
 make lint / format / format-check / hooks / clean / help
 ```
 
@@ -54,8 +55,15 @@ build, in which a NOP follows every module from the startup code on and both
 layout gaps are closed, so the game code moves from `$010000` to near `$2900`: the longplay through the ending first, then the attract
 demos. At their checkpoints the
 game's state must equal what the original ROM gives, as `movies/*.check.json`
-record. Name MAME with `MAME=<path>` or `RETROLARIUM_MAME`; `make golden` records
+record. Name MAME once with `rltool movie mame <path>`
+(or `MAME=<path>`); `make golden` records
 the reference values again.
+
+`make play MOVIE=longplay|attract` shows a movie in a MAME window at the game's
+speed, on the relocated build (or on `ROM=<image>`), and compares its cells
+with the original's once the window is closed; in MAME, F10 lifts the speed
+limit and Insert fast-forwards. `FRAMES=<frame>` closes MAME at that frame, `CLOSE=1`
+when the movie ends. `make play` alone plays `longplay`.
 
 ## Layout
 
