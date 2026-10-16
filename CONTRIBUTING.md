@@ -7,8 +7,8 @@ baseline: `make verify` must keep reproducing the cartridge byte for byte.
 
 Use a legally obtained ROM whose SHA-1 is
 `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96` and put it in the project root as
-`Flicky (UE) [!].bin`. Run `make init` once; it validates the dump, extracts the
-seventeen data segments and proves the build matches.
+`Flicky (UE) [!].bin`. Run `make split` once; it checks the dump and cuts out the
+seventeen data segments (`rltool assets` by `assets/manifest.json`).
 
 Never add the ROM, anything under `data/`, `fbuilt.bin`, `build/` or the listing
 to Git. The tracked `.gmv` movies are controller input and contain no game data.

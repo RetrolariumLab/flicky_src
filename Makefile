@@ -19,9 +19,11 @@ SRC ?= src/main.s
 OBJ ?= build/main.p
 ROM ?= fbuilt.bin
 ORIGINAL_ROM ?= Flicky (UE) [!].bin
-ASSET_MANIFEST ?= assets/manifest.json
-DATA_DIR ?= data
-DATA_ADDRS ?= $(DATA_DIR)/data_addrs.txt
+# The private assets: assets/manifest.json names the ROM and the segments
+# `make split` cuts out of it into data/; `rltool assets` (Retrolarium Kit)
+# splits, checks and verifies.
+ASSETS = $(RLTOOL) assets $(1)
+BASE_IMAGE := ue
 RUN_SCRIPT ?= scripts/run.py
 TOOLCHAIN_MANIFEST ?= config/toolchain.json
 TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-executable "binary_converter=$(P2BIN)"
@@ -44,26 +46,20 @@ Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
 
 .DEFAULT_GOAL := build
 
-.PHONY: all build verify z80-check z80-data-check init split check-assets verify-toolchain \
+.PHONY: all build verify z80-check z80-data-check split verify-toolchain \
 	verify-layout build-relocated studio-check lint format format-check test test-full \
 	golden hooks clean help _require-assets _require-toolchain
 
 all: build
 
-# Assemble and report byte identity as a warning.
 build: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
 	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
 		--source $(SRC) --output $(ROM) --obj $(OBJ) \
-		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
 		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
 
-# The permanent gate: any difference from the reference ROM fails the build.
-verify: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
-	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
-		--source $(SRC) --output $(ROM) --obj $(OBJ) \
-		--manifest $(ASSET_MANIFEST) --original-rom "$(ORIGINAL_ROM)" \
-		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)" \
-		--verify
+# The permanent gate: any difference from the reference ROM fails.
+verify: build
+	$(call ASSETS,verify) --image $(BASE_IMAGE) --built "$(ROM)"
 
 $(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) scripts/build/build_z80_driver.py $(Z80_REFERENCE) | _require-toolchain
 	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
@@ -82,27 +78,13 @@ $(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) &: $(Z80_DATA_SOURCE) 
 
 z80-data-check: $(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
 
-# Validate the reference ROM, extract data, then build and verify.
-init: _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) build.init_project \
-		--orig-rom "$(ORIGINAL_ROM)" --manifest $(ASSET_MANIFEST) \
-		--data-dir $(DATA_DIR) --data-addrs $(DATA_ADDRS) \
-		--source $(SRC) --output $(ROM) --obj $(OBJ) \
-		--z80-source $(Z80_SOURCE) --z80-obj $(Z80_OBJ) \
-		--z80-output $(Z80_BIN) --z80-reference $(Z80_REFERENCE) \
-		--z80-data-source $(Z80_DATA_SOURCE) --z80-data-obj $(Z80_DATA_OBJ) \
-		--z80-data-output $(Z80_DATA_BIN) --z80-data-reference $(Z80_DATA_REFERENCE) \
-		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
-
-# Extract binary segments from the reference ROM. This is the only command
-# that overwrites data/; ordinary builds never touch it.
+# Cut the segments out of the ROM into data/. This is the only command that
+# writes data/; ordinary builds only read it.
 split:
-	@$(PYTHON) $(RUN_SCRIPT) build.split_data_from_rom \
-		--rom-file "$(ORIGINAL_ROM)" --output $(DATA_DIR) --addrs $(DATA_ADDRS)
+	$(call ASSETS,split)
 
-check-assets _require-assets:
-	@$(PYTHON) $(RUN_SCRIPT) build.check_assets \
-		--manifest $(ASSET_MANIFEST) --asset-dir $(DATA_DIR)
+_require-assets:
+	@$(call ASSETS,check) --image $(BASE_IMAGE)
 
 # The assembler is checked before it is used, not after the ROM disagrees.
 verify-toolchain _require-toolchain:
@@ -166,8 +148,7 @@ clean:
 
 help:
 	@echo "Flicky source reconstruction"
-	@echo "  make init                     check the ROM, extract data/, build and verify (once)"
-	@echo "  make split                    extract data/ again from the ROM"
+	@echo "  make split                    cut data/ out of the ROM (once)"
 	@echo "  make build / verify           the ROM / and byte for byte"
 	@echo "  make verify-layout            the module layout against the listing"
 	@echo "  make build-relocated          the ROM with its code and data moved"

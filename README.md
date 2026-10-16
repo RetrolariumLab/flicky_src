@@ -21,11 +21,13 @@ You need Python 3, GNU Make and Retrolarium Kit (`rltool` on `PATH`, or
 `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96`) into the repository root, then:
 
 ```bash
-make init      # check the ROM, extract data/, build and verify (once)
+make split     # cut data/ out of the ROM (once)
 make verify    # build and compare byte for byte
 ```
 
-The ROM, `data/`, `fbuilt.bin` and `build/` are ignored. See
+`assets/manifest.json` names the ROM and the segments cut out of it
+(`rltool assets`, Retrolarium Kit). The ROM, `data/`, `fbuilt.bin` and `build/`
+are ignored. See
 [`docs/build.md`](docs/build.md) for the build in detail.
 
 ## Targets
@@ -61,7 +63,7 @@ the reference values again.
 src/           the 68000 source (main.s is the ROM layout) and the Z80 driver
 config/        linker layout, toolchain, lint and names
 assets/        manifest.json (the extracted data/ is ignored)
-scripts/       build, split, layout and relocation scripts (scripts/run.py runs them)
+scripts/       build, layout and relocation scripts (scripts/run.py runs them)
 tests/         their unit tests
 movies/        the two recordings and their checks
 docs/          how the game works and how the source is written

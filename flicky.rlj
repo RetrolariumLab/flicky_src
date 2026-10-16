@@ -14,3 +14,9 @@ profile = "flicky-ue.v1"
 id = "ue"
 label = "USA / Europe"
 rom = "Flicky (UE) [!].bin"
+
+# The segments the source builds from: the kit cuts them out of the ROM by
+# assets/manifest.json, as `make split` does.
+[split]
+revision = "ue"
+manifest = "assets/manifest.json"
