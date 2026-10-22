@@ -1,187 +1,129 @@
 # Flicky (Sega Mega Drive): build the source back into the original ROM and
-# check it. `make help` lists the targets; the logic lives in scripts/.
-
+# check it. `make` alone lists the targets. The ROM is yours: copy it next to
+# this file under the name assets/manifest.json gives, then run `make split`
+# once.
 PYTHON ?= python
-PROJECT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
-# AS and p2bin from Retrolarium Kit (RLTOOL, default rltool), asked once per
-# run; the recipes' shell needs forward slashes. AS reads its message
-# catalogs from beside the assembler (AS_MSGPATH).
 RLTOOL ?= rltool
 export RLTOOL
+# AS and p2bin from Retrolarium Kit, which verifies them; asked once, when a
+# recipe first needs them (the recipes' shell wants forward slashes). The
+# scripts point AS at its message catalogs beside the assembler.
 AS_BIN ?= $(eval AS_BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive asl)))$(AS_BIN)
 P2BIN ?= $(eval P2BIN := $$(subst \,/,$$(shell $$(RLTOOL) build-tools path megadrive p2bin)))$(P2BIN)
-AS_ARGS ?= -maxerrors 2
-# MAME for `make test-full`, `make golden` and `make play`; with none named,
-# the one `rltool movie mame <path>` remembered.
-MAME ?= $(RETROLARIUM_MAME)
+AS_ARGS := -maxerrors 2
+TOOLS = --as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
+# scripts/run.py runs the build scripts; Retrolarium Kit's Studio build calls
+# them the same way.
+RUN := $(PYTHON) scripts/run.py
 
-SRC ?= src/main.s
-OBJ ?= build/main.p
-ROM ?= fbuilt.bin
-ORIGINAL_ROM ?= Flicky (UE) [!].bin
-# The private assets: assets/manifest.json names the ROM and the segments
-# `make split` cuts out of it into data/; `rltool assets` (Retrolarium Kit)
-# splits, checks and verifies.
-ASSETS = $(RLTOOL) assets $(1)
 BASE_IMAGE := ue
-RUN_SCRIPT ?= scripts/run.py
-TOOLCHAIN_MANIFEST ?= config/toolchain.json
-TOOLCHAIN_EXECUTABLES = --require-executable "assembler=$(AS_BIN)" --require-executable "binary_converter=$(P2BIN)"
-ROM_LAYOUT ?= config/linker/rom_layout.json
-LISTING ?= build/main.lst
-RELOCATED_ROM ?= build/relocated/flicky.bin
-# The movies by name (make play MOVIE=<name>); test-full plays them in this
-# order: the TAS first, then the longplay, then the attract mode.
-MOVIE_longplay := movies/flicky_longplay.check.json
-MOVIE_attract := movies/flicky_demos.check.json
+ROM := build/flicky.bin
+RELOCATED_ROM := build/relocated/flicky.bin
+# The Z80 sound driver and the sound-data banks, assembled on their own; the
+# 68000 source includes them from build/.
+Z80_DRIVER := build/z80_driver.bin
+Z80_DATA := build/z80_sound_data.bin
+Z80_PARTS := $(Z80_DRIVER) $(basename $(Z80_DATA))_sfx.bin $(basename $(Z80_DATA))_music.bin
+# The movies the relocated build plays in `make test-full`, by name
+# (movies/<name>.check.json, written by `make golden`).
 MOVIES := longplay attract
-MOVIE_CHECKS := $(foreach movie,$(MOVIES),$(MOVIE_$(movie)))
-M68K_SOURCE_FILES := $(shell $(PYTHON) -c "from pathlib import Path; print(' '.join(p.as_posix() for p in Path('src').rglob('*') if p.suffix in {'.s', '.inc'}))")
-Z80_SOURCE ?= src/sound/z80/driver.asm
-Z80_DRIVER_MODULES := $(wildcard src/sound/z80/driver/*.asm)
-Z80_OBJ ?= build/z80_driver.p
-Z80_BIN ?= build/z80_driver.bin
-Z80_REFERENCE ?= data/sound/data_z80_part1.bin
-Z80_DATA_SOURCE ?= src/sound/z80/data.asm
-Z80_DATA_OBJ ?= build/z80_sound_data.p
-Z80_DATA_BIN ?= build/z80_sound_data.bin
-Z80_DATA_SFX_BIN ?= $(basename $(Z80_DATA_BIN))_sfx.bin
-Z80_DATA_MUSIC_BIN ?= $(basename $(Z80_DATA_BIN))_music.bin
-Z80_DATA_REFERENCE ?= data/sound/data_z80_part2.bin
+MOVIE_CHECKS = $(foreach movie,$(MOVIES),movies/$(movie).check.json)
+MAME_OPTION = $(if $(MAME),--mame "$(MAME)")
 
-.DEFAULT_GOAL := build
+.PHONY: help split build verify verify-revisions build-relocated studio-check lint format \
+	test test-full golden play hooks clean _assets _z80
+.DEFAULT_GOAL := help
 
-.PHONY: play all build verify z80-check z80-data-check split verify-toolchain \
-	verify-layout build-relocated studio-check lint format format-check test test-full \
-	golden hooks clean help _require-assets _require-toolchain
-
-all: build
-
-build: _require-toolchain _require-assets $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
-	@$(PYTHON) $(RUN_SCRIPT) build.build_rom \
-		--source $(SRC) --output $(ROM) --obj $(OBJ) \
-		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
-
-# The permanent gate: any difference from the reference ROM fails.
-verify: build
-	$(call ASSETS,verify) --image $(BASE_IMAGE) --built "$(ROM)"
-
-$(Z80_BIN): $(Z80_SOURCE) $(Z80_DRIVER_MODULES) $(RUN_SCRIPT) scripts/build/build_z80_driver.py $(Z80_REFERENCE) | _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
-		--source $(Z80_SOURCE) --obj $(Z80_OBJ) --output $(Z80_BIN) \
-		--reference $(Z80_REFERENCE) --as-bin $(AS_BIN) --p2bin $(P2BIN) \
-		--as-args "$(AS_ARGS)"
-
-z80-check: $(Z80_BIN)
-
-$(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) &: $(Z80_DATA_SOURCE) $(RUN_SCRIPT) scripts/build/build_z80_driver.py $(Z80_DATA_REFERENCE) | _require-toolchain
-	@$(PYTHON) $(RUN_SCRIPT) build.build_z80_driver \
-		--source $(Z80_DATA_SOURCE) --obj $(Z80_DATA_OBJ) --output $(Z80_DATA_BIN) \
-		--reference $(Z80_DATA_REFERENCE) --reference-offset 12 \
-		--description "Z80 sound-data banks" --split-label zMusicBank --as-bin $(AS_BIN) --p2bin $(P2BIN) \
-		--as-args "$(AS_ARGS)"
-
-z80-data-check: $(Z80_DATA_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN)
-
-# Cut the segments out of the ROM into data/. This is the only command that
-# writes data/; ordinary builds only read it.
 split:
-	$(call ASSETS,split)
+	$(RLTOOL) assets split
 
-_require-assets:
-	@$(call ASSETS,check) --image $(BASE_IMAGE)
+_assets:
+	$(RLTOOL) assets check --image $(BASE_IMAGE)
 
-# The assembler is checked before it is used, not after the ROM disagrees.
-verify-toolchain _require-toolchain:
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_toolchain --config $(TOOLCHAIN_MANIFEST) $(TOOLCHAIN_EXECUTABLES)
+# Every build assembles anew: the Z80 parts, then the 68000 source that
+# includes them.
+_z80:
+	$(RUN) build.build_z80_driver --source src/sound/z80/driver.asm --obj build/z80_driver.p \
+		--output $(Z80_DRIVER) $(TOOLS)
+	$(RUN) build.build_z80_driver --source src/sound/z80/data.asm --obj build/z80_sound_data.p \
+		--output $(Z80_DATA) --description "Z80 sound-data banks" --split-label zMusicBank $(TOOLS)
 
-# AS has no linker, so the include order in src/main.s is the ROM layout itself.
-# This makes that layout a declaration the build has to agree with.
-verify-layout: $(LISTING)
-	@$(PYTHON) $(RUN_SCRIPT) validation.verify_layout \
-		--layout $(ROM_LAYOUT) --listing $(LISTING) --rom $(ROM)
+build: _assets _z80
+	$(RUN) build.build_rom --source src/main.s --obj build/main.p --output $(ROM) $(TOOLS)
 
-# -i lets modules under src/ resolve their binclude paths from the project root.
-$(LISTING): export AS_MSGPATH = $(dir $(AS_BIN))
-$(LISTING): $(M68K_SOURCE_FILES) $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) | _require-toolchain
-	@$(PYTHON) -c "from pathlib import Path; Path('$(dir $@)').mkdir(parents=True, exist_ok=True)"
-	@$(AS_BIN) -i . -L -olist $@ -o $(OBJ) $(AS_ARGS) $(SRC)
+verify: build
+	$(RLTOOL) assets verify --image $(BASE_IMAGE) --built "$(ROM)"
 
-# The ROM with its code and data moved (scripts/build/relocate.py).
-build-relocated: $(Z80_BIN) $(Z80_DATA_SFX_BIN) $(Z80_DATA_MUSIC_BIN) _require-assets _require-toolchain
-	@$(PYTHON) scripts/build/relocate.py --source $(SRC) --output-dir build/relocated \
-		--as-bin $(AS_BIN) --p2bin $(P2BIN) --as-args "$(AS_ARGS)"
+# Flicky has one revision.
+verify-revisions: verify
+
+# The source with its code and data moved (scripts/build/relocate.py), built
+# the same way and given a valid header.
+build-relocated: _assets _z80
+	$(PYTHON) scripts/build/relocate.py --source src/main.s --output-dir build/relocated
+	$(RUN) build.build_rom --source build/relocated/main.s --obj build/relocated/main.p \
+		--output $(RELOCATED_ROM) $(TOOLS)
+	$(PYTHON) scripts/build/relocate.py --finish $(RELOCATED_ROM)
 
 # Open flicky.rlj in a throwaway copy of the repository the way Retrolarium
 # Studio does, and rebuild it without edits.
 studio-check:
-	$(RLTOOL) studio check flicky.rlj
+	$(RLTOOL) studio check flicky.rlj --present
 
 lint:
-	@$(RLTOOL) lint
+	$(RLTOOL) lint
 
 format:
-	@$(RLTOOL) lint --fix
+	$(RLTOOL) lint --fix
 
-format-check:
-	@$(RLTOOL) lint --only assembly
-
-# The quick suite: the unit tests, the byte-identical ROM, its layout, the
-# relocated ROM and the studio check.
+# The quick suite: the unit tests, the ROM byte for byte, the relocated build
+# and the studio check.
 test:
-	@$(PYTHON) -m unittest discover -s tests -t . -p "test_*.py"
-	@$(MAKE) --no-print-directory verify verify-layout build-relocated studio-check
+	$(PYTHON) -m unittest discover -s tests -t .
+	$(MAKE) --no-print-directory verify build-relocated studio-check
 
 # The full suite: the quick one, then the movies in MAME on the relocated
-# build in turn (the longplay, then the demos; the first that differs stops
-# it), compared with what the original ROM gives (movies/*.check.json, written
-# by `make golden`).
+# build in turn (the longplay, then the attract demos; the first that differs
+# stops it), compared with what the original ROM gives (`make golden`).
 test-full: test
-	$(RLTOOL) movie check $(MOVIE_CHECKS) --rom $(RELOCATED_ROM) --mame "$(MAME)"
+	$(RLTOOL) movie check $(MOVIE_CHECKS) --rom "$(RELOCATED_ROM)" $(MAME_OPTION)
 
 golden:
-	$(RLTOOL) movie golden $(MOVIE_CHECKS) --rom "$(ORIGINAL_ROM)" --mame "$(MAME)"
+	$(RLTOOL) movie golden $(MOVIE_CHECKS) --rom "$(shell $(RLTOOL) assets path --image $(BASE_IMAGE))" $(MAME_OPTION)
 
 # Watch a movie in a MAME window at the game's speed, on the relocated build
 # or on ROM=<image>; once the window is closed, its cells are compared with
 # the original's. In MAME, F10 lifts the speed limit and Insert fast-forwards.
-#   make play MOVIE=<name> [ROM=<image>] [FRAMES=<frame>] [CLOSE=1]
+#   make play [MOVIE=<name>] [ROM=<image>] [FRAMES=<frame>] [CLOSE=1]
 # FRAMES closes MAME at that frame (only the start of the movie), CLOSE=1 when
 # the movie ends (else it stays open to play on, the credits say).
 MOVIE ?= $(firstword $(MOVIES))
 PLAY_ROM = $(if $(filter command line,$(origin ROM)),$(ROM),$(RELOCATED_ROM))
-ifneq ($(filter play,$(MAKECMDGOALS)),)
-ifeq ($(MOVIE_$(MOVIE)),)
-$(error unknown MOVIE "$(MOVIE)": this game has $(MOVIES))
-endif
-endif
 
 play: $(if $(filter command line,$(origin ROM)),,build-relocated)
-	$(RLTOOL) movie play $(MOVIE_$(MOVIE)) --rom "$(PLAY_ROM)" --mame "$(MAME)" \
+	$(if $(wildcard movies/$(MOVIE).check.json),,$(error unknown MOVIE "$(MOVIE)": movies/ has \
+		$(basename $(basename $(notdir $(wildcard movies/*.check.json))))))
+	$(RLTOOL) movie play movies/$(MOVIE).check.json --rom "$(PLAY_ROM)" $(MAME_OPTION) \
 		$(if $(FRAMES),--stop-at $(FRAMES)) $(if $(CLOSE),--close)
 
 # `make hooks`, once per clone, makes Git check every commit and push for stop
-# words and run `make lint` and `make format-check` first (Retrolarium Kit's
-# rltool hooks; the stop-word list lives outside the repositories).
+# words and run `make lint` first (Retrolarium Kit's rltool hooks; the
+# stop-word list lives outside the repositories).
 hooks:
 	$(RLTOOL) hooks install --project .
 
 clean:
-	@$(PYTHON) $(RUN_SCRIPT) build.clean_project
+	$(PYTHON) -c "import shutil; shutil.rmtree('build', ignore_errors=True)"
 
 help:
-	@echo "Flicky source reconstruction"
-	@echo "  make split                    cut data/ out of the ROM (once)"
-	@echo "  make build / verify           the ROM / and byte for byte"
-	@echo "  make verify-layout            the module layout against the listing"
-	@echo "  make build-relocated          the ROM with its code and data moved"
-	@echo "  make studio-check             open and rebuild flicky.rlj"
-	@echo "  make test                     the quick suite"
-	@echo "  make test-full                test, then both movies in MAME (MAME=<path>)"
-	@echo "  make golden                   record the movies' checkpoints from the original"
-	@echo "  make play MOVIE=longplay|attract watch a movie in MAME (ROM=<image> for another build)"
-	@echo "  make lint / format / format-check   the house style (Retrolarium Kit)"
-	@echo "  make hooks                    install the Git hooks (stop words, lint before commits)"
-	@echo "  make verify-toolchain         check the kit's assembler and converter"
-	@echo "  make clean                    remove the build output"
+	$(info Flicky source reconstruction)
+	$(info   make split                  cut the assets out of the ROM, once)
+	$(info   make build                  build the ROM into build/flicky.bin)
+	$(info   make verify                 build it and compare it with the ROM byte for byte)
+	$(info   make build-relocated        the ROM with its code and data moved)
+	$(info   make test                   the quick suite)
+	$(info   make test-full              test, then the movies in MAME: MAME=path or the kit's)
+	$(info   make golden                 record the movies' checkpoints from the original ROM)
+	$(info   make play [MOVIE=name]      watch a movie in MAME; ROM=image for another build)
+	$(info   make studio-check / lint / format / hooks / clean)
+	@exit 0

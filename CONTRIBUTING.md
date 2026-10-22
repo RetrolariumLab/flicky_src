@@ -5,13 +5,12 @@ baseline: `make verify` must keep reproducing the cartridge byte for byte.
 
 ## Local inputs
 
-Use a legally obtained ROM whose SHA-1 is
-`83d8bbf0a9b38c42a0bf492d105cc3abe9644a96` and put it in the project root as
-`Flicky (UE) [!].bin`. Run `make split` once; it checks the dump and cuts out the
+Use a legally obtained ROM (`assets/manifest.json` gives its name and hash) and
+put it in the project root as `Flicky (UE) [!].bin`. Run `make split` once; it checks the dump and cuts out the
 seventeen data segments (`rltool assets` by `assets/manifest.json`).
 
-Never add the ROM, anything under `data/`, `fbuilt.bin`, `build/` or the listing
-to Git. The tracked `.gmv` movies are controller input and contain no game data.
+Never add the ROM, anything under `data/` or `build/` to Git. The tracked
+movies are controller input and contain no game data.
 
 ## Source changes
 
@@ -34,5 +33,4 @@ timing-sensitive. Data is edited in Retrolarium Studio
 ([`docs/retrolarium.md`](docs/retrolarium.md)).
 
 `make hooks` installs Git hooks that check commits and pushes for words that
-must not be published and run `make lint` and `make format-check` before each
-commit.
+must not be published and run `make lint` before each commit.

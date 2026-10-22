@@ -153,6 +153,11 @@ zMusicPointerTable:
                 z80ptr  zMusic87Header,zMusicBank,$1200 ; $87
 ; $88 is unused: its would-be table word is the first word of zMusic81Header.
 zMusic81Header:
+; The ending copies its music $81 overlay over this header at $125B
+; (Ending_Music81Overlay, src/game/screens/ending.s)
+                if zMusic81Header-zMusicBank+$1200<>$125B
+                error "zMusic81Header moved from $125B, where the ending copies its overlay"
+                endif
                 musicheader zMusic81Voices,7,0,$02,$00
                 musicfm zMusic81FM0,$00,$00
                 musicfm zMusic81FM1,$F4,$06

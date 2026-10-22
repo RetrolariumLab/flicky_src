@@ -17,47 +17,43 @@ tooling remain in the history (tags `source-reconstruction-1.0` to `3.0`).
 ## Quick start
 
 You need Python 3, GNU Make and Retrolarium Kit (`rltool` on `PATH`, or
-`RLTOOL=...`). Copy your `Flicky (UE) [!].bin` (SHA-1
-`83d8bbf0a9b38c42a0bf492d105cc3abe9644a96`) into the repository root, then:
+`RLTOOL=...`). Copy your `Flicky (UE) [!].bin` into the repository root, then:
 
 ```bash
 make split     # cut data/ out of the ROM (once)
-make verify    # build and compare byte for byte
+make verify    # build build/flicky.bin and compare it byte for byte
 ```
 
-`assets/manifest.json` names the ROM and the segments cut out of it
-(`rltool assets`, Retrolarium Kit). The ROM, `data/`, `fbuilt.bin` and `build/`
-are ignored. See
+`make` alone lists the targets. `assets/manifest.json` names the ROM and the
+segments cut out of it (`rltool assets`, Retrolarium Kit). The ROM, `data/` and
+`build/` are ignored. See
 [`docs/build.md`](docs/build.md) for the build in detail.
 
 ## Targets
 
 ```bash
 make build / verify          # the ROM, and byte for byte
-make verify-layout           # the module layout against the listing
 make build-relocated         # the ROM with its code and data moved
 make studio-check            # open and rebuild flicky.rlj
 make test / test-full        # the checks
 make golden                  # the movies' reference values
-make play MOVIE=longplay|attract # watch a movie in MAME
-make lint / format / format-check / hooks / clean / help
+make play [MOVIE=attract]    # watch a movie in MAME (longplay unless given)
+make lint / format / hooks / clean
 ```
 
 ## Tests
 
-`make test` (about a minute) runs the unit tests, `verify`, `verify-layout`,
-`build-relocated` and the studio check. The studio check needs the studio's
+`make test` (about a minute) runs the unit tests, `verify`, `build-relocated`
+and the studio check. The studio check needs the studio's
 Flicky level writer (`RETROLARIUM_FLICKY_LEVEL_WRITER`, or on `PATH`).
 
-`make test-full` adds the two Gens recordings of `movies/`, played in MAME on
-the relocated
-build, in which a NOP follows every module from the startup code on and both
-layout gaps are closed, so the game code moves from `$010000` to near `$2900`: the longplay through the ending first, then the attract
-demos. At their checkpoints the
-game's state must equal what the original ROM gives, as `movies/*.check.json`
-record. Name MAME once with `rltool movie mame <path>`
-(or `MAME=<path>`); `make golden` records
-the reference values again.
+`make test-full` adds the two recordings of `movies/`, played in MAME on the
+relocated build, in which a NOP follows every module from the startup code on
+and both layout gaps are closed, so the game code moves from `$010000` to near
+`$2900`: the longplay through the ending first, then the attract demos. At
+their checkpoints the game's state must equal what the original ROM gives, as
+`movies/*.check.json` record. Name MAME once with `rltool movie mame <path>`
+(or `MAME=<path>`); `make golden` records the reference values again.
 
 `make play MOVIE=longplay|attract` shows a movie in a MAME window at the game's
 speed, on the relocated build (or on `ROM=<image>`), and compares its cells
@@ -69,9 +65,10 @@ when the movie ends. `make play` alone plays `longplay`.
 
 ```text
 src/           the 68000 source (main.s is the ROM layout) and the Z80 driver
-config/        linker layout, toolchain, lint and names
+config/        lint and names
 assets/        manifest.json (the extracted data/ is ignored)
-scripts/       build, layout and relocation scripts (scripts/run.py runs them)
+scripts/       build and relocation scripts (scripts/run.py runs them, as
+               Retrolarium Studio's Flicky build does)
 tests/         their unit tests
 movies/        the two recordings and their checks
 docs/          how the game works and how the source is written
