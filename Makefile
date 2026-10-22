@@ -71,7 +71,7 @@ studio-check:
 	$(RLTOOL) studio check flicky.rlj --present
 
 lint:
-	$(RLTOOL) lint --only assembly --only text
+	$(RLTOOL) lint
 
 format:
 	$(RLTOOL) lint --fix
