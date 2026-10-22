@@ -7,12 +7,12 @@ calls whom, so a change can be scoped without reading the whole ROM.
 
 Two things run: a main loop that never returns, and a VBlank handler.
 
-`Sys_MainLoop` reads `Ram_NextGameMode` and jumps through
-`Sys_GameModeTable`, eighteen branches covering the title screen, the guide,
-round select, the four gameplay phases, the bonus round, the ending, the demo
-and the Sega logo. Each mode routine runs one frame's worth of work and
-returns; the loop increments `Ram_FrameCounter` and goes round again. A mode
-switches by writing a new value to `Ram_NextGameMode`.
+`Sys_MainLoop` reads `Ram_NextGameMode` and jumps through `Sys_GameModeTable`,
+eighteen branches covering the title screen, the guide, round select, the four
+gameplay phases, the bonus round, the ending, the demo and the Sega logo. Each
+mode routine runs one frame's worth of work and returns; the loop increments
+`Ram_FrameCounter` and goes round again. A mode switches by writing a new value
+to `Ram_NextGameMode`.
 
 `Int_VBlankHandler` reads `Ram_VBlankRequest` and jumps through
 `Int_VBlankModeTable`. Mode 0 returns immediately; the others run
@@ -21,21 +21,20 @@ palette against its backup and queues a CRAM transfer if they differ.
 `Sys_WaitVBlank` is how the main loop hands the frame over: it copies
 `Ram_VBlankMode` into `Ram_VBlankRequest` and spins until the handler clears it.
 
-Nearly every routine that wants to advance a frame calls
-`j_Sound_QueueSFX` instead of `Sys_WaitVBlank` directly, because that routine
-flushes one queued sound effect and then falls into the wait. That is why
-`jsr (j_Sound_QueueSFX)` appears throughout the source where a plain frame wait
-would be expected.
+Nearly every routine that wants to advance a frame calls `j_Sound_QueueSFX`
+instead of `Sys_WaitVBlank` directly, because that routine flushes one queued
+sound effect and then falls into the wait. That is why `jsr (j_Sound_QueueSFX)`
+appears throughout the source where a plain frame wait would be expected.
 
 ## Boot
 
-`Boot_EntryPoint` brings up the hardware -- security register, VDP, Z80, PSG, work
-RAM, CRAM, VSRAM -- then verifies the cartridge checksum against the value in
-the header and jumps to `Boot_ChecksumError` if it does not match. `Boot_CheckInitFlag`
-tests a magic longword so a soft reset skips the RAM clear. Finally the whole
-first 48 KiB of the second bank is copied to work RAM and executed from there,
-which is what makes `Sys_GameEntryPoint` at `$10000` the fixed point everything
-else is measured from.
+`Boot_EntryPoint` brings up the hardware -- security register, VDP, Z80, PSG,
+work RAM, CRAM, VSRAM -- then verifies the cartridge checksum against the value
+in the header and jumps to `Boot_ChecksumError` if it does not match.
+`Boot_CheckInitFlag` tests a magic longword so a soft reset skips the RAM clear.
+Finally the whole first 48 KiB of the second bank is copied to work RAM and
+executed from there, which is what makes `Sys_GameEntryPoint` at `$10000` the
+fixed point everything else is measured from.
 
 `Sys_LoadFuncTable` builds the trampoline block described in
 [`ram_fields.md`](ram_fields.md) so the relocated code can still reach the
@@ -43,15 +42,15 @@ routines that stayed in the first bank.
 
 ## Rendering
 
-| Concern | Where |
-| --- | --- |
-| VDP register setup, sprite table clear, palette fade | `src/rendering/vdp.s` |
-| DMA fills and copies to VRAM and CRAM | `src/system/dma.s` |
-| Palette and tilemap loading, bulk VRAM transfers | `src/rendering/tilemap.s` |
-| Tilemap coordinates, single tiles, strings, BCD numbers | `src/rendering/text.s` |
-| Ground tilemap construction, background objects | `src/rendering/level_draw.s` |
-| HUD, animated overlays, score and label drawing | `src/rendering/hud.s` |
-| RLE tilemap decompression | `src/rendering/rle.s` |
+| Concern                                                 | Where                        |
+| ------------------------------------------------------- | ---------------------------- |
+| VDP register setup, sprite table clear, palette fade    | `src/rendering/vdp.s`        |
+| DMA fills and copies to VRAM and CRAM                   | `src/system/dma.s`           |
+| Palette and tilemap loading, bulk VRAM transfers        | `src/rendering/tilemap.s`    |
+| Tilemap coordinates, single tiles, strings, BCD numbers | `src/rendering/text.s`       |
+| Ground tilemap construction, background objects         | `src/rendering/level_draw.s` |
+| HUD, animated overlays, score and label drawing         | `src/rendering/hud.s`        |
+| RLE tilemap decompression                               | `src/rendering/rle.s`        |
 
 Sprites are not drawn directly. `Sprite_BuildTable` walks all 32 object slots
 once per frame, calls `Sprite_RenderObject` for each live one, and chains the
@@ -97,14 +96,12 @@ surrounding cells are solid and whether the column is at a map edge.
 
 `Game_MainLoop` dispatches through `Game_StateTable`: play, round complete,
 bonus check, skip-bonus check, next round. The player reaching the exit door
-sets `Ram_RoundEndingFlag`, which most actors test and use to freeze
-themselves.
+sets `Ram_RoundEndingFlag`, which most actors test and use to freeze themselves.
 
 Chirps form a chain. Touching one increments `Ram_ChickChainCount` and stores
-the position of the chick in the player's trail buffer
-(`Player_RecordHistory` keeps 64 past positions); delivering the chain to the
-exit door awards points from `Chirp_DeliveryScoreTable`, which scale with chain
-length.
+the position of the chick in the player's trail buffer (`Player_RecordHistory`
+keeps 64 past positions); delivering the chain to the exit door awards points
+from `Chirp_DeliveryScoreTable`, which scale with chain length.
 
 Difficulty is a per-round computation. `Game_CalcDifficulty` derives Tiger's
 chase speed and Iggy's crawl speed from the round number, and selects Tiger's
@@ -115,10 +112,10 @@ jump arc from `Tiger_JumpSpeedTable` through the per-round index in
 
 The 68000 never generates audio. It copies the source-built resident Z80 driver
 and two Z80 data banks into sound RAM at boot (`Sound_LoadZ80Driver`,
-`Sound_InitDriver`) and afterwards communicates by
-writing single bytes: `Z80_MusicCommand` for music, three `Z80_SFXSlot` bytes
-for effects, `Z80_PauseFlag` for pause. Every access takes the Z80 bus first
-through `Sound_RequestZ80Bus` and releases it afterwards.
+`Sound_InitDriver`) and afterwards communicates by writing single bytes:
+`Z80_MusicCommand` for music, three `Z80_SFXSlot` bytes for effects,
+`Z80_PauseFlag` for pause. Every access takes the Z80 bus first through
+`Sound_RequestZ80Bus` and releases it afterwards.
 
 `Sound_QueueToBuffer` and `Sound_QueueSFX` implement a small queue so that
 effects requested during a frame are emitted one per frame rather than fighting
@@ -130,8 +127,8 @@ commands are documented in [z80_sound_driver.md](z80_sound_driver.md).
 Two formats, both from the Sega house toolset:
 
 - **Nemesis** -- Huffman-coded tile art. `Nem_Decomp` builds a code table into
-  `Ram_DecompCodeTable`, then emits rows either straight to the VDP data port
-  or into RAM, optionally XOR-ing against the previous row.
+  `Ram_DecompCodeTable`, then emits rows either straight to the VDP data port or
+  into RAM, optionally XOR-ing against the previous row.
 - **Enigma** -- run-coded tilemaps. `Eni_Decompress` reads an opcode, dispatches
   through `Eni_OpcodeJumpTable`, and writes runs of incrementing, repeating,
   static or inline tile words.

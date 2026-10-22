@@ -14,10 +14,11 @@ def kit_tool_path(spec: str) -> Path:
     names the kit command (default rltool)."""
     suite, _, tool = spec.partition("/")
     # On Windows the command keeps its quoted paths (they may hold spaces).
-    kit = [part[1:-1] if len(part) > 1 and part[0] == part[-1] == '"' else part
-           for part in shlex.split(os.environ.get("RLTOOL", "rltool"), posix=os.name != "nt")]
-    completed = subprocess.run([*kit, "build-tools", "path", suite, tool],
-                               capture_output=True, text=True, check=False)
+    kit = [
+        part[1:-1] if len(part) > 1 and part[0] == part[-1] == '"' else part
+        for part in shlex.split(os.environ.get("RLTOOL", "rltool"), posix=os.name != "nt")
+    ]
+    completed = subprocess.run([*kit, "build-tools", "path", suite, tool], capture_output=True, text=True, check=False)
     if completed.returncode:
         raise ValueError(f"Retrolarium Kit has no {spec}: {completed.stderr.strip()}")
     return Path(completed.stdout.strip().splitlines()[-1])

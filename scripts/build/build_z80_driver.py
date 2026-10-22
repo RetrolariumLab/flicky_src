@@ -97,8 +97,12 @@ def main() -> int:
     as_bin = Path(args.as_bin).resolve()
     p2bin = Path(args.p2bin).resolve()
 
-    for path, description in ((source, "source"), (reference, "reference image"),
-                              (as_bin, "assembler"), (p2bin, "converter")):
+    for path, description in (
+        (source, "source"),
+        (reference, "reference image"),
+        (as_bin, "assembler"),
+        (p2bin, "converter"),
+    ):
         if path is not None and not path.is_file():
             fail(f"Z80 {description} not found: {path}")
 
@@ -111,9 +115,14 @@ def main() -> int:
     # folder). Source includes resolve from the project root through -i, just
     # like the 68000 build.
     command = [
-        str(as_bin), "-i", str(Path.cwd().resolve()), "-o", str(obj),
+        str(as_bin),
+        "-i",
+        str(Path.cwd().resolve()),
+        "-o",
+        str(obj),
         *(["-L", "-olist", str(obj.with_suffix(".lst"))] if args.split_label else []),
-        *args.as_args.split(), str(source),
+        *args.as_args.split(),
+        str(source),
     ]
     environment = dict(os.environ)
     environment.setdefault("AS_MSGPATH", str(as_bin.parent))
@@ -122,21 +131,14 @@ def main() -> int:
 
     built = output.read_bytes()
     if args.expected_size is not None and len(built) != args.expected_size:
-        fail(
-            f"{args.description} is {len(built)} bytes; "
-            f"the fixed region requires {args.expected_size} bytes"
-        )
+        fail(f"{args.description} is {len(built)} bytes; the fixed region requires {args.expected_size} bytes")
     reference_data = reference.read_bytes() if reference else built
     if args.reference_offset > len(reference_data):
-        fail(
-            f"reference offset {args.reference_offset} exceeds "
-            f"{len(reference_data)}-byte reference image"
-        )
-    expected = reference_data[args.reference_offset:] if reference else built
+        fail(f"reference offset {args.reference_offset} exceeds {len(reference_data)}-byte reference image")
+    expected = reference_data[args.reference_offset :] if reference else built
     if built != expected and not args.allow_different:
         offset = next(
-            (index for index, pair in enumerate(zip(built, expected))
-             if pair[0] != pair[1]),
+            (index for index, pair in enumerate(zip(built, expected)) if pair[0] != pair[1]),
             min(len(built), len(expected)),
         )
         fail(
@@ -156,10 +158,7 @@ def main() -> int:
     if reference is None:
         print(f"[OK] {args.description} assembled ({len(built)} bytes, SHA1 {sha1(built)})")
     elif built == expected:
-        print(
-            f"[OK] Byte-identical {args.description} reproduced "
-            f"({len(built)} bytes, SHA1 {sha1(built)})"
-        )
+        print(f"[OK] Byte-identical {args.description} reproduced ({len(built)} bytes, SHA1 {sha1(built)})")
     else:
         print(
             f"[OK] Authored {args.description} assembled within its fixed region "

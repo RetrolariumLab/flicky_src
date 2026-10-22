@@ -26,8 +26,8 @@ make verify    # build build/flicky.bin and compare it byte for byte
 
 `make` alone lists the targets. `assets/manifest.json` names the ROM and the
 segments cut out of it (`rltool assets`, Retrolarium Kit). The ROM, `data/` and
-`build/` are ignored. See
-[`docs/build.md`](docs/build.md) for the build in detail.
+`build/` are ignored. See [`docs/build.md`](docs/build.md) for the build in
+detail.
 
 ## Targets
 
@@ -44,22 +44,22 @@ make lint / format / hooks / clean
 ## Tests
 
 `make test` (about a minute) runs the unit tests, `verify`, `build-relocated`
-and the studio check. The studio check needs the studio's
-Flicky level writer (`RETROLARIUM_FLICKY_LEVEL_WRITER`, or on `PATH`).
+and the studio check. The studio check needs the studio's Flicky level writer
+(`RETROLARIUM_FLICKY_LEVEL_WRITER`, or on `PATH`).
 
 `make test-full` adds the two recordings of `movies/`, played in MAME on the
 relocated build, in which a NOP follows every module from the startup code on
 and both layout gaps are closed, so the game code moves from `$010000` to near
-`$2900`: the longplay through the ending first, then the attract demos. At
-their checkpoints the game's state must equal what the original ROM gives, as
-`movies/*.check.json` record. Name MAME once with `rltool movie mame <path>`
-(or `MAME=<path>`); `make golden` records the reference values again.
+`$2900`: the longplay through the ending first, then the attract demos. At their
+checkpoints the game's state must equal what the original ROM gives, as
+`movies/*.check.json` record. Name MAME once with `rltool movie mame <path>` (or
+`MAME=<path>`); `make golden` records the reference values again.
 
 `make play MOVIE=longplay|attract` shows a movie in a MAME window at the game's
-speed, on the relocated build (or on `ROM=<image>`), and compares its cells
-with the original's once the window is closed; in MAME, F10 lifts the speed
-limit and Insert fast-forwards. `FRAMES=<frame>` closes MAME at that frame, `CLOSE=1`
-when the movie ends. `make play` alone plays `longplay`.
+speed, on the relocated build (or on `ROM=<image>`), and compares its cells with
+the original's once the window is closed; in MAME, F10 lifts the speed limit and
+Insert fast-forwards. `FRAMES=<frame>` closes MAME at that frame, `CLOSE=1` when
+the movie ends. `make play` alone plays `longplay`.
 
 ## Layout
 
@@ -77,14 +77,14 @@ flicky.rlj     the Retrolarium project
 
 ## Game information
 
-| | |
-|---|---|
-| **Title** | FLICKY |
-| **Platform** | Sega Mega Drive / Genesis |
-| **Release** | February 1991 |
-| **Product code** | GM 00001022-00 |
-| **ROM size** | 128 KB |
-| **Regions** | Japan, USA, Europe |
+|                  |                           |
+| ---------------- | ------------------------- |
+| **Title**        | FLICKY                    |
+| **Platform**     | Sega Mega Drive / Genesis |
+| **Release**      | February 1991             |
+| **Product code** | GM 00001022-00            |
+| **ROM size**     | 128 KB                    |
+| **Regions**      | Japan, USA, Europe        |
 
 Bit 7 of the version register selects the domestic revision, so the ROM carries
 two sets of on-screen text: Japanese for Japan and English elsewhere. Symbols
@@ -99,7 +99,8 @@ for the Japanese variants carry a `JP` suffix.
 
 ## Credits
 
-- Approaches shared with [alien_soldier_src](https://github.com/oranguthang/alien_soldier_src)
+- Approaches shared with
+  [alien_soldier_src](https://github.com/oranguthang/alien_soldier_src)
 - AS Macro Assembler by Alfred Arnold
 - Original game by Sega
 

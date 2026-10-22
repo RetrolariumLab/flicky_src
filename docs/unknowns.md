@@ -20,7 +20,7 @@ Identifiers are stable: `CODE-nnn` for code, `DATA-nnn` for authored data,
 `RAM-nnn` for work RAM, `SND-nnn` for the sound driver. An identifier is never
 reused, even after the entry is resolved.
 
----
+______________________________________________________________________
 
 ### RAM-001 Two game-mode words written and never read
 
@@ -28,10 +28,10 @@ reused, even after the entry is resolved.
 - **Confidence:** medium
 - **Location:** `src/system/game_entry.s`, `src/memory/ram.inc`
 - **Evidence:** `Sys_GameEntryPoint` clears `Ram_GameModeSpare1` (`$FFFFC2`) and
-  `Ram_GameModeSpare2` (`$FFFFC4`) at startup. Those are the only two
-  references anywhere in the ROM. They sit immediately after
-  `Ram_NextGameMode` (`$FFFFC0`), which the mode dispatcher reads every frame,
-  so they look like a three-word block of which only the first is live.
+  `Ram_GameModeSpare2` (`$FFFFC4`) at startup. Those are the only two references
+  anywhere in the ROM. They sit immediately after `Ram_NextGameMode`
+  (`$FFFFC0`), which the mode dispatcher reads every frame, so they look like a
+  three-word block of which only the first is live.
 - **Experiment:** Break on read of `$FFFFC2`-`$FFFFC5` for a full longplay. If
   nothing hits, they are dead storage and can be labelled `Unused_`; if the
   RAM-resident routines read them, the reader identifies the owner.
@@ -43,12 +43,12 @@ reused, even after the entry is resolved.
 - **Location:** `src/rendering/tilemap.s`, `src/memory/ram.inc`
 - **Evidence:** `Gfx_DecompEnigmaTilemap` decompresses into `Ram_EnigmaBuffer`
   at `$FFC3E0`. That address is inside the 32-slot object array that starts at
-  `Ram_ObjectSlots` (`$FFC000`), one and a half slots into slot 15. Every
-  caller runs during a screen transition, when the array is being rebuilt
-  anyway, so the overlap may be deliberate reuse of scratch space.
+  `Ram_ObjectSlots` (`$FFC000`), one and a half slots into slot 15. Every caller
+  runs during a screen transition, when the array is being rebuilt anyway, so
+  the overlap may be deliberate reuse of scratch space.
 - **Experiment:** Decompress a tilemap with live objects present -- the guide
-  screen redraw is the closest natural case -- and watch whether slots 15 and
-  16 are corrupted. If they are and nothing visibly breaks, the overlap is
+  screen redraw is the closest natural case -- and watch whether slots 15 and 16
+  are corrupted. If they are and nothing visibly breaks, the overlap is
   intentional; if the game misbehaves, it is a latent bug.
 
 ### RAM-003 A button-repeat flag whose enable is never set
@@ -58,9 +58,9 @@ reused, even after the entry is resolved.
 - **Location:** `src/system/input.s`, `src/memory/ram.inc`
 - **Evidence:** `Input_ProcessJoypads` tests `Ram_ButtonRepeatEnable`
   (`$FFFF87`) and, when it is non-zero, clears `Ram_ButtonRepeatFlag`
-  (`$FFFF86`). Nothing in the ROM ever writes `$FFFF87`, and work RAM is
-  cleared to zero at boot, so the clear is unreachable in a normal session.
-  The names describe the mechanism, not a proven purpose.
+  (`$FFFF86`). Nothing in the ROM ever writes `$FFFF87`, and work RAM is cleared
+  to zero at boot, so the clear is unreachable in a normal session. The names
+  describe the mechanism, not a proven purpose.
 - **Experiment:** Force `$FFFF87` to a non-zero value and observe what changes
   in the expanded per-button bytes at `Ram_ButtonStates`. That should show what
   the suppressed byte controls.
@@ -79,8 +79,8 @@ reused, even after the entry is resolved.
   reassembled.
 - **Experiment:** None needed to establish the behaviour, which is already
   certain. Resolving the entry means finding what the removed code did, most
-  likely by comparing against another Sega first-party boot sequence of the
-  same era.
+  likely by comparing against another Sega first-party boot sequence of the same
+  era.
 
 ### CODE-002 An immediate the disassembler mistook for an address
 
@@ -90,9 +90,9 @@ reused, even after the entry is resolved.
 - **Evidence:** IDA read the immediate `$14000` in `Game_CalcDifficulty` as an
   address and invented a label `loc_14000` for it, which happened to land inside
   `Player_ProcessInput`. The disassembly then wrote three instructions as
-  `move.l #loc_14000,...`, so the difficulty accumulator and Tiger's speed
-  read as pointers into an unrelated procedure. The value is not an address: it
-  is compared against `$1C000` and incremented by 7.
+  `move.l #loc_14000,...`, so the difficulty accumulator and Tiger's speed read
+  as pointers into an unrelated procedure. The value is not an address: it is
+  compared against `$1C000` and incremented by 7.
 - **Resolution:** All three are written as the literal `$14000` they always
   were. This changed nothing about the assembled ROM, which is exactly the
   problem it poses.
@@ -115,64 +115,70 @@ reused, even after the entry is resolved.
 ### DATA-001 Z80 sound data holds pointers that assume a fixed ROM address
 
 - **Status:** resolved on `source-2.0`
+
 - **Confidence:** high, and the symptom is now measured rather than predicted
+
 - **Location:** `src/sound/z80/load_data.s`, `src/sound/engine.s`
-- **Original evidence:** `Sound_LoadZ80Table` converted ROM addresses to Z80-relative
-  offsets with `suba.l #Sys_GameEntryPoint,a0`, which only holds while
-  `Sys_GameEntryPoint` sits at exactly `$10000`. The offsets baked into
+
+- **Original evidence:** `Sound_LoadZ80Table` converted ROM addresses to
+  Z80-relative offsets with `suba.l #Sys_GameEntryPoint,a0`, which only holds
+  while `Sys_GameEntryPoint` sits at exactly `$10000`. The offsets baked into
   `data/sound/data_z80_part2.bin` are not recomputed by the build.
-- **Observed:** A build with both padding gaps removed puts
-  `Sys_GameEntryPoint` at `$00290A`, 55,030 bytes lower, and shrinks the image
-  to 58,013 bytes. The 68000 side is entirely unaffected: the recorded longplay
-  replays all 67,000 frames and reaches the credits with the same round, lives
-  and score, `$02862440`, and VRAM and CRAM are byte-identical to the reference
-  at the frames compared. Of 185 named work RAM fields, 173 match and the 12
-  that differ are all the high word of a ROM pointer, `$0001` against `$0000`,
-  which is the shorter image and not a fault.
+
+- **Observed:** A build with both padding gaps removed puts `Sys_GameEntryPoint`
+  at `$00290A`, 55,030 bytes lower, and shrinks the image to 58,013 bytes. The
+  68000 side is entirely unaffected: the recorded longplay replays all 67,000
+  frames and reaches the credits with the same round, lives and score,
+  `$02862440`, and VRAM and CRAM are byte-identical to the reference at the
+  frames compared. Of 185 named work RAM fields, 173 match and the 12 that
+  differ are all the high word of a ROM pointer, `$0001` against `$0000`, which
+  is the shorter image and not a fault.
 
   The Z80 side is where it breaks, and quietly. 2,649 of 8,192 bytes of Z80 RAM
   differ, and the pointer table the reference holds at `$1000` --
   `14 10 42 10 7d 10 b0 10`, Z80 addresses `$1014`, `$1042`, `$107D`, `$10B0` --
   is all zeroes in the moved build. The sound data is never copied.
+
 - **Correction:** this entry previously predicted that the game "hangs at
   specific points". It does not. It plays to the end with identical scoring and
   identical video, and only the audio is lost. The failure is silent, which is
-  worse for anyone relocating this code and expecting a crash to tell them.
-  The entry also blamed inserting padding; removing it breaks the same way, so
-  the constraint is that `Sys_GameEntryPoint` must not move at all.
+  worse for anyone relocating this code and expecting a crash to tell them. The
+  entry also blamed inserting padding; removing it breaks the same way, so the
+  constraint is that `Sys_GameEntryPoint` must not move at all.
+
 - **Resolution:** `src/sound/z80/data.asm` now authors the two data banks,
   including the resident SFX and music pointer tables and every voice/sequence
   pointer in their headers. Its address macros produce Z80 little-endian
   pointers from labels. The six 68000 descriptor words in
-  `src/sound/z80/load_data.s` are expressions over the actual ROM labels instead of
-  bytes inherited from the extracted image. `make verify` covers the 2,804-byte
-  payload with the rest of the ROM.
+  `src/sound/z80/load_data.s` are expressions over the actual ROM labels instead
+  of bytes inherited from the extracted image. `make verify` covers the
+  2,804-byte payload with the rest of the ROM.
+
 - **Relocation check:** The loader conversion must subtract the fixed 64-KiB
   RAM-image size, not the movable `Sys_GameEntryPoint` label. With that
   correction, a build without both padding gaps moved the entry point from
   `$010000` to `$00290A` (releases 1.0 to 3.0 checked it statically; 3.1 plays
-  the movies on the relocated build). The assembler recomputes the two
-  source offsets as `$01DE` and `$03A6`; the loader maps them to `$FF01DE` and
-  `$FF03A6`, and that build contained the authored sound payload at those
-  exact sources. The normal ROM remains byte-identical.
+  the movies on the relocated build). The assembler recomputes the two source
+  offsets as `$01DE` and `$03A6`; the loader maps them to `$FF01DE` and
+  `$FF03A6`, and that build contained the authored sound payload at those exact
+  sources. The normal ROM remains byte-identical.
 
 ### DATA-002 Nemesis cannot be re-encoded byte for byte
 
 - **Status:** open
 - **Confidence:** high
-- **Location:** `src/compression/nemesis_enigma.s`,
-  Retrolarium Core's `retrolarium_core.oracles.nemesis_encode` and `enigma_encode`
-- **Evidence:** The Nemesis encoder re-encodes using the code table
-  carried by the original stream, so the only remaining freedom is how the
-  nybble sequence is split into runs. A greedy split and a bit-optimal split both
-  produce valid streams that decode to identical pixels, and neither reproduces
-  the original bytes. The optimal split is consistently *smaller* than the
-  original -- 117 against 128 bytes for `ExitTiles`, 6,037 against 6,052 for
-  `LevelTiles` -- which shows the original compressor was not minimising size
-  and used a heuristic that has not been identified. Enigma is no longer part
-  of the unknown: the Enigma encoder exactly reproduces the
-  ten-byte Sega tilemap and round-trips arbitrary word streams through the
-  decoder.
+- **Location:** `src/compression/nemesis_enigma.s`, Retrolarium Core's
+  `retrolarium_core.oracles.nemesis_encode` and `enigma_encode`
+- **Evidence:** The Nemesis encoder re-encodes using the code table carried by
+  the original stream, so the only remaining freedom is how the nybble sequence
+  is split into runs. A greedy split and a bit-optimal split both produce valid
+  streams that decode to identical pixels, and neither reproduces the original
+  bytes. The optimal split is consistently *smaller* than the original -- 117
+  against 128 bytes for `ExitTiles`, 6,037 against 6,052 for `LevelTiles` --
+  which shows the original compressor was not minimising size and used a
+  heuristic that has not been identified. Enigma is no longer part of the
+  unknown: the Enigma encoder exactly reproduces the ten-byte Sega tilemap and
+  round-trips arbitrary word streams through the decoder.
 - **Experiment:** Compare against Nemesis streams from other Sega titles of the
   same period, whose compressor is likely the same tool. If a splitting rule
   reproduces those byte for byte, it should reproduce these. Until then the
@@ -184,8 +190,8 @@ reused, even after the entry is resolved.
 
 - **Status:** resolved on `source-2.0`
 - **Confidence:** high
-- **Location:** `src/sound/z80/driver.asm`,
-  `scripts/build/build_z80_driver.py`, `docs/z80_sound_driver.md`
+- **Location:** `src/sound/z80/driver.asm`, `scripts/build/build_z80_driver.py`,
+  `docs/z80_sound_driver.md`
 - **Correction:** Only `z80_part1` is executable. `z80_part2` begins with two
   68000 load descriptors and supplies the data banks copied to Z80 `$1000` and
   `$1200`; no control-flow target enters either bank.

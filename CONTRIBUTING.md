@@ -6,11 +6,12 @@ baseline: `make verify` must keep reproducing the cartridge byte for byte.
 ## Local inputs
 
 Use a legally obtained ROM (`assets/manifest.json` gives its name and hash) and
-put it in the project root as `Flicky (UE) [!].bin`. Run `make split` once; it checks the dump and cuts out the
-seventeen data segments (`rltool assets` by `assets/manifest.json`).
+put it in the project root as `Flicky (UE) [!].bin`. Run `make split` once; it
+checks the dump and cuts out the seventeen data segments (`rltool assets` by
+`assets/manifest.json`).
 
-Never add the ROM, anything under `data/` or `build/` to Git. The tracked
-movies are controller input and contain no game data.
+Never add the ROM, anything under `data/` or `build/` to Git. The tracked movies
+are controller input and contain no game data.
 
 ## Source changes
 
