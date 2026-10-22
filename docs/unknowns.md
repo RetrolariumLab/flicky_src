@@ -2,8 +2,8 @@
 
 This registry keeps uncertain readings from turning into source facts. Every
 evidence tag in the source except `!(OBS)` names an entry here, and every entry
-here is referenced from at least one place in the source. `make lint` checks
-both directions, so neither side can quietly rot.
+here is referenced from at least one place in the source; keep both directions
+when you add or close one (nothing checks them automatically).
 
 A plausible interpretation is not enough to rename a symbol or close an entry.
 If the evidence only supports "this byte is written and never read", that is
@@ -145,8 +145,8 @@ reused, even after the entry is resolved.
   pointer in their headers. Its address macros produce Z80 little-endian
   pointers from labels. The six 68000 descriptor words in
   `src/sound/z80/load_data.s` are expressions over the actual ROM labels instead of
-  bytes inherited from the extracted image. `make z80-data-check` assembles the
-  2,804-byte payload and requires byte identity with the original payload.
+  bytes inherited from the extracted image. `make verify` covers the 2,804-byte
+  payload with the rest of the ROM.
 - **Relocation check:** The loader conversion must subtract the fixed 64-KiB
   RAM-image size, not the movable `Sys_GameEntryPoint` label. With that
   correction, a build without both padding gaps moved the entry point from

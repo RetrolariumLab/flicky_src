@@ -51,8 +51,7 @@ with `$86` empty), and symbolic voice/sequence pointers for every header.
 `$88` has no table entry: reading it would consume the first word of the `$81`
 header. FM voices and event bodies remain explicit bytes until the editor's
 command-level encoder is added, but they are no longer hidden in a binary
-include. `make z80-data-check` requires the assembled payload to match all
-2,804 original bytes.
+include. `make verify` covers all 2,804 bytes with the rest of the ROM.
 
 ## 68000 interface
 
@@ -169,8 +168,8 @@ tone sequence whose pitch or envelope playback could be compared. The VGM
 path retains SN76489 writes, while the executable fidelity claim below is
 deliberately limited to the YM2612 traffic that the original content emits.
 
-The oracle is the kit's sound-trace test over a Gens trace (3.0's
-`make trace-sound`; the test skips without one). The Gens hook sits in
+The oracle is the kit's sound-trace test over a Gens trace (recorded with the
+3.0 tooling; the test skips without one). The Gens hook sits in
 `Z80_WriteB_YM2612` and records a logical CSV row only when the emulated Z80
 performs the corresponding data-port write. The validation window is frames
 320-457 of the pinned longplay: music `$85` starts there, and the later global

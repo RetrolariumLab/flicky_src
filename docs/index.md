@@ -39,7 +39,7 @@ After every edit batch run `make test`; among other things `make verify` must
 print:
 
 ```
-[OK] Byte-identical ROM reproduced (SHA1 83d8bbf0a9b38c42a0bf492d105cc3abe9644a96)
+[OK] flicky.bin is ue byte for byte (131072 bytes, SHA-1 83d8bbf0a9b38c42a0bf492d105cc3abe9644a96)
 ```
 
 Annotation, renaming and reformatting must never change the assembled bytes.

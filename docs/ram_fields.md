@@ -1,8 +1,8 @@
 # Work RAM Fields
 
 Every RAM address the 68000 side touches is named in `src/memory/ram.inc` and
-referenced by symbol everywhere else; `make lint` rejects a raw address outside
-that file. This page is the same list grouped by what it is for.
+referenced by symbol everywhere else; keep it that way (nothing checks it
+automatically). This page is the same list grouped by what it is for.
 
 Addresses are the values the source uses. The Mega Drive mirrors work RAM
 throughout `$FF0000`-`$FFFFFF`, so `$FFC000` and `$FF0000+$C000` are the same

@@ -1,10 +1,10 @@
 # Authored Data Formats
 
-Seventeen reference segments are sliced out of the ROM by `make split` and
-validated against `assets/manifest.json` before every build. Most are pulled
-back in with `binclude`; the two sound segments are now byte-exact references
-for authored assembly. This page says what each one is and what the tooling can
-currently do with it.
+Seventeen segments are cut out of the ROM by `make split` and checked against
+`assets/manifest.json`. Most are pulled back in with `binclude`; the two Z80
+segments are the original driver and sound banks, which the build assembles
+from source instead. The second half of this page gives the formats of the
+tables written in the source.
 
 ## The segments
 
@@ -80,8 +80,8 @@ is how the same font is drawn in different colours.
 ## Z80 sound program and data
 
 `z80_part1` is the resident program. It is reconstructed as
-`src/sound/z80/driver.asm`, assembled in a separate Z80 pass and compared
-byte for byte before the main ROM includes it. Its executable boundary, RAM
+`src/sound/z80/driver.asm` and assembled in a separate Z80 pass before the main
+ROM includes it. Its executable boundary, RAM
 layout and sequence dispatcher are documented in
 [z80_sound_driver.md](z80_sound_driver.md).
 
@@ -92,64 +92,74 @@ sequences in the second. The descriptors are expressions in
 `src/sound/z80/load_data.s`; the 2,804-byte payload is authored in
 `src/sound/z80/data.asm`, where Z80 little-endian pointers are computed
 from labels. The build splits it at `zMusicBank` into separately included SFX
-and music banks. `make z80-data-check` proves byte identity, and
-the movies played on the relocated build show that the sound loads follow a
-moved game image. This resolves [DATA-001](unknowns.md).
+and music banks; `make verify` covers them with the rest of the ROM, and the
+movies played on the relocated build show that the sound loads follow a moved
+game image.
+
+`EndingMusic81Overlay` replaces the resident `$81` music header and sequences
+at Z80 `$125B` (`src/game/screens/ending.s`); `data.asm` refuses to assemble if
+`zMusic81Header` leaves that address. The 68000 `DBF` copy reads one byte
+beyond the 954-byte block, as the original does.
 
 ## Demo input streams
 
 Pairs of (input byte, hold count). `Demo_ReadInput` writes the byte into
 `Ram_Joypad` and decrements `Ram_DemoHoldFrames`, advancing to the next pair
-when it reaches zero. This is the same idea as the tracked `.gmv` movies, but
+when it reaches zero. This is the same idea as the tracked movies, but
 built into the ROM for attract mode.
 
 ## Round trips
 
-The 3.0 tooling (`make roundtrip-formats`, kept at that tag) decoded every
-segment and checked it against a recorded claim. Three claims are possible and
-they are not interchangeable.
+Retrolarium Core's decoders and encoders (`retrolarium_core.oracles`) handle
+every extracted format. The palette, demo streams, Tiger jump arcs, both fonts
+and the Enigma tilemap re-encode to their original bytes. The six Nemesis
+segments re-encode to streams that decode to the same pixels but not to the
+same bytes: the encoder reuses the original code table, and no rule for
+splitting runs found so far reproduces the original (a bit-optimal split is
+smaller, 117 bytes against 128 for `ExitTiles`); see [DATA-002](unknowns.md).
+An edited Enigma tilemap is accepted only when its stream still fits its
+ten-byte slot.
 
-**`exact`** -- decoding and re-encoding returns the original bytes. Eight
-segments qualify, and for these the field layout is proven rather than
-plausible:
+# Formats in the source
 
-```
-SegaPalette          20 bytes,    10 entries
-DemoInputStream0    256 bytes,   128 entries
-DemoInputStream2    286 bytes,   143 entries
-DemoInputStream3    256 bytes,   128 entries
-TigerJumpArcTable  384 bytes,    48 entries
-Jap1BPPTiles      1,432 bytes, 1,432 rows
-Latin1BPPTiles      344 bytes,   344 rows
-SegaEnigma           10 bytes,    48 words
-```
+## Rounds and level records
 
-**`semantic`** -- re-encoding produces a valid stream that decodes to identical
-pixels, but not the original bytes. All six Nemesis segments are in this class.
-The encoder (`retrolarium_core.oracles.nemesis_encode`) reuses the code table carried by the original
-stream, so the only remaining freedom is how the nybble sequence is split into
-runs, and no splitting rule tried so far reproduces the original. A bit-optimal
-split is consistently *smaller* than the original -- 117 bytes against 128 for
-`ExitTiles` -- which says the original compressor was not minimising size. This
-is [DATA-002](unknowns.md).
+The 48 rounds use 36 level records: `Level_DataPointers` (`src/data/tables.s`)
+and `Level_SpecialTilePointers` (`src/data/level_layout.s`) hold one word per
+round, and each bonus round shares the record of the round before it. The
+round loop picks the entries by round number (`Math_ModuloUpper` folds round
+49 back to round 1), and `Tiger_JumpArcTable` holds
+eight bytes per round in the same order.
 
-There are no remaining decode-only formats. `SegaEnigma` now has an optimizing
-encoder which reproduces its 48 incrementing words in the original ten-byte
-slot. Edited tilemaps are accepted only when their optimal stream still fits
-that fixed region.
+A level record (`Level_Data<n>`) starts with the collision map, a run-coded
+stream that `Collision_LoadMap` (`src/game/world.s`) writes into the 32x28 map
+from its third row (cell `$40`):
 
-The historical 1.0 format manifest still marks both extracted Z80 segments as
-`none`. On `source-2.0`, the first claim is superseded by the independent
-source-assembly equality gate; the second remains an authored-data task.
-`EndingMusic81Overlay` is also `none`: it replaces the resident `$81` music
-header and sequences at Z80 `$125B`. Its previous `tilemap_words` round trip
-only proved that arbitrary even-length bytes survive conversion to words and
-back; it did not decode the sound format. The 68000 `DBF` copy reads one byte
-beyond this 954-byte block, matching the original ROM.
+| Byte | Meaning |
+| --- | --- |
+| `$00` | end of the map |
+| `$01-$7F` | skip that many cells |
+| `%10nnnnnn` | `n` solid cells to the right; the cursor moves past them |
+| `%11nnnnnn` | `n` solid cells downwards; the cursor moves one cell right |
 
-This distinction is the point of the milestone. A decoder can be plausibly
-wrong -- it can produce sensible-looking tiles from a misunderstood header and
-nobody would notice. Requiring the encoder to reproduce the original bytes is
-what turns "this decodes" into "this is understood", so the eight `exact`
-segments carry a stronger guarantee than the six `semantic` ones, and the
-manifest says which is which rather than rounding them all up.
+Runs must stay inside the map. `Collision_SetBoundaries` then makes the outer
+rows solid. The object placements follow the map: `Level_SpawnObjects` reads
+the player's start (column, row), the entry arrow, the background objects, the
+window girl and the groups of chicks and enemies, each group as a count byte
+and that many positions.
+
+`Level_SpecialTiles<n>` is a byte stream written as words. It has three
+groups, each a count byte and that many (column, row) pairs: cells that get
+flag bit 7, then bits 7 and 6, then bit 5 (`Collision_SetSpecialTiles`). An
+empty group is a single `$00`.
+
+Retrolarium Kit's Flicky level codec (`games/flicky/workspace/levels.py`)
+reads and writes both, within the space all levels share.
+
+## Other tables
+
+The sprite frame records, animation scripts, palettes, text encoding
+(`src/game/text_encoding.s`) and bonus-round motion tables are written in the
+source next to the code that reads them; Retrolarium Kit's Flicky codecs
+(`workspace/sequences.py`, `workspace/semantics.py`) describe how the Studio
+edits them.
