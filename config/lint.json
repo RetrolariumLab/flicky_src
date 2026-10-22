@@ -6,6 +6,6 @@
     "paths": ["src"]
   },
   "text": {
-    "json": "indent"
+    "json": "valid"
   }
 }
