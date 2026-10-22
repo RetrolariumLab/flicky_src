@@ -1,7 +1,7 @@
 # Input movies
 
-Two recordings, the deterministic inputs that `make test-full` plays in MAME
-on the relocated build (their checks: `longplay.check.json` and
+Two recordings, the deterministic inputs that `make test-full` plays in MAME on
+the relocated build (their checks: `longplay.check.json` and
 `attract.check.json`, whose `title` and `description` Retrolarium shows). They
 were recorded in Gens as `.gmv` against the reference ROM and converted to
 Retrolarium's run-length `.rlmovie` (`rltool movie convert`); the frames and
@@ -33,6 +33,6 @@ you can tell which scene a checkpoint frame falls in.
 
 ## Regenerating
 
-These are fixtures, not build outputs. Re-recording one invalidates every
-frame number in its scene list and the check's expected values, so replace it
-only deliberately and run `make golden` in the same change.
+These are fixtures, not build outputs. Re-recording one invalidates every frame
+number in its scene list and the check's expected values, so replace it only
+deliberately and run `make golden` in the same change.

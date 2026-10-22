@@ -43,8 +43,7 @@ def run(command: list[str], env: dict[str, str] | None = None) -> int:
     return subprocess.call(command, env=env)
 
 
-def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path,
-             obj: Path) -> Path:
+def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path, obj: Path) -> Path:
     """Run AS on the source. AS is invoked from its own directory so that it
     finds the message catalogs (as.msg, cmdarg.msg, ioerrs.msg) beside it.
 
@@ -61,8 +60,10 @@ def assemble(source: Path, as_bin: Path, as_args: list[str], include_root: Path,
         obj.unlink()
     command = [
         str(as_bin.resolve()),
-        "-i", str(include_root.resolve()),
-        "-o", str(obj.resolve()),
+        "-i",
+        str(include_root.resolve()),
+        "-o",
+        str(obj.resolve()),
         *as_args,
         str(source.resolve()),
     ]
@@ -91,9 +92,7 @@ def link(obj: Path, output: Path, p2bin: Path, padding: str) -> None:
     temporary = Path(temporary_name)
     temporary.unlink()
     try:
-        if run(
-            [str(p2bin.resolve()), str(obj), str(temporary), f"-p={padding}"]
-        ) != 0:
+        if run([str(p2bin.resolve()), str(obj), str(temporary), f"-p={padding}"]) != 0:
             fail("p2bin conversion failed")
         if not temporary.is_file():
             fail(f"ROM not produced: {temporary}")

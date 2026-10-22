@@ -1,9 +1,9 @@
 # Assembly Style
 
 The address-ordered 68000 `.s` modules and shared `.inc` files use one small,
-mechanically checked AS style. It is not a new style
-imposed on the reconstruction: it is the layout the disassembly already had,
-written down so that a tool can enforce it.
+mechanically checked AS style. It is not a new style imposed on the
+reconstruction: it is the layout the disassembly already had, written down so
+that a tool can enforce it.
 
 The rules exist to keep diffs meaningful. Every formatting change must be
 byte-neutral — `make verify` is the arbiter, and a formatting commit that moves
@@ -19,19 +19,19 @@ a byte is wrong by definition.
 
 The `.asm` files form the separately assembled Z80/sound-data trees. Their
 entrypoints and included implementation modules follow the same ASCII, LF and
-whitespace hygiene, but retain their processor-specific table layout and are
-not rewritten by `make format`.
+whitespace hygiene, but retain their processor-specific table layout and are not
+rewritten by `make format`.
 
 ## Layout
 
 Four columns, and every one of them is on an eight-column grid:
 
-| Column | What sits there |
-| ---: | --- |
-| 0 | Labels, and the names in `equ`, `set` and `macro` definitions |
-| 16 | The mnemonic or directive |
-| 24 | Its operand |
-| 56 | Inline comments |
+| Column | What sits there                                               |
+| -----: | ------------------------------------------------------------- |
+|      0 | Labels, and the names in `equ`, `set` and `macro` definitions |
+|     16 | The mnemonic or directive                                     |
+|     24 | Its operand                                                   |
+|     56 | Inline comments                                               |
 
 ```asm
 Gfx_ClearSpriteArea:
@@ -47,13 +47,13 @@ operand out of line: `movea.l d1,a6`, not `movea.l  d1,a6`.
 They are the Sonic disassembly layout, which is what a Mega Drive reader
 expects. `s1_improvements/sonic.asm` writes it with tabs: two of them before
 4,793 of its statement lines, one between the mnemonic and the operand 4,012
-times, and one after every label that carries a directive. At the tab width
-that layout assumes, that is column 16, column 24 and column 16 -- the three
-columns above. The width is not a guess: only 51 mnemonics in that file
-overflow an eight-column field, against 3,352 that overflow a four-column one.
+times, and one after every label that carries a directive. At the tab width that
+layout assumes, that is column 16, column 24 and column 16 -- the three columns
+above. The width is not a guess: only 51 mnemonics in that file overflow an
+eight-column field, against 3,352 that overflow a four-column one.
 
-This project renders the same columns with spaces. The picture is identical at
-a tab width of 8 and stays identical at every other width, which a tabbed file
+This project renders the same columns with spaces. The picture is identical at a
+tab width of 8 and stays identical at every other width, which a tabbed file
 does not -- at width 4 the operand lands in column 12. `alien_soldier_src`, the
 closest Mega Drive sibling to this reconstruction, makes the same choice, and
 `.editorconfig`, `.gitattributes` and `make lint` all enforce it.
@@ -71,10 +71,9 @@ with a directive marks the datum itself.
 
 ### Where a shared column comes from
 
-A label that carries a directive does not simply pad to column 16 -- most
-labels here are longer than that. Instead, **a run of consecutive label lines
-shares one column**, the first tab stop that clears the longest name in the
-run:
+A label that carries a directive does not simply pad to column 16 -- most labels
+here are longer than that. Instead, **a run of consecutive label lines shares
+one column**, the first tab stop that clears the longest name in the run:
 
 ```asm
 Z80_CommandBlock:               equ     $A01C04         ; was: unk_A01C04
@@ -87,24 +86,25 @@ than as a column that steps between 16 and 24 line by line.
 
 A run is broken by a blank line, a comment or an instruction, so a long data
 label cannot drag an unrelated table to the right. A **bare label is
-transparent**: `src/data/art.s` alternates `Name: binclude ...` with `Name_End:`,
-and treating those end markers as separators would leave every include in a run
-of its own.
+transparent**: `src/data/art.s` alternates `Name: binclude ...` with
+`Name_End:`, and treating those end markers as separators would leave every
+include in a run of its own.
 
 - Inside a `macro` / `endm` block the body is indented one further level.
 
 ## Case
 
 - 68000 mnemonics are lowercase: `move.w`, `bsr.w`, `rts`.
-- AS directives are lowercase: `dc.b`, `dc.w`, `dc.l`, `binclude`, `org`, `even`.
+- AS directives are lowercase: `dc.b`, `dc.w`, `dc.l`, `binclude`, `org`,
+  `even`.
 - Labels, constants and operands keep their declared case.
 
 ## Comments
 
 - One space after `;`, and no period ending a comment.
-- Inline comments start at **column 56**. A line whose code already reaches
-  that column keeps two spaces and simply sticks out -- the alternative is
-  letting one long data table row push every comment in the file to the right.
+- Inline comments start at **column 56**. A line whose code already reaches that
+  column keeps two spaces and simply sticks out -- the alternative is letting
+  one long data table row push every comment in the file to the right.
 - A whole-line comment is indented in multiples of four.
 - A banner of repeated `;`, `-` or `=` is left exactly as written.
 - Prefer comments that explain intent, invariants, state transitions, data
@@ -117,16 +117,16 @@ Gfx_ClearSpriteArea:
                 move.w  #$B000,d2                       ; sprite table base
 ```
 
-- A renamed symbol keeps its original disassembly name as provenance on the
-  line that defines it:
+- A renamed symbol keeps its original disassembly name as provenance on the line
+  that defines it:
 
 ```asm
 Sys_GameEntryPoint:
                 move    #$2700,sr                       ; was: sub_10000
 ```
 
-A renamed label keeps its marker on the label line rather than above it, and
-the comment column applies there like anywhere else:
+A renamed label keeps its marker on the label line rather than above it, and the
+comment column applies there like anywhere else:
 
 ```asm
 Game_MainLoop_PostFrame:                                ; was: loc_12B5E
@@ -176,11 +176,11 @@ Two invariants make the formatter safe to run on the whole tree:
 
 - **It never changes the line count.** Formatting is whitespace and comment
   text; adding or dropping a line would mean it is rewriting the program.
-- **It never reflows an operand.** Collapsing whitespace inside one once
-  rewrote the ROM header and moved 48,105 bytes, so the operand is copied
-  verbatim. The comment splitter is quote-aware for the same reason: the source
-  contains `dc.b "; 250 PTS.=      PTS.",0`, and splitting on the first
-  semicolon would turn that string into a comment.
+- **It never reflows an operand.** Collapsing whitespace inside one once rewrote
+  the ROM header and moved 48,105 bytes, so the operand is copied verbatim. The
+  comment splitter is quote-aware for the same reason: the source contains
+  `dc.b "; 250 PTS.=      PTS.",0`, and splitting on the first semicolon would
+  turn that string into a comment.
 
 `make verify` is the arbiter either way. Reformatting all 47 sources for this
 style left the ROM byte-identical.

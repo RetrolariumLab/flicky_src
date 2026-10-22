@@ -42,7 +42,7 @@ def runnable(rom: bytes) -> bytes:
         fail(f"relocated ROM is {len(rom)} bytes, more than {ROM_SIZE}")
     image = bytearray(rom + b"\xff" * (ROM_SIZE - len(rom)))
     image[0x1A4:0x1A8] = (ROM_SIZE - 1).to_bytes(4, "big")
-    checksum = sum(int.from_bytes(image[i:i + 2], "big") for i in range(0x200, ROM_SIZE, 2)) & 0xFFFF
+    checksum = sum(int.from_bytes(image[i : i + 2], "big") for i in range(0x200, ROM_SIZE, 2)) & 0xFFFF
     image[0x18E:0x190] = checksum.to_bytes(2, "big")
     return bytes(image)
 
@@ -53,8 +53,11 @@ def relocated_main(source: Path, output_dir: Path) -> tuple[str, int]:
     lines = []
     probes = 0
     moving = False
-    modules = [m.group("path") for line in source.read_text(encoding="utf-8").splitlines()
-               if (m := INCLUDE_RE.match(line)) and m.group("path").endswith(".s")]
+    modules = [
+        m.group("path")
+        for line in source.read_text(encoding="utf-8").splitlines()
+        if (m := INCLUDE_RE.match(line)) and m.group("path").endswith(".s")
+    ]
     last = modules[-1]
     for line in source.read_text(encoding="utf-8").splitlines():
         match = INCLUDE_RE.match(line)
@@ -81,10 +84,10 @@ def relocated_main(source: Path, output_dir: Path) -> tuple[str, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
     parser.add_argument("--source", default="src/main.s")
-    parser.add_argument("--output-dir", default="build/relocated",
-                        help="where the relocated main.s and module copies go")
-    parser.add_argument("--finish", type=Path,
-                        help="instead, pad this built image and fix its header")
+    parser.add_argument(
+        "--output-dir", default="build/relocated", help="where the relocated main.s and module copies go"
+    )
+    parser.add_argument("--finish", type=Path, help="instead, pad this built image and fix its header")
     args = parser.parse_args()
 
     if args.finish:
@@ -97,6 +100,7 @@ def main() -> int:
     (output_dir / "main.s").write_text(text, encoding="utf-8", newline="\n")
     print(f"[OK] Relocated source ({probes} probes, both layout gaps closed): {output_dir / 'main.s'}")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -55,64 +55,20 @@
       "game/enemies/snake.s": "game/enemies/iggy.s"
     },
     "legacy_label_prefixes": [
-      [
-        "UI_CatCountdownAnim",
-        "UI_RoundStartCountdownAnim"
-      ],
-      [
-        "UI_CatCountReverseAnim",
-        "UI_RoundEndCountdownAnim"
-      ],
-      [
-        "UI_CatCountReverseData3",
-        "UI_CountdownFrame3"
-      ],
-      [
-        "Chick_Thrown",
-        "Throwable_Thrown"
-      ],
-      [
-        "Cat_",
-        "Chirp_"
-      ],
-      [
-        "Lizard_",
-        "Tiger_"
-      ],
-      [
-        "Snake_",
-        "Iggy_"
-      ],
-      [
-        "BonusCat_OuterFrame",
-        "BonusSeesaw_Frame"
-      ],
-      [
-        "BonusCat_InnerFrame",
-        "BonusTiger_Frame"
-      ],
-      [
-        "BonusCat_AnimOuter",
-        "BonusSeesaw_Anim"
-      ],
-      [
-        "BonusCat_AnimInner",
-        "BonusTiger_Anim"
-      ],
-      [
-        "ExitDoor_OpenFrame",
-        "WindowGirl_Frame"
-      ],
-      [
-        "ExitDoor_AnimOpen",
-        "WindowGirl_AnimIdle"
-      ]
+      ["UI_CatCountdownAnim", "UI_RoundStartCountdownAnim"],
+      ["UI_CatCountReverseAnim", "UI_RoundEndCountdownAnim"],
+      ["UI_CatCountReverseData3", "UI_CountdownFrame3"],
+      ["Chick_Thrown", "Throwable_Thrown"],
+      ["Cat_", "Chirp_"],
+      ["Lizard_", "Tiger_"],
+      ["Snake_", "Iggy_"],
+      ["BonusCat_OuterFrame", "BonusSeesaw_Frame"],
+      ["BonusCat_InnerFrame", "BonusTiger_Frame"],
+      ["BonusCat_AnimOuter", "BonusSeesaw_Anim"],
+      ["BonusCat_AnimInner", "BonusTiger_Anim"],
+      ["ExitDoor_OpenFrame", "WindowGirl_Frame"],
+      ["ExitDoor_AnimOpen", "WindowGirl_AnimIdle"]
     ]
   },
-  "guard": [
-    "Choro",
-    "Iggy",
-    "Nyannyan",
-    "Piopio"
-  ]
+  "guard": ["Choro", "Iggy", "Nyannyan", "Piopio"]
 }

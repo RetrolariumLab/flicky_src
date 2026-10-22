@@ -31,10 +31,13 @@ class RelocatedMainTests(unittest.TestCase):
             (source / "data" / "bank0.s").write_text("                org     $10000\nBank0:\n")
             (source / "data" / "tables.s").write_text("Tables:\n                org     $1FFFF\n")
             main = source / "main.s"
-            main.write_text('                include "vectors.s"\n'
-                            '                include "system/startup.s"\n'
-                            '                include "data/bank0.s"\n'
-                            '                include "data/tables.s"\n', encoding="utf-8")
+            main.write_text(
+                '                include "vectors.s"\n'
+                '                include "system/startup.s"\n'
+                '                include "data/bank0.s"\n'
+                '                include "data/tables.s"\n',
+                encoding="utf-8",
+            )
             output = root / "out"
             output.mkdir()
 
