@@ -1,7 +1,10 @@
 {
   "schema": "retrolarium.movie-check",
   "schema_version": 1,
-  "movie": "flicky_demos.gmv",
+  "movie": "attract.rlmovie",
+  "title": "Attract demos",
+  "kind": "attract",
+  "description": "From power-on the title idles through its four recorded demos (rounds 1, 10, 20 and 24), then plays rounds 1-4 to a game over (movies/attract.scenes.txt maps frames to scenes).",
   "machine": "genesis",
   "cells": {
     "game_state": {

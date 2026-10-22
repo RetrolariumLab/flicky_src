@@ -26,10 +26,9 @@ Sys_GameEntryPoint_ClearObjectsLoop:
                 move.w  #$101,(Ram_RoundNumber).w
                 move    #$2500,sr
 
-; !(OBS) The twelve runtime scenarios pin this dispatch: replaying the recorded
-; movies reaches $04 on the title screen, $24 in play, $2C in the bonus round,
-; $34 at the credits and $44 on the Sega screen, each matching the table entry
-; below. See scenarios/runtime_scenarios.json and docs/runtime_evidence.md
+; !(OBS) The recorded movies reach $04 on the title screen, $24 in play, $2C in
+; the bonus round, $34 at the credits and $44 on the Sega screen, each matching
+; the table entry below (traced in releases 1.0 to 3.0)
 Sys_MainLoop:
                 movea.w (Sys_VectorTable+2).w,sp
                 move.w  (Ram_NextGameMode).w,d0

@@ -1,7 +1,10 @@
 {
   "schema": "retrolarium.movie-check",
   "schema_version": 1,
-  "movie": "flicky_longplay.gmv",
+  "movie": "longplay.rlmovie",
+  "title": "Longplay",
+  "kind": "longplay",
+  "description": "A complete play-through from power-on: every round type, the bonus rounds, the score screens and the ending (movies/longplay.scenes.txt maps frames to scenes).",
   "machine": "genesis",
   "cells": {
     "game_state": {

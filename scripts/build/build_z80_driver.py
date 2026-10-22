@@ -1,16 +1,53 @@
 #!/usr/bin/env python3
-"""Assemble one Flicky Z80 sound component and optionally verify byte identity."""
+"""Assemble one Flicky Z80 sound component and optionally verify byte identity.
+
+Retrolarium Kit's Flicky build (retrolarium_kit/games/flicky/workspace/build.py)
+calls this through scripts/run.py with --reference, --expected-size,
+--split-label and --allow-different; keep those options working.
+"""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
 
-from validation.debug_symbols import collect_from_listing
+# A listing row is "(depth) line/ address : <20 columns of bytes><source>".
+# The depth prefix is present for included files, which is every module.
+LISTING_ROW_RE = re.compile(r"^(?:\(\d+\))?\s*\d+/\s*([0-9A-F]+) : (.{20})(.*)$")
+DEFINITION_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)(?=:)")
+
+
+def code_of(line: str) -> str:
+    in_string = False
+    for index, char in enumerate(line):
+        if char == '"':
+            in_string = not in_string
+        elif char == ";" and not in_string:
+            return line[:index]
+    return line
+
+
+def collect_from_listing(listing: Path) -> dict[str, int]:
+    """Resolve every column-zero label to the address it assembled at.
+
+    The listing is parsed rather than the assembler's own symbol table because
+    that table uppercases every name, which would throw away the casing the
+    naming convention depends on.
+    """
+    resolved: dict[str, int] = {}
+    for row in listing.read_text(encoding="latin-1").splitlines():
+        match = LISTING_ROW_RE.match(row)
+        if not match:
+            continue
+        label = DEFINITION_RE.match(code_of(match.group(3)))
+        if label:
+            resolved.setdefault(label.group(1), int(match.group(1), 16))
+    return resolved
 
 
 def fail(message: str) -> None:
@@ -34,7 +71,7 @@ def main() -> int:
     parser.add_argument("--source", default="src/sound/z80/driver.asm")
     parser.add_argument("--obj", default="build/z80_driver.p")
     parser.add_argument("--output", default="build/z80_driver.bin")
-    parser.add_argument("--reference", default="data/sound/data_z80_part1.bin")
+    parser.add_argument("--reference", help="compare the result with this extract (make verify compares the ROM)")
     parser.add_argument("--reference-offset", type=lambda value: int(value, 0), default=0)
     parser.add_argument("--description", default="Z80 driver")
     parser.add_argument("--as-bin", required=True)
@@ -56,13 +93,13 @@ def main() -> int:
     source = Path(args.source).resolve()
     obj = Path(args.obj).resolve()
     output = Path(args.output).resolve()
-    reference = Path(args.reference)
+    reference = Path(args.reference) if args.reference else None
     as_bin = Path(args.as_bin).resolve()
     p2bin = Path(args.p2bin).resolve()
 
     for path, description in ((source, "source"), (reference, "reference image"),
                               (as_bin, "assembler"), (p2bin, "converter")):
-        if not path.is_file():
+        if path is not None and not path.is_file():
             fail(f"Z80 {description} not found: {path}")
 
     obj.parent.mkdir(parents=True, exist_ok=True)
@@ -89,13 +126,13 @@ def main() -> int:
             f"{args.description} is {len(built)} bytes; "
             f"the fixed region requires {args.expected_size} bytes"
         )
-    reference_data = reference.read_bytes()
+    reference_data = reference.read_bytes() if reference else built
     if args.reference_offset > len(reference_data):
         fail(
             f"reference offset {args.reference_offset} exceeds "
             f"{len(reference_data)}-byte reference image"
         )
-    expected = reference_data[args.reference_offset:]
+    expected = reference_data[args.reference_offset:] if reference else built
     if built != expected and not args.allow_different:
         offset = next(
             (index for index, pair in enumerate(zip(built, expected))
@@ -116,7 +153,9 @@ def main() -> int:
         output.with_name(f"{output.stem}_sfx.bin").write_bytes(built[:boundary])
         output.with_name(f"{output.stem}_music.bin").write_bytes(built[boundary:])
 
-    if built == expected:
+    if reference is None:
+        print(f"[OK] {args.description} assembled ({len(built)} bytes, SHA1 {sha1(built)})")
+    elif built == expected:
         print(
             f"[OK] Byte-identical {args.description} reproduced "
             f"({len(built)} bytes, SHA1 {sha1(built)})"

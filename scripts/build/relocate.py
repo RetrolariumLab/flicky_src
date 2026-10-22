@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Build Flicky with its code and data moved (build/relocated/flicky.bin).
+"""Write Flicky's source with its code and data moved (make build-relocated
+builds it with build_rom.py into build/relocated/flicky.bin, then --finish).
 
 A copy of src/main.s puts a never-reached NOP ($4E71, two bytes so every
 address keeps its parity) after each module from the startup code on, so
@@ -14,9 +15,7 @@ depends on the original addresses.
 from __future__ import annotations
 
 import argparse
-import os
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -82,35 +81,22 @@ def relocated_main(source: Path, output_dir: Path) -> tuple[str, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
     parser.add_argument("--source", default="src/main.s")
-    parser.add_argument("--output-dir", default="build/relocated")
-    parser.add_argument("--as-bin", required=True)
-    parser.add_argument("--p2bin", required=True)
-    parser.add_argument("--as-args", default="-maxerrors 2")
+    parser.add_argument("--output-dir", default="build/relocated",
+                        help="where the relocated main.s and module copies go")
+    parser.add_argument("--finish", type=Path,
+                        help="instead, pad this built image and fix its header")
     args = parser.parse_args()
 
-    root = Path.cwd().resolve()
-    as_bin = Path(args.as_bin).resolve()
-    p2bin = Path(args.p2bin).resolve()
+    if args.finish:
+        args.finish.write_bytes(runnable(args.finish.read_bytes()))
+        print(f"[OK] Relocated image padded and its checksum fixed: {args.finish}")
+        return 0
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     text, probes = relocated_main(Path(args.source), output_dir)
-    main_path = output_dir / "main.s"
-    main_path.write_text(text, encoding="utf-8", newline="\n")
-    obj = output_dir / "main.p"
-    rom_path = output_dir / "flicky.bin"
-    # AS finds its message catalogs through AS_MSGPATH (the assembler's folder).
-    environment = dict(os.environ)
-    environment.setdefault("AS_MSGPATH", str(as_bin.parent))
-    for command in ([str(as_bin), "-i", str(root), "-o", str(obj.resolve()), *args.as_args.split(),
-                     str(main_path.resolve())],
-                    [str(p2bin), str(obj.resolve()), str(rom_path.resolve()), "-p=FF"]):
-        result = subprocess.run(command, env=environment, capture_output=True, text=True)
-        if result.returncode:
-            fail(f"{Path(command[0]).name} failed:\n{result.stdout}{result.stderr}")
-    rom_path.write_bytes(runnable(rom_path.read_bytes()))
-    print(f"[OK] Relocated build ({probes} probes, both layout gaps closed): {rom_path}")
+    (output_dir / "main.s").write_text(text, encoding="utf-8", newline="\n")
+    print(f"[OK] Relocated source ({probes} probes, both layout gaps closed): {output_dir / 'main.s'}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

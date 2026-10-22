@@ -1,45 +1,38 @@
 # Input movies
 
-Two Gens `.gmv` recordings, the deterministic inputs that `make test-full`
-plays in MAME (their checks: `flicky_longplay.check.json`,
-`flicky_demos.check.json`).
+Two recordings, the deterministic inputs that `make test-full` plays in MAME
+on the relocated build (their checks: `longplay.check.json` and
+`attract.check.json`, whose `title` and `description` Retrolarium shows). They
+were recorded in Gens as `.gmv` against the reference ROM and converted to
+Retrolarium's run-length `.rlmovie` (`rltool movie convert`); the frames and
+inputs are unchanged. Replaying them against any other ROM desynchronises
+immediately and proves nothing.
 
 ## Content boundary
 
-A `.gmv` file is recorded controller input plus a small header. It contains no
-ROM data, no code, no graphics, no audio and no savestate. That is why these
-files are tracked while everything derived from the cartridge is not.
+A movie is recorded controller input. It contains no ROM data, no code, no
+graphics, no audio and no savestate. That is why these files are tracked while
+everything derived from the cartridge is not.
 
-## Files
-
-| File | Bytes | SHA-1 |
-| --- | ---: | --- |
-| `flicky_longplay.gmv` | 188,908 | `df655c49ff072706dc4edc66fc01cb3b0f3ebf1c` |
-| `flicky_demos.gmv` | 69,670 | `e490c5977ff3d2b55bd14fd3b09fc0507e075990` |
-
-Both are recorded against the reference ROM,
-SHA-1 `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96`. Replaying them against any
-other revision desynchronises immediately and proves nothing.
-
-### `flicky_longplay.gmv`
+## `longplay.rlmovie`
 
 A complete play-through. This is the input that exercises the most code: every
 round type, the bonus round, the score screens and the ending.
 
-### `flicky_demos.gmv`
+## `attract.rlmovie`
 
-Idles at the title screen so the attract-mode demos play out. This is the only
-input that reaches `Demo_Init` and the four recorded demo streams, which the
-longplay never touches because it presses start first.
+The title idles so the four recorded attract demos play out (rounds 1, 10, 20
+and 24), then the movie plays rounds 1-4 to a game over. This is the only input
+that reaches `Demo_Init` and the demo streams, which the longplay never touches
+because it presses start first.
 
 ## Scene indexes
 
-`longplay_description.txt` and `demos_description.txt` map frame ranges to
-scenes. They tell which scene a checkpoint frame falls in.
+`longplay.scenes.txt` and `attract.scenes.txt` map frame ranges to scenes, so
+you can tell which scene a checkpoint frame falls in.
 
 ## Regenerating
 
-These are fixtures, not build outputs. Re-recording them invalidates every
-frame number in the description files and the checks' expected values, so
-replace them only deliberately, update the hashes here and run `make golden` in
-the same change.
+These are fixtures, not build outputs. Re-recording one invalidates every
+frame number in its scene list and the check's expected values, so replace it
+only deliberately and run `make golden` in the same change.

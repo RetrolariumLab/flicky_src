@@ -1,6 +1,8 @@
+import tempfile
 import unittest
+from pathlib import Path
 
-from scripts.build.relocate import ROM_SIZE, runnable
+from scripts.build.relocate import ROM_SIZE, relocated_main, runnable
 
 
 class RunnableImageTests(unittest.TestCase):
@@ -17,6 +19,34 @@ class RunnableImageTests(unittest.TestCase):
     def test_an_image_larger_than_the_cartridge_is_refused(self):
         with self.assertRaises(SystemExit):
             runnable(bytes(ROM_SIZE + 2))
+
+
+class RelocatedMainTests(unittest.TestCase):
+    def test_probes_follow_every_module_from_the_startup_code_and_the_gaps_go(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "src"
+            (source / "system").mkdir(parents=True)
+            (source / "data").mkdir()
+            (source / "data" / "bank0.s").write_text("                org     $10000\nBank0:\n")
+            (source / "data" / "tables.s").write_text("Tables:\n                org     $1FFFF\n")
+            main = source / "main.s"
+            main.write_text('                include "vectors.s"\n'
+                            '                include "system/startup.s"\n'
+                            '                include "data/bank0.s"\n'
+                            '                include "data/tables.s"\n', encoding="utf-8")
+            output = root / "out"
+            output.mkdir()
+
+            text, probes = relocated_main(main, output)
+
+            self.assertEqual(2, probes)
+            lines = text.splitlines()
+            self.assertEqual('                include "src/vectors.s"', lines[0])
+            self.assertEqual('                include "src/system/startup.s"', lines[1])
+            self.assertIn("$4E71", lines[2])
+            self.assertEqual("Bank0:\n", (output / "bank0.s").read_text())
+            self.assertEqual("Tables:\n", (output / "tables.s").read_text())
 
 
 if __name__ == "__main__":
