@@ -9,26 +9,8 @@ global and cross-module branches need no declaration. That also means **the
 include order is the ROM layout**. Moving an include moves code in the output
 and `make verify` fails immediately.
 
-## Why the layout is machine-readable
-
-Without a linker script, include order once left placement described only by a
-prose table. That was too weak: a growing module, a reordered include, or a
-moved landmark could make the table silently wrong while byte verification
-reported only an unnamed offset. The concrete failure that prompted the
-contract was `Boot_EntryPoint`: it had been documented at `$000200`, but
-`Sys_ErrorTrap` occupies six bytes and the symbol is actually at `$000206`.
-
-`config/linker/rom_layout.json` now declares memory regions, symbol landmarks,
-the padding gap, shared non-emitting includes, and every byte-emitting module
-range. `make verify-layout` checks three independent build facts: module ranges
-from the assembler's include listing, landmarks from its symbol table, and the
-padding gap from the built image. A mismatch therefore names the module or
-landmark instead of presenting a raw ROM offset.
-
-Legitimate layout changes must update the declaration, which makes movement a
-deliberate reviewed operation. The release manifests record this file as the
-equivalent control for a project that has no linker configuration to enforce
-placement.
+The address comments in `src/main.s` give each module's place in the
+original ROM; the build's listing gives the current ones.
 
 ## Granularity policy
 
@@ -61,9 +43,8 @@ These emit no bytes and are included before any module:
 
 `src/sound/z80/driver.asm` is a separate Z80 translation-unit index rather than
 part of the address-ordered 68000 include tree. Its seven implementation files
-under `src/sound/z80/driver/` are 302-535 lines, apart from the non-emitting ABI
-declarations. Together they assemble to 4,070 bytes, are checked against the
-reference driver, and are included by `bank0.s`.
+under `src/sound/z80/driver/` assemble to 4,070 bytes, which `bank0.s`
+includes from `build/`.
 
 ## Source extensions
 
@@ -90,76 +71,70 @@ pattern. A file inside one directory therefore does not repeat an `enemy_`,
 
 The Z80 implementation split is independently visible:
 
-| File | Lines | Responsibility |
-| --- | ---: | --- |
-| `driver/abi.asm` | 108 | Non-emitting hardware and resident-RAM ABI |
-| `driver/core.asm` | 302 | Reset, timer interrupt, update loop |
-| `driver/fm.asm` | 535 | FM event, modulation, envelope, voice handling |
-| `driver/control.asm` | 439 | Sound commands, track startup, pause and fade |
-| `driver/mixer.asm` | 357 | Reset/silence, priority polling, DAC path |
-| `driver/coordination.asm` | 424 | Coordination-flag dispatch and handlers |
-| `driver/sequencing_psg.asm` | 303 | Calls, loops, PSG update and envelopes |
+| File | Responsibility |
+| --- | --- |
+| `driver/abi.asm` | Non-emitting hardware and resident-RAM ABI |
+| `driver/core.asm` | Reset, timer interrupt, update loop |
+| `driver/fm.asm` | FM event, modulation, envelope, voice handling |
+| `driver/control.asm` | Sound commands, track startup, pause and fade |
+| `driver/mixer.asm` | Reset/silence, priority polling, DAC path |
+| `driver/coordination.asm` | Coordination-flag dispatch and handlers |
+| `driver/sequencing_psg.asm` | Calls, loops, PSG update and envelopes |
 
 ## Modules
 
-| File | ROM range | Lines | Responsibility |
-| --- | --- | ---: | --- |
-| `src/system/startup.s` | `$000000-$000855` | 371 | Header, reset/boot sequence, Sega screen |
-| `src/system/dma.s` | `$000856-$000AD3` | 273 | Game-state init, DMA helpers and VRAM fills |
-| `src/compression/nemesis_enigma.s` | `$000AD4-$000DBF` | 452 | Nemesis and Enigma decompressors |
-| `src/system/input.s` | `$000DC0-$000E41` | 65 | Joypad initialization and polling |
-| `src/rendering/vdp.s` | `$000E42-$001013` | 244 | VDP registers, sprite area, tilemap writes, palette fade |
-| `src/sound/z80/host.s` | `$001014-$001195` | 183 | Z80 bus arbitration and the sound command queue |
-| `src/rendering/tilemap.s` | `$001196-$001315` | 175 | Palette and tilemap loading, VRAM and CRAM transfers |
-| `src/data/bank0.s` | `$001316-$00FFFF` | 70 | Source-built Z80 driver image, function table, Japanese 1bpp font |
-| `src/system/game_entry.s` | `$010000-$0101D3` | 140 | Game entry point and title-screen VRAM setup |
-| `src/sound/z80/load_data.s` | `$0101D4-$010CD3` | 22 | Z80 music/SFX data banks and load descriptors |
-| `src/sound/engine.s` | `$010CD4-$010D6D` | 69 | Sound driver init and note playback |
-| `src/rendering/rle.s` | `$010D6E-$010DE7` | 81 | VRAM address helpers and RLE tilemap decompression |
-| `src/game/text_encoding.s` | `$010DE8-$010E87` | 89 | Character-to-tile mapping and random numbers |
-| `src/system/vblank.s` | `$010E88-$010F23` | 67 | VBlank interrupt handler |
-| `src/rendering/text.s` | `$010F24-$01105B` | 178 | Tilemap coordinates, tile writes, string and number drawing |
-| `src/game/world.s` | `$01105C-$011673` | 700 | Objects, camera, collision map, level lifecycle |
-| `src/game/rules.s` | `$011674-$01190F` | 300 | Score, timer, enemy placement, pair collisions |
-| `src/rendering/level_draw.s` | `$011910-$011BC1` | 302 | Ground tilemap construction and background objects |
-| `src/rendering/hud.s` | `$011BC2-$011FAF` | 365 | HUD elements, animations, score and label drawing |
-| `src/game/screens/front_end.s` | `$011FB0-$0125BD` | 417 | Title and guide screens |
-| `src/game/round/select_and_setup.s` | `$0125BE-$012A93` | 268 | Round selection, init, tileset and palette loading |
-| `src/game/round/main_loop.s` | `$012A94-$012F2F` | 440 | Main game state machine |
-| `src/game/bonus/mode.s` | `$012F30-$01310F` | 164 | Bonus round flow |
-| `src/game/screens/ending.s` | `$013110-$0139A1` | 382 | Ending sequence and credits |
-| `src/game/screens/attract_mode.s` | `$0139A2-$013E6F` | 101 | Attract-mode demo playback |
-| `src/game/actors/player.s` | `$013E70-$0144DB` | 679 | Player object |
-| `src/game/actors/window_girl_and_throwable.s` | `$0144DC-$01483D` | 377 | Window girl and throwable item objects |
-| `src/game/actors/chirp.s` | `$01483E-$014EC5` | 622 | Chirp rescue actor |
-| `src/game/enemies/tiger.s` | `$014EC6-$015507` | 603 | Tiger cat and its animation tables |
-| `src/data/level_layout.s` | `$015508-$015D57` | 159 | Level layout and palette data used by round setup |
-| `src/game/enemies/iggy.s` | `$015D58-$016311` | 492 | Iggy lizard |
-| `src/game/enemies/spawner.s` | `$016312-$0164EB` | 212 | Enemy spawner and score popups |
-| `src/game/bonus/objects.s` | `$0164EC-$016DA9` | 558 | Bonus-round objects |
-| `src/game/screens/game_over.s` | `$016DAA-$016E57` | 32 | Game over and time over text |
-| `src/data/art.s` | `$016E58-$01A195` | 15 | Level, sprite, score and logo art |
-| `src/data/tables.s` | `$01A196-$01FFFF` | 689 | Trailing data tables and the ROM tail |
+| File | Responsibility |
+| --- | --- |
+| `src/system/startup.s` | Header, reset/boot sequence, Sega screen |
+| `src/system/dma.s` | Game-state init, DMA helpers and VRAM fills |
+| `src/compression/nemesis_enigma.s` | Nemesis and Enigma decompressors |
+| `src/system/input.s` | Joypad initialization and polling |
+| `src/rendering/vdp.s` | VDP registers, sprite area, tilemap writes, palette fade |
+| `src/sound/z80/host.s` | Z80 bus arbitration and the sound command queue |
+| `src/rendering/tilemap.s` | Palette and tilemap loading, VRAM and CRAM transfers |
+| `src/data/bank0.s` | Source-built Z80 driver image, function table, Japanese 1bpp font |
+| `src/system/game_entry.s` | Game entry point and title-screen VRAM setup |
+| `src/sound/z80/load_data.s` | Z80 music/SFX data banks and load descriptors |
+| `src/sound/engine.s` | Sound driver init and note playback |
+| `src/rendering/rle.s` | VRAM address helpers and RLE tilemap decompression |
+| `src/game/text_encoding.s` | Character-to-tile mapping and random numbers |
+| `src/system/vblank.s` | VBlank interrupt handler |
+| `src/rendering/text.s` | Tilemap coordinates, tile writes, string and number drawing |
+| `src/game/world.s` | Objects, camera, collision map, level lifecycle |
+| `src/game/rules.s` | Score, timer, enemy placement, pair collisions |
+| `src/rendering/level_draw.s` | Ground tilemap construction and background objects |
+| `src/rendering/hud.s` | HUD elements, animations, score and label drawing |
+| `src/game/screens/front_end.s` | Title and guide screens |
+| `src/game/round/select_and_setup.s` | Round selection, init, tileset and palette loading |
+| `src/game/round/main_loop.s` | Main game state machine |
+| `src/game/bonus/mode.s` | Bonus round flow |
+| `src/game/screens/ending.s` | Ending sequence and credits |
+| `src/game/screens/attract_mode.s` | Attract-mode demo playback |
+| `src/game/actors/player.s` | Player object |
+| `src/game/actors/window_girl_and_throwable.s` | Window girl and throwable item objects |
+| `src/game/actors/chirp.s` | Chirp rescue actor |
+| `src/game/enemies/tiger.s` | Tiger cat and its animation tables |
+| `src/data/level_layout.s` | Level layout and palette data used by round setup |
+| `src/game/enemies/iggy.s` | Iggy lizard |
+| `src/game/enemies/spawner.s` | Enemy spawner and score popups |
+| `src/game/bonus/objects.s` | Bonus-round objects |
+| `src/game/screens/game_over.s` | Game over and time over text |
+| `src/data/art.s` | Level, sprite, score and logo art |
+| `src/data/tables.s` | Trailing data tables and the ROM tail |
 
 ## Extracted data
 
-`make split` extracts seventeen reference segments from the ROM and validates
-them against `assets/manifest.json`. Fifteen are included directly from the
-owning 68000 modules. The two Z80 segments instead provide byte-exact
-references for source-built driver and sound banks; their generated binaries
-are included by `src/data/bank0.s` and `src/sound/z80/load_data.s`. Extracted
-segments are never tracked by this repository.
+`make split` extracts seventeen segments from the ROM and checks them against
+`assets/manifest.json`. Fifteen are included directly by the 68000 modules. The
+two Z80 segments are the original driver and sound banks; the build assembles
+those from source instead, and Retrolarium Kit's Studio build compares its
+driver with them. Extracted segments are never tracked by this repository.
 
 AS resolves `include` and `binclude` relative to the including file, so modules
 under `src/` could not reach `data/` on their own. The build passes the project
 root as an include search path (`-i`), which lets every module spell its paths
 from the root exactly as the index does.
 
-## Verification baseline
+## Padding
 
-- ROM size: 131,072 bytes
-- ROM SHA-1: `83d8bbf0a9b38c42a0bf492d105cc3abe9644a96`
-- ROM MD5: `805CC0B3724F041126A57A4D956FD251`
-- ROM CRC32: `4291C8AB`
-- Padding byte in unused space: `$FF`
-- Verification command: `make verify`
+Unused ROM space is `$FF`; `make verify` compares the whole image.
