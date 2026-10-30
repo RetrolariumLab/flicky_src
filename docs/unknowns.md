@@ -146,13 +146,13 @@ ______________________________________________________________________
   entry also blamed inserting padding; removing it breaks the same way, so the
   constraint is that `Sys_GameEntryPoint` must not move at all.
 
-- **Resolution:** `src/sound/z80/data.asm` now authors the two data banks,
-  including the resident SFX and music pointer tables and every voice/sequence
-  pointer in their headers. Its address macros produce Z80 little-endian
-  pointers from labels. The six 68000 descriptor words in
-  `src/sound/z80/load_data.s` are expressions over the actual ROM labels instead
-  of bytes inherited from the extracted image. `make verify` covers the
-  2,804-byte payload with the rest of the ROM.
+- **Resolution:** the two data banks hold only Z80 addresses inside themselves
+  (`config/z80_sound_data.layout` names every pointer in the resident SFX and
+  music tables and the headers), so they load correctly wherever the 68000 image
+  puts them. The six 68000 descriptor words in `src/sound/z80/load_data.s` are
+  expressions over the actual ROM labels instead of bytes inherited from the
+  extracted image. `make verify` covers the 2,804-byte payload with the rest of
+  the ROM.
 
 - **Relocation check:** The loader conversion must subtract the fixed 64-KiB
   RAM-image size, not the movable `Sys_GameEntryPoint` label. With that

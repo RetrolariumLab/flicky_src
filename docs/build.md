@@ -30,14 +30,16 @@ rather than as a byte difference.
 
 ```text
 src/sound/z80/driver.asm --[asl, p2bin]--> build/z80_driver.bin
-src/sound/z80/data.asm   --[asl, p2bin]--> build/z80_sound_data_sfx.bin, _music.bin
+src/sound/z80/data.asm   --[asl, p2bin]--> build/z80_sound_data_sfx.bin, _music.bin  (the ROM's banks)
 src/main.s --[asl]--> build/main.p --[p2bin -p=FF]--> build/flicky.bin --[rltool assets verify]--> the cartridge
 ```
 
 **The Z80 parts.** The sound driver and the sound-data banks are separate
 assembly units; `build_z80_driver.py` assembles each, and splits the data at
-`zMusicBank` into the sound-effect and music banks. The 68000 source includes
-the results with `binclude`.
+`zMusicBank` into the sound-effect and music banks. The banks are sound data,
+which the source does not keep: `data.asm` includes them from the split
+`data/sound/data_z80_part2.bin`. The 68000 source includes the results with
+`binclude`.
 
 **Assembling.** `src/main.s` includes 36 modules in ROM address order and AS
 assembles all of it as one unit, so every label is global. Includes are written

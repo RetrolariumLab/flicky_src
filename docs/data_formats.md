@@ -86,17 +86,25 @@ documented in [z80_sound_driver.md](z80_sound_driver.md).
 data to Z80 `$1000` and `$1200`: SFX headers/sequences in the first bank, and
 data indices, command priorities, music headers, FM voices, envelopes and
 sequences in the second. The descriptors are expressions in
-`src/sound/z80/load_data.s`; the 2,804-byte payload is authored in
-`src/sound/z80/data.asm`, where Z80 little-endian pointers are computed from
-labels. The build splits it at `zMusicBank` into separately included SFX and
-music banks; `make verify` covers them with the rest of the ROM, and the movies
-played on the relocated build show that the sound loads follow a moved game
-image.
+`src/sound/z80/load_data.s`. The 2,804-byte payload is sound data and comes from
+the ROM: `src/sound/z80/data.asm` includes both banks from the split
+`data_z80_part2.bin`. Every pointer in them is a little-endian Z80 address
+inside the banks, so they load correctly wherever the 68000 image puts them;
+`make verify` covers them with the rest of the ROM, and the movies played on the
+relocated build show that the sound loads follow a moved game image.
+
+`config/z80_sound_data.layout` describes the banks without their values: their
+assembly, with the header, sequence and voice-bank labels, pointers and
+comments, and each data byte replaced by `$??` (written in hexadecimal) or `?`
+(in decimal). Retrolarium Kit fills the placeholders from the ROM to make the
+assembly its studio edits, checking every pointer against the labels, and builds
+the edited assembly in place of `data.asm`.
 
 `EndingMusic81Overlay` replaces the resident `$81` music header and sequences at
-Z80 `$125B` (`src/game/screens/ending.s`); `data.asm` refuses to assemble if
-`zMusic81Header` leaves that address. The 68000 `DBF` copy reads one byte beyond
-the 954-byte block, as the original does.
+Z80 `$125B` (`src/game/screens/ending.s`); the banks assembly made from the
+layout refuses to assemble if an edit moves `zMusic81Header` off that address.
+The 68000 `DBF` copy reads one byte beyond the 954-byte block, as the original
+does.
 
 ## Demo input streams
 
