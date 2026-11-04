@@ -137,10 +137,10 @@ Level_GroundTile_SolidLeftEdge:
 
 Level_GroundTile_SolidLeftEdge_TestBelow:
                 tst.b   $20(a0)
-                beq.s   Level_GroundTile_SolidLeftEdge_TestBelowLeft
+                beq.s   GroundTile_SolidLeftEdge_TestBelowLeft
                 bset    #1,d4
 
-Level_GroundTile_SolidLeftEdge_TestBelowLeft:
+GroundTile_SolidLeftEdge_TestBelowLeft:
                 tst.b   $1F(a0)
                 beq.s   Level_GroundTile_SolidLeftEdge_TestRight
                 bset    #2,d4
@@ -157,20 +157,20 @@ Level_GroundTile_SolidLeftEdge_Draw:
 
 Level_GroundTile_SolidRightEdge:
                 tst.b   -$20(a0)
-                beq.s   Level_GroundTile_SolidRightEdge_TestBelow
+                beq.s   GroundTile_SolidRightEdge_TestBelow
                 bset    #0,d4
 
-Level_GroundTile_SolidRightEdge_TestBelow:
+GroundTile_SolidRightEdge_TestBelow:
                 tst.b   $20(a0)
                 beq.s   Level_GroundTile_SolidRightEdge_TestLeft
                 bset    #1,d4
 
 Level_GroundTile_SolidRightEdge_TestLeft:
                 tst.b   -1(a0)
-                beq.s   Level_GroundTile_SolidRightEdge_TestAboveRight
+                beq.s   GroundTile_SolidRightEdge_TestAboveRight
                 bset    #2,d4
 
-Level_GroundTile_SolidRightEdge_TestAboveRight:
+GroundTile_SolidRightEdge_TestAboveRight:
                 tst.b   -$1F(a0)
                 beq.s   Level_GroundTile_SolidRightEdge_Draw
                 bset    #3,d4
@@ -212,10 +212,10 @@ Level_GroundTile_EmptyLeftEdge:
 
 Level_GroundTile_EmptyLeftEdge_TestLeft:
                 tst.b   -1(a0)
-                beq.s   Level_GroundTile_EmptyLeftEdge_TestBelowLeft
+                beq.s   GroundTile_EmptyLeftEdge_TestBelowLeft
                 bset    #1,d4
 
-Level_GroundTile_EmptyLeftEdge_TestBelowLeft:
+GroundTile_EmptyLeftEdge_TestBelowLeft:
                 tst.b   $1F(a0)
                 beq.s   Level_GroundTile_EmptyLeftEdge_Draw
                 bset    #2,d4
@@ -226,10 +226,10 @@ Level_GroundTile_EmptyLeftEdge_Draw:
 
 Level_GroundTile_EmptyMiddle:
                 tst.b   -$20(a0)
-                beq.s   Level_GroundTile_EmptyMiddle_TestAboveLeft
+                beq.s   GroundTile_EmptyMiddle_TestAboveLeft
                 bset    #0,d4
 
-Level_GroundTile_EmptyMiddle_TestAboveLeft:
+GroundTile_EmptyMiddle_TestAboveLeft:
                 tst.b   -$21(a0)
                 beq.s   Level_GroundTile_EmptyMiddle_TestLeft
                 bset    #1,d4

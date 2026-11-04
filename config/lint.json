@@ -3,7 +3,8 @@
   "schema_version": 1,
   "assembly": {
     "dialect": "asl",
-    "paths": ["src"]
+    "paths": ["src"],
+    "label_length": true
   },
   "text": {
     "json": "valid"
