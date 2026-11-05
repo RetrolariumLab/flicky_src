@@ -77,6 +77,3 @@ bin/.lst
 
 # The stop-word list (retrolarium_core.stop_words) never enters a repository
 /.stopwords
-
-# Payloads generated locally from the reference ROM
-/assets/generated/

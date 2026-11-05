@@ -1,10 +1,14 @@
 # Authored Data Formats
 
-Seventeen segments are cut out of the ROM by `make split` and checked against
-`assets/manifest.json`. Most are pulled back in with `binclude`; the two Z80
-segments are the original driver and sound banks, which the build assembles from
-source instead. The second half of this page gives the formats of the tables
-written in the source.
+`make split` extracts the level, accent and title logo palettes into
+`data/palettes/`, alongside the compact shared palette and Sega fade table.
+Studio reads and edits the level, accent and title palette files by their
+existing source labels.
+
+The extraction manifest lists the segments `make split` cuts from the ROM. The
+68000 source pulls most of them back in with `binclude`. The build assembles the
+Z80 driver and prepares the extracted sound banks separately. The second half of
+this page gives the formats of the tables written in the source.
 
 ## The segments
 
